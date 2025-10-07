@@ -1,0 +1,125 @@
+DROP TABLE IF EXISTS tempdashboard;
+
+CREATE TABLE tempdashboard (
+    id UUID NOT NULL PRIMARY KEY,
+    hp VARCHAR(2) NOT NULL DEFAULT '',
+    subscriberid INT NOT NULL,
+    partnergroupid INT,
+    expiry TIMESTAMP,
+    status INT DEFAULT 0,
+    packageid INT DEFAULT 1,
+    registrationdate TIMESTAMP,
+    renewalfee NUMERIC(10,2),
+    maxvolume DOUBLE PRECISION,
+    speedinkbps BIGINT,
+    ibnp BIGINT,
+    username VARCHAR(45)
+);
+
+-------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS ticket_movement;
+
+CREATE TABLE ticket_movement (
+    id UUID NOT NULL PRIMARY KEY,
+    noteid BIGSERIAL,
+    ticketid BIGINT,
+    note VARCHAR(600),
+    created_by VARCHAR(64),
+    create_date TIMESTAMP,
+    status VARCHAR(45),
+    helpdesk VARCHAR(64),
+    assignedto VARCHAR(45),
+    assignedto_type CHAR(50),
+    attachment VARCHAR(600),
+    assigned_from VARCHAR(100),
+    assigned_from_role VARCHAR(100),
+    assigned_from_name VARCHAR(100),
+    assigned_to_name VARCHAR(100),
+    visibility VARCHAR(100)
+);
+
+------------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS ticket_status;
+
+CREATE TABLE ticket_status (
+    status_id UUID NOT NULL PRIMARY KEY,
+    id INTEGER NOT NULL DEFAULT 0,
+    status VARCHAR(50)
+);
+
+-------------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS ticket_type;
+
+CREATE TABLE ticket_type (
+    id UUID NOT NULL PRIMARY KEY,
+    typeid BIGSERIAL,
+    name VARCHAR(50)
+);
+------------------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS taxpayertype;
+
+CREATE TABLE taxpayertype (
+    id UUID NOT NULL PRIMARY KEY,
+    taxpayertypeid INT,
+    taxpayertype VARCHAR(45)
+);
+
+-------------------------------------------------------------------
+
+DROP TABLE IF EXISTS taxtype;
+
+CREATE TABLE taxtype (
+    id UUID NOT NULL PRIMARY KEY,
+    taxtypeid SERIAL,
+    taxname VARCHAR(45) NOT NULL,
+    taxvaluepercent NUMERIC(10,2) NOT NULL,
+    lastupdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_taxname ON taxtype(taxname);
+
+--------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS tds;
+
+CREATE TABLE tds (
+    id UUID NOT NULL PRIMARY KEY,
+    sno BIGSERIAL,
+    partnerid BIGINT NOT NULL,
+    amount DOUBLE PRECISION NOT NULL,
+    lastupdate TIMESTAMP NOT NULL,
+    cause VARCHAR(45) NOT NULL
+);
+
+------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS tds_pan;
+
+CREATE TABLE tds_pan (
+    plan_id UUID NOT NULL PRIMARY KEY,
+    id SERIAL,
+    pan NUMERIC(10,2) NOT NULL,
+    nopan NUMERIC(10,2) NOT NULL
+);
+
+---------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS temp_sub_new;
+
+CREATE TABLE temp_sub_new (
+    id UUID NOT NULL PRIMARY KEY,
+    slno SERIAL,
+    subscriberid INT,
+    s_op_bal NUMERIC(10,2),
+    s_inflow NUMERIC(10,2),
+    s_rechargewithtax NUMERIC(10,2),
+    s_revert_partner NUMERIC(10,2),
+    s_cl_bal NUMERIC(10,2),
+    partnerid VARCHAR(20),
+    monthpart VARCHAR(15),
+    s_revenuewithtax NUMERIC(10,2),
+    remarks VARCHAR(50)
+);
