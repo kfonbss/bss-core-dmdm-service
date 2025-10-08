@@ -1,0 +1,48 @@
+DROP TABLE IF EXISTS appliedonline_agnp CASCADE;
+
+CREATE TABLE appliedonline_agnp (
+  appliedonline_agnp_id UUID PRIMARY KEY NOT NULL,
+  agnp_id BIGSERIAL,
+  agnp_name varchar(200) DEFAULT NULL,
+  agnp_assoc_any_other_isp varchar(10) DEFAULT NULL,
+  agnp_contact_name varchar(200) DEFAULT NULL,
+  agnp_mobile_number varchar(10) DEFAULT NULL,
+  agnp_altr_contact_number varchar(10) DEFAULT NULL,
+  agnp_landline_number varchar(20) DEFAULT NULL,
+  agnp_email varchar(100) DEFAULT NULL,
+  agnp_address text DEFAULT NULL,
+  agnp_location varchar(200) DEFAULT NULL,
+  agnp_latitue varchar(50) DEFAULT NULL,
+  agnp_longitude varchar(50) DEFAULT NULL,
+  agnp_pincode varchar(10) DEFAULT NULL,
+  agnp_postoffice varchar(50) DEFAULT NULL,
+  agnp_district varchar(50) DEFAULT NULL,
+  agnp_aadharno varchar(50) DEFAULT NULL,
+  agnp_aadharcopy varchar(200) DEFAULT NULL,
+  agnp_status varchar(50) DEFAULT NULL,
+  agnp_source varchar(100) DEFAULT NULL,
+  agnp_created_by varchar(100) DEFAULT NULL,
+  agnp_created_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  agnp_updated_date timestamp DEFAULT CURRENT_TIMESTAMP,
+  agnp_updated_by varchar(100) DEFAULT NULL,
+  agnp_remarks text DEFAULT NULL,
+  is_active boolean NOT NULL DEFAULT true,
+  tracking_id varchar(10) DEFAULT NULL
+);
+
+COMMENT ON COLUMN appliedonline_agnp.appliedonline_agnp_id IS 'Unique identifier for applied online AGNP records';
+
+
+DROP TABLE IF EXISTS appliedonline_agnp_movement CASCADE;
+
+CREATE TABLE appliedonline_agnp_movement (
+  appliedonline_agnp_movement_id UUID PRIMARY KEY NOT NULL,
+  id BIGSERIAL,
+  agnp_id bigint DEFAULT NULL,
+  note text DEFAULT NULL,
+  status varchar(50) DEFAULT NULL,
+  created_by varchar(100) DEFAULT NULL,
+  created_date timestamp DEFAULT CURRENT_TIMESTAMP
+);
+
+COMMENT ON COLUMN appliedonline_agnp_movement.appliedonline_agnp_movement_id IS 'Unique identifier for applied online AGNP movement records';
