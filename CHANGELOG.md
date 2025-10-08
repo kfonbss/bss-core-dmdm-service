@@ -7,3 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.1] - 2025-10-06
 ### Added
 - Initial version : project structure
+
+## [0.0.2] - 2025-10-08
+### Added
+- Master table creation 
