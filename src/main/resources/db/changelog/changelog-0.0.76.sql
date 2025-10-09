@@ -37,7 +37,7 @@ CREATE TABLE func (
   name char(64) NOT NULL DEFAULT '',
   ret INT NOT NULL DEFAULT 0,
   dl char(128) NOT NULL DEFAULT '',
-  type varchar(50) NOT NULL,
+  type VARCHAR(10) NOT NULL CHECK (type IN ('function', 'aggregate')),
   -- above enum field values: function, aggregate
   -- Primary key constraint
 CONSTRAINT pk_func PRIMARY KEY (func_id)
