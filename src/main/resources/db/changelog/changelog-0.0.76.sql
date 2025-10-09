@@ -215,3 +215,14 @@ CREATE TABLE gri_tickets1 (
   -- Primary key constraint
 CONSTRAINT pk_gri_tickets1 PRIMARY KEY (gri_tickets1_id)
 );
+
+-- Create indexes for better performance
+CREATE INDEX idx_gri_tickets1_submit_date ON gri_tickets1 (submit_date);
+CREATE INDEX idx_gri_tickets1_ticket_type ON gri_tickets1 (ticket_type);
+CREATE INDEX idx_gri_tickets1_complaint_type ON gri_tickets1 (complaint_type);
+CREATE INDEX idx_gri_tickets1_created_by ON gri_tickets1 (created_by);
+CREATE INDEX idx_gri_tickets1_assignedto ON gri_tickets1 (assignedto);
+CREATE INDEX idx_gri_tickets1_circle ON gri_tickets1 (circle);
+CREATE INDEX idx_gri_tickets1_region ON gri_tickets1 (region);
+CREATE INDEX idx_gri_tickets1_updated_dt ON gri_tickets1 (updated_dt);
+CREATE INDEX idx_gri_tickets1_status ON gri_tickets1 (status);
