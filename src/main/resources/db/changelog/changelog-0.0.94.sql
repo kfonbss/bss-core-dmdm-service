@@ -7,7 +7,7 @@ CREATE TABLE mobile_app_version_details (
   devicetype varchar(100) DEFAULT NULL,
   latest_build_number int DEFAULT NULL,
   support_build_number int DEFAULT NULL,
-  is_active tinyint DEFAULT 1,
+  is_active int DEFAULT 1,
   -- '0=inactive,1=active',
   -- Primary key constraint
 CONSTRAINT pk_mobile_app_version_details PRIMARY KEY (mobile_app_version_details_id)
@@ -23,8 +23,8 @@ CREATE TABLE mobile_billing_state_list (
   state_name varchar(50) DEFAULT NULL,
   state_code varchar(50) DEFAULT NULL,
   app_url varchar(50) DEFAULT NULL,
-  is_active tinyint DEFAULT 1,
-  region char(10) DEFAULT NULL,
+  is_active int DEFAULT 1,
+  region varchar(10) DEFAULT NULL,
   -- Primary key constraint
 CONSTRAINT pk_mobile_billing_state_list PRIMARY KEY (mobile_billing_state_list_id)
 );
@@ -36,8 +36,8 @@ DROP TABLE IF EXISTS mobile_faqs_details CASCADE;
 CREATE TABLE mobile_faqs_details (
   mobile_faqs_details_id UUID NOT NULL,
   id SERIAL,
-  faq_question longtext DEFAULT NULL,
-  faq_answer longtext DEFAULT NULL,
+  faq_question text DEFAULT NULL,
+  faq_answer text DEFAULT NULL,
   is_active INT DEFAULT 1,
   -- Primary key constraint
 CONSTRAINT pk_mobile_faqs_details PRIMARY KEY (mobile_faqs_details_id)
@@ -87,15 +87,15 @@ DROP TABLE IF EXISTS monthlydata CASCADE;
 
 CREATE TABLE monthlydata (
   monthlydata_id UUID NOT NULL,
-  slno SERIAL DEFAULT NULL,
+  slno SERIAL,
   partnername varchar(75) DEFAULT NULL,
-  netsum float DEFAULT NULL,
+  netsum decimal DEFAULT NULL,
   taxno varchar(25) DEFAULT NULL,
   pan varchar(20) DEFAULT NULL,
-  taxdispersed float DEFAULT NULL,
-  railteltax float DEFAULT NULL,
-  servicetax float DEFAULT NULL,
-  railtelactual float DEFAULT NULL,
+  taxdispersed decimal DEFAULT NULL,
+  railteltax decimal DEFAULT NULL,
+  servicetax decimal DEFAULT NULL,
+  railtelactual decimal DEFAULT NULL,
   tds float DEFAULT NULL,
   doorno varchar(50) DEFAULT NULL,
   premise varchar(150) DEFAULT NULL,
