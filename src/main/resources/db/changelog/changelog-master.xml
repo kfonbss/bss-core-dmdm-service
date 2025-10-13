@@ -17,4 +17,23 @@
             <include file="/db/changelog/changelog-0.0.12.sql"/>
             <include file="/db/changelog/changelog-0.0.13.sql"/>
             <include file="/db/changelog/changelog-0.0.14.sql"/>
+            <include file="/db/changelog/changelog-0.0.43.sql"/>
+            <include file="/db/changelog/changelog-0.0.45.sql"/>
+            <include file="/db/changelog/changelog-0.0.47.sql"/>
+            <include file="/db/changelog/changelog-0.0.49.sql"/>
+            <include file="/db/changelog/changelog-0.0.51.sql"/>
+            <include file="/db/changelog/changelog-0.0.53.sql"/>
+            <include file="/db/changelog/changelog-0.0.55.sql"/>
+            <include file="/db/changelog/changelog-0.0.57.sql"/>
+            <include file="/db/changelog/changelog-0.0.59.sql"/>
+            <include file="/db/changelog/changelog-0.0.61.sql"/>
+            <include file="/db/changelog/changelog-0.0.63.sql"/>
+            <include file="/db/changelog/changelog-0.0.66.sql"/>
+            <include file="/db/changelog/changelog-0.0.68.sql"/>
+            <include file="/db/changelog/changelog-0.0.70.sql"/>
+            <include file="/db/changelog/changelog-0.0.81.sql"/>
+            <include file="/db/changelog/changelog-0.0.83.sql"/>
+            <include file="/db/changelog/changelog-0.0.85.sql"/>
+            <include file="/db/changelog/changelog-0.0.87.sql"/>
+            <include file="/db/changelog/changelog-0.0.89.sql"/>
 </databaseChangeLog>
