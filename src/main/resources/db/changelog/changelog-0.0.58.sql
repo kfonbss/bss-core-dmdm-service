@@ -1,0 +1,139 @@
+DROP TABLE IF EXISTS cor_partnerfinance CASCADE;
+
+CREATE TABLE cor_partnerfinance (
+  partnerfinance_uuid UUID PRIMARY KEY NOT NULL,
+  financeid SERIAL,
+  invoiceid INTEGER DEFAULT NULL,
+  ptype VARCHAR(10) DEFAULT 'ANP',
+  invtype SMALLINT DEFAULT 1,
+  workorderno VARCHAR(45) DEFAULT NULL,
+  partnerid BIGINT DEFAULT NULL,
+  amount DECIMAL(10,2) DEFAULT NULL,
+  cause VARCHAR(128) DEFAULT NULL,
+  lastupdate TIMESTAMP DEFAULT NULL,
+  description VARCHAR(100) DEFAULT NULL,
+  createdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+COMMENT ON COLUMN cor_partnerfinance.partnerfinance_uuid IS 'Unique identifier for partner finance records';
+COMMENT ON COLUMN cor_partnerfinance.ptype IS 'Partner Type: ANP, IBNP, etc.';
+COMMENT ON COLUMN cor_partnerfinance.invtype IS '1=Invoice,2=Credit Note, etc.';
+
+
+DROP TABLE IF EXISTS cor_partnertransfer CASCADE;
+
+CREATE TABLE cor_partnertransfer (
+  partnertransfer_uuid UUID PRIMARY KEY NOT NULL,
+  slno SERIAL,
+  partnerid BIGINT DEFAULT NULL,
+  invoiceid INTEGER DEFAULT NULL,
+  ptype VARCHAR(10) DEFAULT 'ANP',
+  invtype SMALLINT DEFAULT 1,
+  transferedon TIMESTAMP DEFAULT NULL,
+  transferedby VARCHAR(100) DEFAULT NULL,
+  remarks VARCHAR(100) DEFAULT NULL,
+  amount DECIMAL(10,2) DEFAULT NULL,
+  createdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+COMMENT ON COLUMN cor_partnertransfer.partnertransfer_uuid IS 'Unique identifier for partner transfer records';
+COMMENT ON COLUMN cor_partnertransfer.ptype IS 'Partner Type: ANP, IBNP, etc.';
+COMMENT ON COLUMN cor_partnertransfer.invtype IS '1=Invoice,2=Credit Note, etc.';
+
+
+DROP TABLE IF EXISTS cor_penalty CASCADE;
+
+CREATE TABLE cor_penalty (
+  penalty_uuid UUID PRIMARY KEY NOT NULL,
+  slno SERIAL,
+  subid BIGINT DEFAULT NULL,
+  pid BIGINT DEFAULT NULL,
+  monthpart VARCHAR(15) DEFAULT NULL,
+  penaltypercent INTEGER DEFAULT NULL,
+  penaltyamt DECIMAL(10,2) DEFAULT NULL,
+  downtime VARCHAR(25) DEFAULT NULL,
+  tarif DECIMAL(12,2) DEFAULT NULL,
+  wid VARCHAR(30) DEFAULT NULL,
+  rem VARCHAR(50) DEFAULT NULL
+);
+
+COMMENT ON COLUMN cor_penalty.penalty_uuid IS 'Unique identifier for penalty records';
+
+
+DROP TABLE IF EXISTS cor_pmonthlyinvoice CASCADE;
+
+CREATE TABLE cor_pmonthlyinvoice (
+  pmonthlyinvoice_uuid UUID PRIMARY KEY NOT NULL,
+  slno SERIAL,
+  Partnerid BIGINT DEFAULT NULL,
+  monthpart VARCHAR(20) DEFAULT NULL,
+  sharename VARCHAR(20) DEFAULT NULL,
+  shareamt DECIMAL(10,2) DEFAULT NULL,
+  statecode VARCHAR(10) DEFAULT NULL,
+  workorderid VARCHAR(45) DEFAULT NULL
+);
+
+COMMENT ON COLUMN cor_pmonthlyinvoice.pmonthlyinvoice_uuid IS 'Unique identifier for partner monthly invoice records';
+
+
+DROP TABLE IF EXISTS cor_pmonthlyinvoice_BKP CASCADE;
+
+CREATE TABLE cor_pmonthlyinvoice_BKP (
+  pmonthlyinvoice_bkp_uuid UUID PRIMARY KEY NOT NULL,
+  slno SERIAL,
+  Partnerid BIGINT DEFAULT NULL,
+  monthpart VARCHAR(20) DEFAULT NULL,
+  sharename VARCHAR(20) DEFAULT NULL,
+  shareamt DECIMAL(10,2) DEFAULT NULL,
+  statecode VARCHAR(10) DEFAULT NULL,
+  workorderid VARCHAR(45) DEFAULT NULL
+);
+
+COMMENT ON COLUMN cor_pmonthlyinvoice_BKP.pmonthlyinvoice_bkp_uuid IS 'Unique identifier for partner monthly invoice backup records';
+
+
+DROP TABLE IF EXISTS cor_pnew CASCADE;
+
+CREATE TABLE cor_pnew (
+  pnew_uuid UUID PRIMARY KEY NOT NULL,
+  slno SERIAL,
+  pgid INTEGER DEFAULT NULL,
+  statecode VARCHAR(10) DEFAULT NULL,
+  revenue DECIMAL(10,2) DEFAULT NULL,
+  monthpart VARCHAR(10) DEFAULT NULL,
+  ibnp BIGINT DEFAULT NULL,
+  ibnpamt DECIMAL(10,2) DEFAULT NULL,
+  ibnpshare INTEGER DEFAULT NULL,
+  anp BIGINT DEFAULT NULL,
+  anpamt DECIMAL(10,2) DEFAULT NULL,
+  anpshare INTEGER DEFAULT NULL,
+  agp BIGINT DEFAULT NULL,
+  agpamt DECIMAL(10,2) DEFAULT NULL,
+  agpshare INTEGER DEFAULT NULL,
+  msp BIGINT DEFAULT NULL,
+  mspamt DECIMAL(10,2) DEFAULT NULL,
+  mspshare INTEGER DEFAULT NULL,
+  prs BIGINT DEFAULT NULL,
+  prsamt DECIMAL(10,2) DEFAULT NULL,
+  prsshare INTEGER DEFAULT NULL,
+  mkt BIGINT DEFAULT NULL,
+  mktamt DECIMAL(10,2) DEFAULT NULL,
+  mktshare INTEGER DEFAULT NULL,
+  cnp BIGINT DEFAULT NULL,
+  cnpamt DECIMAL(10,2) DEFAULT NULL,
+  cnpshare INTEGER DEFAULT NULL,
+  isp BIGINT DEFAULT NULL,
+  ispamt DECIMAL(10,2) DEFAULT NULL,
+  ispshare INTEGER DEFAULT NULL,
+  wid VARCHAR(60) DEFAULT NULL,
+  stax DECIMAL(10,2) DEFAULT NULL,
+  sbcess DECIMAL(10,2) DEFAULT NULL,
+  kkcess DECIMAL(10,2) DEFAULT NULL,
+  pantds DECIMAL(10,2) DEFAULT NULL,
+  nopantds DECIMAL(10,2) DEFAULT NULL,
+  pst_code CHAR(3) DEFAULT NULL
+);
+
+COMMENT ON COLUMN cor_pnew.pnew_uuid IS 'Unique identifier for partner new records';
