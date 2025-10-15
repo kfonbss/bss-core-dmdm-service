@@ -16,7 +16,7 @@ COMMENT ON COLUMN access.access_id IS 'Unique identifier for access records';
 DROP TABLE IF EXISTS accessgroup CASCADE;
 
 CREATE TABLE accessgroup (
-  accessgroup_id UUID PRIMARY KEY NOT NULL,
+  group_id UUID PRIMARY KEY NOT NULL,
   accessgroupid SERIAL,
   accessname varchar(45) NOT NULL,
   accesstypeid int NOT NULL,
@@ -25,13 +25,13 @@ CREATE TABLE accessgroup (
 );
 
 CREATE INDEX Index_3 ON accessgroup (accesstypeid);
-COMMENT ON COLUMN accessgroup.accessgroup_id IS 'Unique identifier for access group records';
+COMMENT ON COLUMN accessgroup.group_id IS 'Unique identifier for access group records';
 
 
 DROP TABLE IF EXISTS accesstype CASCADE;
 
 CREATE TABLE accesstype (
-  accesstype_id UUID PRIMARY KEY NOT NULL,
+  type_id UUID PRIMARY KEY NOT NULL,
   accesstypeid SERIAL,
   accesstype varchar(45) NOT NULL,
   lastupdate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -39,4 +39,4 @@ CREATE TABLE accesstype (
 );
 
 CREATE UNIQUE INDEX Index_2 ON accesstype (accesstype);
-COMMENT ON COLUMN accesstype.accesstype_id IS 'Unique identifier for access type records';
+COMMENT ON COLUMN accesstype.type_id IS 'Unique identifier for access type records';

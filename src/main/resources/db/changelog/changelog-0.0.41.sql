@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_package CASCADE;
 
 CREATE TABLE ce_package (
-  ce_package_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   packageid SERIAL,
   packagename varchar(45) NOT NULL,
   renewperiod int NOT NULL,
@@ -24,13 +24,13 @@ CREATE TABLE ce_package (
 COMMENT ON COLUMN ce_package.service_type IS '1=Lease Line,2=L2-VPN,3=L3-VPN';
 COMMENT ON COLUMN ce_package.plan_type IS '1=Unlimited, 2=FUP';
 COMMENT ON COLUMN ce_package.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_package.ce_package_id IS 'Unique identifier for CE package records';
+COMMENT ON COLUMN ce_package.id IS 'Unique identifier for CE package records';
 
 
 DROP TABLE IF EXISTS ce_parent_customers CASCADE;
 
 CREATE TABLE ce_parent_customers (
-  ce_parent_customers_id UUID PRIMARY KEY NOT NULL,
+  customers_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   department_name varchar(250) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
@@ -39,13 +39,13 @@ CREATE TABLE ce_parent_customers (
 );
 
 COMMENT ON COLUMN ce_parent_customers.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_parent_customers.ce_parent_customers_id IS 'Unique identifier for CE parent customers records';
+COMMENT ON COLUMN ce_parent_customers.customers_id IS 'Unique identifier for CE parent customers records';
 
 
 DROP TABLE IF EXISTS ce_payment_history CASCADE;
 
 CREATE TABLE ce_payment_history (
-  ce_payment_history_id UUID PRIMARY KEY NOT NULL,
+  history_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   invoiceid varchar(15) DEFAULT NULL,
   utr_number varchar(25) DEFAULT NULL,
@@ -59,13 +59,13 @@ CREATE TABLE ce_payment_history (
   is_active boolean DEFAULT true
 );
 
-COMMENT ON COLUMN ce_payment_history.ce_payment_history_id IS 'Unique identifier for CE payment history records';
+COMMENT ON COLUMN ce_payment_history.history_id IS 'Unique identifier for CE payment history records';
 
 
 DROP TABLE IF EXISTS ce_payment_kyc_details CASCADE;
 
 CREATE TABLE ce_payment_kyc_details (
-  ce_payment_kyc_details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   subid int DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -81,13 +81,13 @@ CREATE TABLE ce_payment_kyc_details (
   updated_date timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN ce_payment_kyc_details.ce_payment_kyc_details_id IS 'Unique identifier for CE payment KYC details records';
+COMMENT ON COLUMN ce_payment_kyc_details.details_id IS 'Unique identifier for CE payment KYC details records';
 
 
-DROP TABLE IF EXISTS ce_package CASCADE;
+DROP TABLE IF EXISTS ce_po_movement CASCADE;
 
 CREATE TABLE ce_po_movement (
-  ce_po_movement_id UUID PRIMARY KEY NOT NULL,
+  movement_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   poid int DEFAULT NULL,
   approve_status int DEFAULT NULL,
@@ -99,6 +99,6 @@ CREATE TABLE ce_po_movement (
 );
 
 COMMENT ON COLUMN ce_po_movement.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_po_movement.ce_po_movement_id IS 'Unique identifier for CE purchase order movement records';
+COMMENT ON COLUMN ce_po_movement.movement_id IS 'Unique identifier for CE purchase order movement records';
 
 

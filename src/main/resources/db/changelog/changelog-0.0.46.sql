@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_subscriberdetails CASCADE;
 
 CREATE TABLE ce_subscriberdetails (
-  ce_subscriberdetails_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   username varchar(64) DEFAULT NULL,
@@ -37,12 +37,12 @@ CREATE TABLE ce_subscriberdetails (
 
 COMMENT ON COLUMN ce_subscriberdetails.loc_type IS '1-Urban,2-Rural';
 COMMENT ON COLUMN ce_subscriberdetails.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_subscriberdetails.ce_subscriberdetails_id IS 'Unique identifier for CE subscriber details records';
+COMMENT ON COLUMN ce_subscriberdetails.details_id IS 'Unique identifier for CE subscriber details records';
 
 DROP TABLE IF EXISTS ce_subscribers CASCADE;
 
 CREATE TABLE ce_subscribers (
-  ce_subscribers_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   subscriberid SERIAL,
   username varchar(64) DEFAULT NULL,
   password varchar(50) DEFAULT NULL,
@@ -55,12 +55,12 @@ CREATE TABLE ce_subscribers (
 );
 
 COMMENT ON COLUMN ce_subscribers.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_subscribers.ce_subscribers_id IS 'Unique identifier for CE subscribers records';
+COMMENT ON COLUMN ce_subscribers.id IS 'Unique identifier for CE subscribers records';
 
 DROP TABLE IF EXISTS ce_subscribers_document CASCADE;
 
 CREATE TABLE ce_subscribers_document (
-  ce_subscribers_document_id UUID PRIMARY KEY NOT NULL,
+  document_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   sub_document varchar(50) DEFAULT NULL,
@@ -73,13 +73,13 @@ CREATE TABLE ce_subscribers_document (
   hyi_flag int DEFAULT 0
 );
 
-COMMENT ON COLUMN ce_subscribers_document.ce_subscribers_document_id IS 'Unique identifier for CE subscribers document records';
+COMMENT ON COLUMN ce_subscribers_document.document_id IS 'Unique identifier for CE subscribers document records';
 
 
 DROP TABLE IF EXISTS ce_subshifdetails CASCADE;
 
 CREATE TABLE ce_subshifdetails (
-  ce_subshifdetails_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   serviceprovider int DEFAULT NULL,
   subscriberid bigint DEFAULT NULL,
@@ -92,13 +92,13 @@ CREATE TABLE ce_subshifdetails (
 );
 
 COMMENT ON COLUMN ce_subshifdetails.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_subshifdetails.ce_subshifdetails_id IS 'Unique identifier for CE subscriber shift details records';
+COMMENT ON COLUMN ce_subshifdetails.details_id IS 'Unique identifier for CE subscriber shift details records';
 
 
 DROP TABLE IF EXISTS ce_supportsub_document CASCADE;
 
 CREATE TABLE ce_supportsub_document (
-  ce_supportsub_document_id UUID PRIMARY KEY NOT NULL,
+  document_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   caf_doc varchar(50) DEFAULT NULL,
@@ -124,12 +124,12 @@ CREATE TABLE ce_supportsub_document (
   hyi_flag int DEFAULT 0
 );
 
-COMMENT ON COLUMN ce_supportsub_document.ce_supportsub_document_id IS 'Unique identifier for CE support subscriber document records';
+COMMENT ON COLUMN ce_supportsub_document.document_id IS 'Unique identifier for CE support subscriber document records';
 
 DROP TABLE IF EXISTS ce_workorder CASCADE;
 
 CREATE TABLE ce_workorder (
-  ce_workorder_id UUID PRIMARY KEY NOT NULL,
+  workorder_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   po_id int DEFAULT NULL,
   wo_no varchar(25) DEFAULT NULL,
@@ -142,24 +142,24 @@ CREATE TABLE ce_workorder (
 );
 
 COMMENT ON COLUMN ce_workorder.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_workorder.ce_workorder_id IS 'Unique identifier for CE workorder records';
+COMMENT ON COLUMN ce_workorder.workorder_id IS 'Unique identifier for CE workorder records';
 
 
 DROP TABLE IF EXISTS check_xmls CASCADE;
 
 CREATE TABLE check_xmls (
-  check_xmls_id UUID PRIMARY KEY NOT NULL,
+  xmls_id UUID PRIMARY KEY NOT NULL,
   post text DEFAULT NULL,
   files text DEFAULT NULL
 );
 
-COMMENT ON COLUMN check_xmls.check_xmls_id IS 'Unique identifier for check XMLs records';
+COMMENT ON COLUMN check_xmls.xmls_id IS 'Unique identifier for check XMLs records';
 
 
 DROP TABLE IF EXISTS ci_sessions CASCADE;
 
 CREATE TABLE ci_sessions (
-  ci_sessions_id UUID PRIMARY KEY NOT NULL,
+  sessions_id UUID PRIMARY KEY NOT NULL,
   id varchar(40) NOT NULL,
   username varchar(100) DEFAULT NULL,
   ip_address varchar(45) NOT NULL,
@@ -168,4 +168,4 @@ CREATE TABLE ci_sessions (
 );
 
 CREATE INDEX ci_sessions_timestamp ON ci_sessions (timestamp);
-COMMENT ON COLUMN ci_sessions.ci_sessions_id IS 'Unique identifier for CI sessions records';
+COMMENT ON COLUMN ci_sessions.sessions_id IS 'Unique identifier for CI sessions records';

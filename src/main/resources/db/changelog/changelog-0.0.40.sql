@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_location_renewal_history CASCADE;
 
 CREATE TABLE ce_location_renewal_history (
-  ce_location_renewal_history_id UUID PRIMARY KEY NOT NULL,
+  history_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   subscriberid int DEFAULT NULL,
@@ -29,12 +29,12 @@ CREATE TABLE ce_location_renewal_history (
 );
 
 COMMENT ON COLUMN ce_location_renewal_history.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_location_renewal_history.ce_location_renewal_history_id IS 'Unique identifier for CE location renewal history records';
+COMMENT ON COLUMN ce_location_renewal_history.history_id IS 'Unique identifier for CE location renewal history records';
 
 DROP TABLE IF EXISTS ce_locations CASCADE;
 
 CREATE TABLE ce_locations (
-  ce_locations_id UUID PRIMARY KEY NOT NULL,
+  locations_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   quotationid int DEFAULT NULL,
   breakupid int DEFAULT NULL,
@@ -115,13 +115,13 @@ COMMENT ON COLUMN ce_locations.loc_type IS '1-Urban,2-Rural';
 COMMENT ON COLUMN ce_locations.d_status IS '0=In Active,1=Active,2=De commissioned';
 COMMENT ON COLUMN ce_locations.is_active IS '0=In Active,1=Active';
 COMMENT ON COLUMN ce_locations.billing_type IS '1 = Central, 2 = Individual';
-COMMENT ON COLUMN ce_locations.ce_locations_id IS 'Unique identifier for CE locations records';
+COMMENT ON COLUMN ce_locations.locations_id IS 'Unique identifier for CE locations records';
 
 
 DROP TABLE IF EXISTS ce_onlineapplication CASCADE;
 
 CREATE TABLE ce_onlineapplication (
-  ce_onlineapplication_id UUID PRIMARY KEY NOT NULL,
+  application_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   apno varchar(45) NOT NULL,
   status varchar(45) NOT NULL DEFAULT 'Submitted',
@@ -201,13 +201,13 @@ CREATE TABLE ce_onlineapplication (
 
 CREATE INDEX index2_ce_online ON ce_onlineapplication (packageid, update_date, status);
 COMMENT ON COLUMN ce_onlineapplication.kyc_type IS '0=Normal KYC,1=EKYC';
-COMMENT ON COLUMN ce_onlineapplication.ce_onlineapplication_id IS 'Unique identifier for CE online application records';
+COMMENT ON COLUMN ce_onlineapplication.application_id IS 'Unique identifier for CE online application records';
 
 
 DROP TABLE IF EXISTS ce_otcinovoice CASCADE;
 
 CREATE TABLE ce_otcinovoice (
-  ce_otcinovoice_id UUID PRIMARY KEY NOT NULL,
+  inovoice_id UUID PRIMARY KEY NOT NULL,
   slno BIGSERIAL,
   subscriberid bigint DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -234,4 +234,4 @@ CREATE TABLE ce_otcinovoice (
 );
 
 COMMENT ON COLUMN ce_otcinovoice.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_otcinovoice.ce_otcinovoice_id IS 'Unique identifier for CE OTC invoice records';
+COMMENT ON COLUMN ce_otcinovoice.inovoice_id IS 'Unique identifier for CE OTC invoice records';

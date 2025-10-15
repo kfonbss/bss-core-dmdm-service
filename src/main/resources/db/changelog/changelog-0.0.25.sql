@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS api_configuration_details CASCADE;
 
 CREATE TABLE api_configuration_details (
-  api_configuration_details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   api_id int NOT NULL,
   endpoint varchar(300) DEFAULT NULL,
@@ -12,13 +12,13 @@ CREATE TABLE api_configuration_details (
 );
 
 CREATE UNIQUE INDEX idx_api_id_unique ON api_configuration_details (api_id);
-COMMENT ON COLUMN api_configuration_details.api_configuration_details_id IS 'Unique identifier for API configuration details records';
+COMMENT ON COLUMN api_configuration_details.details_id IS 'Unique identifier for API configuration details records';
 
 
 DROP TABLE IF EXISTS apikeys CASCADE;
 
 CREATE TABLE apikeys (
-  apikeys_id UUID PRIMARY KEY NOT NULL,
+  keys_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   user_id int NOT NULL,
   apikey varchar(40) NOT NULL,
@@ -29,4 +29,4 @@ CREATE TABLE apikeys (
   date_created int NOT NULL
 );
 
-COMMENT ON COLUMN apikeys.apikeys_id IS 'Unique identifier for API keys records';
+COMMENT ON COLUMN apikeys.keys_id IS 'Unique identifier for API keys records';

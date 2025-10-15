@@ -1,19 +1,19 @@
 DROP TABLE IF EXISTS agencydetail CASCADE;
 
 CREATE TABLE agencydetail (
-  agencydetail_id UUID PRIMARY KEY NOT NULL,
+  detail_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   agency varchar(20) DEFAULT NULL,
   statecode varchar(5) DEFAULT NULL
 );
 
-COMMENT ON COLUMN agencydetail.agencydetail_id IS 'Unique identifier for agency detail records';
+COMMENT ON COLUMN agencydetail.detail_id IS 'Unique identifier for agency detail records';
 
 
 DROP TABLE IF EXISTS agnpbank CASCADE;
 
 CREATE TABLE agnpbank (
-  agnpbank_id UUID PRIMARY KEY NOT NULL,
+  bank_id UUID PRIMARY KEY NOT NULL,
   sl_no int DEFAULT NULL,
   agnpid bigint DEFAULT NULL,
   acholder varchar(53) DEFAULT NULL,
@@ -24,13 +24,13 @@ CREATE TABLE agnpbank (
   IFSC varchar(13) DEFAULT NULL
 );
 
-COMMENT ON COLUMN agnpbank.agnpbank_id IS 'Unique identifier for AGNP bank records';
+COMMENT ON COLUMN agnpbank.bank_id IS 'Unique identifier for AGNP bank records';
 
 
 DROP TABLE IF EXISTS anp_crm_penanlty CASCADE;
 
 CREATE TABLE anp_crm_penanlty (
-  anp_crm_penanlty_id UUID PRIMARY KEY NOT NULL,
+  penanlty_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   subscriberid int NOT NULL,
   partnerid bigint DEFAULT NULL,
@@ -46,13 +46,13 @@ CREATE TABLE anp_crm_penanlty (
   t_app_date timestamp DEFAULT NULL
 );
 
-COMMENT ON COLUMN anp_crm_penanlty.anp_crm_penanlty_id IS 'Unique identifier for ANP CRM penalty records';
+COMMENT ON COLUMN anp_crm_penanlty.penanlty_id IS 'Unique identifier for ANP CRM penalty records';
 
 
 DROP TABLE IF EXISTS anp_feedback CASCADE;
 
 CREATE TABLE anp_feedback (
-  anp_feedback_id UUID PRIMARY KEY NOT NULL,
+  feedback_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   time_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   partnerid varchar(30) DEFAULT NULL,
@@ -65,4 +65,4 @@ CREATE TABLE anp_feedback (
   feedbackdate timestamp DEFAULT NULL
 );
 
-COMMENT ON COLUMN anp_feedback.anp_feedback_id IS 'Unique identifier for ANP feedback records';
+COMMENT ON COLUMN anp_feedback.feedback_id IS 'Unique identifier for ANP feedback records';

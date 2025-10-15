@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS Api_order CASCADE;
 
 CREATE TABLE Api_order (
-  api_order_id UUID PRIMARY KEY NOT NULL,
+  order_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   service_type varchar(60) NOT NULL,
   customer_id varchar(45) DEFAULT NULL,
@@ -53,13 +53,13 @@ CREATE TABLE Api_order (
 );
 
 CREATE UNIQUE INDEX circuitid_unique ON Api_order (circuitid);
-COMMENT ON COLUMN Api_order.api_order_id IS 'Unique identifier for API order records';
+COMMENT ON COLUMN Api_order.order_id IS 'Unique identifier for API order records';
 
 
 DROP TABLE IF EXISTS Api_order_logs CASCADE;
 
 CREATE TABLE Api_order_logs (
-  api_order_logs_id UUID PRIMARY KEY NOT NULL,
+  log_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   req_q text DEFAULT NULL,
   res_q text DEFAULT NULL,
@@ -68,5 +68,5 @@ CREATE TABLE Api_order_logs (
   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN Api_order_logs.api_order_logs_id IS 'Unique identifier for API order logs';
+COMMENT ON COLUMN Api_order_logs.log_id IS 'Unique identifier for API order logs';
 

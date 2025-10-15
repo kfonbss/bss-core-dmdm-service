@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cor_fin_agpinvoicing_q CASCADE;
 
 CREATE TABLE cor_fin_agpinvoicing_q (
-  cor_fin_agpinvoicing_q_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   invoicemonth varchar(45) DEFAULT NULL,
   status int DEFAULT NULL,
@@ -40,13 +40,13 @@ CREATE TABLE cor_fin_agpinvoicing_q (
   workorderid varchar(45) DEFAULT NULL
 );
 
-COMMENT ON COLUMN cor_fin_agpinvoicing_q.cor_fin_agpinvoicing_q_id IS 'Unique identifier for COR financial AGP invoicing queue records';
+COMMENT ON COLUMN cor_fin_agpinvoicing_q.id IS 'Unique identifier for COR financial AGP invoicing queue records';
 
 
 DROP TABLE IF EXISTS cor_fin_lcoinvoicing CASCADE;
 
 CREATE TABLE cor_fin_lcoinvoicing (
-  cor_fin_lcoinvoicing_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   subgroup smallint DEFAULT NULL,
   pgroupid int DEFAULT NULL,
@@ -120,13 +120,13 @@ CREATE TABLE cor_fin_lcoinvoicing (
   is_active boolean DEFAULT true
 );
 
-COMMENT ON COLUMN cor_fin_lcoinvoicing.cor_fin_lcoinvoicing_id IS 'Unique identifier for COR financial LCO invoicing records';
+COMMENT ON COLUMN cor_fin_lcoinvoicing.id IS 'Unique identifier for COR financial LCO invoicing records';
 
 
 DROP TABLE IF EXISTS cor_fin_lcoinvoicing_q CASCADE;
 
 CREATE TABLE cor_fin_lcoinvoicing_q (
-  cor_fin_lcoinvoicing_q_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   invoicemonth varchar(45) DEFAULT NULL,
   status int DEFAULT NULL,
@@ -162,13 +162,13 @@ CREATE TABLE cor_fin_lcoinvoicing_q (
   lcototal decimal(10,2) DEFAULT NULL
 );
 
-COMMENT ON COLUMN cor_fin_lcoinvoicing_q.cor_fin_lcoinvoicing_q_id IS 'Unique identifier for COR financial LCO invoicing queue records';
+COMMENT ON COLUMN cor_fin_lcoinvoicing_q.id IS 'Unique identifier for COR financial LCO invoicing queue records';
 
 
 DROP TABLE IF EXISTS cor_fin_mspinvoicing CASCADE;
 
 CREATE TABLE cor_fin_mspinvoicing (
-  cor_fin_mspinvoicing_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   subgroup boolean DEFAULT NULL,
   invoicemonth varchar(20) DEFAULT NULL,
@@ -233,4 +233,4 @@ CREATE TABLE cor_fin_mspinvoicing (
   sgsttds_amount decimal(13,2) DEFAULT NULL
 );
 
-COMMENT ON COLUMN cor_fin_mspinvoicing.cor_fin_mspinvoicing_id IS 'Unique identifier for COR financial MSP invoicing records';
+COMMENT ON COLUMN cor_fin_mspinvoicing.id IS 'Unique identifier for COR financial MSP invoicing records';

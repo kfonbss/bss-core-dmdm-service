@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS appliedonline_partners CASCADE;
 
 CREATE TABLE appliedonline_partners (
-  appliedonline_partners_id UUID PRIMARY KEY NOT NULL,
+  partners_id UUID PRIMARY KEY NOT NULL,
   id BIGSERIAL,
   ptnr_name varchar(200) DEFAULT NULL,
   ptnr_mobile varchar(10) DEFAULT NULL,
@@ -53,4 +53,4 @@ CREATE INDEX ptnr_mobile_idx ON appliedonline_partners (ptnr_mobile);
 CREATE INDEX created_dt_partners_idx ON appliedonline_partners (created_dt);
 CREATE INDEX status_partners_idx ON appliedonline_partners (status);
 
-COMMENT ON COLUMN appliedonline_partners.appliedonline_partners_id IS 'Unique identifier for applied online partners records';
+COMMENT ON COLUMN appliedonline_partners.partners_id IS 'Unique identifier for applied online partners records';

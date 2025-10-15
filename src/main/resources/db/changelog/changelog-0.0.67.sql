@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cp_organization_type_list CASCADE;
 
 CREATE TABLE cp_organization_type_list (
-  cp_organization_type_list_id UUID PRIMARY KEY NOT NULL,
+  list_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   org_id INTEGER NOT NULL,
   org_name VARCHAR(100) NOT NULL,
@@ -9,14 +9,14 @@ CREATE TABLE cp_organization_type_list (
   created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN cp_organization_type_list.cp_organization_type_list_id IS 'Unique identifier for organization type list records';
+COMMENT ON COLUMN cp_organization_type_list.list_id IS 'Unique identifier for organization type list records';
 COMMENT ON COLUMN cp_organization_type_list.is_active IS '0=Inactive,1=Active';
 
 
 DROP TABLE IF EXISTS created_quotation CASCADE;
 
 CREATE TABLE created_quotation (
-  created_quotation_id UUID PRIMARY KEY NOT NULL,
+  quotation_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   cmpname VARCHAR(60) DEFAULT NULL,
   ref_no VARCHAR(40) NOT NULL,
@@ -36,13 +36,13 @@ CREATE TABLE created_quotation (
   discount_val DECIMAL(10,2) DEFAULT 0
 );
 
-COMMENT ON COLUMN created_quotation.created_quotation_id IS 'Unique identifier for created quotation records';
+COMMENT ON COLUMN created_quotation.quotation_id IS 'Unique identifier for created quotation records';
 
 
 DROP TABLE IF EXISTS created_quotation_requote CASCADE;
 
 CREATE TABLE created_quotation_requote (
-  created_quotation_requote_id UUID PRIMARY KEY NOT NULL,
+  requote_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   cmpname VARCHAR(60) DEFAULT NULL,
   ref_no VARCHAR(40) NOT NULL,
@@ -63,14 +63,14 @@ CREATE TABLE created_quotation_requote (
   discount_val DECIMAL(10,2) DEFAULT 0
 );
 
-COMMENT ON COLUMN created_quotation_requote.created_quotation_requote_id IS 'Unique identifier for created quotation requote records';
+COMMENT ON COLUMN created_quotation_requote.requote_id IS 'Unique identifier for created quotation requote records';
 COMMENT ON COLUMN created_quotation_requote.fin_status IS 'Pending,Approved,Rejected,OnHold';
 
 
 DROP TABLE IF EXISTS crm_issue_mapping_list CASCADE;
 
 CREATE TABLE crm_issue_mapping_list (
-  crm_issue_mapping_list_id UUID PRIMARY KEY NOT NULL,
+  list_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   issue_cat INTEGER DEFAULT NULL,
   issue_sub_cat INTEGER DEFAULT NULL,
@@ -80,14 +80,14 @@ CREATE TABLE crm_issue_mapping_list (
   date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN crm_issue_mapping_list.crm_issue_mapping_list_id IS 'Unique identifier for CRM issue mapping list records';
+COMMENT ON COLUMN crm_issue_mapping_list.list_id IS 'Unique identifier for CRM issue mapping list records';
 COMMENT ON COLUMN crm_issue_mapping_list.is_active IS '0=Inactive,1=Active';
 
 
 DROP TABLE IF EXISTS crm_issue_mapping_list_backup CASCADE;
 
 CREATE TABLE crm_issue_mapping_list_backup (
-  crm_issue_mapping_list_backup_id UUID PRIMARY KEY NOT NULL,
+  backup_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   issue_cat INTEGER DEFAULT NULL,
   issue_sub_cat INTEGER DEFAULT NULL,
@@ -96,14 +96,14 @@ CREATE TABLE crm_issue_mapping_list_backup (
   date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN crm_issue_mapping_list_backup.crm_issue_mapping_list_backup_id IS 'Unique identifier for CRM issue mapping list backup records';
+COMMENT ON COLUMN crm_issue_mapping_list_backup.backup_id IS 'Unique identifier for CRM issue mapping list backup records';
 COMMENT ON COLUMN crm_issue_mapping_list_backup.is_active IS '0=Inactive,1=Active';
 
 
 DROP TABLE IF EXISTS crm_msptarget CASCADE;
 
 CREATE TABLE crm_msptarget (
-  crm_msptarget_id UUID PRIMARY KEY NOT NULL,
+  msptarget_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   mspid VARCHAR(20) DEFAULT NULL,
   statecode VARCHAR(5) DEFAULT NULL,
@@ -112,13 +112,13 @@ CREATE TABLE crm_msptarget (
   monthpart VARCHAR(10) DEFAULT NULL
 );
 
-COMMENT ON COLUMN crm_msptarget.crm_msptarget_id IS 'Unique identifier for CRM MSP target records';
+COMMENT ON COLUMN crm_msptarget.msptarget_id IS 'Unique identifier for CRM MSP target records';
 
 
 DROP TABLE IF EXISTS crm_support_persons_actual CASCADE;
 
 CREATE TABLE crm_support_persons_actual (
-  crm_support_persons_actual_id UUID PRIMARY KEY NOT NULL,
+  actual_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   createdby VARCHAR(100) DEFAULT NULL,
   subscriber VARCHAR(100) DEFAULT NULL,
@@ -131,7 +131,7 @@ CREATE TABLE crm_support_persons_actual (
   monthyear VARCHAR(10) DEFAULT NULL
 );
 
-COMMENT ON COLUMN crm_support_persons_actual.crm_support_persons_actual_id IS 'Unique identifier for CRM support persons actual records';
+COMMENT ON COLUMN crm_support_persons_actual.actual_id IS 'Unique identifier for CRM support persons actual records';
 
 
 DROP TABLE IF EXISTS crmusers CASCADE;
@@ -152,9 +152,9 @@ COMMENT ON COLUMN crmusers.crmusers_id IS 'Unique identifier for CRM users recor
 DROP TABLE IF EXISTS crossroad CASCADE;
 
 CREATE TABLE crossroad (
-  crossroad_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   crossroadid SERIAL,
   crossroadname VARCHAR(250) DEFAULT NULL
 );
 
-COMMENT ON COLUMN crossroad.crossroad_id IS 'Unique identifier for crossroad records';
+COMMENT ON COLUMN crossroad.id IS 'Unique identifier for crossroad records';

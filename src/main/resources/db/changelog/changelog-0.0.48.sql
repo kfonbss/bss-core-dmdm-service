@@ -28,7 +28,7 @@ COMMENT ON COLUMN city.city_id IS 'Unique identifier for city records';
 DROP TABLE IF EXISTS closeddisbursement CASCADE;
 
 CREATE TABLE closeddisbursement (
-  closeddisbursement_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   closeddisbursementid SERIAL,
   partnergroupid int NOT NULL,
   sumrevenue decimal(10,2) NOT NULL,
@@ -38,13 +38,13 @@ CREATE TABLE closeddisbursement (
 );
 
 CREATE INDEX Index_2_closeddisb ON closeddisbursement (partnergroupid);
-COMMENT ON COLUMN closeddisbursement.closeddisbursement_id IS 'Unique identifier for closed disbursement records';
+COMMENT ON COLUMN closeddisbursement.id IS 'Unique identifier for closed disbursement records';
 
 
 DROP TABLE IF EXISTS companydetail CASCADE;
 
 CREATE TABLE companydetail (
-  companydetail_id UUID PRIMARY KEY NOT NULL,
+  detail_id UUID PRIMARY KEY NOT NULL,
   companyid bigint NOT NULL,
   partnercompanyname varchar(150) DEFAULT NULL,
   status boolean NOT NULL DEFAULT false,
@@ -133,4 +133,4 @@ CREATE TABLE companydetail (
 
 CREATE INDEX index2_companydetail ON companydetail (statecode);
 COMMENT ON COLUMN companydetail.loc_type IS '1 Urban 2 Rural';
-COMMENT ON COLUMN companydetail.companydetail_id IS 'Unique identifier for company detail records';
+COMMENT ON COLUMN companydetail.detail_id IS 'Unique identifier for company detail records';

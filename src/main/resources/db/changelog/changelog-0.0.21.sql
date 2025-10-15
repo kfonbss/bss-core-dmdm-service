@@ -16,7 +16,7 @@ COMMENT ON COLUMN admin.admin_id IS 'Unique identifier for admin records';
 DROP TABLE IF EXISTS admin_preferences CASCADE;
 
 CREATE TABLE admin_preferences (
-  admin_preferences_id UUID PRIMARY KEY NOT NULL,
+  preferences_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   user_panel boolean NOT NULL DEFAULT false,
   sidebar_form boolean NOT NULL DEFAULT false,
@@ -28,13 +28,13 @@ CREATE TABLE admin_preferences (
   transition_page boolean NOT NULL DEFAULT false
 );
 
-COMMENT ON COLUMN admin_preferences.admin_preferences_id IS 'Unique identifier for admin preferences records';
+COMMENT ON COLUMN admin_preferences.preferences_id IS 'Unique identifier for admin preferences records';
 
 
 DROP TABLE IF EXISTS advance_topup_receipt CASCADE;
 
 CREATE TABLE advance_topup_receipt (
-  advance_topup_receipt_id UUID PRIMARY KEY NOT NULL,
+  receipt_id UUID PRIMARY KEY NOT NULL,
   receiptid BIGSERIAL,
   receipt_no varchar(45) DEFAULT NULL,
   receipt_date timestamp DEFAULT NULL,
@@ -72,5 +72,5 @@ CREATE TABLE advance_topup_receipt (
   gst_status smallint DEFAULT NULL
 );
 
-COMMENT ON COLUMN advance_topup_receipt.advance_topup_receipt_id IS 'Unique identifier for advance topup receipt records';
+COMMENT ON COLUMN advance_topup_receipt.receipt_id IS 'Unique identifier for advance topup receipt records';
 

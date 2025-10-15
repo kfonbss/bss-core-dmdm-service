@@ -1,19 +1,19 @@
 DROP TABLE IF EXISTS approvestatus CASCADE;
 
 CREATE TABLE approvestatus (
-  approvestatus_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   status varchar(25) DEFAULT NULL,
   status_id int DEFAULT NULL
 );
 
-COMMENT ON COLUMN approvestatus.approvestatus_id IS 'Unique identifier for approve status records';
+COMMENT ON COLUMN approvestatus.id IS 'Unique identifier for approve status records';
 
 
 DROP TABLE IF EXISTS atom_refund_details CASCADE;
 
 CREATE TABLE atom_refund_details (
-  atom_refund_details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   orderid int DEFAULT NULL,
   orderd_sate_code varchar(100) DEFAULT NULL,
@@ -40,13 +40,13 @@ CREATE TABLE atom_refund_details (
 );
 
 COMMENT ON COLUMN atom_refund_details.refund_requested_status IS '0=Means Not Forworded to RONOC Fin,1=Forworded to RONOC Fin ,2=Means Refund Intiated';
-COMMENT ON COLUMN atom_refund_details.atom_refund_details_id IS 'Unique identifier for atom refund details records';
+COMMENT ON COLUMN atom_refund_details.details_id IS 'Unique identifier for atom refund details records';
 
 
 DROP TABLE IF EXISTS atommerchantdetail CASCADE;
 
 CREATE TABLE atommerchantdetail (
-  atommerchantdetail_id UUID PRIMARY KEY NOT NULL,
+  detail_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   merchanttid varchar(45) NOT NULL,
   merchantpassword varchar(45) NOT NULL,
@@ -61,5 +61,5 @@ CREATE TABLE atommerchantdetail (
   region varchar(10) DEFAULT NULL
 );
 
-COMMENT ON COLUMN atommerchantdetail.atommerchantdetail_id IS 'Unique identifier for atom merchant detail records';
+COMMENT ON COLUMN atommerchantdetail.detail_id IS 'Unique identifier for atom merchant detail records';
 

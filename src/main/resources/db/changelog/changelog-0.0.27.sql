@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS appliedonline_customers CASCADE;
 
 CREATE TABLE appliedonline_customers (
-  appliedonline_customers_id UUID PRIMARY KEY NOT NULL,
+  customers_id UUID PRIMARY KEY NOT NULL,
   id BIGSERIAL,
   prefix varchar(10) DEFAULT NULL,
   cus_name varchar(200) DEFAULT NULL,
@@ -93,5 +93,5 @@ CREATE INDEX created_dt_idx ON appliedonline_customers (created_dt);
 CREATE INDEX status_idx ON appliedonline_customers (status);
 
 COMMENT ON COLUMN appliedonline_customers.e_flag IS '1-Enquiry from selfcare,2-Created by FE,3-Created by SUPPORT,4-others';
-COMMENT ON COLUMN appliedonline_customers.appliedonline_customers_id IS 'Unique identifier for applied online customers records';
+COMMENT ON COLUMN appliedonline_customers.customers_id IS 'Unique identifier for applied online customers records';
 

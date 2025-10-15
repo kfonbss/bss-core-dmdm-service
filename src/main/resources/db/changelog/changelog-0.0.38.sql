@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS caf_details CASCADE;
 
 CREATE TABLE caf_details (
-  caf_details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   caf_no varchar(60) DEFAULT NULL,
   loc varchar(60) DEFAULT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE caf_details (
   corp_loc_id int DEFAULT NULL
 );
 
-COMMENT ON COLUMN caf_details.caf_details_id IS 'Unique identifier for CAF details records';
+COMMENT ON COLUMN caf_details.details_id IS 'Unique identifier for CAF details records';
 
 DROP TABLE IF EXISTS campaign CASCADE;
 
@@ -122,7 +122,7 @@ COMMENT ON COLUMN campaign.campaign_id IS 'Unique identifier for campaign record
 DROP TABLE IF EXISTS cause_details CASCADE;
 
 CREATE TABLE cause_details (
-  cause_details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   rechargemode int DEFAULT NULL,
   sf_pscause varchar(250) DEFAULT NULL,
@@ -142,12 +142,12 @@ CREATE TABLE cause_details (
 );
 
 COMMENT ON COLUMN cause_details.is_active IS '0=Inactive,1=Active';
-COMMENT ON COLUMN cause_details.cause_details_id IS 'Unique identifier for cause details records';
+COMMENT ON COLUMN cause_details.details_id IS 'Unique identifier for cause details records';
 
 DROP TABLE IF EXISTS ce_connection_breakup CASCADE;
 
 CREATE TABLE ce_connection_breakup (
-  ce_connection_breakup_id UUID PRIMARY KEY NOT NULL,
+  breakup_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   serviceid int DEFAULT NULL,
   quoationid int DEFAULT NULL,
@@ -163,12 +163,12 @@ CREATE TABLE ce_connection_breakup (
 );
 
 COMMENT ON COLUMN ce_connection_breakup.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_connection_breakup.ce_connection_breakup_id IS 'Unique identifier for CE connection breakup records';
+COMMENT ON COLUMN ce_connection_breakup.breakup_id IS 'Unique identifier for CE connection breakup records';
 
 DROP TABLE IF EXISTS ce_connection_breakup_movement CASCADE;
 
 CREATE TABLE ce_connection_breakup_movement (
-  ce_connection_breakup_movement_id UUID PRIMARY KEY NOT NULL,
+  movement_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   breakupid int DEFAULT NULL,
   quoationid int DEFAULT NULL,
@@ -181,12 +181,12 @@ CREATE TABLE ce_connection_breakup_movement (
 );
 
 COMMENT ON COLUMN ce_connection_breakup_movement.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_connection_breakup_movement.ce_connection_breakup_movement_id IS 'Unique identifier for CE connection breakup movement records';
+COMMENT ON COLUMN ce_connection_breakup_movement.movement_id IS 'Unique identifier for CE connection breakup movement records';
 
 DROP TABLE IF EXISTS ce_connection_breakup_movement_revision CASCADE;
 
 CREATE TABLE ce_connection_breakup_movement_revision (
-  ce_connection_breakup_movement_revision_id UUID PRIMARY KEY NOT NULL,
+  revision_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   breakupid int DEFAULT NULL,
   quoationid int DEFAULT NULL,
@@ -200,13 +200,13 @@ CREATE TABLE ce_connection_breakup_movement_revision (
 );
 
 COMMENT ON COLUMN ce_connection_breakup_movement_revision.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_connection_breakup_movement_revision.ce_connection_breakup_movement_revision_id IS 'Unique identifier for CE connection breakup movement revision records';
+COMMENT ON COLUMN ce_connection_breakup_movement_revision.revision_id IS 'Unique identifier for CE connection breakup movement revision records';
 
 
 DROP TABLE IF EXISTS ce_customers CASCADE;
 
 CREATE TABLE ce_customers (
-  ce_customers_id UUID PRIMARY KEY NOT NULL,
+  customer_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   company_name varchar(100) DEFAULT NULL,
   short_name varchar(50) DEFAULT NULL,
@@ -232,13 +232,13 @@ CREATE TABLE ce_customers (
 
 COMMENT ON COLUMN ce_customers.kyc_added IS '0=Not Added,1=Added';
 COMMENT ON COLUMN ce_customers.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_customers.ce_customers_id IS 'Unique identifier for CE customers records';
+COMMENT ON COLUMN ce_customers.customer_id IS 'Unique identifier for CE customers records';
 
 
 DROP TABLE IF EXISTS ce_disbursement CASCADE;
 
 CREATE TABLE ce_disbursement (
-  ce_disbursement_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   disburseid SERIAL,
   partnergroupid int DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -255,4 +255,4 @@ CREATE TABLE ce_disbursement (
 );
 
 COMMENT ON COLUMN ce_disbursement.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_disbursement.ce_disbursement_id IS 'Unique identifier for CE disbursement records';
+COMMENT ON COLUMN ce_disbursement.id IS 'Unique identifier for CE disbursement records';

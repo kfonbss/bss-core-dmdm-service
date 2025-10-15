@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cor_partnerfinance CASCADE;
 
 CREATE TABLE cor_partnerfinance (
-  partnerfinance_uuid UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   financeid SERIAL,
   invoiceid INTEGER DEFAULT NULL,
   ptype VARCHAR(10) DEFAULT 'ANP',
@@ -16,7 +16,7 @@ CREATE TABLE cor_partnerfinance (
   updatedate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN cor_partnerfinance.partnerfinance_uuid IS 'Unique identifier for partner finance records';
+COMMENT ON COLUMN cor_partnerfinance.id IS 'Unique identifier for partner finance records';
 COMMENT ON COLUMN cor_partnerfinance.ptype IS 'Partner Type: ANP, IBNP, etc.';
 COMMENT ON COLUMN cor_partnerfinance.invtype IS '1=Invoice,2=Credit Note, etc.';
 
@@ -24,7 +24,7 @@ COMMENT ON COLUMN cor_partnerfinance.invtype IS '1=Invoice,2=Credit Note, etc.';
 DROP TABLE IF EXISTS cor_partnertransfer CASCADE;
 
 CREATE TABLE cor_partnertransfer (
-  partnertransfer_uuid UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   partnerid BIGINT DEFAULT NULL,
   invoiceid INTEGER DEFAULT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE cor_partnertransfer (
   updatedate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN cor_partnertransfer.partnertransfer_uuid IS 'Unique identifier for partner transfer records';
+COMMENT ON COLUMN cor_partnertransfer.id IS 'Unique identifier for partner transfer records';
 COMMENT ON COLUMN cor_partnertransfer.ptype IS 'Partner Type: ANP, IBNP, etc.';
 COMMENT ON COLUMN cor_partnertransfer.invtype IS '1=Invoice,2=Credit Note, etc.';
 
@@ -46,7 +46,7 @@ COMMENT ON COLUMN cor_partnertransfer.invtype IS '1=Invoice,2=Credit Note, etc.'
 DROP TABLE IF EXISTS cor_penalty CASCADE;
 
 CREATE TABLE cor_penalty (
-  penalty_uuid UUID PRIMARY KEY NOT NULL,
+  penalty_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   subid BIGINT DEFAULT NULL,
   pid BIGINT DEFAULT NULL,
@@ -59,13 +59,13 @@ CREATE TABLE cor_penalty (
   rem VARCHAR(50) DEFAULT NULL
 );
 
-COMMENT ON COLUMN cor_penalty.penalty_uuid IS 'Unique identifier for penalty records';
+COMMENT ON COLUMN cor_penalty.penalty_id IS 'Unique identifier for penalty records';
 
 
 DROP TABLE IF EXISTS cor_pmonthlyinvoice CASCADE;
 
 CREATE TABLE cor_pmonthlyinvoice (
-  pmonthlyinvoice_uuid UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   Partnerid BIGINT DEFAULT NULL,
   monthpart VARCHAR(20) DEFAULT NULL,
@@ -75,13 +75,13 @@ CREATE TABLE cor_pmonthlyinvoice (
   workorderid VARCHAR(45) DEFAULT NULL
 );
 
-COMMENT ON COLUMN cor_pmonthlyinvoice.pmonthlyinvoice_uuid IS 'Unique identifier for partner monthly invoice records';
+COMMENT ON COLUMN cor_pmonthlyinvoice.id IS 'Unique identifier for partner monthly invoice records';
 
 
 DROP TABLE IF EXISTS cor_pmonthlyinvoice_BKP CASCADE;
 
 CREATE TABLE cor_pmonthlyinvoice_BKP (
-  pmonthlyinvoice_bkp_uuid UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   Partnerid BIGINT DEFAULT NULL,
   monthpart VARCHAR(20) DEFAULT NULL,
@@ -91,13 +91,13 @@ CREATE TABLE cor_pmonthlyinvoice_BKP (
   workorderid VARCHAR(45) DEFAULT NULL
 );
 
-COMMENT ON COLUMN cor_pmonthlyinvoice_BKP.pmonthlyinvoice_bkp_uuid IS 'Unique identifier for partner monthly invoice backup records';
+COMMENT ON COLUMN cor_pmonthlyinvoice_BKP.id IS 'Unique identifier for partner monthly invoice backup records';
 
 
 DROP TABLE IF EXISTS cor_pnew CASCADE;
 
 CREATE TABLE cor_pnew (
-  pnew_uuid UUID PRIMARY KEY NOT NULL,
+  pnew_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   pgid INTEGER DEFAULT NULL,
   statecode VARCHAR(10) DEFAULT NULL,
@@ -136,4 +136,4 @@ CREATE TABLE cor_pnew (
   pst_code CHAR(3) DEFAULT NULL
 );
 
-COMMENT ON COLUMN cor_pnew.pnew_uuid IS 'Unique identifier for partner new records';
+COMMENT ON COLUMN cor_pnew.pnew_id IS 'Unique identifier for partner new records';

@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS data_usage_details CASCADE;
 
 CREATE TABLE data_usage_details (
-  data_usage_details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   username VARCHAR(45) DEFAULT NULL,
   total_upload DECIMAL(10,2) DEFAULT NULL,
@@ -13,14 +13,14 @@ CREATE TABLE data_usage_details (
   is_active INTEGER DEFAULT 1
 );
 
-COMMENT ON COLUMN data_usage_details.data_usage_details_id IS 'Unique identifier for data usage details records';
+COMMENT ON COLUMN data_usage_details.details_id IS 'Unique identifier for data usage details records';
 COMMENT ON COLUMN data_usage_details.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS dategroup CASCADE;
 
 CREATE TABLE dategroup (
-  dategroup_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   dategroupid SERIAL,
   dategroupname VARCHAR(45) NOT NULL DEFAULT '0',
   startdate INTEGER NOT NULL,
@@ -28,13 +28,13 @@ CREATE TABLE dategroup (
   lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN dategroup.dategroup_id IS 'Unique identifier for date group records';
+COMMENT ON COLUMN dategroup.id IS 'Unique identifier for date group records';
 
 
 DROP TABLE IF EXISTS daygroup CASCADE;
 
 CREATE TABLE daygroup (
-  daygroup_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   daygroupid SERIAL,
   daygroupname VARCHAR(45) NOT NULL DEFAULT '0',
   startday INTEGER NOT NULL,
@@ -42,13 +42,13 @@ CREATE TABLE daygroup (
   lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN daygroup.daygroup_id IS 'Unique identifier for day group records';
+COMMENT ON COLUMN daygroup.id IS 'Unique identifier for day group records';
 
 
 DROP TABLE IF EXISTS daywise_data_usage_details CASCADE;
 
 CREATE TABLE daywise_data_usage_details (
-  daywise_data_usage_details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   username VARCHAR(45) DEFAULT NULL,
   total_upload DECIMAL(10,2) DEFAULT NULL,
@@ -61,14 +61,14 @@ CREATE TABLE daywise_data_usage_details (
   is_active INTEGER DEFAULT 1
 );
 
-COMMENT ON COLUMN daywise_data_usage_details.daywise_data_usage_details_id IS 'Unique identifier for daywise data usage details records';
+COMMENT ON COLUMN daywise_data_usage_details.details_id IS 'Unique identifier for daywise data usage details records';
 COMMENT ON COLUMN daywise_data_usage_details.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS delete_radius_users CASCADE;
 
 CREATE TABLE delete_radius_users (
-  delete_radius_users_id UUID PRIMARY KEY NOT NULL,
+  users_id UUID PRIMARY KEY NOT NULL,
   id BIGINT NOT NULL,
   subscriber VARCHAR(512) DEFAULT NULL,
   username VARCHAR(512) DEFAULT NULL,
@@ -77,13 +77,13 @@ CREATE TABLE delete_radius_users (
   endday VARCHAR(50) DEFAULT NULL
 );
 
-COMMENT ON COLUMN delete_radius_users.delete_radius_users_id IS 'Unique identifier for delete radius users records';
+COMMENT ON COLUMN delete_radius_users.users_id IS 'Unique identifier for delete radius users records';
 
 
 DROP TABLE IF EXISTS deletedipusers CASCADE;
 
 CREATE TABLE deletedipusers (
-  deletedipusers_id UUID PRIMARY KEY NOT NULL,
+  users_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   customerid INTEGER DEFAULT NULL,
   subscriberid INTEGER DEFAULT NULL,
@@ -101,14 +101,14 @@ CREATE TABLE deletedipusers (
   is_active INTEGER DEFAULT 1
 );
 
-COMMENT ON COLUMN deletedipusers.deletedipusers_id IS 'Unique identifier for deleted IP users records';
+COMMENT ON COLUMN deletedipusers.users_id IS 'Unique identifier for deleted IP users records';
 COMMENT ON COLUMN deletedipusers.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS deletedipusersk CASCADE;
 
 CREATE TABLE deletedipusersk (
-  deletedipusersk_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   framedip VARCHAR(18) DEFAULT NULL,
   subscriberid INTEGER DEFAULT NULL,
@@ -119,13 +119,13 @@ CREATE TABLE deletedipusersk (
   state VARCHAR(18) DEFAULT NULL
 );
 
-COMMENT ON COLUMN deletedipusersk.deletedipusersk_id IS 'Unique identifier for deleted IP users K records';
+COMMENT ON COLUMN deletedipusersk.id IS 'Unique identifier for deleted IP users K records';
 
 
 DROP TABLE IF EXISTS demo_package CASCADE;
 
 CREATE TABLE demo_package (
-  demo_package_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   packageid SERIAL,
   packagename VARCHAR(50) NOT NULL,
   billingtypeid INTEGER DEFAULT 1,
@@ -139,14 +139,14 @@ CREATE TABLE demo_package (
   is_active SMALLINT DEFAULT 1
 );
 
-COMMENT ON COLUMN demo_package.demo_package_id IS 'Unique identifier for demo package records';
+COMMENT ON COLUMN demo_package.id IS 'Unique identifier for demo package records';
 COMMENT ON COLUMN demo_package.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS demo_users CASCADE;
 
 CREATE TABLE demo_users (
-  demo_users_id UUID PRIMARY KEY NOT NULL,
+  users_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   demo_id VARCHAR(20) DEFAULT NULL,
   password VARCHAR(256) DEFAULT NULL,
@@ -161,6 +161,6 @@ CREATE TABLE demo_users (
   dvr_ip VARCHAR(100) DEFAULT NULL
 );
 
-COMMENT ON COLUMN demo_users.demo_users_id IS 'Unique identifier for demo users records';
+COMMENT ON COLUMN demo_users.users_id IS 'Unique identifier for demo users records';
 
 

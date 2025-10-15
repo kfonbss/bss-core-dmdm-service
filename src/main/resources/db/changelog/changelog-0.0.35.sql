@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS block_details CASCADE;
 
 CREATE TABLE block_details (
-  block_details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id BIGSERIAL,
   village_name varchar(250) DEFAULT NULL,
   block_id int DEFAULT NULL,
@@ -18,30 +18,30 @@ CREATE TABLE block_details (
 
 CREATE INDEX idx_block ON block_details (district_id, block_id, village_type_id);
 COMMENT ON COLUMN block_details.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN block_details.block_details_id IS 'Unique identifier for block details records';
+COMMENT ON COLUMN block_details.details_id IS 'Unique identifier for block details records';
 
 
 DROP TABLE IF EXISTS bod_bandwidth CASCADE;
 
 CREATE TABLE bod_bandwidth (
-  bod_bandwidth_id UUID PRIMARY KEY NOT NULL,
+  bandwidth_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   speed varchar(45) DEFAULT NULL,
   radius_profile varchar(45) DEFAULT NULL,
   status varchar(45) NOT NULL DEFAULT '1'
 );
 
-COMMENT ON COLUMN bod_bandwidth.bod_bandwidth_id IS 'Unique identifier for BOD bandwidth records';
+COMMENT ON COLUMN bod_bandwidth.bandwidth_id IS 'Unique identifier for BOD bandwidth records';
 
 
 DROP TABLE IF EXISTS bodprofile_map CASCADE;
 
 CREATE TABLE bodprofile_map (
-  bodprofile_map_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   idbodprofile_map SERIAL,
   bod_planid int DEFAULT NULL,
   bod_bandwidthid int DEFAULT NULL,
   status boolean NOT NULL DEFAULT true
 );
 
-COMMENT ON COLUMN bodprofile_map.bodprofile_map_id IS 'Unique identifier for BOD profile map records';
+COMMENT ON COLUMN bodprofile_map.id IS 'Unique identifier for BOD profile map records';

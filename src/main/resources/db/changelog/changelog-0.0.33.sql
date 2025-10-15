@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS billdesk CASCADE;
 
 CREATE TABLE billdesk (
-  billdesk_id UUID PRIMARY KEY NOT NULL,
+  desk_id UUID PRIMARY KEY NOT NULL,
   id BIGSERIAL,
   ORDERNUMBER varchar(45) NOT NULL,
   status varchar(45) NOT NULL DEFAULT 'PENDING',
@@ -25,13 +25,13 @@ CREATE TABLE billdesk (
 );
 
 CREATE INDEX order_idx ON billdesk (ORDERNUMBER);
-COMMENT ON COLUMN billdesk.billdesk_id IS 'Unique identifier for billdesk records';
+COMMENT ON COLUMN billdesk.desk_id IS 'Unique identifier for billdesk records';
 
 
 DROP TABLE IF EXISTS billdesk_conf CASCADE;
 
 CREATE TABLE billdesk_conf (
-  billdesk_conf_id UUID PRIMARY KEY NOT NULL,
+  conf_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   MID varchar(45) DEFAULT NULL,
   SECURITYID varchar(45) DEFAULT NULL,
@@ -39,4 +39,4 @@ CREATE TABLE billdesk_conf (
   STCode char(5) DEFAULT NULL
 );
 
-COMMENT ON COLUMN billdesk_conf.billdesk_conf_id IS 'Unique identifier for billdesk configuration records';
+COMMENT ON COLUMN billdesk_conf.conf_id IS 'Unique identifier for billdesk configuration records';

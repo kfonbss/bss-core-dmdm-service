@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cordeletedipusers CASCADE;
 
 CREATE TABLE cordeletedipusers (
-  deletedipusers_id UUID PRIMARY KEY NOT NULL,
+  users_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   framedip VARCHAR(18) DEFAULT NULL,
   subscriberid INTEGER DEFAULT NULL,
@@ -11,13 +11,13 @@ CREATE TABLE cordeletedipusers (
   deleted_by VARCHAR(50) DEFAULT NULL
 );
 
-COMMENT ON COLUMN cordeletedipusers.deletedipusers_id IS 'Unique identifier for deleted IP users records';
+COMMENT ON COLUMN cordeletedipusers.users_id IS 'Unique identifier for deleted IP users records';
 
 
 DROP TABLE IF EXISTS corframedipusers CASCADE;
 
 CREATE TABLE corframedipusers (
-  framedipusers_id UUID PRIMARY KEY NOT NULL,
+  users_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   customerid INTEGER DEFAULT NULL,
   subscriberid INTEGER DEFAULT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE corframedipusers (
   is_active INTEGER DEFAULT 1
 );
 
-COMMENT ON COLUMN corframedipusers.framedipusers_id IS 'Unique identifier for framed IP users records';
+COMMENT ON COLUMN corframedipusers.users_id IS 'Unique identifier for framed IP users records';
 COMMENT ON COLUMN corframedipusers.is_active IS '0=In Active,1=Active';
 
 
@@ -119,7 +119,7 @@ COMMENT ON COLUMN corp_ekyc.verify_status IS '0=Pending,1=Verified,2=Rejected';
 DROP TABLE IF EXISTS corp_location_list CASCADE;
 
 CREATE TABLE corp_location_list (
-  location_list_id UUID PRIMARY KEY NOT NULL,
+  list_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   corp_enq_id INTEGER DEFAULT NULL,
   status VARCHAR(150) DEFAULT '1',
@@ -175,7 +175,7 @@ CREATE TABLE corp_location_list (
   feasibility_checked SMALLINT DEFAULT 0
 );
 
-COMMENT ON COLUMN corp_location_list.location_list_id IS 'Unique identifier for corporate location list records';
+COMMENT ON COLUMN corp_location_list.list_id IS 'Unique identifier for corporate location list records';
 COMMENT ON COLUMN corp_location_list.is_active IS '0=Inactive,1=Active';
 COMMENT ON COLUMN corp_location_list.pppoe_migration IS '0=No,1=Yes';
 COMMENT ON COLUMN corp_location_list.bell_connected IS '0=No,1=Yes';
@@ -185,7 +185,7 @@ COMMENT ON COLUMN corp_location_list.feasibility_checked IS '0=No,1=Yes';
 DROP TABLE IF EXISTS corpenaltyemail CASCADE;
 
 CREATE TABLE corpenaltyemail (
-  penaltyemail_id UUID PRIMARY KEY NOT NULL,
+  email_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   partnerid BIGINT DEFAULT NULL,
   subscriberid INTEGER DEFAULT NULL,
@@ -195,13 +195,13 @@ CREATE TABLE corpenaltyemail (
   sentdate TIMESTAMP DEFAULT NULL
 );
 
-COMMENT ON COLUMN corpenaltyemail.penaltyemail_id IS 'Unique identifier for penalty email records';
+COMMENT ON COLUMN corpenaltyemail.email_id IS 'Unique identifier for penalty email records';
 
 
 DROP TABLE IF EXISTS corporate_enquiries CASCADE;
 
 CREATE TABLE corporate_enquiries (
-  corporate_enquiries_id UUID PRIMARY KEY NOT NULL,
+  enquiries_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   company_name VARCHAR(100) DEFAULT NULL,
   contact_name VARCHAR(100) NOT NULL,
@@ -228,14 +228,14 @@ CREATE TABLE corporate_enquiries (
   otp_send_time TIMESTAMP DEFAULT NULL
 );
 
-COMMENT ON COLUMN corporate_enquiries.corporate_enquiries_id IS 'Unique identifier for corporate enquiries records';
+COMMENT ON COLUMN corporate_enquiries.enquiries_id IS 'Unique identifier for corporate enquiries records';
 COMMENT ON COLUMN corporate_enquiries.is_active IS '0=Inactive,1=Active';
 
 
 DROP TABLE IF EXISTS corporate_enquiries_movement CASCADE;
 
 CREATE TABLE corporate_enquiries_movement (
-  corporate_enquiries_movement_id UUID PRIMARY KEY NOT NULL,
+  movement_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   corp_enq_id INTEGER DEFAULT NULL,
   fesible_status VARCHAR(100) DEFAULT NULL,
@@ -244,19 +244,19 @@ CREATE TABLE corporate_enquiries_movement (
   created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN corporate_enquiries_movement.corporate_enquiries_movement_id IS 'Unique identifier for corporate enquiries movement records';
+COMMENT ON COLUMN corporate_enquiries_movement.movement_id IS 'Unique identifier for corporate enquiries movement records';
 
 
 DROP TABLE IF EXISTS corporate_service CASCADE;
 
 CREATE TABLE corporate_service (
-  corporate_service_id UUID PRIMARY KEY NOT NULL,
+  service_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   service_name VARCHAR(100) NOT NULL,
   is_active SMALLINT NOT NULL DEFAULT 1
 );
 
-COMMENT ON COLUMN corporate_service.corporate_service_id IS 'Unique identifier for corporate service records';
+COMMENT ON COLUMN corporate_service.service_id IS 'Unique identifier for corporate service records';
 COMMENT ON COLUMN corporate_service.is_active IS '0=Inactive,1=Active';
 
 

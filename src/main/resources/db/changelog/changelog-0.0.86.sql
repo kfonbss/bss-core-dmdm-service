@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS df_group_details CASCADE;
 
 CREATE TABLE df_group_details (
-  df_group_details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   group_name VARCHAR(250) DEFAULT NULL,
   woid INTEGER DEFAULT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE df_group_details (
   is_active SMALLINT DEFAULT 1
 );
 
-COMMENT ON COLUMN df_group_details.df_group_details_id IS 'Unique identifier for dark fiber group details records';
+COMMENT ON COLUMN df_group_details.details_id IS 'Unique identifier for dark fiber group details records';
 COMMENT ON COLUMN df_group_details.d_status IS '1=Commissioned,0=Not Commissioned';
 COMMENT ON COLUMN df_group_details.is_active IS '0=In Active,1=Active';
 COMMENT ON COLUMN df_group_details.group_type IS '1=Inter-City, 2=Intra-City, 3=Co-location';
@@ -32,7 +32,7 @@ COMMENT ON COLUMN df_group_details.group_type IS '1=Inter-City, 2=Intra-City, 3=
 DROP TABLE IF EXISTS df_group_details_movent CASCADE;
 
 CREATE TABLE df_group_details_movent (
-  df_group_details_movent_id UUID PRIMARY KEY NOT NULL,
+  movent_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   groupid INTEGER DEFAULT NULL,
   approve_status INTEGER DEFAULT 0,
@@ -42,7 +42,7 @@ CREATE TABLE df_group_details_movent (
   is_active INTEGER DEFAULT 1
 );
 
-COMMENT ON COLUMN df_group_details_movent.df_group_details_movent_id IS 'Unique identifier for dark fiber group details movement records';
+COMMENT ON COLUMN df_group_details_movent.movent_id IS 'Unique identifier for dark fiber group details movement records';
 COMMENT ON COLUMN df_group_details_movent.approve_status IS '1=Group Created,2=Group Approved';
 COMMENT ON COLUMN df_group_details_movent.is_active IS '0=In Active,1=Active';
 
@@ -50,7 +50,7 @@ COMMENT ON COLUMN df_group_details_movent.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_groupinovoice CASCADE;
 
 CREATE TABLE df_groupinovoice (
-  df_groupinovoice_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   subscriberid BIGINT DEFAULT NULL,
   groupid INTEGER DEFAULT NULL,
@@ -81,14 +81,14 @@ CREATE TABLE df_groupinovoice (
   is_active SMALLINT DEFAULT 1
 );
 
-COMMENT ON COLUMN df_groupinovoice.df_groupinovoice_id IS 'Unique identifier for dark fiber group invoice records';
+COMMENT ON COLUMN df_groupinovoice.id IS 'Unique identifier for dark fiber group invoice records';
 COMMENT ON COLUMN df_groupinovoice.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS df_groupinovoice_master CASCADE;
 
 CREATE TABLE df_groupinovoice_master (
-  df_groupinovoice_master_id UUID PRIMARY KEY NOT NULL,
+  master_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   subscriberid BIGINT DEFAULT NULL,
   groupid INTEGER DEFAULT NULL,
@@ -124,14 +124,14 @@ CREATE TABLE df_groupinovoice_master (
   is_active SMALLINT DEFAULT 1
 );
 
-COMMENT ON COLUMN df_groupinovoice_master.df_groupinovoice_master_id IS 'Unique identifier for dark fiber group invoice master records';
+COMMENT ON COLUMN df_groupinovoice_master.master_id IS 'Unique identifier for dark fiber group invoice master records';
 COMMENT ON COLUMN df_groupinovoice_master.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS df_link_details CASCADE;
 
 CREATE TABLE df_link_details (
-  df_link_details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   woid INTEGER DEFAULT NULL,
   groupid INTEGER DEFAULT NULL,
@@ -154,7 +154,7 @@ CREATE TABLE df_link_details (
   is_active SMALLINT DEFAULT 1
 );
 
-COMMENT ON COLUMN df_link_details.df_link_details_id IS 'Unique identifier for dark fiber link details records';
+COMMENT ON COLUMN df_link_details.details_id IS 'Unique identifier for dark fiber link details records';
 COMMENT ON COLUMN df_link_details.link_d_status IS '1=Commissioned,2=DeCommissioned';
 COMMENT ON COLUMN df_link_details.is_active IS '0=In Active,1=Active';
 
@@ -162,7 +162,7 @@ COMMENT ON COLUMN df_link_details.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_link_renewal_history CASCADE;
 
 CREATE TABLE df_link_renewal_history (
-  df_link_renewal_history_id UUID PRIMARY KEY NOT NULL,
+  history_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   mg_invoiceid INTEGER DEFAULT NULL,
   linkid INTEGER DEFAULT NULL,
@@ -193,7 +193,7 @@ CREATE TABLE df_link_renewal_history (
   is_active SMALLINT DEFAULT 1
 );
 
-COMMENT ON COLUMN df_link_renewal_history.df_link_renewal_history_id IS 'Unique identifier for dark fiber link renewal history records';
+COMMENT ON COLUMN df_link_renewal_history.history_id IS 'Unique identifier for dark fiber link renewal history records';
 COMMENT ON COLUMN df_link_renewal_history.is_active IS '0=In Active,1=Active';
 
 

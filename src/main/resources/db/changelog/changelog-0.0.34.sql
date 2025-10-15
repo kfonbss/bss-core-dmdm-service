@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS billdesksub CASCADE;
 
 CREATE TABLE billdesksub (
-  billdesksub_id UUID PRIMARY KEY NOT NULL,
+  sub_id UUID PRIMARY KEY NOT NULL,
   id BIGSERIAL,
   ORDERNUMBER varchar(45) NOT NULL,
   status varchar(45) NOT NULL DEFAULT 'PENDING',
@@ -23,13 +23,13 @@ CREATE TABLE billdesksub (
 );
 
 CREATE INDEX order_sub_idx ON billdesksub (ORDERNUMBER, subscriberid);
-COMMENT ON COLUMN billdesksub.billdesksub_id IS 'Unique identifier for billdesk subscriber records';
+COMMENT ON COLUMN billdesksub.sub_id IS 'Unique identifier for billdesk subscriber records';
 
 
 DROP TABLE IF EXISTS billing_plans CASCADE;
 
 CREATE TABLE billing_plans (
-  billing_plans_id UUID PRIMARY KEY NOT NULL,
+  plans_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   planName varchar(128) DEFAULT NULL,
   planId varchar(128) DEFAULT NULL,
@@ -57,13 +57,13 @@ CREATE TABLE billing_plans (
 );
 
 CREATE INDEX planName_idx ON billing_plans (planName);
-COMMENT ON COLUMN billing_plans.billing_plans_id IS 'Unique identifier for billing plans records';
+COMMENT ON COLUMN billing_plans.plans_id IS 'Unique identifier for billing plans records';
 
 
 DROP TABLE IF EXISTS billmimotransaction CASCADE;
 
 CREATE TABLE billmimotransaction (
-  billmimotransaction_id UUID PRIMARY KEY NOT NULL,
+  transaction_id UUID PRIMARY KEY NOT NULL,
   id BIGSERIAL,
   subscriberid int NOT NULL,
   amount decimal(13,2) DEFAULT NULL,
@@ -82,4 +82,4 @@ CREATE TABLE billmimotransaction (
   uploadedby varchar(50) DEFAULT NULL
 );
 
-COMMENT ON COLUMN billmimotransaction.billmimotransaction_id IS 'Unique identifier for bill MIMO transaction records';
+COMMENT ON COLUMN billmimotransaction.transaction_id IS 'Unique identifier for bill MIMO transaction records';

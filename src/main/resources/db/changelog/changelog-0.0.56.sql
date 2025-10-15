@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cor_otc_invoicing CASCADE;
 
 CREATE TABLE cor_otc_invoicing (
-  otc_invoicing_id UUID PRIMARY KEY NOT NULL,
+  invoicing_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   subgroup SMALLINT DEFAULT NULL,
   pgroupid INTEGER DEFAULT NULL,
@@ -74,14 +74,14 @@ CREATE TABLE cor_otc_invoicing (
   is_active SMALLINT DEFAULT 1
 );
 
-COMMENT ON COLUMN cor_otc_invoicing.otc_invoicing_id IS 'Unique identifier for OTC invoicing records';
+COMMENT ON COLUMN cor_otc_invoicing.invoicing_id IS 'Unique identifier for OTC invoicing records';
 COMMENT ON COLUMN cor_otc_invoicing.is_active IS '0=Inactive,1=Active';
 
 
 DROP TABLE IF EXISTS cor_otc_partnertransfer CASCADE;
 
 CREATE TABLE cor_otc_partnertransfer (
-  otc_partnertransfer_id UUID PRIMARY KEY NOT NULL,
+  transfer_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   partnerid BIGINT DEFAULT NULL,
   invoiceid VARCHAR(128) DEFAULT NULL,
@@ -91,13 +91,13 @@ CREATE TABLE cor_otc_partnertransfer (
   amount DECIMAL(10,2) DEFAULT NULL
 );
 
-COMMENT ON COLUMN cor_otc_partnertransfer.otc_partnertransfer_id IS 'Unique identifier for OTC partner transfer records';
+COMMENT ON COLUMN cor_otc_partnertransfer.transfer_id IS 'Unique identifier for OTC partner transfer records';
 
 
 DROP TABLE IF EXISTS cor_package CASCADE;
 
 CREATE TABLE cor_package (
-  package_uuid UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   packageid SERIAL,
   packagename VARCHAR(45) NOT NULL,
   renewperiod INTEGER NOT NULL,
@@ -125,7 +125,7 @@ CREATE TABLE cor_package (
   plan_type VARCHAR(45) DEFAULT 'ALL'
 );
 
-COMMENT ON COLUMN cor_package.package_uuid IS 'Unique identifier for package records';
+COMMENT ON COLUMN cor_package.id IS 'Unique identifier for package records';
 COMMENT ON COLUMN cor_package.active IS '0=Inactive,1=Active';
 COMMENT ON COLUMN cor_package.trailpackage IS '0=Regular Package,1=Trial Package';
 
@@ -133,7 +133,7 @@ COMMENT ON COLUMN cor_package.trailpackage IS '0=Regular Package,1=Trial Package
 DROP TABLE IF EXISTS cor_partneraccount CASCADE;
 
 CREATE TABLE cor_partneraccount (
-  partneraccount_uuid UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   partneraccountid SERIAL,
   partnerid BIGINT DEFAULT NULL,
   balance DECIMAL(10,2) DEFAULT NULL,
@@ -141,4 +141,4 @@ CREATE TABLE cor_partneraccount (
   remarks VARCHAR(200) DEFAULT NULL
 );
 
-COMMENT ON COLUMN cor_partneraccount.partneraccount_uuid IS 'Unique identifier for partner account records';
+COMMENT ON COLUMN cor_partneraccount.id IS 'Unique identifier for partner account records';

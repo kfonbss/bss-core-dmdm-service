@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS bodsubscription CASCADE;
 
 CREATE TABLE bodsubscription (
-  bodsubscription_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   bodid SERIAL,
   subscriberid int NOT NULL,
   bodcharges decimal(10,2) NOT NULL,
@@ -13,13 +13,13 @@ CREATE TABLE bodsubscription (
 );
 
 CREATE UNIQUE INDEX Index_2_bod ON bodsubscription (subscriberid, bodstartdate);
-COMMENT ON COLUMN bodsubscription.bodsubscription_id IS 'Unique identifier for BOD subscription records';
+COMMENT ON COLUMN bodsubscription.id IS 'Unique identifier for BOD subscription records';
 
 
 DROP TABLE IF EXISTS bodsubscriptioncomplete CASCADE;
 
 CREATE TABLE bodsubscriptioncomplete (
-  bodsubscriptioncomplete_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   bodcompleteid int NOT NULL,
   subscriberid int NOT NULL,
   bodcharges decimal(10,2) NOT NULL,
@@ -31,12 +31,12 @@ CREATE TABLE bodsubscriptioncomplete (
   bodstatus varchar(45) DEFAULT 'Dormant'
 );
 
-COMMENT ON COLUMN bodsubscriptioncomplete.bodsubscriptioncomplete_id IS 'Unique identifier for BOD subscription complete records';
+COMMENT ON COLUMN bodsubscriptioncomplete.id IS 'Unique identifier for BOD subscription complete records';
 
 DROP TABLE IF EXISTS bpl_duplicates CASCADE;
 
 CREATE TABLE bpl_duplicates (
-  bpl_duplicates_id UUID PRIMARY KEY NOT NULL,
+  duplicates_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   po_no char(10) DEFAULT NULL,
   loc_code char(10) DEFAULT NULL,
@@ -45,13 +45,13 @@ CREATE TABLE bpl_duplicates (
   d_count int DEFAULT NULL
 );
 
-COMMENT ON COLUMN bpl_duplicates.bpl_duplicates_id IS 'Unique identifier for BPL duplicates records';
+COMMENT ON COLUMN bpl_duplicates.duplicates_id IS 'Unique identifier for BPL duplicates records';
 
 
 DROP TABLE IF EXISTS bpl_duplicates_all CASCADE;
 
 CREATE TABLE bpl_duplicates_all (
-  bpl_duplicates_all_id UUID PRIMARY KEY NOT NULL,
+  duplicates_all_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   po_no char(10) DEFAULT NULL,
   loc_code char(10) DEFAULT NULL,
@@ -60,12 +60,12 @@ CREATE TABLE bpl_duplicates_all (
   d_count int DEFAULT NULL
 );
 
-COMMENT ON COLUMN bpl_duplicates_all.bpl_duplicates_all_id IS 'Unique identifier for BPL duplicates all records';
+COMMENT ON COLUMN bpl_duplicates_all.duplicates_all_id IS 'Unique identifier for BPL duplicates all records';
 
 DROP TABLE IF EXISTS bpl_masterdata CASCADE;
 
 CREATE TABLE bpl_masterdata (
-  bpl_masterdata_id UUID PRIMARY KEY NOT NULL,
+  masterdata_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   locname varchar(128) DEFAULT NULL,
   address varchar(256) DEFAULT NULL,
@@ -79,13 +79,13 @@ CREATE TABLE bpl_masterdata (
   GramaPanchayath varchar(128) DEFAULT NULL
 );
 
-COMMENT ON COLUMN bpl_masterdata.bpl_masterdata_id IS 'Unique identifier for BPL master data records';
+COMMENT ON COLUMN bpl_masterdata.masterdata_id IS 'Unique identifier for BPL master data records';
 
 
 DROP TABLE IF EXISTS bpl_users_tmp CASCADE;
 
 CREATE TABLE bpl_users_tmp (
-  bpl_users_tmp_id UUID PRIMARY KEY NOT NULL,
+  tmp_id UUID PRIMARY KEY NOT NULL,
   slno int DEFAULT NULL,
   gp varchar(100) DEFAULT NULL,
   name varchar(100) DEFAULT NULL,
@@ -99,29 +99,29 @@ CREATE TABLE bpl_users_tmp (
   UniqueID varchar(100) DEFAULT NULL
 );
 
-COMMENT ON COLUMN bpl_users_tmp.bpl_users_tmp_id IS 'Unique identifier for BPL users temporary records';
+COMMENT ON COLUMN bpl_users_tmp.tmp_id IS 'Unique identifier for BPL users temporary records';
 
 
 DROP TABLE IF EXISTS bplgp_tmp CASCADE;
 
 CREATE TABLE bplgp_tmp (
-  bplgp_tmp_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   loc_code varchar(50) DEFAULT NULL,
   vtc varchar(156) DEFAULT NULL,
   gp varchar(156) DEFAULT NULL
 );
 
-COMMENT ON COLUMN bplgp_tmp.bplgp_tmp_id IS 'Unique identifier for BPL GP temporary records';
+COMMENT ON COLUMN bplgp_tmp.id IS 'Unique identifier for BPL GP temporary records';
 
 
 DROP TABLE IF EXISTS bplgp_tmp1 CASCADE;
 
 CREATE TABLE bplgp_tmp1 (
-  bplgp_tmp1_id UUID PRIMARY KEY NOT NULL,
+  tmp1_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   loc_code varchar(50) DEFAULT NULL,
   vtc varchar(156) DEFAULT NULL,
   gp varchar(156) DEFAULT NULL
 );
 
-COMMENT ON COLUMN bplgp_tmp1.bplgp_tmp1_id IS 'Unique identifier for BPL GP temporary 1 records';
+COMMENT ON COLUMN bplgp_tmp1.tmp1_id IS 'Unique identifier for BPL GP temporary 1 records';

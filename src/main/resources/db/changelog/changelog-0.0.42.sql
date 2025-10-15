@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_purchase_order CASCADE;
 
 CREATE TABLE ce_purchase_order (
-  ce_purchase_order_id UUID PRIMARY KEY NOT NULL,
+  order_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   customerid int DEFAULT NULL,
   quotationid int DEFAULT NULL,
@@ -26,13 +26,13 @@ CREATE TABLE ce_purchase_order (
 );
 
 COMMENT ON COLUMN ce_purchase_order.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_purchase_order.ce_purchase_order_id IS 'Unique identifier for CE purchase order records';
+COMMENT ON COLUMN ce_purchase_order.order_id IS 'Unique identifier for CE purchase order records';
 
 
 DROP TABLE IF EXISTS ce_quoations CASCADE;
 
 CREATE TABLE ce_quoations (
-  ce_quoations_id UUID PRIMARY KEY NOT NULL,
+  quoations_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   customerid int DEFAULT NULL,
   quotation_name varchar(100) DEFAULT NULL,
@@ -54,13 +54,13 @@ CREATE TABLE ce_quoations (
 
 COMMENT ON COLUMN ce_quoations.approve_status IS '1=Quotation created,2=Discount Approved,3=Discount Rejected';
 COMMENT ON COLUMN ce_quoations.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_quoations.ce_quoations_id IS 'Unique identifier for CE quotations records';
+COMMENT ON COLUMN ce_quoations.quoations_id IS 'Unique identifier for CE quotations records';
 
 
 DROP TABLE IF EXISTS ce_quoations_movement CASCADE;
 
 CREATE TABLE ce_quoations_movement (
-  ce_quoations_movement_id UUID PRIMARY KEY NOT NULL,
+  movement_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   quoationid int DEFAULT NULL,
   approve_status int DEFAULT NULL,
@@ -75,13 +75,13 @@ CREATE TABLE ce_quoations_movement (
 );
 
 COMMENT ON COLUMN ce_quoations_movement.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_quoations_movement.ce_quoations_movement_id IS 'Unique identifier for CE quotations movement records';
+COMMENT ON COLUMN ce_quoations_movement.movement_id IS 'Unique identifier for CE quotations movement records';
 
 
 DROP TABLE IF EXISTS ce_quoations_revision CASCADE;
 
 CREATE TABLE ce_quoations_revision (
-  ce_quoations_revision_id UUID PRIMARY KEY NOT NULL,
+  revision_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   proposalid int DEFAULT NULL,
   remarks text DEFAULT NULL,
@@ -98,13 +98,13 @@ CREATE TABLE ce_quoations_revision (
 
 COMMENT ON COLUMN ce_quoations_revision.approve_status IS '1=Quotation created,2=Discount Approved,3=Discount Rejected';
 COMMENT ON COLUMN ce_quoations_revision.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_quoations_revision.ce_quoations_revision_id IS 'Unique identifier for CE quotations revision records';
+COMMENT ON COLUMN ce_quoations_revision.revision_id IS 'Unique identifier for CE quotations revision records';
 
 
 DROP TABLE IF EXISTS ce_renewal_details CASCADE;
 
 CREATE TABLE ce_renewal_details (
-  ce_renewal_details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   subscriberid int DEFAULT NULL,
@@ -124,13 +124,13 @@ CREATE TABLE ce_renewal_details (
 );
 
 COMMENT ON COLUMN ce_renewal_details.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_renewal_details.ce_renewal_details_id IS 'Unique identifier for CE renewal details records';
+COMMENT ON COLUMN ce_renewal_details.details_id IS 'Unique identifier for CE renewal details records';
 
 
 DROP TABLE IF EXISTS ce_revision_connection_breakup CASCADE;
 
 CREATE TABLE ce_revision_connection_breakup (
-  ce_revision_connection_breakup_id UUID PRIMARY KEY NOT NULL,
+  breakup_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   serviceid int DEFAULT NULL,
   revi_quoationid int DEFAULT NULL,
@@ -147,13 +147,13 @@ CREATE TABLE ce_revision_connection_breakup (
 );
 
 COMMENT ON COLUMN ce_revision_connection_breakup.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_revision_connection_breakup.ce_revision_connection_breakup_id IS 'Unique identifier for CE revision connection breakup records';
+COMMENT ON COLUMN ce_revision_connection_breakup.breakup_id IS 'Unique identifier for CE revision connection breakup records';
 
 
 DROP TABLE IF EXISTS ce_service_list CASCADE;
 
 CREATE TABLE ce_service_list (
-  ce_service_list_id UUID PRIMARY KEY NOT NULL,
+  list_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   serviceid int DEFAULT NULL,
   servicename varchar(50) DEFAULT NULL,
@@ -164,13 +164,13 @@ CREATE TABLE ce_service_list (
 );
 
 COMMENT ON COLUMN ce_service_list.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_service_list.ce_service_list_id IS 'Unique identifier for CE service list records';
+COMMENT ON COLUMN ce_service_list.list_id IS 'Unique identifier for CE service list records';
 
 
 DROP TABLE IF EXISTS ce_sub_customers CASCADE;
 
 CREATE TABLE ce_sub_customers (
-  ce_sub_customers_id UUID PRIMARY KEY NOT NULL,
+  customers_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   customerid varchar(100) DEFAULT NULL,
   company_name varchar(200) DEFAULT NULL,
@@ -182,4 +182,4 @@ CREATE TABLE ce_sub_customers (
 );
 
 COMMENT ON COLUMN ce_sub_customers.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_sub_customers.ce_sub_customers_id IS 'Unique identifier for CE sub customers records';
+COMMENT ON COLUMN ce_sub_customers.customers_id IS 'Unique identifier for CE sub customers records';

@@ -31,7 +31,7 @@ COMMENT ON COLUMN bandwidth.bandwidth_id IS 'Unique identifier for bandwidth rec
 DROP TABLE IF EXISTS bank_details CASCADE;
 
 CREATE TABLE bank_details (
-  bank_details_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   bank_id BIGSERIAL,
   bank_name varchar(100) NOT NULL,
   bank_ifsc_code varchar(100) NOT NULL,
@@ -45,4 +45,4 @@ CREATE TABLE bank_details (
 );
 
 CREATE INDEX bank_ifsc_code_idx ON bank_details (bank_ifsc_code);
-COMMENT ON COLUMN bank_details.bank_details_id IS 'Unique identifier for bank details records';
+COMMENT ON COLUMN bank_details.id IS 'Unique identifier for bank details records';

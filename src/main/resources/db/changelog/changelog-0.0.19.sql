@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS acs_config CASCADE;
 
 CREATE TABLE acs_config (
-  acs_config_id UUID PRIMARY KEY NOT NULL,
+  config_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   default_username varchar(100) DEFAULT NULL,
   api_end_point varchar(100) DEFAULT NULL,
@@ -11,13 +11,13 @@ CREATE TABLE acs_config (
 );
 
 COMMENT ON COLUMN acs_config.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN acs_config.acs_config_id IS 'Unique identifier for ACS configuration records';
+COMMENT ON COLUMN acs_config.config_id IS 'Unique identifier for ACS configuration records';
 
 
 DROP TABLE IF EXISTS acs_device_provisioning CASCADE;
 
 CREATE TABLE acs_device_provisioning (
-  acs_device_provisioning_id UUID PRIMARY KEY NOT NULL,
+  provisioning_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   username varchar(64) DEFAULT NULL,
   password varchar(45) DEFAULT NULL,
@@ -38,4 +38,4 @@ CREATE TABLE acs_device_provisioning (
 
 COMMENT ON COLUMN acs_device_provisioning.provising_status IS '1=Pending,2=Completed';
 COMMENT ON COLUMN acs_device_provisioning.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN acs_device_provisioning.acs_device_provisioning_id IS 'Unique identifier for ACS device provisioning records';
+COMMENT ON COLUMN acs_device_provisioning.provisioning_id IS 'Unique identifier for ACS device provisioning records';

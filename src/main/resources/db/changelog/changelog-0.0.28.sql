@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS appliedonline_darkfibre CASCADE;
 
 CREATE TABLE appliedonline_darkfibre (
-  appliedonline_darkfibre_id UUID PRIMARY KEY NOT NULL,
+  darkfibre_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   firm_name varchar(256) DEFAULT NULL,
   address text DEFAULT NULL,
@@ -38,13 +38,13 @@ CREATE UNIQUE INDEX firm_email_unique ON appliedonline_darkfibre (firm_email);
 CREATE UNIQUE INDEX contact_mobileno_unique ON appliedonline_darkfibre (contact_mobileno);
 CREATE UNIQUE INDEX contact_email_unique ON appliedonline_darkfibre (contact_email);
 
-COMMENT ON COLUMN appliedonline_darkfibre.appliedonline_darkfibre_id IS 'Unique identifier for applied online dark fibre records';
+COMMENT ON COLUMN appliedonline_darkfibre.darkfibre_id IS 'Unique identifier for applied online dark fibre records';
 
 
 DROP TABLE IF EXISTS appliedonline_eo CASCADE;
 
 CREATE TABLE appliedonline_eo (
-  appliedonline_eo_id UUID PRIMARY KEY NOT NULL,
+  eo_id UUID PRIMARY KEY NOT NULL,
   id BIGSERIAL,
   prefix varchar(10) DEFAULT NULL,
   cus_name varchar(200) DEFAULT NULL,
@@ -82,4 +82,4 @@ CREATE INDEX cus_mobile_eo_idx ON appliedonline_eo (cus_mobile);
 CREATE INDEX created_dt_eo_idx ON appliedonline_eo (created_dt);
 CREATE INDEX status_eo_idx ON appliedonline_eo (status);
 
-COMMENT ON COLUMN appliedonline_eo.appliedonline_eo_id IS 'Unique identifier for applied online EO records';
+COMMENT ON COLUMN appliedonline_eo.eo_id IS 'Unique identifier for applied online EO records';

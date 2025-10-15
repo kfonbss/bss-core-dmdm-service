@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cor_fin_mspinvoicing_BKP CASCADE;
 
 CREATE TABLE cor_fin_mspinvoicing_BKP (
-  cor_fin_mspinvoicing_bkp_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   invoicemonth varchar(20) DEFAULT NULL,
   status varchar(30) DEFAULT NULL,
@@ -44,13 +44,13 @@ CREATE TABLE cor_fin_mspinvoicing_BKP (
   workorderid varchar(45) DEFAULT NULL
 );
 
-COMMENT ON COLUMN cor_fin_mspinvoicing_BKP.cor_fin_mspinvoicing_bkp_id IS 'Unique identifier for COR financial MSP invoicing backup records';
+COMMENT ON COLUMN cor_fin_mspinvoicing_BKP.id IS 'Unique identifier for COR financial MSP invoicing backup records';
 
 
 DROP TABLE IF EXISTS cor_fin_mspinvoicing_breakup CASCADE;
 
 CREATE TABLE cor_fin_mspinvoicing_breakup (
-  cor_fin_mspinvoicing_breakup_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno int NOT NULL DEFAULT 0,
   invoicemonth varchar(20) DEFAULT NULL,
   status varchar(30) DEFAULT NULL,
@@ -110,13 +110,13 @@ CREATE TABLE cor_fin_mspinvoicing_breakup (
   sgsttds_amount decimal(13,2) DEFAULT 0.00
 );
 
-COMMENT ON COLUMN cor_fin_mspinvoicing_breakup.cor_fin_mspinvoicing_breakup_id IS 'Unique identifier for COR financial MSP invoicing breakup records';
+COMMENT ON COLUMN cor_fin_mspinvoicing_breakup.id IS 'Unique identifier for COR financial MSP invoicing breakup records';
 
 
 DROP TABLE IF EXISTS cor_lco_agp_approve CASCADE;
 
 CREATE TABLE cor_lco_agp_approve (
-  cor_lco_agp_approve_id UUID PRIMARY KEY NOT NULL,
+  approve_id UUID PRIMARY KEY NOT NULL,
   slno int NOT NULL DEFAULT 0,
   imonth varchar(10) DEFAULT NULL,
   approvedby varchar(100) DEFAULT NULL,
@@ -131,13 +131,13 @@ CREATE TABLE cor_lco_agp_approve (
   spocapprovedate timestamp DEFAULT NULL
 );
 
-COMMENT ON COLUMN cor_lco_agp_approve.cor_lco_agp_approve_id IS 'Unique identifier for COR LCO AGP approve records';
+COMMENT ON COLUMN cor_lco_agp_approve.approve_id IS 'Unique identifier for COR LCO AGP approve records';
 
 
 DROP TABLE IF EXISTS cor_lco_agp_list CASCADE;
 
 CREATE TABLE cor_lco_agp_list (
-  cor_lco_agp_list_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   imonth varchar(10) DEFAULT NULL,
   partnerid varchar(25) DEFAULT NULL,
@@ -147,13 +147,13 @@ CREATE TABLE cor_lco_agp_list (
   agpname varchar(150) DEFAULT NULL
 );
 
-COMMENT ON COLUMN cor_lco_agp_list.cor_lco_agp_list_id IS 'Unique identifier for COR LCO AGP list records';
+COMMENT ON COLUMN cor_lco_agp_list.id IS 'Unique identifier for COR LCO AGP list records';
 
 
 DROP TABLE IF EXISTS cor_monthlyinvoice CASCADE;
 
 CREATE TABLE cor_monthlyinvoice (
-  cor_monthlyinvoice_id UUID PRIMARY KEY NOT NULL,
+  invoice_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   subgroup boolean DEFAULT NULL,
   type boolean DEFAULT true,
@@ -214,4 +214,4 @@ CREATE TABLE cor_monthlyinvoice (
 );
 
 COMMENT ON COLUMN cor_monthlyinvoice.subgroup IS '1-enterprise,2-govt,3-darkfiber,4-specialevent,5-BPL';
-COMMENT ON COLUMN cor_monthlyinvoice.cor_monthlyinvoice_id IS 'Unique identifier for COR monthly invoice records';
+COMMENT ON COLUMN cor_monthlyinvoice.invoice_id IS 'Unique identifier for COR monthly invoice records';

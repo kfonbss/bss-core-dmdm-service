@@ -17,7 +17,7 @@ COMMENT ON COLUMN ctr.ctr_id IS 'Unique identifier for CTR records';
 DROP TABLE IF EXISTS curmonth_usage CASCADE;
 
 CREATE TABLE curmonth_usage (
-  curmonth_usage_id UUID PRIMARY KEY NOT NULL,
+  curmonth_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   username VARCHAR(64) DEFAULT NULL,
   session VARCHAR(45) DEFAULT NULL,
@@ -28,13 +28,13 @@ CREATE TABLE curmonth_usage (
   partner VARCHAR(64) DEFAULT NULL
 );
 
-COMMENT ON COLUMN curmonth_usage.curmonth_usage_id IS 'Unique identifier for current month usage records';
+COMMENT ON COLUMN curmonth_usage.curmonth_id IS 'Unique identifier for current month usage records';
 
 
 DROP TABLE IF EXISTS daily_partner_report CASCADE;
 
 CREATE TABLE daily_partner_report (
-  daily_partner_report_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   report_id SERIAL,
   report_date DATE DEFAULT NULL,
   anp DECIMAL(10,2) DEFAULT NULL,
@@ -43,13 +43,13 @@ CREATE TABLE daily_partner_report (
   active_sub INTEGER DEFAULT NULL
 );
 
-COMMENT ON COLUMN daily_partner_report.daily_partner_report_id IS 'Unique identifier for daily partner report records';
+COMMENT ON COLUMN daily_partner_report.id IS 'Unique identifier for daily partner report records';
 
 
 DROP TABLE IF EXISTS daily_status_report CASCADE;
 
 CREATE TABLE daily_status_report (
-  daily_status_report_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   report_id SERIAL,
   report_date DATE DEFAULT NULL,
   subscriberid BIGINT DEFAULT NULL,
@@ -69,13 +69,13 @@ CREATE TABLE daily_status_report (
   update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN daily_status_report.daily_status_report_id IS 'Unique identifier for daily status report records';
+COMMENT ON COLUMN daily_status_report.id IS 'Unique identifier for daily status report records';
 
 
 DROP TABLE IF EXISTS dailyactive CASCADE;
 
 CREATE TABLE dailyactive (
-  dailyactive_id UUID PRIMARY KEY NOT NULL,
+  id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   partnerid BIGINT NOT NULL,
   active INTEGER DEFAULT NULL,
@@ -83,13 +83,13 @@ CREATE TABLE dailyactive (
   state VARCHAR(50) NOT NULL
 );
 
-COMMENT ON COLUMN dailyactive.dailyactive_id IS 'Unique identifier for daily active records';
+COMMENT ON COLUMN dailyactive.id IS 'Unique identifier for daily active records';
 
 
 DROP TABLE IF EXISTS dailyexpired CASCADE;
 
 CREATE TABLE dailyexpired (
-  dailyexpired_id UUID PRIMARY KEY NOT NULL,
+  expired_id UUID PRIMARY KEY NOT NULL,
   slno SERIAL,
   partnerid BIGINT NOT NULL,
   expired INTEGER DEFAULT NULL,
@@ -97,7 +97,7 @@ CREATE TABLE dailyexpired (
   state VARCHAR(50) NOT NULL
 );
 
-COMMENT ON COLUMN dailyexpired.dailyexpired_id IS 'Unique identifier for daily expired records';
+COMMENT ON COLUMN dailyexpired.expired_id IS 'Unique identifier for daily expired records';
 
 
 DROP TABLE IF EXISTS dailynew CASCADE;
@@ -116,7 +116,7 @@ COMMENT ON COLUMN dailynew.dailynew_id IS 'Unique identifier for daily new recor
 DROP TABLE IF EXISTS dailyreport CASCADE;
 
 CREATE TABLE dailyreport (
-  dailyreport_id UUID PRIMARY KEY NOT NULL,
+  report_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   reportdate DATE DEFAULT NULL,
   active INTEGER DEFAULT NULL,
@@ -136,13 +136,13 @@ CREATE TABLE dailyreport (
   statecode VARCHAR(5) DEFAULT NULL
 );
 
-COMMENT ON COLUMN dailyreport.dailyreport_id IS 'Unique identifier for daily report records';
+COMMENT ON COLUMN dailyreport.report_id IS 'Unique identifier for daily report records';
 
 
 DROP TABLE IF EXISTS darkfiber_movement CASCADE;
 
 CREATE TABLE darkfiber_movement (
-  darkfiber_movement_id UUID PRIMARY KEY NOT NULL,
+  movement_id UUID PRIMARY KEY NOT NULL,
   id SERIAL,
   enq_ref INTEGER DEFAULT NULL,
   approve_status INTEGER DEFAULT NULL,
@@ -153,7 +153,7 @@ CREATE TABLE darkfiber_movement (
   is_active INTEGER DEFAULT 1
 );
 
-COMMENT ON COLUMN darkfiber_movement.darkfiber_movement_id IS 'Unique identifier for dark fiber movement records';
+COMMENT ON COLUMN darkfiber_movement.movement_id IS 'Unique identifier for dark fiber movement records';
 COMMENT ON COLUMN darkfiber_movement.is_active IS '0=In Active,1=Active';
 
 
