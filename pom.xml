@@ -11,7 +11,7 @@
     </parent>
     <groupId>in.gov.kfon.bss</groupId>
     <artifactId>bss-core-dmdm-service</artifactId>
-    <version>${build.version}</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>bss-core-dmdm-service</name>
     <description>KFON-BSS dmdm Service</description>
     <properties>
