@@ -1,0 +1,201 @@
+-- Table structure for subshifdetails
+DROP TABLE IF EXISTS subshifdetails;
+CREATE TABLE subshifdetails (
+    details_id UUID NOT NULL PRIMARY KEY,
+    id SERIAL,
+    typeofrecharge VARCHAR(50),
+    category VARCHAR(30),
+    subscriberid BIGINT,
+    subgstin VARCHAR(20),
+    frompartnerid BIGINT,
+    frompartnername VARCHAR(200),
+    frompartnergstin VARCHAR(20),
+    beforeshiftamt NUMERIC(13,2),
+    topartnerid BIGINT,
+    topartnername VARCHAR(200),
+    topartnergstin VARCHAR(20),
+    aftershiftamt NUMERIC(13,2),
+    totalbal NUMERIC(13,2),
+    slaid VARCHAR(20),
+    ordernumber VARCHAR(64),
+    order_time TIMESTAMP,
+    order_amount NUMERIC(13,2),
+    anpshare NUMERIC(20,2) DEFAULT 0.00,
+    railtelshare NUMERIC(20,2) DEFAULT 0.00,
+    create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_active INT DEFAULT 1
+);
+
+-- Table structure for superagnpdetail
+DROP TABLE IF EXISTS superagnpdetail;
+CREATE TABLE superagnpdetail (
+    id UUID NOT NULL PRIMARY KEY,
+    partnerid BIGINT,
+    partnercompanyname VARCHAR(150),
+    status BOOLEAN DEFAULT FALSE,
+    companyregistrationno VARCHAR(64),
+    servicetaxno VARCHAR(64),
+    incometaxno VARCHAR(45),
+    vatno VARCHAR(45),
+    state VARCHAR(64),
+    pin INT,
+    registrationdate DATE,
+    agreementno VARCHAR(100),
+    agreementdate DATE,
+    keycontactname VARCHAR(45),
+    keycontactnumber BIGINT,
+    keycontactemail VARCHAR(128),
+    lastupdate TIMESTAMP,
+    supportcontactname VARCHAR(128),
+    supportcontactno VARCHAR(15),
+    supportcontactemail VARCHAR(128),
+    managercontactname VARCHAR(45),
+    managercontactno BIGINT,
+    managercontactemail VARCHAR(128),
+    isactive BOOLEAN DEFAULT TRUE,
+    allocated_bw VARCHAR(45),
+    consumed_bw VARCHAR(45),
+    pgiopt INT DEFAULT 0,
+    statecode VARCHAR(5),
+    acholdername VARCHAR(100),
+    actype VARCHAR(5),
+    bankname VARCHAR(100),
+    branchname VARCHAR(100),
+    acnumber VARCHAR(50),
+    IFSC VARCHAR(30),
+    ptype CHAR(5),
+    address VARCHAR(300),
+    approval_date TIMESTAMP,
+    approval_cl VARCHAR(300),
+    approval_response VARCHAR(300),
+    agreementcopy VARCHAR(256),
+    bankpasscopy VARCHAR(256),
+    incometaxproof VARCHAR(256),
+    servicetaxproof VARCHAR(256),
+    bank_acholder VARCHAR(128),
+    bank_actype VARCHAR(45),
+    bank_name VARCHAR(128),
+    bank_branch VARCHAR(128),
+    bank_acno VARCHAR(64),
+    bank_ifsc VARCHAR(64),
+    companynature VARCHAR(64),
+    STCode CHAR(3),
+    address_line1 VARCHAR(120),
+    address_line2 VARCHAR(120),
+    city VARCHAR(64),
+    PinCode VARCHAR(7),
+    StateName VARCHAR(64),
+    District VARCHAR(64),
+    gstin VARCHAR(45),
+    service_description VARCHAR(180),
+    SAC VARCHAR(45),
+    gstindoc VARCHAR(120),
+    gst_verfied BOOLEAN DEFAULT FALSE,
+    taxpayertype INT DEFAULT 0,
+    gstdeclartionstatus BOOLEAN DEFAULT FALSE,
+    subonrecharge BOOLEAN DEFAULT FALSE,
+    onlinepaymode VARCHAR(100),
+    mspverified BOOLEAN DEFAULT TRUE,
+    otp VARCHAR(20),
+    otp_time TIMESTAMP,
+    remarks VARCHAR(100),
+    paymodedate TIMESTAMP,
+    mspverfieddate TIMESTAMP,
+    bankverfieddate TIMESTAMP
+);
+CREATE INDEX idx_superagnpdetail_statecode ON superagnpdetail(statecode);
+
+-- Table structure for superagp_invoice
+DROP TABLE IF EXISTS superagp_invoice;
+CREATE TABLE superagp_invoice (
+    id UUID NOT NULL PRIMARY KEY,
+    slno SERIAL,
+    partnerid BIGINT,
+    invoicemonth VARCHAR(12),
+    status INT,
+    state VARCHAR(50),
+    invoiceno VARCHAR(50),
+    nettotal NUMERIC(12,2),
+    uniquesubs INT,
+    agr NUMERIC(20,2),
+    sharepercent NUMERIC(4,2),
+    netshare NUMERIC(12,2),
+    cgstshare NUMERIC(10,2),
+    sgstshare NUMERIC(10,2),
+    igstshare NUMERIC(10,2),
+    gstshare NUMERIC(10,2),
+    GrossShare NUMERIC(12,2),
+    TDSpartner NUMERIC(10,2),
+    NetPayable NUMERIC(12,2),
+    paid_amount NUMERIC(12,2),
+    gstin VARCHAR(16),
+    Pan VARCHAR(16),
+    taxpayertype INT,
+    cgsttds_amount NUMERIC(12,2),
+    sgsttds_amount NUMERIC(12,2),
+    cgst_rate NUMERIC(10,2),
+    sgst_rate NUMERIC(10,2),
+    igst_rate NUMERIC(10,2)
+);
+
+-- Table structure for superagpgroup
+DROP TABLE IF EXISTS superagpgroup;
+CREATE TABLE superagpgroup (
+    group_id UUID NOT NULL PRIMARY KEY,
+    id SERIAL,
+    suagpid BIGINT,
+    agpid BIGINT,
+    isactive BOOLEAN DEFAULT TRUE,
+    lastupdate TIMESTAMP
+);
+
+-- Table structure for support_user_details
+DROP TABLE IF EXISTS support_user_details;
+CREATE TABLE support_user_details (
+    user_id UUID NOT NULL PRIMARY KEY,
+    id BIGSERIAL,
+    users_id INT,
+    role VARCHAR(10) NOT NULL,
+    empid BIGINT,
+    firstname VARCHAR(128) NOT NULL,
+    middlename VARCHAR(128),
+    lastname VARCHAR(128),
+    mobileno BIGINT,
+    email VARCHAR(128),
+    designation VARCHAR(128),
+    created_dt TIMESTAMP,
+    updated_dt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_support_users_id ON support_user_details(users_id);
+CREATE INDEX idx_support_email ON support_user_details(email);
+CREATE INDEX idx_support_firstname ON support_user_details(firstname);
+
+-- Table structure for sys_config
+DROP TABLE IF EXISTS sys_config;
+CREATE TABLE sys_config (
+    id UUID NOT NULL PRIMARY KEY,
+    configid SERIAL,
+    MSP VARCHAR(45) NOT NULL,
+    ISP VARCHAR(45) NOT NULL,
+    ITMSP VARCHAR(45),
+    TID CHAR(3) NOT NULL,
+    state VARCHAR(128) NOT NULL,
+    state_code CHAR(5) NOT NULL,
+    app_url VARCHAR(256),
+    smtp_host VARCHAR(256),
+    smtp_user VARCHAR(100),
+    smtp_pass VARCHAR(64),
+    smtp_port VARCHAR(10),
+    payableat VARCHAR(100),
+    bankdetails VARCHAR(128),
+    resp_url VARCHAR(300),
+    aaa_ip VARCHAR(128),
+    paytm_respurl VARCHAR(256),
+    sub_paytmresp VARCHAR(256),
+    sub_billdeskresp VARCHAR(256),
+    STCode VARCHAR(45),
+    statemap VARCHAR(250),
+    curl VARCHAR(80),
+    districtcode CHAR(5)
+);
