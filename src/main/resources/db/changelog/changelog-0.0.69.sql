@@ -1,23 +1,22 @@
 DROP TABLE IF EXISTS ctr CASCADE;
 
 CREATE TABLE ctr (
-  ctr_id UUID PRIMARY KEY NOT NULL,
+  ctr_id UUID NOT NULL,
   sname VARCHAR(200) DEFAULT NULL,
   sid BIGINT DEFAULT NULL,
   pid BIGINT DEFAULT NULL,
   pgid INTEGER DEFAULT NULL,
   amt DECIMAL(10,2) DEFAULT NULL,
   oldpid BIGINT DEFAULT NULL,
-  vlantableid INTEGER DEFAULT NULL
+  vlantableid INTEGER DEFAULT NULL,
+  CONSTRAINT pk_ctr PRIMARY KEY (ctr_id)
 );
-
-COMMENT ON COLUMN ctr.ctr_id IS 'Unique identifier for CTR records';
 
 
 DROP TABLE IF EXISTS curmonth_usage CASCADE;
 
 CREATE TABLE curmonth_usage (
-  curmonth_id UUID PRIMARY KEY NOT NULL,
+  curmonth_id UUID NOT NULL,
   id SERIAL,
   username VARCHAR(64) DEFAULT NULL,
   session VARCHAR(45) DEFAULT NULL,
@@ -25,31 +24,29 @@ CREATE TABLE curmonth_usage (
   upload VARCHAR(45) DEFAULT NULL,
   logins INTEGER DEFAULT NULL,
   package VARCHAR(45) DEFAULT NULL,
-  partner VARCHAR(64) DEFAULT NULL
+  partner VARCHAR(64) DEFAULT NULL,
+  CONSTRAINT pk_curmonth_usage PRIMARY KEY (curmonth_id)
 );
-
-COMMENT ON COLUMN curmonth_usage.curmonth_id IS 'Unique identifier for current month usage records';
 
 
 DROP TABLE IF EXISTS daily_partner_report CASCADE;
 
 CREATE TABLE daily_partner_report (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   report_id SERIAL,
   report_date DATE DEFAULT NULL,
   anp DECIMAL(10,2) DEFAULT NULL,
   packageid INTEGER DEFAULT NULL,
   speed_profile VARCHAR(45) DEFAULT NULL,
-  active_sub INTEGER DEFAULT NULL
+  active_sub INTEGER DEFAULT NULL,
+  CONSTRAINT pk_daily_partner_report PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN daily_partner_report.id IS 'Unique identifier for daily partner report records';
 
 
 DROP TABLE IF EXISTS daily_status_report CASCADE;
 
 CREATE TABLE daily_status_report (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   report_id SERIAL,
   report_date DATE DEFAULT NULL,
   subscriberid BIGINT DEFAULT NULL,
@@ -66,57 +63,53 @@ CREATE TABLE daily_status_report (
   district INTEGER DEFAULT NULL,
   districtname VARCHAR(64) DEFAULT NULL,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT pk_daily_status_report PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN daily_status_report.id IS 'Unique identifier for daily status report records';
 
 
 DROP TABLE IF EXISTS dailyactive CASCADE;
 
 CREATE TABLE dailyactive (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   slno SERIAL,
   partnerid BIGINT NOT NULL,
   active INTEGER DEFAULT NULL,
   curdate TIMESTAMP NOT NULL,
-  state VARCHAR(50) NOT NULL
+  state VARCHAR(50) NOT NULL,
+  CONSTRAINT pk_dailyactive PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN dailyactive.id IS 'Unique identifier for daily active records';
 
 
 DROP TABLE IF EXISTS dailyexpired CASCADE;
 
 CREATE TABLE dailyexpired (
-  expired_id UUID PRIMARY KEY NOT NULL,
+  expired_id UUID NOT NULL,
   slno SERIAL,
   partnerid BIGINT NOT NULL,
   expired INTEGER DEFAULT NULL,
   curdate TIMESTAMP NOT NULL,
-  state VARCHAR(50) NOT NULL
+  state VARCHAR(50) NOT NULL,
+  CONSTRAINT pk_dailyexpired PRIMARY KEY (expired_id)
 );
-
-COMMENT ON COLUMN dailyexpired.expired_id IS 'Unique identifier for daily expired records';
 
 
 DROP TABLE IF EXISTS dailynew CASCADE;
 
 CREATE TABLE dailynew (
-  dailynew_id UUID PRIMARY KEY NOT NULL,
+  dailynew_id UUID NOT NULL,
   partnerid BIGINT NOT NULL,
   active INTEGER DEFAULT NULL,
   curdate TIMESTAMP NOT NULL,
-  state VARCHAR(50) NOT NULL
+  state VARCHAR(50) NOT NULL,
+  CONSTRAINT pk_dailynew PRIMARY KEY (dailynew_id)
 );
-
-COMMENT ON COLUMN dailynew.dailynew_id IS 'Unique identifier for daily new records';
 
 
 DROP TABLE IF EXISTS dailyreport CASCADE;
 
 CREATE TABLE dailyreport (
-  report_id UUID PRIMARY KEY NOT NULL,
+  report_id UUID NOT NULL,
   id SERIAL,
   reportdate DATE DEFAULT NULL,
   active INTEGER DEFAULT NULL,
@@ -133,16 +126,15 @@ CREATE TABLE dailyreport (
   open_active INTEGER DEFAULT NULL,
   open_demousers INTEGER DEFAULT NULL,
   open_discountoffer INTEGER DEFAULT NULL,
-  statecode VARCHAR(5) DEFAULT NULL
+  statecode VARCHAR(5) DEFAULT NULL,
+  CONSTRAINT pk_dailyreport PRIMARY KEY (report_id)
 );
-
-COMMENT ON COLUMN dailyreport.report_id IS 'Unique identifier for daily report records';
 
 
 DROP TABLE IF EXISTS darkfiber_movement CASCADE;
 
 CREATE TABLE darkfiber_movement (
-  movement_id UUID PRIMARY KEY NOT NULL,
+  movement_id UUID NOT NULL,
   id SERIAL,
   enq_ref INTEGER DEFAULT NULL,
   approve_status INTEGER DEFAULT NULL,
@@ -150,10 +142,10 @@ CREATE TABLE darkfiber_movement (
   created_by VARCHAR(128) DEFAULT NULL,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1
+  is_active INTEGER DEFAULT 1,
+  CONSTRAINT pk_darkfiber_movement PRIMARY KEY (movement_id)
 );
 
-COMMENT ON COLUMN darkfiber_movement.movement_id IS 'Unique identifier for dark fiber movement records';
 COMMENT ON COLUMN darkfiber_movement.is_active IS '0=In Active,1=Active';
 
 

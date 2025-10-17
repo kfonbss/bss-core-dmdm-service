@@ -1,22 +1,21 @@
 DROP TABLE IF EXISTS admin CASCADE;
 
 CREATE TABLE admin (
-  admin_id UUID PRIMARY KEY NOT NULL,
+  admin_id UUID NOT NULL,
   id SERIAL,
   username varchar(255) NOT NULL,
   password varchar(255) NOT NULL,
   email varchar(255) NOT NULL,
   category varchar(255) NOT NULL,
-  status int NOT NULL
+  status int NOT NULL,
+  CONSTRAINT pk_admin PRIMARY KEY (admin_id)
 );
-
-COMMENT ON COLUMN admin.admin_id IS 'Unique identifier for admin records';
 
 
 DROP TABLE IF EXISTS admin_preferences CASCADE;
 
 CREATE TABLE admin_preferences (
-  preferences_id UUID PRIMARY KEY NOT NULL,
+  preferences_id UUID NOT NULL,
   id SERIAL,
   user_panel boolean NOT NULL DEFAULT false,
   sidebar_form boolean NOT NULL DEFAULT false,
@@ -25,16 +24,15 @@ CREATE TABLE admin_preferences (
   tasks_menu boolean NOT NULL DEFAULT false,
   user_menu boolean NOT NULL DEFAULT true,
   ctrl_sidebar boolean NOT NULL DEFAULT false,
-  transition_page boolean NOT NULL DEFAULT false
+  transition_page boolean NOT NULL DEFAULT false,
+  CONSTRAINT pk_admin_preferences PRIMARY KEY (preferences_id)
 );
-
-COMMENT ON COLUMN admin_preferences.preferences_id IS 'Unique identifier for admin preferences records';
 
 
 DROP TABLE IF EXISTS advance_topup_receipt CASCADE;
 
 CREATE TABLE advance_topup_receipt (
-  receipt_id UUID PRIMARY KEY NOT NULL,
+  receipt_id UUID NOT NULL,
   receiptid BIGSERIAL,
   receipt_no varchar(45) DEFAULT NULL,
   receipt_date timestamp DEFAULT NULL,
@@ -69,8 +67,7 @@ CREATE TABLE advance_topup_receipt (
   igst_value decimal(12,2) DEFAULT NULL,
   total_receipt_value decimal(12,2) DEFAULT NULL,
   total_receipt_value_words varchar(150) DEFAULT NULL,
-  gst_status smallint DEFAULT NULL
+  gst_status smallint DEFAULT NULL,
+  CONSTRAINT pk_advance_topup_receipt PRIMARY KEY (receipt_id)
 );
-
-COMMENT ON COLUMN advance_topup_receipt.receipt_id IS 'Unique identifier for advance topup receipt records';
 

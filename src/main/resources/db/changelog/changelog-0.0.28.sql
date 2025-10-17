@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS appliedonline_darkfibre CASCADE;
 
 CREATE TABLE appliedonline_darkfibre (
-  darkfibre_id UUID PRIMARY KEY NOT NULL,
+  darkfibre_id UUID NOT NULL,
   id SERIAL,
   firm_name varchar(256) DEFAULT NULL,
   address text DEFAULT NULL,
@@ -29,7 +29,8 @@ CREATE TABLE appliedonline_darkfibre (
   tradename varchar(250) DEFAULT NULL,
   sac varchar(20) DEFAULT NULL,
   service_description varchar(150) DEFAULT NULL,
-  gst_status smallint DEFAULT 0
+  gst_status smallint DEFAULT 0,
+  CONSTRAINT pk_appliedonline_darkfibre PRIMARY KEY (darkfibre_id)
 );
 
 CREATE UNIQUE INDEX firm_name_unique ON appliedonline_darkfibre (firm_name);
@@ -38,13 +39,11 @@ CREATE UNIQUE INDEX firm_email_unique ON appliedonline_darkfibre (firm_email);
 CREATE UNIQUE INDEX contact_mobileno_unique ON appliedonline_darkfibre (contact_mobileno);
 CREATE UNIQUE INDEX contact_email_unique ON appliedonline_darkfibre (contact_email);
 
-COMMENT ON COLUMN appliedonline_darkfibre.darkfibre_id IS 'Unique identifier for applied online dark fibre records';
-
 
 DROP TABLE IF EXISTS appliedonline_eo CASCADE;
 
 CREATE TABLE appliedonline_eo (
-  eo_id UUID PRIMARY KEY NOT NULL,
+  eo_id UUID NOT NULL,
   id BIGSERIAL,
   prefix varchar(10) DEFAULT NULL,
   cus_name varchar(200) DEFAULT NULL,
@@ -72,7 +71,8 @@ CREATE TABLE appliedonline_eo (
   district_code char(10) DEFAULT NULL,
   popname varchar(256) DEFAULT NULL,
   location varchar(256) DEFAULT NULL,
-  endoffice_name varchar(256) DEFAULT NULL
+  endoffice_name varchar(256) DEFAULT NULL,
+  CONSTRAINT pk_appliedonline_eo PRIMARY KEY (eo_id)
 );
 
 CREATE INDEX circle_eo_idx ON appliedonline_eo (circle);
@@ -81,5 +81,3 @@ CREATE INDEX cus_name_eo_idx ON appliedonline_eo (cus_name);
 CREATE INDEX cus_mobile_eo_idx ON appliedonline_eo (cus_mobile);
 CREATE INDEX created_dt_eo_idx ON appliedonline_eo (created_dt);
 CREATE INDEX status_eo_idx ON appliedonline_eo (status);
-
-COMMENT ON COLUMN appliedonline_eo.eo_id IS 'Unique identifier for applied online EO records';

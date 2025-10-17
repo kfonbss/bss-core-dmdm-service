@@ -1,50 +1,48 @@
 DROP TABLE IF EXISTS circle CASCADE;
 
 CREATE TABLE circle (
-  circle_id UUID PRIMARY KEY NOT NULL,
+  circle_id UUID NOT NULL,
   slno SERIAL,
   circlecode varchar(50) DEFAULT NULL,
   circlename varchar(50) DEFAULT NULL,
   msp varchar(40) DEFAULT NULL,
   region varchar(40) DEFAULT NULL,
-  db varchar(100) DEFAULT NULL
+  db varchar(100) DEFAULT NULL,
+  CONSTRAINT pk_circle PRIMARY KEY (circle_id)
 );
-
-COMMENT ON COLUMN circle.circle_id IS 'Unique identifier for circle records';
 
 
 DROP TABLE IF EXISTS city CASCADE;
 
 CREATE TABLE city (
-  city_id UUID PRIMARY KEY NOT NULL,
+  city_id UUID NOT NULL,
   cityid SERIAL,
   cityname varchar(250) DEFAULT NULL,
-  stateid int DEFAULT NULL
+  stateid int DEFAULT NULL,
+  CONSTRAINT pk_city PRIMARY KEY (city_id)
 );
-
-COMMENT ON COLUMN city.city_id IS 'Unique identifier for city records';
 
 
 DROP TABLE IF EXISTS closeddisbursement CASCADE;
 
 CREATE TABLE closeddisbursement (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   closeddisbursementid SERIAL,
   partnergroupid int NOT NULL,
   sumrevenue decimal(10,2) NOT NULL,
   revenueshareid int NOT NULL,
   done int DEFAULT 0,
-  lastupdate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  lastupdate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT pk_closeddisbursement PRIMARY KEY (id)
 );
 
 CREATE INDEX Index_2_closeddisb ON closeddisbursement (partnergroupid);
-COMMENT ON COLUMN closeddisbursement.id IS 'Unique identifier for closed disbursement records';
 
 
 DROP TABLE IF EXISTS companydetail CASCADE;
 
 CREATE TABLE companydetail (
-  detail_id UUID PRIMARY KEY NOT NULL,
+  detail_id UUID NOT NULL,
   companyid bigint NOT NULL,
   partnercompanyname varchar(150) DEFAULT NULL,
   status boolean NOT NULL DEFAULT false,
@@ -128,9 +126,9 @@ CREATE TABLE companydetail (
   railtelflag boolean DEFAULT true,
   territory_name varchar(45) DEFAULT NULL,
   ptnrattid varchar(100) DEFAULT NULL,
-  ptnrlang varchar(100) DEFAULT NULL
+  ptnrlang varchar(100) DEFAULT NULL,
+  CONSTRAINT pk_companydetail PRIMARY KEY (detail_id)
 );
 
 CREATE INDEX index2_companydetail ON companydetail (statecode);
 COMMENT ON COLUMN companydetail.loc_type IS '1 Urban 2 Rural';
-COMMENT ON COLUMN companydetail.detail_id IS 'Unique identifier for company detail records';

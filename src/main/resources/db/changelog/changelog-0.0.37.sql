@@ -1,29 +1,27 @@
 DROP TABLE IF EXISTS bss_copy CASCADE;
 
 CREATE TABLE bss_copy (
-  copy_id UUID PRIMARY KEY NOT NULL,
+  copy_id UUID NOT NULL,
   id int DEFAULT NULL,
-  description varchar(20) DEFAULT NULL
+  description varchar(20) DEFAULT NULL,
+  CONSTRAINT pk_bss_copy PRIMARY KEY (copy_id)
 );
-
-COMMENT ON COLUMN bss_copy.copy_id IS 'Unique identifier for BSS copy records';
 
 
 DROP TABLE IF EXISTS bunits_districts CASCADE;
 
 CREATE TABLE bunits_districts (
-  districts_id UUID PRIMARY KEY NOT NULL,
+  districts_id UUID NOT NULL,
   bu_id int DEFAULT NULL,
-  district_id int DEFAULT NULL
+  district_id int DEFAULT NULL,
+  CONSTRAINT pk_bunits_districts PRIMARY KEY (districts_id)
 );
-
-COMMENT ON COLUMN bunits_districts.districts_id IS 'Unique identifier for business units districts records';
 
 
 DROP TABLE IF EXISTS business_rules CASCADE;
 
 CREATE TABLE business_rules (
-  rules_id UUID PRIMARY KEY NOT NULL,
+  rules_id UUID NOT NULL,
   id SERIAL,
   name varchar(256) DEFAULT NULL,
   level char(20) DEFAULT NULL,
@@ -34,30 +32,28 @@ CREATE TABLE business_rules (
   submit_action varchar(256) DEFAULT NULL,
   submit_action1 varchar(100) DEFAULT NULL,
   status_label varchar(50) DEFAULT NULL,
-  trigger_action varchar(100) DEFAULT NULL
+  trigger_action varchar(100) DEFAULT NULL,
+  CONSTRAINT pk_business_rules PRIMARY KEY (rules_id)
 );
-
-COMMENT ON COLUMN business_rules.rules_id IS 'Unique identifier for business rules records';
 
 
 DROP TABLE IF EXISTS business_rules_movement CASCADE;
 
 CREATE TABLE business_rules_movement (
-  movement_id UUID PRIMARY KEY NOT NULL,
+  movement_id UUID NOT NULL,
   mid SERIAL,
   brid int DEFAULT NULL,
   remarks text DEFAULT NULL,
   statuschanged_by varchar(100) DEFAULT NULL,
-  statuschanged_on timestamp DEFAULT NULL
+  statuschanged_on timestamp DEFAULT NULL,
+  CONSTRAINT pk_business_rules_movement PRIMARY KEY (movement_id)
 );
-
-COMMENT ON COLUMN business_rules_movement.movement_id IS 'Unique identifier for business rules movement records';
 
 
 DROP TABLE IF EXISTS businessunits CASCADE;
 
 CREATE TABLE businessunits (
-  units_id UUID PRIMARY KEY NOT NULL,
+  units_id UUID NOT NULL,
   companyid bigint NOT NULL,
   partnercompanyname varchar(150) DEFAULT NULL,
   status boolean NOT NULL DEFAULT false,
@@ -146,8 +142,8 @@ CREATE TABLE businessunits (
   name varchar(80) DEFAULT NULL,
   district_id int DEFAULT NULL,
   zone varchar(50) DEFAULT NULL,
-  ce_zone varchar(50) DEFAULT NULL
+  ce_zone varchar(50) DEFAULT NULL,
+  CONSTRAINT pk_businessunits PRIMARY KEY (units_id)
 );
 
 COMMENT ON COLUMN businessunits.loc_type IS '1 Urban 2 Rural';
-COMMENT ON COLUMN businessunits.units_id IS 'Unique identifier for business units records';

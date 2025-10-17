@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS appliedonline_customers CASCADE;
 
 CREATE TABLE appliedonline_customers (
-  customers_id UUID PRIMARY KEY NOT NULL,
+  customers_id UUID NOT NULL,
   id BIGSERIAL,
   prefix varchar(10) DEFAULT NULL,
   cus_name varchar(200) DEFAULT NULL,
@@ -82,7 +82,8 @@ CREATE TABLE appliedonline_customers (
   subscriberid varchar(100) DEFAULT NULL,
   oltabid varchar(100) DEFAULT NULL,
   package varchar(100) DEFAULT NULL,
-  is_existing_cus varchar(100) DEFAULT NULL
+  is_existing_cus varchar(100) DEFAULT NULL,
+  CONSTRAINT pk_appliedonline_customers PRIMARY KEY (customers_id)
 );
 
 CREATE INDEX circle_idx ON appliedonline_customers (circle);
@@ -91,7 +92,4 @@ CREATE INDEX cus_name_idx ON appliedonline_customers (cus_name);
 CREATE INDEX cus_mobile_idx ON appliedonline_customers (cus_mobile);
 CREATE INDEX created_dt_idx ON appliedonline_customers (created_dt);
 CREATE INDEX status_idx ON appliedonline_customers (status);
-
-COMMENT ON COLUMN appliedonline_customers.e_flag IS '1-Enquiry from selfcare,2-Created by FE,3-Created by SUPPORT,4-others';
-COMMENT ON COLUMN appliedonline_customers.customers_id IS 'Unique identifier for applied online customers records';
 

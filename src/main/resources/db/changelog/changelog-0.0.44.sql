@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_sub_package CASCADE;
 
 CREATE TABLE ce_sub_package (
-  package_id UUID PRIMARY KEY NOT NULL,
+  package_id UUID NOT NULL,
   sub_packageid SERIAL,
   packageid int NOT NULL,
   sub_renewperiod int DEFAULT 0,
@@ -10,17 +10,17 @@ CREATE TABLE ce_sub_package (
   description varchar(250) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_sub_package PRIMARY KEY (package_id)
 );
 
 COMMENT ON COLUMN ce_sub_package.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_sub_package.package_id IS 'Unique identifier for CE sub package records';
 
 
 DROP TABLE IF EXISTS ce_sub_package_renewal_history CASCADE;
 
 CREATE TABLE ce_sub_package_renewal_history (
-  history_id UUID PRIMARY KEY NOT NULL,
+  history_id UUID NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   sub_packageid int DEFAULT NULL,
@@ -40,16 +40,16 @@ CREATE TABLE ce_sub_package_renewal_history (
   service_cat int DEFAULT 0,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_sub_package_renewal_history PRIMARY KEY (history_id)
 );
 
 COMMENT ON COLUMN ce_sub_package_renewal_history.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_sub_package_renewal_history.history_id IS 'Unique identifier for CE sub package renewal history records';
 
 DROP TABLE IF EXISTS ce_sub_service_list CASCADE;
 
 CREATE TABLE ce_sub_service_list (
-  list_id UUID PRIMARY KEY NOT NULL,
+  list_id UUID NOT NULL,
   slno SERIAL,
   ce_service_id int DEFAULT NULL,
   serviceid int DEFAULT NULL,
@@ -57,17 +57,17 @@ CREATE TABLE ce_sub_service_list (
   sname_short varchar(50) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_sub_service_list PRIMARY KEY (list_id)
 );
 
 COMMENT ON COLUMN ce_sub_service_list.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_sub_service_list.list_id IS 'Unique identifier for CE sub service list records';
 
 
 DROP TABLE IF EXISTS ce_subfinance CASCADE;
 
 CREATE TABLE ce_subfinance (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   subfinanceid SERIAL,
   subscriberid int NOT NULL,
   amount decimal(10,2) NOT NULL,
@@ -80,17 +80,17 @@ CREATE TABLE ce_subfinance (
   finrefid int DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_subfinance PRIMARY KEY (id)
 );
 
 COMMENT ON COLUMN ce_subfinance.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_subfinance.id IS 'Unique identifier for CE subfinance records';
 
 
 DROP TABLE IF EXISTS ce_subonlinerecharge CASCADE;
 
 CREATE TABLE ce_subonlinerecharge (
-  recharge_id UUID PRIMARY KEY NOT NULL,
+  recharge_id UUID NOT NULL,
   id BIGSERIAL,
   ordernumber varchar(64) DEFAULT NULL,
   status char(18) DEFAULT NULL,
@@ -117,21 +117,21 @@ CREATE TABLE ce_subonlinerecharge (
   partnerid bigint DEFAULT NULL,
   rechargesite smallint DEFAULT 1,
   paymnetgateway int DEFAULT 1,
-  invoiceid int DEFAULT NULL
+  invoiceid int DEFAULT NULL,
+  CONSTRAINT pk_ce_subonlinerecharge PRIMARY KEY (recharge_id)
 );
 
 CREATE UNIQUE INDEX ordernumber_unique ON ce_subonlinerecharge (ordernumber);
-CREATE INDEX p_idx ON ce_subonlinerecharge (subscriberid);
+CREATE INDEX idx_ce_recharge_subid ON ce_subonlinerecharge (subscriberid);
 
 COMMENT ON COLUMN ce_subonlinerecharge.rechargesite IS '1=BSS,2=Others';
 COMMENT ON COLUMN ce_subonlinerecharge.paymnetgateway IS '1=IKM,2=HDFC,3=Others';
-COMMENT ON COLUMN ce_subonlinerecharge.recharge_id IS 'Unique identifier for CE subscriber online recharge records';
 
 
 DROP TABLE IF EXISTS ce_subscriberdetails CASCADE;
 
 CREATE TABLE ce_subscriberdetails (
-  details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   username varchar(64) DEFAULT NULL,
@@ -162,9 +162,9 @@ CREATE TABLE ce_subscriberdetails (
   reason_for_down varchar(250) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_subscriberdetails PRIMARY KEY (details_id)
 );
 
 COMMENT ON COLUMN ce_subscriberdetails.loc_type IS '1-Urban,2-Rural';
 COMMENT ON COLUMN ce_subscriberdetails.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_subscriberdetails.details_id IS 'Unique identifier for CE subscriber details records';

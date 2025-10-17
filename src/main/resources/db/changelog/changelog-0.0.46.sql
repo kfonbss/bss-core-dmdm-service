@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_subscriberdetails CASCADE;
 
 CREATE TABLE ce_subscriberdetails (
-  details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   username varchar(64) DEFAULT NULL,
@@ -32,17 +32,18 @@ CREATE TABLE ce_subscriberdetails (
   reason_for_down varchar(250) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_subscriberdetails PRIMARY KEY (details_id)
 );
 
 COMMENT ON COLUMN ce_subscriberdetails.loc_type IS '1-Urban,2-Rural';
 COMMENT ON COLUMN ce_subscriberdetails.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_subscriberdetails.details_id IS 'Unique identifier for CE subscriber details records';
+
 
 DROP TABLE IF EXISTS ce_subscribers CASCADE;
 
 CREATE TABLE ce_subscribers (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   subscriberid SERIAL,
   username varchar(64) DEFAULT NULL,
   password varchar(50) DEFAULT NULL,
@@ -51,16 +52,17 @@ CREATE TABLE ce_subscribers (
   group_type varchar(10) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_subscribers PRIMARY KEY (id)
 );
 
 COMMENT ON COLUMN ce_subscribers.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_subscribers.id IS 'Unique identifier for CE subscribers records';
+
 
 DROP TABLE IF EXISTS ce_subscribers_document CASCADE;
 
 CREATE TABLE ce_subscribers_document (
-  document_id UUID PRIMARY KEY NOT NULL,
+  document_id UUID NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   sub_document varchar(50) DEFAULT NULL,
@@ -70,16 +72,15 @@ CREATE TABLE ce_subscribers_document (
   updated_date timestamp DEFAULT CURRENT_TIMESTAMP,
   is_active boolean DEFAULT false,
   data_collected_date date DEFAULT NULL,
-  hyi_flag int DEFAULT 0
+  hyi_flag int DEFAULT 0,
+  CONSTRAINT pk_ce_subscribers_document PRIMARY KEY (document_id)
 );
-
-COMMENT ON COLUMN ce_subscribers_document.document_id IS 'Unique identifier for CE subscribers document records';
 
 
 DROP TABLE IF EXISTS ce_subshifdetails CASCADE;
 
 CREATE TABLE ce_subshifdetails (
-  details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID NOT NULL,
   id SERIAL,
   serviceprovider int DEFAULT NULL,
   subscriberid bigint DEFAULT NULL,
@@ -88,17 +89,17 @@ CREATE TABLE ce_subshifdetails (
   slaid varchar(20) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_subshifdetails PRIMARY KEY (details_id)
 );
 
 COMMENT ON COLUMN ce_subshifdetails.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_subshifdetails.details_id IS 'Unique identifier for CE subscriber shift details records';
 
 
 DROP TABLE IF EXISTS ce_supportsub_document CASCADE;
 
 CREATE TABLE ce_supportsub_document (
-  document_id UUID PRIMARY KEY NOT NULL,
+  document_id UUID NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   caf_doc varchar(50) DEFAULT NULL,
@@ -121,15 +122,15 @@ CREATE TABLE ce_supportsub_document (
   oth_date date DEFAULT NULL,
   created_date timestamp DEFAULT CURRENT_TIMESTAMP,
   updated_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  hyi_flag int DEFAULT 0
+  hyi_flag int DEFAULT 0,
+  CONSTRAINT pk_ce_supportsub_document PRIMARY KEY (document_id)
 );
 
-COMMENT ON COLUMN ce_supportsub_document.document_id IS 'Unique identifier for CE support subscriber document records';
 
 DROP TABLE IF EXISTS ce_workorder CASCADE;
 
 CREATE TABLE ce_workorder (
-  workorder_id UUID PRIMARY KEY NOT NULL,
+  workorder_id UUID NOT NULL,
   slno SERIAL,
   po_id int DEFAULT NULL,
   wo_no varchar(25) DEFAULT NULL,
@@ -138,19 +139,20 @@ CREATE TABLE ce_workorder (
   wo_end_date date DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_workorder PRIMARY KEY (workorder_id)
 );
 
 COMMENT ON COLUMN ce_workorder.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_workorder.workorder_id IS 'Unique identifier for CE workorder records';
 
 
 DROP TABLE IF EXISTS check_xmls CASCADE;
 
 CREATE TABLE check_xmls (
-  xmls_id UUID PRIMARY KEY NOT NULL,
+  xmls_id UUID NOT NULL,
   post text DEFAULT NULL,
-  files text DEFAULT NULL
+  files text DEFAULT NULL,
+  CONSTRAINT pk_check_xmls PRIMARY KEY (xmls_id)
 );
 
 COMMENT ON COLUMN check_xmls.xmls_id IS 'Unique identifier for check XMLs records';
@@ -159,13 +161,13 @@ COMMENT ON COLUMN check_xmls.xmls_id IS 'Unique identifier for check XMLs record
 DROP TABLE IF EXISTS ci_sessions CASCADE;
 
 CREATE TABLE ci_sessions (
-  sessions_id UUID PRIMARY KEY NOT NULL,
+  sessions_id UUID NOT NULL,
   id varchar(40) NOT NULL,
   username varchar(100) DEFAULT NULL,
   ip_address varchar(45) NOT NULL,
   timestamp int NOT NULL DEFAULT 0,
-  data bytea NOT NULL
+  data bytea NOT NULL,
+  CONSTRAINT pk_ci_sessions PRIMARY KEY (sessions_id)
 );
 
 CREATE INDEX ci_sessions_timestamp ON ci_sessions (timestamp);
-COMMENT ON COLUMN ci_sessions.sessions_id IS 'Unique identifier for CI sessions records';

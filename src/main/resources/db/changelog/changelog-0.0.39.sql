@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_disbursement_history CASCADE;
 
 CREATE TABLE ce_disbursement_history (
-  history_id UUID PRIMARY KEY NOT NULL,
+  history_id UUID NOT NULL,
   id SERIAL,
   type boolean DEFAULT true,
   disbid int DEFAULT NULL,
@@ -17,16 +17,15 @@ CREATE TABLE ce_disbursement_history (
   revenueshareid int DEFAULT NULL,
   disbursestatusid boolean DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp DEFAULT CURRENT_TIMESTAMP
+  update_date timestamp DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT pk_ce_disbursement_history PRIMARY KEY (history_id)
 );
-
-COMMENT ON COLUMN ce_disbursement_history.history_id IS 'Unique identifier for CE disbursement history records';
 
 
 DROP TABLE IF EXISTS ce_dnote_master CASCADE;
 
 CREATE TABLE ce_dnote_master (
-  master_id UUID PRIMARY KEY NOT NULL,
+  master_id UUID NOT NULL,
   slno BIGSERIAL,
   subscriberid bigint DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -55,16 +54,17 @@ CREATE TABLE ce_dnote_master (
   particulars varchar(180) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true
+  is_active boolean DEFAULT true,
+  CONSTRAINT pk_ce_dnote_master PRIMARY KEY (master_id)
 );
 
 COMMENT ON COLUMN ce_dnote_master.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_dnote_master.master_id IS 'Unique identifier for CE debit note master records';
+
 
 DROP TABLE IF EXISTS ce_dnote_renewal_history CASCADE;
 
 CREATE TABLE ce_dnote_renewal_history (
-  history_id UUID PRIMARY KEY NOT NULL,
+  history_id UUID NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   subscriberid int DEFAULT NULL,
@@ -86,17 +86,17 @@ CREATE TABLE ce_dnote_renewal_history (
   loc_grand_amount decimal(26,10) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_dnote_renewal_history PRIMARY KEY (history_id)
 );
 
 COMMENT ON COLUMN ce_dnote_renewal_history.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_dnote_renewal_history.history_id IS 'Unique identifier for CE debit note renewal history records';
 
 
 DROP TABLE IF EXISTS ce_eodetails CASCADE;
 
 CREATE TABLE ce_eodetails (
-  eodetails_id UUID PRIMARY KEY NOT NULL,
+  eodetails_id UUID NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   subid int DEFAULT NULL,
@@ -112,17 +112,17 @@ CREATE TABLE ce_eodetails (
   end_office_name varchar(100) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_eodetails PRIMARY KEY (eodetails_id)
 );
 
 COMMENT ON COLUMN ce_eodetails.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_eodetails.eodetails_id IS 'Unique identifier for CE end office details records';
 
 
 DROP TABLE IF EXISTS ce_inovoice CASCADE;
 
 CREATE TABLE ce_inovoice (
-  inovoice_id UUID PRIMARY KEY NOT NULL,
+  inovoice_id UUID NOT NULL,
   slno BIGSERIAL,
   subscriberid bigint DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -154,17 +154,17 @@ CREATE TABLE ce_inovoice (
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   is_active boolean DEFAULT true,
   taxpayertype smallint DEFAULT NULL,
-  loc_reccount int DEFAULT 0
+  loc_reccount int DEFAULT 0,
+  CONSTRAINT pk_ce_inovoice PRIMARY KEY (inovoice_id)
 );
 
 COMMENT ON COLUMN ce_inovoice.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_inovoice.inovoice_id IS 'Unique identifier for CE invoice records';
 
 
 DROP TABLE IF EXISTS ce_inovoice_master CASCADE;
 
 CREATE TABLE ce_inovoice_master (
-  master_id UUID PRIMARY KEY NOT NULL,
+  master_id UUID NOT NULL,
   slno BIGSERIAL,
   subscriberid bigint DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -198,17 +198,17 @@ CREATE TABLE ce_inovoice_master (
   poid int DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true
+  is_active boolean DEFAULT true,
+  CONSTRAINT pk_ce_inovoice_master PRIMARY KEY (master_id)
 );
 
 COMMENT ON COLUMN ce_inovoice_master.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_inovoice_master.master_id IS 'Unique identifier for CE invoice master records';
 
 
 DROP TABLE IF EXISTS ce_kyc_details CASCADE;
 
 CREATE TABLE ce_kyc_details (
-  kyc_id UUID PRIMARY KEY NOT NULL,
+  kyc_id UUID NOT NULL,
   id SERIAL,
   customerid int DEFAULT NULL,
   pan_numer varchar(10) DEFAULT NULL,
@@ -227,16 +227,17 @@ CREATE TABLE ce_kyc_details (
   approve_status boolean DEFAULT false,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_kyc_details PRIMARY KEY (kyc_id)
 );
 
 COMMENT ON COLUMN ce_kyc_details.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_kyc_details.kyc_id IS 'Unique identifier for CE KYC details records';
+
 
 DROP TABLE IF EXISTS ce_location_movement CASCADE;
 
 CREATE TABLE ce_location_movement (
-  movement_id UUID PRIMARY KEY NOT NULL,
+  movement_id UUID NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   approve_status int DEFAULT NULL,
@@ -244,8 +245,8 @@ CREATE TABLE ce_location_movement (
   created_by varchar(128) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_location_movement PRIMARY KEY (movement_id)
 );
 
 COMMENT ON COLUMN ce_location_movement.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_location_movement.movement_id IS 'Unique identifier for CE location movement records';

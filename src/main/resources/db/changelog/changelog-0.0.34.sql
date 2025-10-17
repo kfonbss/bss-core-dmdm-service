@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS billdesksub CASCADE;
 
 CREATE TABLE billdesksub (
-  sub_id UUID PRIMARY KEY NOT NULL,
+  sub_id UUID NOT NULL,
   id BIGSERIAL,
   ORDERNUMBER varchar(45) NOT NULL,
   status varchar(45) NOT NULL DEFAULT 'PENDING',
@@ -19,17 +19,17 @@ CREATE TABLE billdesksub (
   subscriberid bigint DEFAULT NULL,
   ErrorStatus varchar(45) DEFAULT NULL,
   ErrorDescription varchar(200) DEFAULT NULL,
-  ChecksumStatus varchar(45) DEFAULT NULL
+  ChecksumStatus varchar(45) DEFAULT NULL,
+  CONSTRAINT pk_billdesksub PRIMARY KEY (sub_id)
 );
 
 CREATE INDEX order_sub_idx ON billdesksub (ORDERNUMBER, subscriberid);
-COMMENT ON COLUMN billdesksub.sub_id IS 'Unique identifier for billdesk subscriber records';
 
 
 DROP TABLE IF EXISTS billing_plans CASCADE;
 
 CREATE TABLE billing_plans (
-  plans_id UUID PRIMARY KEY NOT NULL,
+  plans_id UUID NOT NULL,
   id SERIAL,
   planName varchar(128) DEFAULT NULL,
   planId varchar(128) DEFAULT NULL,
@@ -50,20 +50,20 @@ CREATE TABLE billing_plans (
   planTax varchar(128) DEFAULT NULL,
   planCurrency varchar(128) DEFAULT NULL,
   planGroup varchar(128) DEFAULT NULL,
-  creationdate timestamp DEFAULT '1970-01-01 00:00:00',
+  creationdate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   creationby varchar(128) DEFAULT NULL,
-  updatedate timestamp DEFAULT '1970-01-01 00:00:00',
-  updateby varchar(128) DEFAULT NULL
+  updatedate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updateby varchar(128) DEFAULT NULL,
+  CONSTRAINT pk_billing_plans PRIMARY KEY (plans_id)
 );
 
 CREATE INDEX planName_idx ON billing_plans (planName);
-COMMENT ON COLUMN billing_plans.plans_id IS 'Unique identifier for billing plans records';
 
 
 DROP TABLE IF EXISTS billmimotransaction CASCADE;
 
 CREATE TABLE billmimotransaction (
-  transaction_id UUID PRIMARY KEY NOT NULL,
+  transaction_id UUID NOT NULL,
   id BIGSERIAL,
   subscriberid int NOT NULL,
   amount decimal(13,2) DEFAULT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE billmimotransaction (
   amountpaid decimal(13,2) DEFAULT NULL,
   paymentdate date DEFAULT NULL,
   uplodeddate timestamp DEFAULT NULL,
-  uploadedby varchar(50) DEFAULT NULL
+  uploadedby varchar(50) DEFAULT NULL,
+  CONSTRAINT pk_billmimotransaction PRIMARY KEY (transaction_id)
 );
 
-COMMENT ON COLUMN billmimotransaction.transaction_id IS 'Unique identifier for bill MIMO transaction records';

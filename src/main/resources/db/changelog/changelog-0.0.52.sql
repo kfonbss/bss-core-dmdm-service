@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cor_fin_agpinvoicing_q CASCADE;
 
 CREATE TABLE cor_fin_agpinvoicing_q (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   slno SERIAL,
   invoicemonth varchar(45) DEFAULT NULL,
   status int DEFAULT NULL,
@@ -37,16 +37,15 @@ CREATE TABLE cor_fin_agpinvoicing_q (
   tmresponse varchar(300) DEFAULT NULL,
   spocresponse varchar(300) NOT NULL,
   mspagpresponse varchar(300) NOT NULL,
-  workorderid varchar(45) DEFAULT NULL
+  workorderid varchar(45) DEFAULT NULL,
+  CONSTRAINT pk_cor_fin_agpinvoicing_q PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN cor_fin_agpinvoicing_q.id IS 'Unique identifier for COR financial AGP invoicing queue records';
 
 
 DROP TABLE IF EXISTS cor_fin_lcoinvoicing CASCADE;
 
 CREATE TABLE cor_fin_lcoinvoicing (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   slno SERIAL,
   subgroup smallint DEFAULT NULL,
   pgroupid int DEFAULT NULL,
@@ -117,16 +116,15 @@ CREATE TABLE cor_fin_lcoinvoicing (
   responsedate timestamp DEFAULT NULL,
   createdate timestamp DEFAULT CURRENT_TIMESTAMP,
   updatedate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true
+  is_active boolean DEFAULT true,
+  CONSTRAINT pk_cor_fin_lcoinvoicing PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN cor_fin_lcoinvoicing.id IS 'Unique identifier for COR financial LCO invoicing records';
 
 
 DROP TABLE IF EXISTS cor_fin_lcoinvoicing_q CASCADE;
 
 CREATE TABLE cor_fin_lcoinvoicing_q (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   slno SERIAL,
   invoicemonth varchar(45) DEFAULT NULL,
   status int DEFAULT NULL,
@@ -159,16 +157,15 @@ CREATE TABLE cor_fin_lcoinvoicing_q (
   mspshare decimal(10,2) DEFAULT NULL,
   workorderid varchar(45) DEFAULT NULL,
   otc decimal(10,2) DEFAULT NULL,
-  lcototal decimal(10,2) DEFAULT NULL
+  lcototal decimal(10,2) DEFAULT NULL,
+  CONSTRAINT pk_cor_fin_lcoinvoicing_q PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN cor_fin_lcoinvoicing_q.id IS 'Unique identifier for COR financial LCO invoicing queue records';
 
 
 DROP TABLE IF EXISTS cor_fin_mspinvoicing CASCADE;
 
 CREATE TABLE cor_fin_mspinvoicing (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   slno SERIAL,
   subgroup boolean DEFAULT NULL,
   invoicemonth varchar(20) DEFAULT NULL,
@@ -230,7 +227,6 @@ CREATE TABLE cor_fin_mspinvoicing (
   gst_disbursedate timestamp DEFAULT NULL,
   special_month varchar(250) DEFAULT NULL,
   cgsttds_amount decimal(13,2) DEFAULT NULL,
-  sgsttds_amount decimal(13,2) DEFAULT NULL
+  sgsttds_amount decimal(13,2) DEFAULT NULL,
+  CONSTRAINT pk_cor_fin_mspinvoicing PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN cor_fin_mspinvoicing.id IS 'Unique identifier for COR financial MSP invoicing records';

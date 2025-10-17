@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS appliedonline_partners CASCADE;
 
 CREATE TABLE appliedonline_partners (
-  partners_id UUID PRIMARY KEY NOT NULL,
+  partners_id UUID NOT NULL,
   id BIGSERIAL,
   ptnr_name varchar(200) DEFAULT NULL,
   ptnr_mobile varchar(10) DEFAULT NULL,
@@ -41,7 +41,8 @@ CREATE TABLE appliedonline_partners (
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_by varchar(100) DEFAULT NULL,
   creby_emp_name varchar(100) DEFAULT NULL,
-  creby_emp_id varchar(100) DEFAULT NULL
+  creby_emp_id varchar(100) DEFAULT NULL,
+  CONSTRAINT pk_appliedonline_partners PRIMARY KEY (partners_id)
 );
 
 CREATE UNIQUE INDEX ptnr_mobile_unique ON appliedonline_partners (ptnr_mobile);
@@ -52,5 +53,3 @@ CREATE INDEX ptnr_name_idx ON appliedonline_partners (ptnr_name);
 CREATE INDEX ptnr_mobile_idx ON appliedonline_partners (ptnr_mobile);
 CREATE INDEX created_dt_partners_idx ON appliedonline_partners (created_dt);
 CREATE INDEX status_partners_idx ON appliedonline_partners (status);
-
-COMMENT ON COLUMN appliedonline_partners.partners_id IS 'Unique identifier for applied online partners records';

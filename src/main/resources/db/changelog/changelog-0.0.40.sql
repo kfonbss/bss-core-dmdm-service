@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_location_renewal_history CASCADE;
 
 CREATE TABLE ce_location_renewal_history (
-  history_id UUID PRIMARY KEY NOT NULL,
+  history_id UUID NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   subscriberid int DEFAULT NULL,
@@ -25,16 +25,17 @@ CREATE TABLE ce_location_renewal_history (
   otc_gst_amount decimal(26,10) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_location_renewal_history PRIMARY KEY (history_id)
 );
 
 COMMENT ON COLUMN ce_location_renewal_history.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_location_renewal_history.history_id IS 'Unique identifier for CE location renewal history records';
+
 
 DROP TABLE IF EXISTS ce_locations CASCADE;
 
 CREATE TABLE ce_locations (
-  locations_id UUID PRIMARY KEY NOT NULL,
+  locations_id UUID NOT NULL,
   slno SERIAL,
   quotationid int DEFAULT NULL,
   breakupid int DEFAULT NULL,
@@ -107,7 +108,8 @@ CREATE TABLE ce_locations (
   ir_rejected_date timestamp DEFAULT NULL,
   ir_resubmit_remarks varchar(255) DEFAULT NULL,
   ir_resubmit_date timestamp DEFAULT NULL,
-  subcustomerid varchar(100) DEFAULT NULL
+  subcustomerid varchar(100) DEFAULT NULL,
+  CONSTRAINT pk_ce_locations PRIMARY KEY (locations_id)
 );
 
 COMMENT ON COLUMN ce_locations.service_provider IS '1=LNP,2=KFON';
@@ -115,13 +117,12 @@ COMMENT ON COLUMN ce_locations.loc_type IS '1-Urban,2-Rural';
 COMMENT ON COLUMN ce_locations.d_status IS '0=In Active,1=Active,2=De commissioned';
 COMMENT ON COLUMN ce_locations.is_active IS '0=In Active,1=Active';
 COMMENT ON COLUMN ce_locations.billing_type IS '1 = Central, 2 = Individual';
-COMMENT ON COLUMN ce_locations.locations_id IS 'Unique identifier for CE locations records';
 
 
 DROP TABLE IF EXISTS ce_onlineapplication CASCADE;
 
 CREATE TABLE ce_onlineapplication (
-  application_id UUID PRIMARY KEY NOT NULL,
+  application_id UUID NOT NULL,
   id SERIAL,
   apno varchar(45) NOT NULL,
   status varchar(45) NOT NULL DEFAULT 'Submitted',
@@ -196,18 +197,18 @@ CREATE TABLE ce_onlineapplication (
   corp_loc_id int DEFAULT NULL,
   ration_card_type boolean DEFAULT NULL,
   create_date timestamp DEFAULT NULL,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT pk_ce_onlineapplication PRIMARY KEY (application_id)
 );
 
 CREATE INDEX index2_ce_online ON ce_onlineapplication (packageid, update_date, status);
 COMMENT ON COLUMN ce_onlineapplication.kyc_type IS '0=Normal KYC,1=EKYC';
-COMMENT ON COLUMN ce_onlineapplication.application_id IS 'Unique identifier for CE online application records';
 
 
 DROP TABLE IF EXISTS ce_otcinovoice CASCADE;
 
 CREATE TABLE ce_otcinovoice (
-  inovoice_id UUID PRIMARY KEY NOT NULL,
+  inovoice_id UUID NOT NULL,
   slno BIGSERIAL,
   subscriberid bigint DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -230,8 +231,8 @@ CREATE TABLE ce_otcinovoice (
   particulars varchar(180) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true
+  is_active boolean DEFAULT true,
+  CONSTRAINT pk_ce_otcinovoice PRIMARY KEY (inovoice_id)
 );
 
 COMMENT ON COLUMN ce_otcinovoice.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_otcinovoice.inovoice_id IS 'Unique identifier for CE OTC invoice records';

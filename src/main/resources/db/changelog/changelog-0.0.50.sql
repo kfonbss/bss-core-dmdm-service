@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS companygstdetail CASCADE;
 
 CREATE TABLE companygstdetail (
-  detail_id UUID PRIMARY KEY NOT NULL,
+  detail_id UUID NOT NULL,
   companyid bigint NOT NULL,
   gstin varchar(20) DEFAULT NULL,
   sac varchar(20) DEFAULT NULL,
@@ -17,62 +17,59 @@ CREATE TABLE companygstdetail (
   legalname varchar(250) DEFAULT NULL,
   tradename varchar(250) DEFAULT NULL,
   pan varchar(10) DEFAULT NULL,
-  pan_copy varchar(200) DEFAULT NULL
+  pan_copy varchar(200) DEFAULT NULL,
+  CONSTRAINT pk_companygstdetail PRIMARY KEY (detail_id)
 );
-
-COMMENT ON COLUMN companygstdetail.detail_id IS 'Unique identifier for company GST detail records';
 
 
 DROP TABLE IF EXISTS connectiontype CASCADE;
 
 CREATE TABLE connectiontype (
-  type_id UUID PRIMARY KEY NOT NULL,
+  type_id UUID NOT NULL,
   connectiontypeid SERIAL,
   connectiontype varchar(45) NOT NULL,
   lastupdate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   attribute varchar(45) DEFAULT 'Service-Type',
-  value varchar(45) NOT NULL DEFAULT 'Framed-User'
+  value varchar(45) NOT NULL DEFAULT 'Framed-User',
+  CONSTRAINT pk_connectiontype PRIMARY KEY (type_id)
 );
 
 CREATE UNIQUE INDEX Index_2_connectiontype ON connectiontype (connectiontype);
-COMMENT ON COLUMN connectiontype.type_id IS 'Unique identifier for connection type records';
 
 
 DROP TABLE IF EXISTS contactcenter CASCADE;
 
 CREATE TABLE contactcenter (
-  center_id UUID PRIMARY KEY NOT NULL,
+  center_id UUID NOT NULL,
   id int NOT NULL,
   center varchar(128) DEFAULT NULL,
   address1 varchar(256) DEFAULT NULL,
   address2 varchar(256) DEFAULT NULL,
   address3 varchar(256) DEFAULT NULL,
-  address4 varchar(256) DEFAULT NULL
+  address4 varchar(256) DEFAULT NULL,
+  CONSTRAINT pk_contactcenter PRIMARY KEY (center_id)
 );
-
-COMMENT ON COLUMN contactcenter.center_id IS 'Unique identifier for contact center records';
 
 
 DROP TABLE IF EXISTS cor_agplist_approval CASCADE;
 
 CREATE TABLE cor_agplist_approval (
-  approval_id UUID PRIMARY KEY NOT NULL,
+  approval_id UUID NOT NULL,
   slno SERIAL,
   agpid bigint DEFAULT NULL,
   state varchar(15) DEFAULT NULL,
   invoicemonth varchar(45) DEFAULT NULL,
   tmapproval int DEFAULT NULL,
   tmremark varchar(300) DEFAULT NULL,
-  tmresponse varchar(300) DEFAULT NULL
+  tmresponse varchar(300) DEFAULT NULL,
+  CONSTRAINT pk_cor_agplist_approval PRIMARY KEY (approval_id)
 );
-
-COMMENT ON COLUMN cor_agplist_approval.approval_id IS 'Unique identifier for COR AGP list approval records';
 
 
 DROP TABLE IF EXISTS cor_fin_agpinvoicing CASCADE;
 
 CREATE TABLE cor_fin_agpinvoicing (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   slno SERIAL,
   subgroup smallint DEFAULT NULL,
   invoicemonth varchar(20) DEFAULT NULL,
@@ -139,7 +136,6 @@ CREATE TABLE cor_fin_agpinvoicing (
   anp_invoiceno varchar(50) DEFAULT NULL,
   createdate timestamp DEFAULT CURRENT_TIMESTAMP,
   updatedate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true
+  is_active boolean DEFAULT true,
+  CONSTRAINT pk_cor_fin_agpinvoicing PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN cor_fin_agpinvoicing.id IS 'Unique identifier for COR financial AGP invoicing records';

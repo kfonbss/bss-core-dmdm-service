@@ -1,23 +1,22 @@
 DROP TABLE IF EXISTS anpmimoissue CASCADE;
 
 CREATE TABLE anpmimoissue (
-  issue_id UUID PRIMARY KEY NOT NULL,
+  issue_id UUID NOT NULL,
   id BIGSERIAL,
   ordernumber varchar(64) DEFAULT NULL,
   txnid varchar(64) DEFAULT NULL,
   subscriberid int NOT NULL,
   partnerid bigint DEFAULT NULL,
   orderdate timestamp DEFAULT NULL,
-  state varchar(50) DEFAULT NULL
+  state varchar(50) DEFAULT NULL,
+  CONSTRAINT pk_anpmimoissue PRIMARY KEY (issue_id)
 );
-
-COMMENT ON COLUMN anpmimoissue.issue_id IS 'Unique identifier for ANP MIMO issue records';
 
 
 DROP TABLE IF EXISTS anpstaticiptopup CASCADE;
 
 CREATE TABLE anpstaticiptopup (
-  topup_id UUID PRIMARY KEY NOT NULL,
+  topup_id UUID NOT NULL,
   id SERIAL,
   staticpackageid int DEFAULT NULL,
   subscriberid bigint DEFAULT NULL,
@@ -30,16 +29,15 @@ CREATE TABLE anpstaticiptopup (
   topupstatus boolean DEFAULT false,
   createddate timestamp DEFAULT NULL,
   updateddate timestamp DEFAULT NULL,
-  ticketid bigint NOT NULL
+  ticketid bigint NOT NULL,
+  CONSTRAINT pk_anpstaticiptopup PRIMARY KEY (topup_id)
 );
-
-COMMENT ON COLUMN anpstaticiptopup.topup_id IS 'Unique identifier for ANP static IP topup records';
 
 
 DROP TABLE IF EXISTS anpstaticiptopupcopy CASCADE;
 
 CREATE TABLE anpstaticiptopupcopy (
-  copy_id UUID PRIMARY KEY NOT NULL,
+  copy_id UUID NOT NULL,
   id int NOT NULL DEFAULT 0,
   staticpackageid int DEFAULT NULL,
   subscriberid bigint DEFAULT NULL,
@@ -52,7 +50,6 @@ CREATE TABLE anpstaticiptopupcopy (
   topupstatus boolean DEFAULT false,
   createddate timestamp DEFAULT NULL,
   updateddate timestamp DEFAULT NULL,
-  ticketid bigint NOT NULL
+  ticketid bigint NOT NULL,
+  CONSTRAINT pk_anpstaticiptopupcopy PRIMARY KEY (copy_id)
 );
-
-COMMENT ON COLUMN anpstaticiptopupcopy.copy_id IS 'Unique identifier for ANP static IP topup copy records';

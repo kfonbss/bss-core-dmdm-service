@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cor_railtel_payment CASCADE;
 
 CREATE TABLE cor_railtel_payment (
-  payment_id UUID PRIMARY KEY NOT NULL,
+  payment_id UUID NOT NULL,
   id SERIAL,
   invoice_no VARCHAR(200) NOT NULL,
   payment_Date DATE DEFAULT NULL,
@@ -9,16 +9,15 @@ CREATE TABLE cor_railtel_payment (
   bankref VARCHAR(256) DEFAULT NULL,
   railtel_remarks VARCHAR(256) DEFAULT NULL,
   invoice_month VARCHAR(256) DEFAULT NULL,
-  file_upload VARCHAR(250) DEFAULT NULL
+  file_upload VARCHAR(250) DEFAULT NULL,
+  CONSTRAINT pk_cor_railtel_payment PRIMARY KEY (payment_id)
 );
-
-COMMENT ON COLUMN cor_railtel_payment.payment_id IS 'Unique identifier for railtel payment records';
 
 
 DROP TABLE IF EXISTS cor_revenueshare_monthwise CASCADE;
 
 CREATE TABLE cor_revenueshare_monthwise (
-  monthwise_id UUID PRIMARY KEY NOT NULL,
+  monthwise_id UUID NOT NULL,
   slno SERIAL,
   subgroup SMALLINT DEFAULT NULL,
   type SMALLINT DEFAULT 1,
@@ -75,17 +74,17 @@ CREATE TABLE cor_revenueshare_monthwise (
   online INTEGER DEFAULT 0,
   remarks VARCHAR(100) DEFAULT NULL,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT pk_cor_revenueshare_monthwise PRIMARY KEY (monthwise_id)
 );
 
-COMMENT ON COLUMN cor_revenueshare_monthwise.monthwise_id IS 'Unique identifier for revenue share monthwise records';
 COMMENT ON COLUMN cor_revenueshare_monthwise.subgroup IS '1-enterprise,2-govt,3-darkfiber,4-specialevent,5-BPL';
 
 
 DROP TABLE IF EXISTS cor_smonthlyinvoice CASCADE;
 
 CREATE TABLE cor_smonthlyinvoice (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   slno SERIAL,
   Partnerid BIGINT DEFAULT NULL,
   pgid INTEGER DEFAULT NULL,
@@ -96,16 +95,15 @@ CREATE TABLE cor_smonthlyinvoice (
   agpid BIGINT DEFAULT NULL,
   statecode VARCHAR(10) DEFAULT NULL,
   mspid VARCHAR(20) DEFAULT NULL,
-  workorderid VARCHAR(45) DEFAULT NULL
+  workorderid VARCHAR(45) DEFAULT NULL,
+  CONSTRAINT pk_cor_smonthlyinvoice PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN cor_smonthlyinvoice.id IS 'Unique identifier for subscriber monthly invoice records';
 
 
 DROP TABLE IF EXISTS cor_smonthlyinvoice_BKP CASCADE;
 
 CREATE TABLE cor_smonthlyinvoice_BKP (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   slno SERIAL,
   Partnerid BIGINT DEFAULT NULL,
   pgid INTEGER DEFAULT NULL,
@@ -116,16 +114,15 @@ CREATE TABLE cor_smonthlyinvoice_BKP (
   agpid BIGINT DEFAULT NULL,
   statecode VARCHAR(10) DEFAULT NULL,
   mspid VARCHAR(20) DEFAULT NULL,
-  workorderid VARCHAR(45) DEFAULT NULL
+  workorderid VARCHAR(45) DEFAULT NULL,
+  CONSTRAINT pk_cor_smonthlyinvoice_BKP PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN cor_smonthlyinvoice_BKP.id IS 'Unique identifier for subscriber monthly invoice backup records';
 
 
 DROP TABLE IF EXISTS cor_vrfattri_users CASCADE;
 
 CREATE TABLE cor_vrfattri_users (
-  users_id UUID PRIMARY KEY NOT NULL,
+  users_id UUID NOT NULL,
   id SERIAL,
   subscriberid BIGINT DEFAULT NULL,
   username VARCHAR(256) DEFAULT NULL,
@@ -134,7 +131,6 @@ CREATE TABLE cor_vrfattri_users (
   vrfattribute VARCHAR(100) DEFAULT NULL,
   vrfvalue VARCHAR(50) DEFAULT NULL,
   createdt TIMESTAMP DEFAULT NULL,
-  updatedt TIMESTAMP DEFAULT NULL
+  updatedt TIMESTAMP DEFAULT NULL,
+  CONSTRAINT pk_cor_vrfattri_users PRIMARY KEY (users_id)
 );
-
-COMMENT ON COLUMN cor_vrfattri_users.users_id IS 'Unique identifier for VRF attribute users records';

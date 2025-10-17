@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cor_partnerfinance CASCADE;
 
 CREATE TABLE cor_partnerfinance (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   financeid SERIAL,
   invoiceid INTEGER DEFAULT NULL,
   ptype VARCHAR(10) DEFAULT 'ANP',
@@ -13,10 +13,10 @@ CREATE TABLE cor_partnerfinance (
   lastupdate TIMESTAMP DEFAULT NULL,
   description VARCHAR(100) DEFAULT NULL,
   createdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updatedate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  updatedate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT pk_cor_partnerfinance PRIMARY KEY (id)
 );
 
-COMMENT ON COLUMN cor_partnerfinance.id IS 'Unique identifier for partner finance records';
 COMMENT ON COLUMN cor_partnerfinance.ptype IS 'Partner Type: ANP, IBNP, etc.';
 COMMENT ON COLUMN cor_partnerfinance.invtype IS '1=Invoice,2=Credit Note, etc.';
 
@@ -24,7 +24,7 @@ COMMENT ON COLUMN cor_partnerfinance.invtype IS '1=Invoice,2=Credit Note, etc.';
 DROP TABLE IF EXISTS cor_partnertransfer CASCADE;
 
 CREATE TABLE cor_partnertransfer (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   slno SERIAL,
   partnerid BIGINT DEFAULT NULL,
   invoiceid INTEGER DEFAULT NULL,
@@ -35,10 +35,10 @@ CREATE TABLE cor_partnertransfer (
   remarks VARCHAR(100) DEFAULT NULL,
   amount DECIMAL(10,2) DEFAULT NULL,
   createdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updatedate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  updatedate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT pk_cor_partnertransfer PRIMARY KEY (id)
 );
 
-COMMENT ON COLUMN cor_partnertransfer.id IS 'Unique identifier for partner transfer records';
 COMMENT ON COLUMN cor_partnertransfer.ptype IS 'Partner Type: ANP, IBNP, etc.';
 COMMENT ON COLUMN cor_partnertransfer.invtype IS '1=Invoice,2=Credit Note, etc.';
 
@@ -46,7 +46,7 @@ COMMENT ON COLUMN cor_partnertransfer.invtype IS '1=Invoice,2=Credit Note, etc.'
 DROP TABLE IF EXISTS cor_penalty CASCADE;
 
 CREATE TABLE cor_penalty (
-  penalty_id UUID PRIMARY KEY NOT NULL,
+  penalty_id UUID NOT NULL,
   slno SERIAL,
   subid BIGINT DEFAULT NULL,
   pid BIGINT DEFAULT NULL,
@@ -56,48 +56,45 @@ CREATE TABLE cor_penalty (
   downtime VARCHAR(25) DEFAULT NULL,
   tarif DECIMAL(12,2) DEFAULT NULL,
   wid VARCHAR(30) DEFAULT NULL,
-  rem VARCHAR(50) DEFAULT NULL
+  rem VARCHAR(50) DEFAULT NULL,
+  CONSTRAINT pk_cor_penalty PRIMARY KEY (penalty_id)
 );
-
-COMMENT ON COLUMN cor_penalty.penalty_id IS 'Unique identifier for penalty records';
 
 
 DROP TABLE IF EXISTS cor_pmonthlyinvoice CASCADE;
 
 CREATE TABLE cor_pmonthlyinvoice (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   slno SERIAL,
   Partnerid BIGINT DEFAULT NULL,
   monthpart VARCHAR(20) DEFAULT NULL,
   sharename VARCHAR(20) DEFAULT NULL,
   shareamt DECIMAL(10,2) DEFAULT NULL,
   statecode VARCHAR(10) DEFAULT NULL,
-  workorderid VARCHAR(45) DEFAULT NULL
+  workorderid VARCHAR(45) DEFAULT NULL,
+  CONSTRAINT pk_cor_pmonthlyinvoice PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN cor_pmonthlyinvoice.id IS 'Unique identifier for partner monthly invoice records';
 
 
 DROP TABLE IF EXISTS cor_pmonthlyinvoice_BKP CASCADE;
 
 CREATE TABLE cor_pmonthlyinvoice_BKP (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   slno SERIAL,
   Partnerid BIGINT DEFAULT NULL,
   monthpart VARCHAR(20) DEFAULT NULL,
   sharename VARCHAR(20) DEFAULT NULL,
   shareamt DECIMAL(10,2) DEFAULT NULL,
   statecode VARCHAR(10) DEFAULT NULL,
-  workorderid VARCHAR(45) DEFAULT NULL
+  workorderid VARCHAR(45) DEFAULT NULL,
+  CONSTRAINT pk_cor_pmonthlyinvoice_BKP PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN cor_pmonthlyinvoice_BKP.id IS 'Unique identifier for partner monthly invoice backup records';
 
 
 DROP TABLE IF EXISTS cor_pnew CASCADE;
 
 CREATE TABLE cor_pnew (
-  pnew_id UUID PRIMARY KEY NOT NULL,
+  pnew_id UUID NOT NULL,
   slno SERIAL,
   pgid INTEGER DEFAULT NULL,
   statecode VARCHAR(10) DEFAULT NULL,
@@ -133,7 +130,6 @@ CREATE TABLE cor_pnew (
   kkcess DECIMAL(10,2) DEFAULT NULL,
   pantds DECIMAL(10,2) DEFAULT NULL,
   nopantds DECIMAL(10,2) DEFAULT NULL,
-  pst_code CHAR(3) DEFAULT NULL
+  pst_code CHAR(3) DEFAULT NULL,
+  CONSTRAINT pk_cor_pnew PRIMARY KEY (pnew_id)
 );
-
-COMMENT ON COLUMN cor_pnew.pnew_id IS 'Unique identifier for partner new records';

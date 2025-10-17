@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS appliedonline_agnp CASCADE;
 
 CREATE TABLE appliedonline_agnp (
-  online_agnp_id UUID PRIMARY KEY NOT NULL,
+  online_agnp_id UUID NOT NULL,
   agnp_id BIGSERIAL,
   agnp_name varchar(200) DEFAULT NULL,
   agnp_assoc_any_other_isp varchar(10) DEFAULT NULL,
@@ -27,22 +27,20 @@ CREATE TABLE appliedonline_agnp (
   agnp_updated_by varchar(100) DEFAULT NULL,
   agnp_remarks text DEFAULT NULL,
   is_active boolean NOT NULL DEFAULT true,
-  tracking_id varchar(10) DEFAULT NULL
+  tracking_id varchar(10) DEFAULT NULL,
+  CONSTRAINT pk_appliedonline_agnp PRIMARY KEY (online_agnp_id)
 );
-
-COMMENT ON COLUMN appliedonline_agnp.online_agnp_id IS 'Unique identifier for applied online AGNP records';
 
 
 DROP TABLE IF EXISTS appliedonline_agnp_movement CASCADE;
 
 CREATE TABLE appliedonline_agnp_movement (
-  movement_id UUID PRIMARY KEY NOT NULL,
+  movement_id UUID NOT NULL,
   id BIGSERIAL,
   agnp_id bigint DEFAULT NULL,
   note text DEFAULT NULL,
   status varchar(50) DEFAULT NULL,
   created_by varchar(100) DEFAULT NULL,
-  created_date timestamp DEFAULT CURRENT_TIMESTAMP
+  created_date timestamp DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT pk_appliedonline_agnp_movement PRIMARY KEY (movement_id)
 );
-
-COMMENT ON COLUMN appliedonline_agnp_movement.movement_id IS 'Unique identifier for applied online AGNP movement records';

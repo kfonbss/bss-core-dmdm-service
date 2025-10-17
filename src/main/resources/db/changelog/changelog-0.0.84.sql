@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS demouser_account_request CASCADE;
 
 CREATE TABLE demouser_account_request (
-  request_id UUID PRIMARY KEY NOT NULL,
+  request_id UUID NOT NULL,
   id SERIAL,
   partnerid BIGINT NOT NULL,
   activesubscriber INTEGER DEFAULT NULL,
@@ -12,10 +12,10 @@ CREATE TABLE demouser_account_request (
   updated_by VARCHAR(30) DEFAULT NULL,
   created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1
+  is_active SMALLINT DEFAULT 1,
+  CONSTRAINT pk_demouser_account_request PRIMARY KEY (request_id)
 );
 
-COMMENT ON COLUMN demouser_account_request.request_id IS 'Unique identifier for demo user account request records';
 COMMENT ON COLUMN demouser_account_request.approve_status IS '1=open,2=approve,3=reject';
 COMMENT ON COLUMN demouser_account_request.is_active IS '0=Inactive,1=Active';
 
@@ -23,7 +23,7 @@ COMMENT ON COLUMN demouser_account_request.is_active IS '0=Inactive,1=Active';
 DROP TABLE IF EXISTS demousers CASCADE;
 
 CREATE TABLE demousers (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   userid SERIAL,
   username VARCHAR(64) DEFAULT NULL,
   password VARCHAR(64) DEFAULT NULL,
@@ -38,10 +38,10 @@ CREATE TABLE demousers (
   is_msp_dc SMALLINT DEFAULT 0,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1
+  is_active SMALLINT DEFAULT 1,
+  CONSTRAINT pk_demousers PRIMARY KEY (id)
 );
 
-COMMENT ON COLUMN demousers.id IS 'Unique identifier for demo users records';
 COMMENT ON COLUMN demousers.user_type IS '1=Normal Demo user,2=LNP Demo user';
 COMMENT ON COLUMN demousers.is_msp_dc IS '0=No,1=Yes';
 COMMENT ON COLUMN demousers.is_active IS '0=In Active,1=Active';
@@ -50,20 +50,19 @@ COMMENT ON COLUMN demousers.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS designations CASCADE;
 
 CREATE TABLE designations (
-  designations_id UUID PRIMARY KEY NOT NULL,
+  designations_id UUID NOT NULL,
   id SERIAL,
   name VARCHAR(20) NOT NULL,
   description VARCHAR(100) NOT NULL,
-  bgcolor CHAR(7) NOT NULL DEFAULT '#607D8B'
+  bgcolor CHAR(7) NOT NULL DEFAULT '#607D8B',
+  CONSTRAINT pk_designations PRIMARY KEY (designations_id)
 );
-
-COMMENT ON COLUMN designations.designations_id IS 'Unique identifier for designations records';
 
 
 DROP TABLE IF EXISTS df_bank_details CASCADE;
 
 CREATE TABLE df_bank_details (
-  details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID NOT NULL,
   id SERIAL,
   beneficiary_name VARCHAR(200) DEFAULT NULL,
   account_number VARCHAR(100) DEFAULT NULL,
@@ -72,17 +71,17 @@ CREATE TABLE df_bank_details (
   branch VARCHAR(100) DEFAULT NULL,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1
+  is_active SMALLINT DEFAULT 1,
+  CONSTRAINT pk_df_bank_details PRIMARY KEY (details_id)
 );
 
-COMMENT ON COLUMN df_bank_details.details_id IS 'Unique identifier for dark fiber bank details records';
 COMMENT ON COLUMN df_bank_details.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS df_customer_details CASCADE;
 
 CREATE TABLE df_customer_details (
-  details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID NOT NULL,
   id SERIAL,
   customer_name VARCHAR(250) DEFAULT NULL,
   customer_email VARCHAR(156) DEFAULT NULL,
@@ -94,17 +93,17 @@ CREATE TABLE df_customer_details (
   enq_ref INTEGER DEFAULT NULL,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1
+  is_active INTEGER DEFAULT 1,
+  CONSTRAINT pk_df_customer_details PRIMARY KEY (details_id)
 );
 
-COMMENT ON COLUMN df_customer_details.details_id IS 'Unique identifier for dark fiber customer details records';
 COMMENT ON COLUMN df_customer_details.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS df_demandnote_history CASCADE;
 
 CREATE TABLE df_demandnote_history (
-  history_id UUID PRIMARY KEY NOT NULL,
+  history_id UUID NOT NULL,
   id SERIAL,
   cnid INTEGER DEFAULT NULL,
   linkid INTEGER DEFAULT NULL,
@@ -131,17 +130,17 @@ CREATE TABLE df_demandnote_history (
   group_type INTEGER DEFAULT NULL,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1
+  is_active SMALLINT DEFAULT 1,
+  CONSTRAINT pk_df_demandnote_history PRIMARY KEY (history_id)
 );
 
-COMMENT ON COLUMN df_demandnote_history.history_id IS 'Unique identifier for dark fiber demand note history records';
 COMMENT ON COLUMN df_demandnote_history.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS df_demandnote_master CASCADE;
 
 CREATE TABLE df_demandnote_master (
-  master_id UUID PRIMARY KEY NOT NULL,
+  master_id UUID NOT NULL,
   slno SERIAL,
   subscriberid BIGINT DEFAULT NULL,
   groupid INTEGER DEFAULT NULL,
@@ -167,17 +166,17 @@ CREATE TABLE df_demandnote_master (
   taxpayertype SMALLINT DEFAULT NULL,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1
+  is_active SMALLINT DEFAULT 1,
+  CONSTRAINT pk_df_demandnote_master PRIMARY KEY (master_id)
 );
 
-COMMENT ON COLUMN df_demandnote_master.master_id IS 'Unique identifier for dark fiber demand note master records';
 COMMENT ON COLUMN df_demandnote_master.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS df_disbursement CASCADE;
 
 CREATE TABLE df_disbursement (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   disburseid SERIAL,
   partnergroupid INTEGER DEFAULT NULL,
   groupid INTEGER DEFAULT NULL,
@@ -189,27 +188,27 @@ CREATE TABLE df_disbursement (
   subfinanceid INTEGER DEFAULT NULL,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1
+  is_active INTEGER DEFAULT 1,
+  CONSTRAINT pk_df_disbursement PRIMARY KEY (id)
 );
 
-COMMENT ON COLUMN df_disbursement.id IS 'Unique identifier for dark fiber disbursement records';
 COMMENT ON COLUMN df_disbursement.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS df_feeder_list CASCADE;
 
 CREATE TABLE df_feeder_list (
-  list_id UUID PRIMARY KEY NOT NULL,
+  list_id UUID NOT NULL,
   id SERIAL,
   pop_id INTEGER NOT NULL,
   feeder_name VARCHAR(255) DEFAULT NULL,
   noof_strands_consumed INTEGER DEFAULT NULL,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1
+  is_active INTEGER DEFAULT 1,
+  CONSTRAINT pk_df_feeder_list PRIMARY KEY (list_id)
 );
 
-COMMENT ON COLUMN df_feeder_list.list_id IS 'Unique identifier for dark fiber feeder list records';
 COMMENT ON COLUMN df_feeder_list.is_active IS '0=In Active,1=Active';
 
 

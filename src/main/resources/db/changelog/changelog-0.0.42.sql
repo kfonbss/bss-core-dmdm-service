@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_purchase_order CASCADE;
 
 CREATE TABLE ce_purchase_order (
-  order_id UUID PRIMARY KEY NOT NULL,
+  order_id UUID NOT NULL,
   slno SERIAL,
   customerid int DEFAULT NULL,
   quotationid int DEFAULT NULL,
@@ -22,17 +22,17 @@ CREATE TABLE ce_purchase_order (
   is_eo_customer int DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_purchase_order PRIMARY KEY (order_id)
 );
 
 COMMENT ON COLUMN ce_purchase_order.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_purchase_order.order_id IS 'Unique identifier for CE purchase order records';
 
 
 DROP TABLE IF EXISTS ce_quoations CASCADE;
 
 CREATE TABLE ce_quoations (
-  quoations_id UUID PRIMARY KEY NOT NULL,
+  quoations_id UUID NOT NULL,
   id SERIAL,
   customerid int DEFAULT NULL,
   quotation_name varchar(100) DEFAULT NULL,
@@ -48,19 +48,19 @@ CREATE TABLE ce_quoations (
   is_eo_proposal boolean DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true,
-  migrated int DEFAULT NULL
+  is_active int DEFAULT 1,
+  migrated int DEFAULT NULL,
+  CONSTRAINT pk_ce_quoations PRIMARY KEY (quoations_id)
 );
 
 COMMENT ON COLUMN ce_quoations.approve_status IS '1=Quotation created,2=Discount Approved,3=Discount Rejected';
 COMMENT ON COLUMN ce_quoations.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_quoations.quoations_id IS 'Unique identifier for CE quotations records';
 
 
 DROP TABLE IF EXISTS ce_quoations_movement CASCADE;
 
 CREATE TABLE ce_quoations_movement (
-  movement_id UUID PRIMARY KEY NOT NULL,
+  movement_id UUID NOT NULL,
   id SERIAL,
   quoationid int DEFAULT NULL,
   approve_status int DEFAULT NULL,
@@ -71,17 +71,17 @@ CREATE TABLE ce_quoations_movement (
   created_by varchar(128) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_quoations_movement PRIMARY KEY (movement_id)
 );
 
 COMMENT ON COLUMN ce_quoations_movement.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_quoations_movement.movement_id IS 'Unique identifier for CE quotations movement records';
 
 
 DROP TABLE IF EXISTS ce_quoations_revision CASCADE;
 
 CREATE TABLE ce_quoations_revision (
-  revision_id UUID PRIMARY KEY NOT NULL,
+  revision_id UUID NOT NULL,
   id SERIAL,
   proposalid int DEFAULT NULL,
   remarks text DEFAULT NULL,
@@ -92,19 +92,19 @@ CREATE TABLE ce_quoations_revision (
   approve_status int DEFAULT 1,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true,
-  migrated int DEFAULT NULL
+  is_active int DEFAULT 1,
+  migrated int DEFAULT NULL,
+  CONSTRAINT pk_ce_quoations_revision PRIMARY KEY (revision_id)
 );
 
 COMMENT ON COLUMN ce_quoations_revision.approve_status IS '1=Quotation created,2=Discount Approved,3=Discount Rejected';
 COMMENT ON COLUMN ce_quoations_revision.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_quoations_revision.revision_id IS 'Unique identifier for CE quotations revision records';
 
 
 DROP TABLE IF EXISTS ce_renewal_details CASCADE;
 
 CREATE TABLE ce_renewal_details (
-  details_id UUID PRIMARY KEY NOT NULL,
+  details_id UUID NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   subscriberid int DEFAULT NULL,
@@ -120,17 +120,17 @@ CREATE TABLE ce_renewal_details (
   cost_per_day double precision DEFAULT 0,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_renewal_details PRIMARY KEY (details_id)
 );
 
 COMMENT ON COLUMN ce_renewal_details.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_renewal_details.details_id IS 'Unique identifier for CE renewal details records';
 
 
 DROP TABLE IF EXISTS ce_revision_connection_breakup CASCADE;
 
 CREATE TABLE ce_revision_connection_breakup (
-  breakup_id UUID PRIMARY KEY NOT NULL,
+  breakup_id UUID NOT NULL,
   id SERIAL,
   serviceid int DEFAULT NULL,
   revi_quoationid int DEFAULT NULL,
@@ -143,34 +143,34 @@ CREATE TABLE ce_revision_connection_breakup (
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   is_active int DEFAULT 1,
-  migrated int DEFAULT NULL
+  migrated int DEFAULT NULL,
+  CONSTRAINT pk_ce_revision_connection_breakup PRIMARY KEY (breakup_id)
 );
 
 COMMENT ON COLUMN ce_revision_connection_breakup.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_revision_connection_breakup.breakup_id IS 'Unique identifier for CE revision connection breakup records';
 
 
 DROP TABLE IF EXISTS ce_service_list CASCADE;
 
 CREATE TABLE ce_service_list (
-  list_id UUID PRIMARY KEY NOT NULL,
+  list_id UUID NOT NULL,
   slno SERIAL,
   serviceid int DEFAULT NULL,
   servicename varchar(50) DEFAULT NULL,
   sname_short varchar(50) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_service_list PRIMARY KEY (list_id)
 );
 
 COMMENT ON COLUMN ce_service_list.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_service_list.list_id IS 'Unique identifier for CE service list records';
 
 
 DROP TABLE IF EXISTS ce_sub_customers CASCADE;
 
 CREATE TABLE ce_sub_customers (
-  customers_id UUID PRIMARY KEY NOT NULL,
+  customers_id UUID NOT NULL,
   id SERIAL,
   customerid varchar(100) DEFAULT NULL,
   company_name varchar(200) DEFAULT NULL,
@@ -178,8 +178,8 @@ CREATE TABLE ce_sub_customers (
   billing_category varchar(50) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true
+  is_active int DEFAULT 1,
+  CONSTRAINT pk_ce_sub_customers PRIMARY KEY (customers_id)
 );
 
 COMMENT ON COLUMN ce_sub_customers.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_sub_customers.customers_id IS 'Unique identifier for CE sub customers records';

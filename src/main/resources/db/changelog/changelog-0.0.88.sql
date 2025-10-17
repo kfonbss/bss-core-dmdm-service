@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS df_masterdata CASCADE;
 
 CREATE TABLE df_masterdata (
-  data_id UUID PRIMARY KEY NOT NULL,
+  data_id UUID NOT NULL,
   id SERIAL,
   district VARCHAR(45) DEFAULT NULL,
   link_type VARCHAR(160) DEFAULT NULL,
@@ -13,17 +13,17 @@ CREATE TABLE df_masterdata (
   noof_strands_consumed INTEGER DEFAULT 0,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1
+  is_active SMALLINT DEFAULT 1,
+  CONSTRAINT pk_df_masterdata PRIMARY KEY (data_id)
 );
 
-COMMENT ON COLUMN df_masterdata.data_id IS 'Unique identifier for dark fiber master data records';
 COMMENT ON COLUMN df_masterdata.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS df_otccharges CASCADE;
 
 CREATE TABLE df_otccharges (
-  charges_id UUID PRIMARY KEY NOT NULL,
+  charges_id UUID NOT NULL,
   id SERIAL,
   amount DECIMAL(13,2) DEFAULT 0.00,
   opgw_amount DECIMAL(13,2) DEFAULT 0.00,
@@ -40,17 +40,17 @@ CREATE TABLE df_otccharges (
   fyear_e_date DATE DEFAULT NULL,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1
+  is_active SMALLINT DEFAULT 1,
+  CONSTRAINT pk_df_otccharges PRIMARY KEY (charges_id)
 );
 
-COMMENT ON COLUMN df_otccharges.charges_id IS 'Unique identifier for dark fiber OTC charges records';
 COMMENT ON COLUMN df_otccharges.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS df_otcinovoice CASCADE;
 
 CREATE TABLE df_otcinovoice (
-  id UUID PRIMARY KEY NOT NULL,
+  id UUID NOT NULL,
   slno SERIAL,
   subscriberid BIGINT DEFAULT NULL,
   groupid INTEGER DEFAULT NULL,
@@ -78,17 +78,17 @@ CREATE TABLE df_otcinovoice (
   particulars VARCHAR(180) DEFAULT NULL,
   create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1
+  is_active SMALLINT DEFAULT 1,
+  CONSTRAINT pk_df_otcinovoice PRIMARY KEY (id)
 );
 
-COMMENT ON COLUMN df_otcinovoice.id IS 'Unique identifier for dark fiber OTC invoice records';
 COMMENT ON COLUMN df_otcinovoice.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS df_payment_history CASCADE;
 
 CREATE TABLE df_payment_history (
-  history_id UUID PRIMARY KEY NOT NULL,
+  history_id UUID NOT NULL,
   id SERIAL,
   invoiceid INTEGER DEFAULT NULL,
   utr_number VARCHAR(25) DEFAULT NULL,
@@ -99,8 +99,8 @@ CREATE TABLE df_payment_history (
   created_by VARCHAR(150) DEFAULT NULL,
   created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1
+  is_active SMALLINT DEFAULT 1,
+  CONSTRAINT pk_df_payment_history PRIMARY KEY (history_id)
 );
 
-COMMENT ON COLUMN df_payment_history.history_id IS 'Unique identifier for dark fiber payment history records';
 COMMENT ON COLUMN df_payment_history.is_active IS '0=Inactive,1=Active';
