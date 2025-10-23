@@ -11,8 +11,19 @@ DROP TABLE IF EXISTS statusmaster CASCADE;
 CREATE TABLE state (
   id UUID NOT NULL PRIMARY KEY,
   stateid SERIAL ,
-  statename VARCHAR(250),
-  statecode VARCHAR(45)
+  code VARCHAR(250),
+  name VARCHAR(45),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN
+);
+
+INSERT INTO state (id, code, name, name_in_local, is_active)
+VALUES (
+  gen_random_uuid(),
+  '001',
+  'Kerala',
+  'കേരളം',
+  true
 );
 
 -- Table: state_district
