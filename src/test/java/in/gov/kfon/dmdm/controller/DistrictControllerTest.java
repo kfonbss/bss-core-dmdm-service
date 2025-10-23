@@ -75,7 +75,6 @@ class DistrictControllerTest {
 
     when(service.fetchById(districtId)).thenReturn(lookup);
 
-    // Perform GET request and validate response
     mockMvc
         .perform(get("/api/district/{id}", districtId))
         .andExpect(status().isOk())
