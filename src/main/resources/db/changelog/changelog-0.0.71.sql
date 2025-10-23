@@ -60,13 +60,26 @@ DROP TABLE IF EXISTS district CASCADE;
 CREATE TABLE district (
   district_id UUID NOT NULL,
   id SERIAL,
-  district varchar(200) DEFAULT NULL,
+  code VARCHAR(250),
+  state_code VARCHAR(45),
+  name VARCHAR(250),
+  name_in_local VARCHAR(250),
+  is_active BOOLEAN,
   shortname char(3) DEFAULT NULL,
   -- Primary key constraint
 CONSTRAINT pk_district PRIMARY KEY (district_id)
 );
 
-
+INSERT INTO district (district_id, code, state_code, name, name_in_local, is_active, shortname)
+VALUES (
+  gen_random_uuid(),
+  '001',
+  'KL01',
+  'Thiruvananthapuram',
+  'തിരുവനന്തപുരം',
+  true,
+  'TVM'
+);
 -- Table : dittotv
 DROP TABLE IF EXISTS dittotv CASCADE;
 
