@@ -73,14 +73,24 @@ DROP TABLE IF EXISTS taxtype;
 
 CREATE TABLE taxtype (
     id UUID NOT NULL PRIMARY KEY,
+    code VARCHAR(45),
+    name VARCHAR(255),
+    name_in_local VARCHAR(255),
+    is_active BOOLEAN,
     taxtypeid SERIAL,
-    taxname VARCHAR(45) NOT NULL,
     taxvaluepercent NUMERIC(10,2) NOT NULL,
-    lastupdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
+    );
 
-CREATE INDEX idx_taxname ON taxtype(taxname);
+CREATE INDEX idx_name ON taxtype(name);
 
+INSERT INTO taxtype (
+    id, code, name, name_in_local, is_active, taxvaluepercent, created_by, modified_by
+) VALUES
+    ('a1b2c3d4-e5f6-7890-abcd-1234567890ab', 'GST01', 'Goods and Services Tax', 'സാധന സേവന നികുതി', TRUE, 18.00, NULL, NULL);
 --------------------------------------------------------------------------
 
 DROP TABLE IF EXISTS tds;

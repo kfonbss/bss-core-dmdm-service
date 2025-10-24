@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -54,7 +55,7 @@ class TaxControllerTest {
     when(service.fetchAll()).thenReturn(responseList);
 
     mockMvc
-        .perform(get("/api/tax/sample/fetch-all"))
+        .perform(get("/api/tax/samples/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data").isArray())
@@ -106,7 +107,7 @@ class TaxControllerTest {
     when(service.collectionFetchAll()).thenReturn(responseList);
 
     mockMvc
-        .perform(get("/api/tax/collection/fetch-all"))
+        .perform(get("/api/tax/collections/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data").isArray())
@@ -135,5 +136,48 @@ class TaxControllerTest {
         .andExpect(jsonPath("$.data.name").value("Property Tax"))
         .andExpect(jsonPath("$.data.nameInLocal").value("പ്രോപ്പർട്ടി ടാക്‌സ്"))
         .andExpect(jsonPath("$.data.isActive").value(true));
+  }
+
+  @Test
+  void testTypesFetchAll_Success() throws Exception {
+    UUID typeId = UUID.randomUUID();
+    CommonLookUp typeLookUp = new CommonLookUp();
+    typeLookUp.setId(typeId);
+    typeLookUp.setCode("TAX01");
+    typeLookUp.setName("Goods and Services Tax");
+    typeLookUp.setNameInLocal("സാധന സേവന നികുതി");
+    typeLookUp.setIsActive(true);
+
+    when(service.typesFetchAll()).thenReturn(List.of(typeLookUp));
+
+    mockMvc
+        .perform(get("/api/tax/types/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].id").value(typeId.toString()))
+        .andExpect(jsonPath("$.data[0].code").value("TAX01"))
+        .andExpect(jsonPath("$.data[0].name").value("Goods and Services Tax"))
+        .andExpect(jsonPath("$.data[0].isActive").value(true));
+  }
+
+  @Test
+  void testTypeFetchById_Success() throws Exception {
+    UUID typeId = UUID.randomUUID();
+    CommonLookUp typeLookUp = new CommonLookUp();
+    typeLookUp.setId(typeId);
+    typeLookUp.setCode("TAX01");
+    typeLookUp.setName("Goods and Services Tax");
+    typeLookUp.setNameInLocal("സാധന സേവന നികുതി");
+    typeLookUp.setIsActive(true);
+
+    when(service.typeFetchById(typeId)).thenReturn(typeLookUp);
+
+    mockMvc
+        .perform(get("/api/tax/type/{id}", typeId).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.id").value(typeId.toString()))
+        .andExpect(jsonPath("$.data.name").value("Goods and Services Tax"))
+        .andExpect(jsonPath("$.data.nameInLocal").value("സാധന സേവന നികുതി"));
   }
 }
