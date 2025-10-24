@@ -9,4 +9,8 @@ public interface ServiceTypeService {
   List<CommonLookUp> fetchAllServiceTypes();
 
   CommonLookUp fetchServiceTypeById(UUID id);
+
+  List<CommonLookUp> fetchAllServices();
+
+  CommonLookUp fetchServiceById(UUID id);
 }
