@@ -52,27 +52,17 @@ CREATE TABLE revenueshare_monthwise (
 
 -- Table: role_type
 CREATE TABLE role_type (
-  id UUID NOT NULL PRIMARY KEY,
-  type_id SERIAL,
-  code VARCHAR(50),
-  name VARCHAR(100),
-  name_in_local VARCHAR(100),
+  type_id UUID NOT NULL PRIMARY KEY,
+  id SERIAL ,
   official VARCHAR(100),
-  description VARCHAR(100),
-  is_active BOOLEAN DEFAULT TRUE
+  description VARCHAR(100)
 );
-
-INSERT INTO role_type (id, type_id, code, name, name_in_local, official, description, is_active)
-VALUES
-  (gen_random_uuid(), 1, 'ADMIN', 'Administrator', 'പ്രശാസകൻ', 'Official admin role', 'Has full access', TRUE);
 
 -- Table: roles
 CREATE TABLE roles (
   id UUID NOT NULL PRIMARY KEY,
   role_id SMALLSERIAL ,
-  code VARCHAR(50),
-  name VARCHAR(255),
-  name_in_local VARCHAR(100),
+  role_name VARCHAR(255),
   official VARCHAR(100),
   role_parent_id INT DEFAULT 0,
   description VARCHAR(255),
@@ -83,32 +73,23 @@ CREATE TABLE roles (
   profilemenu INT DEFAULT 0,
   profileurl VARCHAR(100),
   access_permission VARCHAR(100) DEFAULT 'Public',
-  is_active BOOLEAN DEFAULT TRUE,
   created_by VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_by VARCHAR(255),
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_roles_name ON roles(name);
-
-INSERT INTO roles (id, role_id, code, name, name_in_local, official, role_parent_id, description, default_role, status, is_show, landing_url, profilemenu, profileurl, access_permission, is_active, created_by)
-VALUES
-  (gen_random_uuid(), 1, 'USER', 'User', 'ഉപയോക്താവ്', 'Official user', 0, 'Standard user role', 1, 1, 1, '/dashboard', 1, '/profile', 'Public', TRUE, 'system');
+CREATE INDEX idx_roles_name ON roles(role_name);
 
 -- Table: roles_modules
 CREATE TABLE roles_modules (
   id UUID NOT NULL PRIMARY KEY,
   rm_id SERIAL ,
-  code VARCHAR(50),
-  name VARCHAR(100),
-  name_in_local VARCHAR(100),
   role_id INTEGER,
   module_id INTEGER,
   submodule_id INTEGER,
   permissions TEXT,
   category VARCHAR(25),
-  is_active BOOLEAN DEFAULT TRUE,
   created_by VARCHAR(256),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_by VARCHAR(256),
@@ -116,10 +97,6 @@ CREATE TABLE roles_modules (
 );
 
 CREATE INDEX idx_role_id ON roles_modules(role_id);
-
-INSERT INTO roles_modules (id, rm_id, code, name, name_in_local, role_id, module_id, submodule_id, permissions, category, is_active, created_by)
-VALUES
-  (gen_random_uuid(), 1, 'MOD001', 'Dashboard Module', 'ഡാഷ്‌ബോർഡ് മോഡ്യൂൾ', 1, 101, 201, 'READ,WRITE', 'Module', TRUE, 'system');
 
 -- Table: rules
 CREATE TABLE rules (
