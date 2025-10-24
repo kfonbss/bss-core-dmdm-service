@@ -75,6 +75,10 @@ INSERT INTO taxcollection (
 DROP TABLE IF EXISTS taxdetail;
 CREATE TABLE taxdetail (
     id UUID NOT NULL PRIMARY KEY,
+    code VARCHAR(45),
+    name VARCHAR(255),
+    name_in_local VARCHAR(255),
+    is_active BOOLEAN,
     slno SERIAL,
     lco_pan_ind NUMERIC(4,2),
     lco_pan_oth NUMERIC(4,2),
@@ -90,9 +94,26 @@ CREATE TABLE taxdetail (
     kfc NUMERIC(4,2),
     transcharge NUMERIC(4,2),
     status VARCHAR(10),
-    createdon TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID,
     enddate TIMESTAMP,
     remarks VARCHAR(100)
+);
+INSERT INTO taxdetail (
+    id, code, name, name_in_local, is_active, lco_pan_ind, lco_pan_oth, lco_nopan,
+    agp_pan, agp_nopan, msp_pan, msp_nopan, sgst, cgst, sgsttds, cgsttds,
+    kfc, transcharge, status, created_by, modified_by, enddate, remarks
+)
+VALUES (
+    gen_random_uuid(), 'TXD001', 'Local Cable Operator Tax Detail', 'ലോക്കൽ കേബിൾ ഓപ്പറേറ്റർ നികുതി വിശദാംശം',
+    TRUE, 5.00, 5.00, 10.00,
+    5.00, 10.00, 5.00, 10.00,
+    9.00, 9.00, 2.00, 2.00,
+    1.00, 0.50, 'ACTIVE',
+    gen_random_uuid(), gen_random_uuid(),
+    NOW() + INTERVAL '1 year', 'Initial tax configuration data'
 );
 
 -- Table structure for taxdisbursement

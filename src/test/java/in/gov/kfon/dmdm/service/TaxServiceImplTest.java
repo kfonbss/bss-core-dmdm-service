@@ -4,12 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-import in.gov.kfon.dmdm.model.SampleTax;
-import in.gov.kfon.dmdm.model.TaxCollection;
-import in.gov.kfon.dmdm.model.TaxType;
-import in.gov.kfon.dmdm.repository.SampleTaxRepository;
-import in.gov.kfon.dmdm.repository.TaxCollectionRepository;
-import in.gov.kfon.dmdm.repository.TaxTypeRepository;
+import in.gov.kfon.dmdm.model.*;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,6 +24,8 @@ class TaxServiceImplTest {
 
   @Mock private TaxCollectionRepository collectionRepository;
   @Mock private TaxTypeRepository taxTypeRepository;
+  @Mock private TaxDetailRepository detailRepository;
+  @Mock private TaxPayerRepository payerRepository;
 
   @Mock private ModelMapper modelMapper;
 
@@ -287,6 +285,168 @@ class TaxServiceImplTest {
     assertTrue(result.isEmpty());
 
     verify(repository, times(1)).findAll();
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testDetailsFetchAll() {
+
+    UUID detailId = UUID.randomUUID();
+
+    TaxDetail taxDetail = new TaxDetail();
+    taxDetail.setId(detailId);
+    taxDetail.setCode("TXD001");
+    taxDetail.setName("Local Cable Operator Tax Detail");
+    taxDetail.setNameInLocal("ലോക്കൽ കേബിൾ ഓപ്പറേറ്റർ നികുതി വിശദാംശം");
+    taxDetail.setIsActive(true);
+    taxDetail.setSgst(new BigDecimal("9.00"));
+    taxDetail.setCgst(new BigDecimal("9.00"));
+
+    CommonLookUp commonLookUp = new CommonLookUp();
+    commonLookUp.setId(detailId);
+    commonLookUp.setCode("TXD001");
+    commonLookUp.setName("Local Cable Operator Tax Detail");
+    commonLookUp.setNameInLocal("ലോക്കൽ കേബിൾ ഓപ്പറേറ്റർ നികുതി വിശദാംശം");
+    commonLookUp.setIsActive(true);
+
+    when(detailRepository.findAll()).thenReturn(List.of(taxDetail));
+    when(modelMapper.map(taxDetail, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.detailsFetchAll();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(detailId, result.get(0).getId());
+    assertEquals("TXD001", result.get(0).getCode());
+
+    verify(detailRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(taxDetail, CommonLookUp.class);
+  }
+
+  @Test
+  void testDetailFetchById_Success() {
+
+    UUID detailId = UUID.randomUUID();
+
+    TaxDetail taxDetail = new TaxDetail();
+    taxDetail.setId(detailId);
+    taxDetail.setCode("TXD001");
+    taxDetail.setName("Local Cable Operator Tax Detail");
+    taxDetail.setNameInLocal("ലോക്കൽ കേബിൾ ഓപ്പറേറ്റർ നികുതി വിശദാംശം");
+    taxDetail.setIsActive(true);
+    taxDetail.setSgst(new BigDecimal("9.00"));
+    taxDetail.setCgst(new BigDecimal("9.00"));
+
+    CommonLookUp commonLookUp = new CommonLookUp();
+    commonLookUp.setId(detailId);
+    commonLookUp.setCode("TXD001");
+    commonLookUp.setName("Local Cable Operator Tax Detail");
+    commonLookUp.setNameInLocal("ലോക്കൽ കേബിൾ ഓപ്പറേറ്റർ നികുതി വിശദാംശം");
+    commonLookUp.setIsActive(true);
+
+    when(detailRepository.findById(detailId)).thenReturn(Optional.of(taxDetail));
+    when(modelMapper.map(taxDetail, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.detailFetchById(detailId);
+
+    assertNotNull(result);
+    assertEquals(detailId, result.getId());
+    assertEquals("TXD001", result.getCode());
+    assertEquals("Local Cable Operator Tax Detail", result.getName());
+
+    verify(detailRepository, times(1)).findById(detailId);
+    verify(modelMapper, times(1)).map(taxDetail, CommonLookUp.class);
+  }
+
+  @Test
+  void testDetailFetchById_NotFound() {
+
+    UUID detailId = UUID.randomUUID();
+    when(detailRepository.findById(detailId)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.detailFetchById(detailId));
+
+    assertEquals("Tax not found with id: " + detailId, exception.getMessage());
+
+    verify(detailRepository, times(1)).findById(detailId);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testPayersFetchAll() {
+    UUID payerId = UUID.randomUUID();
+
+    TaxPayerType payer = new TaxPayerType();
+    payer.setId(payerId);
+    payer.setCode("TP001");
+    payer.setName("Individual");
+    payer.setNameInLocal("വ്യക്തി");
+    payer.setIsActive(true);
+
+    CommonLookUp lookUp = new CommonLookUp();
+    lookUp.setId(payerId);
+    lookUp.setCode("TP001");
+    lookUp.setName("Individual");
+    lookUp.setNameInLocal("വ്യക്തി");
+    lookUp.setIsActive(true);
+
+    when(payerRepository.findAll()).thenReturn(List.of(payer));
+    when(modelMapper.map(payer, CommonLookUp.class)).thenReturn(lookUp);
+
+    List<CommonLookUp> result = service.payersFetchAll();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(payerId, result.get(0).getId());
+
+    verify(payerRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(payer, CommonLookUp.class);
+  }
+
+  @Test
+  void testPayerFetchAll_Success() {
+    UUID payerId = UUID.randomUUID();
+
+    TaxPayerType payer = new TaxPayerType();
+    payer.setId(payerId);
+    payer.setCode("TP002");
+    payer.setName("Company");
+    payer.setNameInLocal("കമ്പനി");
+    payer.setIsActive(true);
+
+    CommonLookUp lookUp = new CommonLookUp();
+    lookUp.setId(payerId);
+    lookUp.setCode("TP002");
+    lookUp.setName("Company");
+    lookUp.setNameInLocal("കമ്പനി");
+    lookUp.setIsActive(true);
+
+    when(payerRepository.findById(payerId)).thenReturn(Optional.of(payer));
+    when(modelMapper.map(payer, CommonLookUp.class)).thenReturn(lookUp);
+
+    CommonLookUp result = service.payerFetchAll(payerId);
+
+    assertNotNull(result);
+    assertEquals(payerId, result.getId());
+    assertEquals("Company", result.getName());
+
+    verify(payerRepository, times(1)).findById(payerId);
+    verify(modelMapper, times(1)).map(payer, CommonLookUp.class);
+  }
+
+  @Test
+  void testPayerFetchAll_NotFound() {
+    UUID payerId = UUID.randomUUID();
+
+    when(payerRepository.findById(payerId)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.payerFetchAll(payerId));
+
+    assertEquals("Tax not found with id: " + payerId, exception.getMessage());
+
+    verify(payerRepository, times(1)).findById(payerId);
     verifyNoInteractions(modelMapper);
   }
 }

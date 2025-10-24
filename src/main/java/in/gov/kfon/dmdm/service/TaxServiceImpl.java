@@ -1,12 +1,8 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-import in.gov.kfon.dmdm.model.SampleTax;
-import in.gov.kfon.dmdm.model.TaxCollection;
-import in.gov.kfon.dmdm.model.TaxType;
-import in.gov.kfon.dmdm.repository.SampleTaxRepository;
-import in.gov.kfon.dmdm.repository.TaxCollectionRepository;
-import in.gov.kfon.dmdm.repository.TaxTypeRepository;
+import in.gov.kfon.dmdm.model.*;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +20,8 @@ public class TaxServiceImpl implements TaxService {
   private final ModelMapper modelMapper;
   private final TaxCollectionRepository collectionRepository;
   private final TaxTypeRepository taxTypeRepository;
+  private final TaxDetailRepository detailRepository;
+  private final TaxPayerRepository payerRepository;
 
   @Override
   @Transactional(readOnly = true)
@@ -77,5 +75,41 @@ public class TaxServiceImpl implements TaxService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Tax not found with id: " + id));
     return modelMapper.map(taxType, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> detailsFetchAll() {
+    return detailRepository.findAll().stream()
+        .map(taxCollection -> modelMapper.map(taxCollection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp detailFetchById(UUID id) {
+    TaxDetail taxDetail =
+        detailRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Tax not found with id: " + id));
+    return modelMapper.map(taxDetail, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> payersFetchAll() {
+    return payerRepository.findAll().stream()
+        .map(taxCollection -> modelMapper.map(taxCollection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp payerFetchAll(UUID id) {
+    TaxPayerType taxPayerType =
+        payerRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Tax not found with id: " + id));
+    return modelMapper.map(taxPayerType, CommonLookUp.class);
   }
 }
