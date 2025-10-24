@@ -24,4 +24,12 @@ public interface TaxService {
   List<CommonLookUp> payersFetchAll();
 
   CommonLookUp payerFetchAll(UUID id);
+
+  List<CommonLookUp> disbursementFetchAll();
+
+  CommonLookUp disbursementFetch(UUID id);
+
+  List<CommonLookUp> distributionFetchAll();
+
+  CommonLookUp distributionFetch(UUID id);
 }
