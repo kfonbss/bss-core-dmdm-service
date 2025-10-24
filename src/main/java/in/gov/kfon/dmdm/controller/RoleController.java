@@ -26,7 +26,7 @@ public class RoleController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all role types"));
   }
 
-  @GetMapping("/role-types/{id}")
+  @GetMapping("/role-type/{id}")
   public ResponseEntity<Response<CommonLookUp>> fetchRoleTypeById(@PathVariable UUID id) {
     var data = service.fetchRoleTypeById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched role type"));
@@ -38,7 +38,7 @@ public class RoleController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all roles"));
   }
 
-  @GetMapping("/roles/{id}")
+  @GetMapping("/{id}")
   public ResponseEntity<Response<CommonLookUp>> fetchRoleById(@PathVariable UUID id) {
     var data = service.fetchRoleById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched role"));
@@ -51,7 +51,7 @@ public class RoleController {
         .body(Response.ok(data, "Fetched all roles modules"));
   }
 
-  @GetMapping("/roles-modules/{id}")
+  @GetMapping("/roles-module/{id}")
   public ResponseEntity<Response<CommonLookUp>> fetchRolesModuleById(@PathVariable UUID id) {
     var data = service.fetchRolesModuleById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched roles module"));
