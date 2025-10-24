@@ -42,11 +42,25 @@ CREATE TABLE service (
 
 -- Table: service_type
 CREATE TABLE service_type (
-  type_id UUID NOT NULL PRIMARY KEY,
-  id SERIAL,
-  servicename VARCHAR(45),
-  created_on TIMESTAMP
+    id UUID PRIMARY KEY,
+    type_id SERIAL,
+    code VARCHAR(50),
+    name VARCHAR(45),
+    name_in_local VARCHAR(150),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO service_type (
+    id, type_id, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+)VALUES
+  (
+    gen_random_uuid(), 1, 'INT', 'Internet Service', 'ഇന്റർനെറ്റ് സേവനം', TRUE,
+    NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+  );
 
 -- Table: servicetype
 CREATE TABLE servicetype (
