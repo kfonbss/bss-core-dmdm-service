@@ -50,4 +50,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.2] - 2025-10-24
 ### Added
-Get Tax payers types  and tax details
+- Get Tax payers types  and tax details
