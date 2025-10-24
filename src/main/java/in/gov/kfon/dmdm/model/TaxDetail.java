@@ -17,10 +17,10 @@ public class TaxDetail extends Auditor {
 
   @Id @GeneratedValue private UUID id;
 
-  @Column(length = 45)
+  @Column(name = "code")
   private String code;
 
-  @Column(length = 255)
+  @Column(name = "name")
   private String name;
 
   @Column(name = "name_in_local")
