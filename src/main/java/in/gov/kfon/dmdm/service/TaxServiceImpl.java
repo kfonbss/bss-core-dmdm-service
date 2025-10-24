@@ -3,8 +3,10 @@ package in.gov.kfon.dmdm.service;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.SampleTax;
 import in.gov.kfon.dmdm.model.TaxCollection;
+import in.gov.kfon.dmdm.model.TaxType;
 import in.gov.kfon.dmdm.repository.SampleTaxRepository;
 import in.gov.kfon.dmdm.repository.TaxCollectionRepository;
+import in.gov.kfon.dmdm.repository.TaxTypeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +23,7 @@ public class TaxServiceImpl implements TaxService {
   private final SampleTaxRepository repository;
   private final ModelMapper modelMapper;
   private final TaxCollectionRepository collectionRepository;
+  private final TaxTypeRepository taxTypeRepository;
 
   @Override
   @Transactional(readOnly = true)
@@ -56,5 +59,23 @@ public class TaxServiceImpl implements TaxService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Tax not found with id: " + id));
     return modelMapper.map(taxCollection, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> typesFetchAll() {
+    return taxTypeRepository.findAll().stream()
+        .map(taxCollection -> modelMapper.map(taxCollection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp typeFetchById(UUID id) {
+    TaxType taxType =
+        taxTypeRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Tax not found with id: " + id));
+    return modelMapper.map(taxType, CommonLookUp.class);
   }
 }

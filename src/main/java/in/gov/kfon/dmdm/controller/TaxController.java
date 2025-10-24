@@ -42,4 +42,16 @@ public class TaxController {
     var data = service.collectionFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
+
+  @GetMapping("/types/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> typesFetchAll() {
+    var data = service.typesFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("/type/{id}")
+  public ResponseEntity<Response<CommonLookUp>> typeFetchById(@PathVariable UUID id) {
+    var data = service.typeFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
 }
