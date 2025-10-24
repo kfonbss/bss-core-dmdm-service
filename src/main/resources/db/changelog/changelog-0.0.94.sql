@@ -48,9 +48,12 @@ CONSTRAINT pk_mobile_faqs_details PRIMARY KEY (mobile_faqs_details_id)
 DROP TABLE IF EXISTS modules CASCADE;
 
 CREATE TABLE modules (
-  modules_id UUID NOT NULL,
+  id UUID NOT NULL,
   module_id int  DEFAULT NULL,
-  module_name char(255) DEFAULT NULL,
+  code varchar(45),
+  name varchar(255) DEFAULT NULL,
+  name_in_local varchar(255) DEFAULT NULL,
+  is_active BOOLEAN,
   module_parent_id int DEFAULT NULL,
   category char(25) DEFAULT NULL,
   more_permissions text DEFAULT NULL,
@@ -61,9 +64,43 @@ CREATE TABLE modules (
   updated_by char(255) DEFAULT NULL,
   updated_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   -- Primary key constraint
-CONSTRAINT pk_modules PRIMARY KEY (modules_id)
+CONSTRAINT pk_modules PRIMARY KEY (id)
 );
 
+INSERT INTO modules (
+    id,
+    module_id,
+    code,
+    name,
+    name_in_local,
+    is_active,
+    module_parent_id,
+    category,
+    more_permissions,
+    default_module,
+    status,
+    created_by,
+    created_at,
+    updated_by,
+    updated_at
+) VALUES
+(
+    gen_random_uuid(),
+    1,
+    'MOD001',
+    'User Management',
+    'ഉപയോക്തൃ മാനേജ്മെന്റ്',
+    TRUE,
+    NULL,
+    'ADMIN',
+    '{"create","read","update","delete"}',
+    1,
+    1,
+    'system',
+    CURRENT_TIMESTAMP,
+    'system',
+    CURRENT_TIMESTAMP
+);
 
 -- Table : monthgroup
 DROP TABLE IF EXISTS monthgroup CASCADE;
