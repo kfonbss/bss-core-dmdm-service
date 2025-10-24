@@ -138,6 +138,26 @@ CREATE TABLE rules (
 -- Table: sampletax
 CREATE TABLE sampletax (
   tax_id UUID NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active BOOLEAN,
   id SERIAL ,
   amount NUMERIC(10,2) NOT NULL
+);
+
+INSERT INTO sampletax (
+    tax_id,
+    code,
+    name,
+    name_in_local,
+    is_active,
+    amount
+) VALUES (
+    gen_random_uuid(),
+    'TAX001',
+    'Service Tax',
+    'സർവീസ് ടാക്‌സ്',
+    TRUE,
+    18.00
 );
