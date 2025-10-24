@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TaxController {
   private final TaxService service;
 
-  @GetMapping("/sample/fetch-all")
+  @GetMapping("/samples/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAll() {
     var data = service.fetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
@@ -31,7 +31,7 @@ public class TaxController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 
-  @GetMapping("/collection/fetch-all")
+  @GetMapping("/collections/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> collectionFetchAll() {
     var data = service.collectionFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
