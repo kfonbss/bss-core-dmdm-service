@@ -19,3 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.4] - 2025-10-23
 ### Added
 - Get State details
+
+## [0.0.5] - 2025-10-23
+### Added
+- Get District details
