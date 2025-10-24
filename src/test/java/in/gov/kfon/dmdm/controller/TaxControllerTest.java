@@ -180,4 +180,84 @@ class TaxControllerTest {
         .andExpect(jsonPath("$.data.name").value("Goods and Services Tax"))
         .andExpect(jsonPath("$.data.nameInLocal").value("സാധന സേവന നികുതി"));
   }
+
+  @Test
+  void testDetailsFetchAll() throws Exception {
+
+    UUID detailId = UUID.randomUUID();
+    CommonLookUp lookUp = new CommonLookUp();
+    lookUp.setId(detailId);
+    lookUp.setCode("TXD001");
+    lookUp.setName("Local Cable Operator Tax Detail");
+    lookUp.setNameInLocal("ലോക്കൽ കേബിൾ ഓപ്പറേറ്റർ നികുതി വിശദാംശം");
+    lookUp.setIsActive(true);
+
+    when(service.detailsFetchAll()).thenReturn(List.of(lookUp));
+
+    mockMvc
+        .perform(get("/api/tax/details/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void testDetailFetchById() throws Exception {
+
+    UUID detailId = UUID.randomUUID();
+    CommonLookUp lookUp = new CommonLookUp();
+    lookUp.setId(detailId);
+    lookUp.setCode("TXD001");
+    lookUp.setName("Local Cable Operator Tax Detail");
+    lookUp.setNameInLocal("ലോക്കൽ കേബിൾ ഓപ്പറേറ്റർ നികുതി വിശദാംശം");
+    lookUp.setIsActive(true);
+
+    when(service.detailFetchById(detailId)).thenReturn(lookUp);
+
+    mockMvc
+        .perform(get("/api/tax/detail/{id}", detailId).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  void testPayersFetchAll() throws Exception {
+    UUID payerId = UUID.randomUUID();
+    CommonLookUp lookUp = new CommonLookUp();
+    lookUp.setId(payerId);
+    lookUp.setCode("TP001");
+    lookUp.setName("Individual");
+    lookUp.setNameInLocal("വ്യക്തി");
+    lookUp.setIsActive(true);
+
+    when(service.payersFetchAll()).thenReturn(List.of(lookUp));
+
+    mockMvc
+        .perform(get("/api/tax/payer-types/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].id").value(payerId.toString()))
+        .andExpect(jsonPath("$.data[0].code").value("TP001"))
+        .andExpect(jsonPath("$.data[0].name").value("Individual"))
+        .andExpect(jsonPath("$.data[0].nameInLocal").value("വ്യക്തി"));
+  }
+
+  @Test
+  void testPayerFetchById() throws Exception {
+    UUID payerId = UUID.randomUUID();
+    CommonLookUp lookUp = new CommonLookUp();
+    lookUp.setId(payerId);
+    lookUp.setCode("TP002");
+    lookUp.setName("Company");
+    lookUp.setNameInLocal("കമ്പനി");
+    lookUp.setIsActive(true);
+
+    when(service.payerFetchAll(payerId)).thenReturn(lookUp);
+
+    mockMvc
+        .perform(get("/api/tax/payer-type/{id}", payerId).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.id").value(payerId.toString()))
+        .andExpect(jsonPath("$.data.code").value("TP002"))
+        .andExpect(jsonPath("$.data.name").value("Company"))
+        .andExpect(jsonPath("$.data.nameInLocal").value("കമ്പനി"));
+  }
 }

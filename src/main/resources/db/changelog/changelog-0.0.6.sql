@@ -63,10 +63,33 @@ DROP TABLE IF EXISTS taxpayertype;
 
 CREATE TABLE taxpayertype (
     id UUID NOT NULL PRIMARY KEY,
+    code VARCHAR(45),
+    name VARCHAR(255),
+    name_in_local VARCHAR(255),
+    is_active BOOLEAN,
     taxpayertypeid INT,
-    taxpayertype VARCHAR(45)
+    taxpayertype VARCHAR(45),
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
-
+INSERT INTO taxpayertype (
+    id, code, name, name_in_local, is_active, taxpayertypeid, taxpayertype,
+    created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(),
+    'TP001',
+    'Individual',
+    'വ്യക്തി',
+    TRUE,
+    1,
+    'Individual',
+    CURRENT_TIMESTAMP,
+    CURRENT_TIMESTAMP,
+    gen_random_uuid(),
+    gen_random_uuid()
+);
 -------------------------------------------------------------------
 
 DROP TABLE IF EXISTS taxtype;

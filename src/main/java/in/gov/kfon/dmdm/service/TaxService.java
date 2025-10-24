@@ -16,4 +16,12 @@ public interface TaxService {
   List<CommonLookUp> typesFetchAll();
 
   CommonLookUp typeFetchById(UUID id);
+
+  List<CommonLookUp> detailsFetchAll();
+
+  CommonLookUp detailFetchById(UUID id);
+
+  List<CommonLookUp> payersFetchAll();
+
+  CommonLookUp payerFetchAll(UUID id);
 }
