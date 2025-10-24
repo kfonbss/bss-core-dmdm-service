@@ -39,6 +39,10 @@ CREATE TABLE talukdetail_allcircle (
 DROP TABLE IF EXISTS taxcollection;
 CREATE TABLE taxcollection (
     id UUID NOT NULL PRIMARY KEY,
+    code VARCHAR(45),
+    name VARCHAR(255),
+    name_in_local VARCHAR(255),
+    is_active BOOLEAN,
     taxcollectionid SERIAL,
     subscriberrecieptid BIGINT NOT NULL,
     taxtypeid INT NOT NULL DEFAULT 1,
@@ -46,6 +50,26 @@ CREATE TABLE taxcollection (
     lastupdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 CREATE INDEX idx_taxcollection_subscriberrecieptid ON taxcollection(subscriberrecieptid);
+-- Enable UUID generation
+INSERT INTO taxcollection (
+    id,
+    code,
+    name,
+    name_in_local,
+    is_active,
+    subscriberrecieptid,
+    taxtypeid,
+    taxamount
+) VALUES (
+    gen_random_uuid(),
+    'TAXCOL001',
+    'Property Tax',
+    'പ്രോപ്പർട്ടി ടാക്‌സ്',
+    TRUE,
+    1001,
+    1,
+    2500.75
+);
 
 -- Table structure for taxdetail
 DROP TABLE IF EXISTS taxdetail;
