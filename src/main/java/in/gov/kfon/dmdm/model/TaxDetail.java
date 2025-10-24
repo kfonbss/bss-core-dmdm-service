@@ -23,7 +23,7 @@ public class TaxDetail extends Auditor {
   @Column(length = 255)
   private String name;
 
-  @Column(name = "name_in_local", length = 255)
+  @Column(name = "name_in_local")
   private String nameInLocal;
 
   @Column(name = "is_active")
@@ -33,43 +33,43 @@ public class TaxDetail extends Auditor {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer slNo;
 
-  @Column(name = "lco_pan_ind", precision = 4, scale = 2)
+  @Column(name = "lco_pan_ind")
   private BigDecimal lcoPanInd;
 
-  @Column(name = "lco_pan_oth", precision = 4, scale = 2)
+  @Column(name = "lco_pan_oth")
   private BigDecimal lcoPanOth;
 
-  @Column(name = "lco_nopan", precision = 4, scale = 2)
+  @Column(name = "lco_nopan")
   private BigDecimal lcoNoPan;
 
-  @Column(name = "agp_pan", precision = 4, scale = 2)
+  @Column(name = "agp_pan")
   private BigDecimal agpPan;
 
-  @Column(name = "agp_nopan", precision = 4, scale = 2)
+  @Column(name = "agp_nopan")
   private BigDecimal agpNoPan;
 
-  @Column(name = "msp_pan", precision = 4, scale = 2)
+  @Column(name = "msp_pan")
   private BigDecimal mspPan;
 
-  @Column(name = "msp_nopan", precision = 4, scale = 2)
+  @Column(name = "msp_nopan")
   private BigDecimal mspNoPan;
 
-  @Column(name = "sgst", precision = 4, scale = 2)
+  @Column(name = "sgst")
   private BigDecimal sgst;
 
-  @Column(name = "cgst", precision = 4, scale = 2)
+  @Column(name = "cgst")
   private BigDecimal cgst;
 
-  @Column(name = "sgsttds", precision = 4, scale = 2)
+  @Column(name = "sgsttds")
   private BigDecimal sgstTds;
 
-  @Column(name = "cgsttds", precision = 4, scale = 2)
+  @Column(name = "cgsttds")
   private BigDecimal cgstTds;
 
-  @Column(name = "kfc", precision = 4, scale = 2)
+  @Column(name = "kfc")
   private BigDecimal kfc;
 
-  @Column(name = "transcharge", precision = 4, scale = 2)
+  @Column(name = "transcharge")
   private BigDecimal transCharge;
 
   @Column(length = 10)

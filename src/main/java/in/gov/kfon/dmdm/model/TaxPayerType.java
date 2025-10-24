@@ -15,13 +15,13 @@ public class TaxPayerType extends Auditor {
   @Column(name = "id", nullable = false)
   private UUID id;
 
-  @Column(name = "code", length = 45)
+  @Column(name = "code")
   private String code;
 
-  @Column(name = "name", length = 255)
+  @Column(name = "name")
   private String name;
 
-  @Column(name = "name_in_local", length = 255)
+  @Column(name = "name_in_local")
   private String nameInLocal;
 
   @Column(name = "is_active")
@@ -30,6 +30,6 @@ public class TaxPayerType extends Auditor {
   @Column(name = "taxpayertypeid")
   private Integer taxPayerTypeId;
 
-  @Column(name = "taxpayertype", length = 45)
+  @Column(name = "taxpayertype")
   private String taxPayerType;
 }
