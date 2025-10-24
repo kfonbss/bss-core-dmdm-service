@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/role")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class RoleController {
 
@@ -38,7 +38,7 @@ public class RoleController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all roles"));
   }
 
-  @GetMapping("/{id}")
+  @GetMapping("/role/{id}")
   public ResponseEntity<Response<CommonLookUp>> fetchRoleById(@PathVariable UUID id) {
     var data = service.fetchRoleById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched role"));

@@ -27,3 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.6] - 2025-10-24
 ### Added
 - Get Role,RoleType and RolesModules details
+
+## [0.0.7] - 2025-10-24
+### Added
+- Get nature of company details 
