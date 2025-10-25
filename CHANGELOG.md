@@ -55,3 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.3] - 2025-10-24
 ### Added
 - Get service details
+
+## [0.1.4] - 2025-10-25
+### Added
+- Get package map and package category details
