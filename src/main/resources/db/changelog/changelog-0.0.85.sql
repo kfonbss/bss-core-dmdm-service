@@ -7,10 +7,21 @@ CREATE TABLE package_map (
     partnerid BIGINT NOT NULL,
     packageid INT,
     status INT NOT NULL DEFAULT 1,
-    update_date TIMESTAMP
+    code VARCHAR(50),
+    name VARCHAR(255),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
 
 CREATE INDEX index1 ON package_map(partnerid, status);
+
+INSERT INTO package_map (id, mapid, partnerid, packageid, status, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 101, 10, 1, 'PKGMAP001', 'Basic Package Map', 'ബേസിക് പാക്കേജ് മാപ്പ്', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 -- packagecategory
 DROP TABLE IF EXISTS packagecategory CASCADE;
@@ -18,9 +29,20 @@ DROP TABLE IF EXISTS packagecategory CASCADE;
 CREATE TABLE packagecategory (
     id UUID NOT NULL PRIMARY KEY,
     pkg_ctgy_id SERIAL ,
-    categoryname VARCHAR(250) NOT NULL,
-    createdate TIMESTAMP NOT NULL
+    name VARCHAR(250) NOT NULL,
+    code VARCHAR(50),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO packagecategory (id, pkg_ctgy_id, name, code, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 'Internet Packages','INTERNET', 'ഇന്റർനെറ്റ്', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
+
 
 -- packagechangerequests
 DROP TABLE IF EXISTS packagechangerequests CASCADE;

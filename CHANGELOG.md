@@ -59,3 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.4] - 2025-10-25
 ### Added
 - Get Tax disbursement and tax distribution details
+
+## [0.1.5] - 2025-10-25
+### Added
+- Get package map and package category details
