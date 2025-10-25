@@ -22,6 +22,8 @@ public class TaxServiceImpl implements TaxService {
   private final TaxTypeRepository taxTypeRepository;
   private final TaxDetailRepository detailRepository;
   private final TaxPayerRepository payerRepository;
+  private final TaxDisbursementRepository disbursementRepository;
+  private final TaxDistributionRepository distributionRepository;
 
   @Override
   @Transactional(readOnly = true)
@@ -111,5 +113,41 @@ public class TaxServiceImpl implements TaxService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Tax not found with id: " + id));
     return modelMapper.map(taxPayerType, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> disbursementFetchAll() {
+    return disbursementRepository.findAll().stream()
+        .map(taxCollection -> modelMapper.map(taxCollection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp disbursementFetch(UUID id) {
+    TaxDisbursement tax =
+        disbursementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Tax not found with id: " + id));
+    return modelMapper.map(tax, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> distributionFetchAll() {
+    return distributionRepository.findAll().stream()
+        .map(taxCollection -> modelMapper.map(taxCollection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp distributionFetch(UUID id) {
+    TaxDistribution tax =
+        distributionRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Tax not found with id: " + id));
+    return modelMapper.map(tax, CommonLookUp.class);
   }
 }

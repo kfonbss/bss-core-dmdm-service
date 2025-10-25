@@ -26,6 +26,8 @@ class TaxServiceImplTest {
   @Mock private TaxTypeRepository taxTypeRepository;
   @Mock private TaxDetailRepository detailRepository;
   @Mock private TaxPayerRepository payerRepository;
+  @Mock private TaxDisbursementRepository disbursementRepository;
+  @Mock private TaxDistributionRepository distributionRepository;
 
   @Mock private ModelMapper modelMapper;
 
@@ -447,6 +449,152 @@ class TaxServiceImplTest {
     assertEquals("Tax not found with id: " + payerId, exception.getMessage());
 
     verify(payerRepository, times(1)).findById(payerId);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testDisbursementFetchAll() {
+    UUID id = UUID.randomUUID();
+    TaxDisbursement tax = new TaxDisbursement();
+    tax.setId(id);
+    tax.setCode("DISB001");
+    tax.setName("Property Tax Disbursement");
+    tax.setNameInLocal("പ്രോപ്പർട്ടി ടാക്‌സ് ഡിസ്ബർഷ്മെന്റ്");
+    tax.setIsActive(true);
+
+    CommonLookUp lookUp = new CommonLookUp();
+    lookUp.setId(id);
+    lookUp.setCode("DISB001");
+    lookUp.setName("Property Tax Disbursement");
+    lookUp.setNameInLocal("പ്രോപ്പർട്ടി ടാക്‌സ് ഡിസ്ബർഷ്മെന്റ്");
+    lookUp.setIsActive(true);
+
+    when(disbursementRepository.findAll()).thenReturn(List.of(tax));
+    when(modelMapper.map(tax, CommonLookUp.class)).thenReturn(lookUp);
+
+    List<CommonLookUp> result = service.disbursementFetchAll();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(disbursementRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(tax, CommonLookUp.class);
+  }
+
+  @Test
+  void testDisbursementFetchById_Success() {
+    UUID id = UUID.randomUUID();
+    TaxDisbursement tax = new TaxDisbursement();
+    tax.setId(id);
+    tax.setCode("DISB001");
+    tax.setName("Property Tax Disbursement");
+    tax.setNameInLocal("പ്രോപ്പർട്ടി ടാക്‌സ് ഡിസ്ബർഷ്മെന്റ്");
+    tax.setIsActive(true);
+
+    CommonLookUp lookUp = new CommonLookUp();
+    lookUp.setId(id);
+    lookUp.setCode("DISB001");
+    lookUp.setName("Property Tax Disbursement");
+    lookUp.setNameInLocal("പ്രോപ്പർട്ടി ടാക്‌സ് ഡിസ്ബർഷ്മെന്റ്");
+    lookUp.setIsActive(true);
+
+    when(disbursementRepository.findById(id)).thenReturn(Optional.of(tax));
+    when(modelMapper.map(tax, CommonLookUp.class)).thenReturn(lookUp);
+
+    CommonLookUp result = service.disbursementFetch(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    assertEquals("Property Tax Disbursement", result.getName());
+
+    verify(disbursementRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(tax, CommonLookUp.class);
+  }
+
+  @Test
+  void testDisbursementFetchById_NotFound() {
+    UUID id = UUID.randomUUID();
+    when(disbursementRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.disbursementFetch(id));
+
+    assertEquals("Tax not found with id: " + id, exception.getMessage());
+    verify(disbursementRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testDistributionFetchAll() {
+    UUID id = UUID.randomUUID();
+    TaxDistribution tax = new TaxDistribution();
+    tax.setId(id);
+    tax.setCode("DIST001");
+    tax.setName("Property Tax Distribution");
+    tax.setNameInLocal("പ്രോപ്പർട്ടി ടാക്‌സ് ഡിസ്റ്റ്രിബ്യൂഷൻ");
+    tax.setIsActive(true);
+
+    CommonLookUp lookUp = new CommonLookUp();
+    lookUp.setId(id);
+    lookUp.setCode("DIST001");
+    lookUp.setName("Property Tax Distribution");
+    lookUp.setNameInLocal("പ്രോപ്പർട്ടി ടാക്‌സ് ഡിസ്റ്റ്രിബ്യൂഷൻ");
+    lookUp.setIsActive(true);
+
+    when(distributionRepository.findAll()).thenReturn(List.of(tax));
+    when(modelMapper.map(tax, CommonLookUp.class)).thenReturn(lookUp);
+
+    List<CommonLookUp> result = service.distributionFetchAll();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(distributionRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(tax, CommonLookUp.class);
+  }
+
+  @Test
+  void testDistributionFetchById_Success() {
+    UUID id = UUID.randomUUID();
+    TaxDistribution tax = new TaxDistribution();
+    tax.setId(id);
+    tax.setCode("DIST001");
+    tax.setName("Property Tax Distribution");
+    tax.setNameInLocal("പ്രോപ്പർട്ടി ടാക്‌സ് ഡിസ്റ്റ്രിബ്യൂഷൻ");
+    tax.setIsActive(true);
+
+    CommonLookUp lookUp = new CommonLookUp();
+    lookUp.setId(id);
+    lookUp.setCode("DIST001");
+    lookUp.setName("Property Tax Distribution");
+    lookUp.setNameInLocal("പ്രോപ്പർട്ടി ടാക്‌സ് ഡിസ്റ്റ്രിബ്യൂഷൻ");
+    lookUp.setIsActive(true);
+
+    when(distributionRepository.findById(id)).thenReturn(Optional.of(tax));
+    when(modelMapper.map(tax, CommonLookUp.class)).thenReturn(lookUp);
+
+    CommonLookUp result = service.distributionFetch(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    assertEquals("Property Tax Distribution", result.getName());
+
+    verify(distributionRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(tax, CommonLookUp.class);
+  }
+
+  @Test
+  void testDistributionFetchById_NotFound() {
+    UUID id = UUID.randomUUID();
+    when(distributionRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.distributionFetch(id));
+
+    assertEquals("Tax not found with id: " + id, exception.getMessage());
+    verify(distributionRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
 }

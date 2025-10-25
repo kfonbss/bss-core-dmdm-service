@@ -260,4 +260,86 @@ class TaxControllerTest {
         .andExpect(jsonPath("$.data.name").value("Company"))
         .andExpect(jsonPath("$.data.nameInLocal").value("കമ്പനി"));
   }
+
+  @Test
+  void testTaxDisbursementFetchAll() throws Exception {
+    UUID disbursementId = UUID.randomUUID();
+    CommonLookUp disbursement = new CommonLookUp();
+    disbursement.setId(disbursementId);
+    disbursement.setCode("DISB001");
+    disbursement.setName("Property Tax Disbursement");
+    disbursement.setNameInLocal("പ്രോപ്പർട്ടി ടാക്‌സ് ഡിസ്ബർഷ്മെന്റ്");
+    disbursement.setIsActive(true);
+
+    when(service.disbursementFetchAll()).thenReturn(List.of(disbursement));
+
+    mockMvc
+        .perform(get("/api/tax/disbursements/fetch-all"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(disbursementId.toString()));
+  }
+
+  @Test
+  void testTaxDisbursementFetchById() throws Exception {
+    UUID disbursementId = UUID.randomUUID();
+    CommonLookUp disbursement = new CommonLookUp();
+    disbursement.setId(disbursementId);
+    disbursement.setCode("DISB001");
+    disbursement.setName("Property Tax Disbursement");
+    disbursement.setNameInLocal("പ്രോപ്പർട്ടി ടാക്‌സ് ഡിസ്ബർഷ്മെന്റ്");
+    disbursement.setIsActive(true);
+
+    when(service.disbursementFetch(disbursementId)).thenReturn(disbursement);
+
+    mockMvc
+        .perform(get("/api/tax/disbursement/{id}", disbursementId))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.id").value(disbursementId.toString()))
+        .andExpect(jsonPath("$.data.name").value("Property Tax Disbursement"));
+  }
+
+  @Test
+  void testDistributionFetchAll() throws Exception {
+    UUID distributionId = UUID.randomUUID();
+    CommonLookUp distribution = new CommonLookUp();
+    distribution.setId(distributionId);
+    distribution.setCode("DIST001");
+    distribution.setName("Property Tax Distribution");
+    distribution.setNameInLocal("പ്രോപ്പർട്ടി ടാക്‌സ് ഡിസ്റ്റ്രിബ്യൂഷൻ");
+    distribution.setIsActive(true);
+
+    when(service.distributionFetchAll()).thenReturn(List.of(distribution));
+
+    mockMvc
+        .perform(get("/api/tax/distributions/fetch-all"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(distributionId.toString()));
+  }
+
+  @Test
+  void testDistributionFetchById() throws Exception {
+    UUID distributionId = UUID.randomUUID();
+    CommonLookUp distribution = new CommonLookUp();
+    distribution.setId(distributionId);
+    distribution.setCode("DIST001");
+    distribution.setName("Property Tax Distribution");
+    distribution.setNameInLocal("പ്രോപ്പർട്ടി ടാക്‌സ് ഡിസ്റ്റ്രിബ്യൂഷൻ");
+    distribution.setIsActive(true);
+
+    when(service.distributionFetch(distributionId)).thenReturn(distribution);
+
+    mockMvc
+        .perform(get("/api/tax/distribution/{id}", distributionId))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.id").value(distributionId.toString()))
+        .andExpect(jsonPath("$.data.name").value("Property Tax Distribution"));
+  }
 }

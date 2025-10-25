@@ -120,21 +120,45 @@ VALUES (
 DROP TABLE IF EXISTS taxdisbursement;
 CREATE TABLE taxdisbursement (
     id UUID NOT NULL PRIMARY KEY,
+    code VARCHAR(45),
+    name VARCHAR(255),
+    name_in_local VARCHAR(255),
+    is_active BOOLEAN,
     taxdisbursementid BIGSERIAL,
     usagetransactionid BIGINT NOT NULL,
     taxtypeid INT NOT NULL DEFAULT 1,
     taxamount INT DEFAULT 0,
-    lastupdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
+    );
+    INSERT INTO taxdisbursement
+    (id, code, name, name_in_local, is_active, usageTransactionId, taxTypeId, taxAmount, created_date, modified_date, created_by, modified_by)
+    VALUES
+    (gen_random_uuid(), 'TD001', 'Property Tax Disbursement', 'പ്രോപ്പർട്ടി ടാക്‌സ് വിതരണം', true, 1001, 1, 5000, NULL, NULL, NULL, NULL);
 
 -- Table structure for taxdistribution
 DROP TABLE IF EXISTS taxdistribution;
 CREATE TABLE taxdistribution (
     id UUID NOT NULL PRIMARY KEY,
+    code VARCHAR(45),
+    name VARCHAR(255),
+    name_in_local VARCHAR(255),
+    is_active BOOLEAN,
     sno BIGSERIAL,
     partnerid BIGINT NOT NULL,
     taxcollected DOUBLE PRECISION NOT NULL,
     taxdisbursed DOUBLE PRECISION NOT NULL,
     taxtorailtel DOUBLE PRECISION NOT NULL,
-    lastupdate TIMESTAMP NOT NULL
-);
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
+   );
+
+   INSERT INTO taxdistribution
+   (id, code, name, name_in_local, is_active, partnerid, taxcollected, taxdisbursed, taxtorailtel, created_date, modified_date, created_by, modified_by)
+   VALUES
+   (gen_random_uuid(), 'TDI001', 'Property Tax Distribution', 'പ്രോപ്പർട്ടി ടാക്‌സ് വിതരണം', true, 2001, 10000, 8000, 2000, NULL, NULL, NULL, NULL);
+

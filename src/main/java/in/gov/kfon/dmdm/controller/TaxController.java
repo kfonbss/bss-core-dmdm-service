@@ -78,4 +78,28 @@ public class TaxController {
     var data = service.payerFetchAll(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
+
+  @GetMapping("/disbursements/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> taxDisbursementFetchAll() {
+    var data = service.disbursementFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("/disbursement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> taxDisbursementFetchAll(@PathVariable UUID id) {
+    var data = service.disbursementFetch(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("/distributions/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> distributionFetchAll() {
+    var data = service.distributionFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("/distribution/{id}")
+  public ResponseEntity<Response<CommonLookUp>> distributionFetch(@PathVariable UUID id) {
+    var data = service.distributionFetch(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
 }
