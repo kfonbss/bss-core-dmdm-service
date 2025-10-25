@@ -65,4 +65,42 @@ public class ServiceTypeControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched service type"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
+
+  @Test
+  void fetchAllServicesTest() throws Exception {
+    UUID serviceId = UUID.randomUUID();
+    var lookup = new CommonLookUp();
+    lookup.setId(serviceId);
+    lookup.setCode("INT");
+    lookup.setName("Internet Service");
+    lookup.setNameInLocal("ഇന്റർനെറ്റ് സേവനം");
+    lookup.setIsActive(true);
+
+    when(service.fetchAllServices()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/services"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all services"))
+        .andExpect(jsonPath("$.data.length()").value(1));
+  }
+
+  @Test
+  void fetchServiceByIdTest() throws Exception {
+    UUID serviceId = UUID.randomUUID();
+    var lookup = new CommonLookUp();
+    lookup.setId(serviceId);
+    lookup.setCode("INT");
+    lookup.setName("Internet Service");
+    lookup.setNameInLocal("ഇന്റർനെറ്റ് സേവനം");
+    lookup.setIsActive(true);
+
+    when(service.fetchServiceById(serviceId)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/service/{id}", serviceId))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched service"))
+        .andExpect(jsonPath("$.data.id").value(serviceId.toString()));
+  }
 }

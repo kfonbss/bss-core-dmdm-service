@@ -32,4 +32,16 @@ public class ServiceTypeController {
     var data = service.fetchServiceTypeById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched service type"));
   }
+
+  @GetMapping("/services")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllServices() {
+    var data = service.fetchAllServices();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all services"));
+  }
+
+  @GetMapping("/service/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchServiceById(@PathVariable UUID id) {
+    var data = service.fetchServiceById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched service"));
+  }
 }

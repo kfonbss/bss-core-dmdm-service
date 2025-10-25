@@ -2,6 +2,7 @@ package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.ServiceType;
+import in.gov.kfon.dmdm.repository.ServiceRepository;
 import in.gov.kfon.dmdm.repository.ServiceTypeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ServiceTypeServiceImpl implements ServiceTypeService {
 
   private final ServiceTypeRepository serviceTypeRepository;
+  private final ServiceRepository serviceRepository;
   private final ModelMapper mapper;
 
   @Override
@@ -32,6 +34,22 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
         serviceTypeRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("ServiceType not found with id: " + id));
+    return mapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllServices() {
+    return serviceRepository.findAll().stream()
+        .map(s -> mapper.map(s, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchServiceById(UUID id) {
+    var entity =
+        serviceRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Service not found with id: " + id));
     return mapper.map(entity, CommonLookUp.class);
   }
 }

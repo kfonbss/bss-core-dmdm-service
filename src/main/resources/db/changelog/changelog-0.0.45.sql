@@ -35,10 +35,20 @@ CREATE TABLE selfcare_eo (
 CREATE TABLE service (
   id UUID NOT NULL PRIMARY KEY,
   serviceid SERIAL,
-  filtername VARCHAR(45) NOT NULL UNIQUE,
+  code VARCHAR(50),
+  name VARCHAR(100) NOT NULL UNIQUE,
+  name_in_local VARCHAR(150),
   baserental NUMERIC(10,2) NOT NULL,
-  lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
 );
+
+INSERT INTO service (id, code, name, name_in_local, baserental, is_active,created_date, modified_date, created_by, modified_by)
+VALUES
+    (gen_random_uuid(), 'VOIP', 'VoIP Service', 'വോയിസ് ഓവർ ഐപി', 300.00, TRUE,NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 -- Table: service_type
 CREATE TABLE service_type (
