@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: bss-core-dmdm-svc
 spec:
-  selector: { app: bss-core-dmdm-services }
+  selector: { app: bss-core-dmdm-service }
   ports:
     - port: {{ .Values.service.port }}
       targetPort: 8080
