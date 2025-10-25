@@ -30,8 +30,10 @@ public class PackageControllerTest {
 
   private UUID idMap;
   private UUID idCategory;
+  private UUID idChangeRequest;
   private CommonLookUp lookupMap;
   private CommonLookUp lookupCategory;
+  private CommonLookUp lookupChangeRequest;
 
   @BeforeEach
   void setUp() {
@@ -39,6 +41,7 @@ public class PackageControllerTest {
 
     idMap = UUID.randomUUID();
     idCategory = UUID.randomUUID();
+    idChangeRequest = UUID.randomUUID();
 
     lookupMap = new CommonLookUp();
     lookupMap.setId(idMap);
@@ -53,6 +56,13 @@ public class PackageControllerTest {
     lookupCategory.setName("Internet Packages");
     lookupCategory.setNameInLocal("ഇന്റർനെറ്റ്");
     lookupCategory.setIsActive(true);
+
+    lookupChangeRequest = new CommonLookUp();
+    lookupChangeRequest.setId(idChangeRequest);
+    lookupChangeRequest.setCode("REQ001");
+    lookupChangeRequest.setName("Change Request 1");
+    lookupChangeRequest.setNameInLocal("ചേഞ്ച് റിക്വസ്റ്റ് 1");
+    lookupChangeRequest.setIsActive(true);
   }
 
   @Test
@@ -103,5 +113,29 @@ public class PackageControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched package category"))
         .andExpect(jsonPath("$.data.id").value(idCategory.toString()))
         .andExpect(jsonPath("$.data.name").value("Internet Packages"));
+  }
+
+  @Test
+  void testFetchAllPackageChangeRequests() throws Exception {
+    when(service.fetchAllChangeRequests()).thenReturn(List.of(lookupChangeRequest));
+
+    mockMvc
+        .perform(get("/api/package/change-requests"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all change requests"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idChangeRequest.toString()));
+  }
+
+  @Test
+  void testFetchPackageChangeRequestById() throws Exception {
+    when(service.fetchChangeRequestById(idChangeRequest)).thenReturn(lookupChangeRequest);
+
+    mockMvc
+        .perform(get("/api/package/change-request/{id}", idChangeRequest))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched change request"))
+        .andExpect(jsonPath("$.data.id").value(idChangeRequest.toString()));
   }
 }

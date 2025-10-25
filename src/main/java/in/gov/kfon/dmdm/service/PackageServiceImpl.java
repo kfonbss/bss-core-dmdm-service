@@ -2,8 +2,10 @@ package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.PackageCategory;
+import in.gov.kfon.dmdm.model.PackageChangeRequests;
 import in.gov.kfon.dmdm.model.PackageMap;
 import in.gov.kfon.dmdm.repository.PackageCategoryRepository;
+import in.gov.kfon.dmdm.repository.PackageChangeRequestsRepository;
 import in.gov.kfon.dmdm.repository.PackageMapRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
@@ -20,6 +22,7 @@ public class PackageServiceImpl implements PackageService {
 
   private final PackageMapRepository packageMapRepository;
   private final PackageCategoryRepository packageCategoryRepository;
+  private final PackageChangeRequestsRepository changeRequestsRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -57,5 +60,24 @@ public class PackageServiceImpl implements PackageService {
             .orElseThrow(
                 () -> new EntityNotFoundException("PackageCategory not found with id: " + id));
     return modelMapper.map(pc, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllChangeRequests() {
+    return changeRequestsRepository.findAll().stream()
+        .map(cr -> modelMapper.map(cr, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchChangeRequestById(UUID id) {
+    PackageChangeRequests cr =
+        changeRequestsRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("ChangeRequest not found with id: " + id));
+    return modelMapper.map(cr, CommonLookUp.class);
   }
 }

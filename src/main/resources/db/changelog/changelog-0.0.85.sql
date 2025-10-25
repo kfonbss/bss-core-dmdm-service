@@ -55,10 +55,21 @@ CREATE TABLE packagechangerequests (
     newpackageid INT,
     oldpackageid INT,
     requestdate TIMESTAMP,
-    created_by VARCHAR(250)
+    code VARCHAR(50),
+    name VARCHAR(255),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
 
 CREATE INDEX index_requests ON packagechangerequests(subscriberid);
+
+INSERT INTO packagechangerequests (id, requestno, requeststatus, subscriberid, newpackageid, oldpackageid, requestdate, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 0, 501, 20, 10, NOW(), 'REQ001', 'Package Change Request', 'പാക്കേജ് മാറ്റം അപേക്ഷ', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 -- packages
 DROP TABLE IF EXISTS packages CASCADE;
