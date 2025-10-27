@@ -46,4 +46,32 @@ public class SubscriberController {
     var data = service.fetchOfferById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched subscriber offer"));
   }
+
+  @GetMapping("/status-types")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllStatusTypes() {
+    var data = service.fetchAllSubscriberStatusTypes();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all subscriber status types"));
+  }
+
+  @GetMapping("/status-type/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchStatusTypeById(@PathVariable UUID id) {
+    var data = service.fetchSubscriberStatusTypeById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched subscriber status type"));
+  }
+
+  @GetMapping("/accounts")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllAccounts() {
+    var data = service.fetchAllSubscriberAccounts();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all subscriber accounts"));
+  }
+
+  @GetMapping("/account/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchAccountById(@PathVariable UUID id) {
+    var data = service.fetchSubscriberAccountById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched subscriber account"));
+  }
 }
