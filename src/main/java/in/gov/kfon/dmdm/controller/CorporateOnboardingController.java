@@ -55,25 +55,25 @@ public class CorporateOnboardingController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 
-  @GetMapping("connection/breakup_movements/fetch-all")
+  @GetMapping("connection/breakup-movements/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> movementsFetchAll() {
     var data = service.movementsFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 
-  @GetMapping("connection/breakup_movement/{id}")
+  @GetMapping("connection/breakup-movement/{id}")
   public ResponseEntity<Response<CommonLookUp>> movementFetchById(@PathVariable UUID id) {
     var data = service.movementFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 
-  @GetMapping("connection/breakup_movements/revision/fetch-all")
+  @GetMapping("connection/breakup-movements/revisions/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> cMovementsFetchAll() {
     var data = service.cMovementsFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 
-  @GetMapping("connection/breakup_movement/revision/{id}")
+  @GetMapping("connection/breakup-movement/revision/{id}")
   public ResponseEntity<Response<CommonLookUp>> cMovementFetchById(@PathVariable UUID id) {
     var data = service.cMovementFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));

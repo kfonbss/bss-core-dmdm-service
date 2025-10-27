@@ -134,7 +134,7 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/corporate/connection/breakup_movements/fetch-all")
+            get("/api/corporate/connection/breakup-movements/fetch-all")
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
@@ -147,7 +147,7 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/corporate/connection/breakup_movement/{id}", id)
+            get("/api/corporate/connection/breakup-movement/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
@@ -160,7 +160,7 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/corporate/connection/breakup_movements/revision/fetch-all")
+            get("/api/corporate/connection/breakup-movements/revisions/fetch-all")
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
@@ -174,7 +174,7 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/corporate/connection/breakup_movement/revision/{id}", id)
+            get("/api/corporate/connection/breakup-movement/revision/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
