@@ -78,4 +78,28 @@ public class CorporateOnboardingController {
     var data = service.cMovementFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
+
+  @GetMapping("customers/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> customersFetchAll() {
+    var data = service.customersFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("customer/{id}")
+  public ResponseEntity<Response<CommonLookUp>> customerFetchById(@PathVariable UUID id) {
+    var data = service.customerFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("disbursements/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> disbursementsFetchAll() {
+    var data = service.disbursementsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("disbursement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> disbursementFetchById(@PathVariable UUID id) {
+    var data = service.disbursementFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
 }

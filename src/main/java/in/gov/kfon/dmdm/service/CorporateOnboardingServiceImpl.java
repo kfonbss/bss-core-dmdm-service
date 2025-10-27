@@ -24,6 +24,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CeConnectionBreakupRepository connectionBreakupRepository;
   private final CeConnectionBreakupMovementRepository movementRepository;
   private final CeConnectionBreakupRevisionRepository revisionRepository;
+  private final CeCustomerRepository customerRepository;
+  private final CeDisbursementRepository disbursementRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -156,5 +158,41 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Not found with id: " + id));
     return modelMapper.map(revision, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> customersFetchAll() {
+    return customerRepository.findAll().stream()
+        .map(connection -> modelMapper.map(connection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp customerFetchById(UUID id) {
+    CeCustomer customer =
+        customerRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Not found with id: " + id));
+    return modelMapper.map(customer, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> disbursementsFetchAll() {
+    return disbursementRepository.findAll().stream()
+        .map(connection -> modelMapper.map(connection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp disbursementFetchById(UUID id) {
+    CeDisbursement disbursement =
+        disbursementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Not found with id: " + id));
+    return modelMapper.map(disbursement, CommonLookUp.class);
   }
 }
