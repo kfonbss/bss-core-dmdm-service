@@ -15,6 +15,7 @@ import lombok.*;
 public class CorporateEnquiry extends Auditor {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "enquiries_id", nullable = false)
   private UUID enquiriesId;
 

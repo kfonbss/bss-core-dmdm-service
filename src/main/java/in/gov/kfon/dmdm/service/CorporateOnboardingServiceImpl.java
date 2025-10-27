@@ -46,6 +46,7 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<CommonLookUp> fetchAll() {
     return repository.findAll().stream()
         .map(
@@ -58,6 +59,7 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   }
 
   @Override
+  @Transactional(readOnly = true)
   public CommonLookUp fetchById(UUID id) {
     CorporateEnquiry enquiry =
         repository
@@ -72,6 +74,7 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<CommonLookUp> locationFetchAll() {
     return locationListRepository.findAll().stream()
         .map(
@@ -84,6 +87,7 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   }
 
   @Override
+  @Transactional(readOnly = true)
   public CommonLookUp locationFetchById(UUID id) {
     CorpLocationList list =
         locationListRepository

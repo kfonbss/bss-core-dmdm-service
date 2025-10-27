@@ -13,6 +13,7 @@ import lombok.Setter;
 public class CorpLocationList extends Auditor {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "list_id", nullable = false)
   private UUID listId;
 
