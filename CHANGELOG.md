@@ -80,6 +80,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Get corporate enquiries and location list details
 
-## [0.1.10] - 2025-10-27
+## [0.2.0] - 2025-10-27
 ### Added
 - Get subscriber status type and account details
