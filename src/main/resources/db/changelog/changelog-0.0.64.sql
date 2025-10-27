@@ -118,6 +118,10 @@ DROP TABLE IF EXISTS corp_location_list CASCADE;
 CREATE TABLE corp_location_list (
   list_id UUID NOT NULL,
   id SERIAL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active BOOLEAN,
   corp_enq_id INTEGER DEFAULT NULL,
   status VARCHAR(150) DEFAULT '1',
   fe_id VARCHAR(150) DEFAULT NULL,
@@ -131,10 +135,7 @@ CREATE TABLE corp_location_list (
   address VARCHAR(500) DEFAULT NULL,
   lat VARCHAR(100) DEFAULT NULL,
   longt VARCHAR(100) DEFAULT NULL,
-  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  created_by VARCHAR(50) DEFAULT NULL,
-  is_active SMALLINT NOT NULL DEFAULT 1,
+  created_by_platform VARCHAR(50) DEFAULT NULL,
   contactno VARCHAR(10) DEFAULT NULL,
   constituency VARCHAR(100) DEFAULT NULL,
   gramapanchayath VARCHAR(256) DEFAULT NULL,
@@ -150,6 +151,7 @@ CREATE TABLE corp_location_list (
   scope VARCHAR(100) DEFAULT NULL,
   boq VARCHAR(100) DEFAULT NULL,
   pppoe_migration SMALLINT DEFAULT 0,
+    --0=No,1=Yes
   remarks TEXT,
   nearest_box_name VARCHAR(100) DEFAULT NULL,
   nearest_box_distance VARCHAR(100) DEFAULT NULL,
@@ -168,16 +170,43 @@ CREATE TABLE corp_location_list (
   nearest_box_longitude VARCHAR(100) DEFAULT NULL,
   est_fibre_qnty DECIMAL(10,2) DEFAULT NULL,
   bell_connected SMALLINT DEFAULT 0,
+  --0=No,1=Yes
   est_fibre_cost DECIMAL(10,2) DEFAULT NULL,
   feasibility_checked SMALLINT DEFAULT 0,
+  --0=No,1=Yes
+   created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   modified_date TIMESTAMP,
+   created_by UUID,
+   modified_by UUID,
   CONSTRAINT pk_corp_location_list PRIMARY KEY (list_id)
 );
 
-COMMENT ON COLUMN corp_location_list.is_active IS '0=Inactive,1=Active';
-COMMENT ON COLUMN corp_location_list.pppoe_migration IS '0=No,1=Yes';
-COMMENT ON COLUMN corp_location_list.bell_connected IS '0=No,1=Yes';
-COMMENT ON COLUMN corp_location_list.feasibility_checked IS '0=No,1=Yes';
-
+INSERT INTO corp_location_list (
+  list_id, id, code, name, name_in_local, is_active, corp_enq_id, status,
+  fe_id, partnerid, partnername, service_type, locname, district, pincode, location,
+  address, lat, longt, created_by_platform, contactno, constituency, gramapanchayath,
+  geolocaddress, contact_person, email_id, no_of_users, bandwidth_required,
+  no_of_private_ip, no_of_static_ip, no_of_eoffice_ip, pop_name, scope, boq,
+  pppoe_migration, remarks, nearest_box_name, nearest_box_distance, nearest_box_pop,
+  nearest_sub_id, nearest_sub_partnerid, nearest_sub_partnername, nearest_sub_partnermobile,
+  nearest_sub_distance, nearest_partner_id, nearest_partner_name, nearest_partner_mobile,
+  nearest_partner_distance, nearest_fe_id, nearest_box_latitude, nearest_box_longitude,
+  est_fibre_qnty, bell_connected, est_fibre_cost, feasibility_checked,
+  created_date, modified_date, created_by, modified_by
+)
+VALUES (
+  gen_random_uuid(), 1, 'CL001', 'Corporate Location 1', 'കോർപ്പറേറ്റ് സ്ഥലം 1', true, 1001, '1',
+  'FE123', 501, 'Partner A', 'Internet', 'Main Office', 'Kozhikode', 673001, 'City Center',
+  '123 Main Street, Kozhikode', '11.2588', '75.7804', 'Web', '9876543210', 'Kozhikode North', 'Panchayat A',
+  'Near Bus Stand', 'John Doe', 'info@example.com', 50, '100 Mbps',
+  5, 2, 1, 'POP-001', 'Full', 'BOQ-001',
+  1, 'Fiber connectivity required', 'Box A', '200m', 'POP-101',
+  10, 'SUB123', 'Sub Partner A', '9999988888',
+  0.75, 'P123', 'Partner A', '9999977777',
+  0.80, 301, '11.256', '75.782',
+  150.25, 1, 1200.50, 1,
+  CURRENT_TIMESTAMP, NULL, gen_random_uuid(), NULL
+);
 
 DROP TABLE IF EXISTS corpenaltyemail CASCADE;
 
@@ -198,6 +227,10 @@ DROP TABLE IF EXISTS corporate_enquiries CASCADE;
 
 CREATE TABLE corporate_enquiries (
   enquiries_id UUID NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active BOOLEAN,
   id SERIAL,
   company_name VARCHAR(100) DEFAULT NULL,
   contact_name VARCHAR(100) NOT NULL,
@@ -210,10 +243,11 @@ CREATE TABLE corporate_enquiries (
   fesible_status VARCHAR(100) DEFAULT NULL,
   status VARCHAR(100) DEFAULT 'Open',
   corp_source VARCHAR(50) NOT NULL DEFAULT 'web',
-  created_by VARCHAR(50) NOT NULL DEFAULT 'web',
-  is_active SMALLINT NOT NULL DEFAULT 1,
-  date_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  created_by_platform VARCHAR(50) NOT NULL DEFAULT 'web',
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   ticket_id INTEGER DEFAULT NULL,
   connection_type VARCHAR(50) DEFAULT NULL,
   file_name VARCHAR(200) DEFAULT NULL,
@@ -225,7 +259,71 @@ CREATE TABLE corporate_enquiries (
   CONSTRAINT pk_corporate_enquiries PRIMARY KEY (enquiries_id)
 );
 
-COMMENT ON COLUMN corporate_enquiries.is_active IS '0=Inactive,1=Active';
+INSERT INTO corporate_enquiries (
+  enquiries_id,
+  code,
+  name,
+  name_in_local,
+  is_active,
+  id,
+  company_name,
+  contact_name,
+  contact_number,
+  email_id,
+  latitude,
+  longitude,
+  company_address,
+  requested_service,
+  fesible_status,
+  status,
+  corp_source,
+  created_by_platform,
+  created_date,
+  modified_date,
+  created_by,
+  modified_by,
+  ticket_id,
+  connection_type,
+  file_name,
+  corp_enq_doc,
+  company_type,
+  remarks,
+  otp_value,
+  otp_send_time
+)
+VALUES (
+  gen_random_uuid(),
+  'ENQ001',
+  'John Doe',
+  'ജോൺ ഡോ',
+  TRUE,
+  DEFAULT,
+  'Tech Innovations Pvt Ltd',
+  'John Doe',
+  9876543210,
+  'john.doe@example.com',
+  '10.0156',
+  '76.3419',
+  '123, InfoPark Road, Kakkanad, Kochi',
+  'Corporate Internet Connection',
+  'Feasible',
+  'Open',
+  'web',
+  'system',
+  CURRENT_TIMESTAMP,
+  NULL,
+  NULL,
+  NULL,
+  1001,
+  'Fiber',
+  'quotation.pdf',
+  'proposal.docx',
+  'IT Company',
+  'Requested urgent connection setup.',
+  '123456',
+  CURRENT_TIMESTAMP
+);
+
 
 
 DROP TABLE IF EXISTS corporate_enquiries_movement CASCADE;
