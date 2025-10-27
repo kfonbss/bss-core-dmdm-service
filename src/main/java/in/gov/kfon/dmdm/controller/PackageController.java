@@ -57,4 +57,29 @@ public class PackageController {
     var data = service.fetchChangeRequestById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched change request"));
   }
+
+  @GetMapping
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPackages() {
+    var data = service.fetchAllPackages();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all packages"));
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPackageById(@PathVariable UUID id) {
+    var data = service.fetchPackagesById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched package"));
+  }
+
+  @GetMapping("/entities")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPackageEntities() {
+    var data = service.fetchAllPackage();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all package entities"));
+  }
+
+  @GetMapping("/entity/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPackageEntityById(@PathVariable UUID id) {
+    var data = service.fetchPackageById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched package entity"));
+  }
 }

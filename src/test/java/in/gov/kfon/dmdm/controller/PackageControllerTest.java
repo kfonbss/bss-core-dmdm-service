@@ -31,9 +31,13 @@ public class PackageControllerTest {
   private UUID idMap;
   private UUID idCategory;
   private UUID idChangeRequest;
+  private UUID idPackages;
+  private UUID idPackage;
   private CommonLookUp lookupMap;
   private CommonLookUp lookupCategory;
   private CommonLookUp lookupChangeRequest;
+  private CommonLookUp lookupPackages;
+  private CommonLookUp lookupPackage;
 
   @BeforeEach
   void setUp() {
@@ -42,6 +46,8 @@ public class PackageControllerTest {
     idMap = UUID.randomUUID();
     idCategory = UUID.randomUUID();
     idChangeRequest = UUID.randomUUID();
+    idPackages = UUID.randomUUID();
+    idPackage = UUID.randomUUID();
 
     lookupMap = new CommonLookUp();
     lookupMap.setId(idMap);
@@ -63,6 +69,20 @@ public class PackageControllerTest {
     lookupChangeRequest.setName("Change Request 1");
     lookupChangeRequest.setNameInLocal("ചേഞ്ച് റിക്വസ്റ്റ് 1");
     lookupChangeRequest.setIsActive(true);
+
+    lookupPackages = new CommonLookUp();
+    lookupPackages.setId(idPackages);
+    lookupPackages.setCode("PKGS001");
+    lookupPackages.setName("Internet Pack 1");
+    lookupPackages.setNameInLocal("ഇന്റർനെറ്റ് പാക്ക് 1");
+    lookupPackages.setIsActive(true);
+
+    lookupPackage = new CommonLookUp();
+    lookupPackage.setId(idPackage);
+    lookupPackage.setCode("PKG001");
+    lookupPackage.setName("Regular Pack 1");
+    lookupPackage.setNameInLocal("റെഗുലർ പാക്ക് 1");
+    lookupPackage.setIsActive(true);
   }
 
   @Test
@@ -137,5 +157,53 @@ public class PackageControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched change request"))
         .andExpect(jsonPath("$.data.id").value(idChangeRequest.toString()));
+  }
+
+  @Test
+  void testFetchAllPackages() throws Exception {
+    when(service.fetchAllPackages()).thenReturn(List.of(lookupPackages));
+
+    mockMvc
+        .perform(get("/api/package"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all packages"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idPackages.toString()));
+  }
+
+  @Test
+  void testFetchPackageById() throws Exception {
+    when(service.fetchPackagesById(idPackages)).thenReturn(lookupPackages);
+
+    mockMvc
+        .perform(get("/api/package/{id}", idPackages))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched package"))
+        .andExpect(jsonPath("$.data.id").value(idPackages.toString()));
+  }
+
+  @Test
+  void testFetchAllPackageEntities() throws Exception {
+    when(service.fetchAllPackage()).thenReturn(List.of(lookupPackage));
+
+    mockMvc
+        .perform(get("/api/package/entities"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all package entities"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idPackage.toString()));
+  }
+
+  @Test
+  void testFetchPackageEntityById() throws Exception {
+    when(service.fetchPackageById(idPackage)).thenReturn(lookupPackage);
+
+    mockMvc
+        .perform(get("/api/package/entity/{id}", idPackage))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched package entity"))
+        .andExpect(jsonPath("$.data.id").value(idPackage.toString()));
   }
 }

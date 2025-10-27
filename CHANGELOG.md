@@ -67,3 +67,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.6] - 2025-10-25
 ### Added
 - Get package change request details
+
+## [0.1.7] - 2025-10-27
+### Added
+- Get package and packages details
