@@ -13,4 +13,8 @@ public interface PackageService {
   List<CommonLookUp> fetchAllPackageCategories();
 
   CommonLookUp fetchPackageCategoryById(UUID id);
+
+  List<CommonLookUp> fetchAllChangeRequests();
+
+  CommonLookUp fetchChangeRequestById(UUID id);
 }

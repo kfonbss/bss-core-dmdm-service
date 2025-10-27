@@ -44,4 +44,17 @@ public class PackageController {
     var data = service.fetchPackageCategoryById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched package category"));
   }
+
+  @GetMapping("/change-requests")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllChangeRequests() {
+    var data = service.fetchAllChangeRequests();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all change requests"));
+  }
+
+  @GetMapping("/change-request/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchChangeRequestById(@PathVariable UUID id) {
+    var data = service.fetchChangeRequestById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched change request"));
+  }
 }

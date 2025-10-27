@@ -5,8 +5,10 @@ import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.PackageCategory;
+import in.gov.kfon.dmdm.model.PackageChangeRequests;
 import in.gov.kfon.dmdm.model.PackageMap;
 import in.gov.kfon.dmdm.repository.PackageCategoryRepository;
+import in.gov.kfon.dmdm.repository.PackageChangeRequestsRepository;
 import in.gov.kfon.dmdm.repository.PackageMapRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
@@ -23,16 +25,20 @@ public class PackageServiceImplTest {
 
   @Mock private PackageMapRepository mapRepository;
   @Mock private PackageCategoryRepository categoryRepository;
+  @Mock private PackageChangeRequestsRepository changeRequestRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private PackageServiceImpl service;
 
   private UUID idMap;
   private UUID idCategory;
+  private UUID idChangeRequest;
   private PackageMap packageMap;
   private PackageCategory packageCategory;
+  private PackageChangeRequests changeRequest;
   private CommonLookUp lookupMap;
   private CommonLookUp lookupCategory;
+  private CommonLookUp lookupChangeRequest;
 
   @BeforeEach
   void setUp() {
@@ -40,6 +46,7 @@ public class PackageServiceImplTest {
 
     idMap = UUID.randomUUID();
     idCategory = UUID.randomUUID();
+    idChangeRequest = UUID.randomUUID();
 
     packageMap = new PackageMap();
     packageMap.setId(idMap);
@@ -56,6 +63,14 @@ public class PackageServiceImplTest {
     lookupCategory = new CommonLookUp();
     lookupCategory.setId(idCategory);
     lookupCategory.setName("Internet Packages");
+
+    changeRequest = new PackageChangeRequests();
+    changeRequest.setId(idChangeRequest);
+    changeRequest.setName("Change Request 1");
+
+    lookupChangeRequest = new CommonLookUp();
+    lookupChangeRequest.setId(idChangeRequest);
+    lookupChangeRequest.setName("Change Request 1");
   }
 
   @Test
@@ -111,5 +126,34 @@ public class PackageServiceImplTest {
         assertThrows(
             EntityNotFoundException.class, () -> service.fetchPackageCategoryById(idCategory));
     assertEquals("PackageCategory not found with id: " + idCategory, exception.getMessage());
+  }
+
+  @Test
+  void testFetchAllPackageChangeRequests() {
+    when(changeRequestRepository.findAll()).thenReturn(List.of(changeRequest));
+    when(modelMapper.map(changeRequest, CommonLookUp.class)).thenReturn(lookupChangeRequest);
+
+    List<CommonLookUp> result = service.fetchAllChangeRequests();
+    assertEquals(1, result.size());
+    assertEquals(idChangeRequest, result.get(0).getId());
+  }
+
+  @Test
+  void testFetchPackageChangeRequestById_Success() {
+    when(changeRequestRepository.findById(idChangeRequest)).thenReturn(Optional.of(changeRequest));
+    when(modelMapper.map(changeRequest, CommonLookUp.class)).thenReturn(lookupChangeRequest);
+
+    CommonLookUp result = service.fetchChangeRequestById(idChangeRequest);
+    assertEquals(idChangeRequest, result.getId());
+  }
+
+  @Test
+  void testFetchById_NotFound() {
+    when(changeRequestRepository.findById(idChangeRequest)).thenReturn(Optional.empty());
+    EntityNotFoundException exception =
+        assertThrows(
+            EntityNotFoundException.class, () -> service.fetchChangeRequestById(idChangeRequest));
+    assertEquals("ChangeRequest not found with id: " + idChangeRequest, exception.getMessage());
+    verify(changeRequestRepository, times(1)).findById(idChangeRequest);
   }
 }
