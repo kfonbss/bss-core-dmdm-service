@@ -2,8 +2,8 @@
 DROP TABLE IF EXISTS subscriber_feedback;
 
 CREATE TABLE subscriber_feedback (
-    feedback_id UUID NOT NULL PRIMARY KEY,
-    id BIGSERIAL,
+    id UUID NOT NULL PRIMARY KEY,
+    feedback_id SERIAL,
     subscriberid BIGINT,
     username VARCHAR(256),
     partnerid BIGINT,
@@ -12,8 +12,19 @@ CREATE TABLE subscriber_feedback (
     circle VARCHAR(100),
     rating INTEGER,
     feedback TEXT,
-    status INT DEFAULT 1
+    status INT DEFAULT 1,
+    code VARCHAR(50),
+    name VARCHAR(256),
+    name_in_local VARCHAR(256),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO subscriber_feedback (id, feedback_id, subscriberid, username, partnerid, partnername, ticketid, circle, rating, feedback, status, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES (gen_random_uuid(), 1, 1234567890, 'john_doe', 1001, 'Partner Inc', 9876543210, 'Mumbai', 5, 'Very satisfied with the service', 1, 'FB001', 'Feedback Example', 'ഫീഡ്ബാക്ക് ഉദാഹരണം', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- subscriber_offers
@@ -24,9 +35,20 @@ CREATE TABLE subscriber_offers (
     slno SERIAL,
     subscriberid INTEGER,
     applied_date TIMESTAMP,
-    partnerid VARCHAR(45)
+    partnerid VARCHAR(45),
+    code VARCHAR(50),
+    name VARCHAR(256),
+    name_in_local VARCHAR(256),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
 
+INSERT INTO subscriber_offers (id, subscriberid, applied_date, partnerid, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1001, NOW(), '2001', 'OF001', 'Offer 1', 'ഓഫർ 1', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 -- subscriber_status_type
 DROP TABLE IF EXISTS subscriber_status_type;
