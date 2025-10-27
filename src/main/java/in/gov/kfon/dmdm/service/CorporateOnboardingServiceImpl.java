@@ -1,14 +1,8 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-import in.gov.kfon.dmdm.model.CeConnectionBreakup;
-import in.gov.kfon.dmdm.model.CeConnectionBreakupMovement;
-import in.gov.kfon.dmdm.model.CorpLocationList;
-import in.gov.kfon.dmdm.model.CorporateEnquiry;
-import in.gov.kfon.dmdm.repository.CeConnectionBreakupMovementRepository;
-import in.gov.kfon.dmdm.repository.CeConnectionBreakupRepository;
-import in.gov.kfon.dmdm.repository.CorpLocationListRepository;
-import in.gov.kfon.dmdm.repository.CorporateEnquiryRepository;
+import in.gov.kfon.dmdm.model.*;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
@@ -29,6 +23,7 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CorpLocationListRepository locationListRepository;
   private final CeConnectionBreakupRepository connectionBreakupRepository;
   private final CeConnectionBreakupMovementRepository movementRepository;
+  private final CeConnectionBreakupRevisionRepository revisionRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -143,5 +138,23 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Not found with id: " + id));
     return modelMapper.map(movement, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> cMovementsFetchAll() {
+    return revisionRepository.findAll().stream()
+        .map(connection -> modelMapper.map(connection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp cMovementFetchById(UUID id) {
+    CeConnectionBreakupMovementRevision revision =
+        revisionRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Not found with id: " + id));
+    return modelMapper.map(revision, CommonLookUp.class);
   }
 }
