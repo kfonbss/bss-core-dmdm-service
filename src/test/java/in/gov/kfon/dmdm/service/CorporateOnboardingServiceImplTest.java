@@ -24,6 +24,7 @@ class CorporateOnboardingServiceImplTest {
   private CeConnectionBreakupRevisionRepository breakupRevisionRepository;
   private CeCustomerRepository customerRepository;
   private CorporateOnboardingServiceImpl service;
+  private CeDisbursementRepository disbursementRepository;
 
   @BeforeEach
   void setUp() {
@@ -34,7 +35,7 @@ class CorporateOnboardingServiceImplTest {
     movementRepository = mock(CeConnectionBreakupMovementRepository.class);
     breakupRevisionRepository = mock(CeConnectionBreakupRevisionRepository.class);
     customerRepository = mock(CeCustomerRepository.class);
-
+    disbursementRepository = mock(CeDisbursementRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -43,7 +44,8 @@ class CorporateOnboardingServiceImplTest {
             connectionBreakupRepository,
             movementRepository,
             breakupRevisionRepository,
-            customerRepository);
+            customerRepository,
+            disbursementRepository);
 
     service.setupMapper();
   }
@@ -268,5 +270,40 @@ class CorporateOnboardingServiceImplTest {
     when(customerRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.customerFetchById(id));
+  }
+
+  @Test
+  void testDisbursementFetchAll_ShouldReturnMappedList() {
+    CeDisbursement customer = new CeDisbursement();
+    customer.setId(UUID.randomUUID());
+
+    when(disbursementRepository.findAll()).thenReturn(List.of(customer));
+
+    List<CommonLookUp> result = service.disbursementsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(disbursementRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testDisbursementFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeDisbursement customer = new CeDisbursement();
+    customer.setId(id);
+
+    when(disbursementRepository.findById(id)).thenReturn(Optional.of(customer));
+
+    CommonLookUp result = service.disbursementFetchById(id);
+
+    assertNotNull(result);
+    verify(disbursementRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testDisbursementFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(disbursementRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.disbursementFetchById(id));
   }
 }
