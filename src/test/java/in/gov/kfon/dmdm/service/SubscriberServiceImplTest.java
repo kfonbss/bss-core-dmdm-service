@@ -4,10 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.model.SubscriberAccount;
 import in.gov.kfon.dmdm.model.SubscriberFeedback;
 import in.gov.kfon.dmdm.model.SubscriberOffers;
+import in.gov.kfon.dmdm.model.SubscriberStatusType;
+import in.gov.kfon.dmdm.repository.SubscriberAccountRepository;
 import in.gov.kfon.dmdm.repository.SubscriberFeedbackRepository;
 import in.gov.kfon.dmdm.repository.SubscriberOffersRepository;
+import in.gov.kfon.dmdm.repository.SubscriberStatusTypeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -23,16 +27,24 @@ public class SubscriberServiceImplTest {
 
   @Mock private SubscriberFeedbackRepository feedbackRepository;
   @Mock private SubscriberOffersRepository offersRepository;
+  @Mock private SubscriberStatusTypeRepository statusRepository;
+  @Mock private SubscriberAccountRepository accountRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private SubscriberServiceImpl service;
 
   private UUID feedbackId;
   private UUID offerId;
+  private UUID statusId;
+  private UUID accountId;
   private SubscriberFeedback feedback;
   private SubscriberOffers offer;
+  private SubscriberStatusType status;
+  private SubscriberAccount account;
   private CommonLookUp lookupFeedback;
   private CommonLookUp lookupOffer;
+  private CommonLookUp lookupStatus;
+  private CommonLookUp lookupAccount;
 
   @BeforeEach
   void setUp() {
@@ -40,6 +52,8 @@ public class SubscriberServiceImplTest {
 
     feedbackId = UUID.randomUUID();
     offerId = UUID.randomUUID();
+    statusId = UUID.randomUUID();
+    accountId = UUID.randomUUID();
 
     feedback = new SubscriberFeedback();
     feedback.setId(feedbackId);
@@ -55,6 +69,23 @@ public class SubscriberServiceImplTest {
     offer.setNameInLocal("ഓഫർ 1");
     offer.setIsActive(true);
 
+    status = new SubscriberStatusType();
+    status.setId(statusId);
+    status.setCode("ST001");
+    status.setName("Active");
+    status.setNameInLocal("സജീവം");
+    status.setIsActive(true);
+    status.setDescription("Active subscriber status");
+
+    account = new SubscriberAccount();
+    account.setId(accountId);
+    account.setSubscriberid(1001);
+    account.setBalance(new java.math.BigDecimal("500.00"));
+    account.setIsActive(true);
+    account.setCode("ACC001");
+    account.setName("Subscriber Account 1");
+    account.setNameInLocal("സബ്സ്ക്രൈബർ അക്കൗണ്ട് 1");
+
     lookupFeedback = new CommonLookUp();
     lookupFeedback.setId(feedbackId);
     lookupFeedback.setCode("FB001");
@@ -68,6 +99,20 @@ public class SubscriberServiceImplTest {
     lookupOffer.setName("Offer 1");
     lookupOffer.setNameInLocal("ഓഫർ 1");
     lookupOffer.setIsActive(true);
+
+    lookupStatus = new CommonLookUp();
+    lookupStatus.setId(UUID.randomUUID());
+    lookupStatus.setCode("ST001");
+    lookupStatus.setName("Active");
+    lookupStatus.setNameInLocal("സജീവം");
+    lookupStatus.setIsActive(true);
+
+    lookupAccount = new CommonLookUp();
+    lookupAccount.setId(accountId);
+    lookupAccount.setCode("ACC001");
+    lookupAccount.setName("Subscriber Account 1");
+    lookupAccount.setNameInLocal("സബ്സ്ക്രൈബർ അക്കൗണ്ട് 1");
+    lookupAccount.setIsActive(true);
   }
 
   @Test
@@ -128,5 +173,62 @@ public class SubscriberServiceImplTest {
         assertThrows(EntityNotFoundException.class, () -> service.fetchOfferById(offerId));
 
     assertEquals("SubscriberOffer not found with id: " + offerId, exception.getMessage());
+  }
+
+  @Test
+  void testFetchAllStatusTypes() {
+    when(statusRepository.findAll()).thenReturn(List.of(status));
+    when(modelMapper.map(status, CommonLookUp.class)).thenReturn(lookupStatus);
+
+    List<CommonLookUp> result = service.fetchAllSubscriberStatusTypes();
+    assertEquals(1, result.size());
+  }
+
+  @Test
+  void testFetchSubscriberStatusTypeById_Success() {
+    when(statusRepository.findById(statusId)).thenReturn(Optional.of(status));
+    when(modelMapper.map(status, CommonLookUp.class)).thenReturn(lookupStatus);
+
+    CommonLookUp result = service.fetchSubscriberStatusTypeById(statusId);
+    assertNotNull(result);
+  }
+
+  @Test
+  void testFetchSubscriberStatusTypeById_NotFound() {
+    when(statusRepository.findById(statusId)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(
+            EntityNotFoundException.class, () -> service.fetchSubscriberStatusTypeById(statusId));
+    assertEquals("SubscriberStatusType not found with id: " + statusId, exception.getMessage());
+  }
+
+  @Test
+  void testFetchAllSubscriberAccounts() {
+    when(accountRepository.findAll()).thenReturn(List.of(account));
+    when(modelMapper.map(account, CommonLookUp.class)).thenReturn(lookupAccount);
+
+    List<CommonLookUp> result = service.fetchAllSubscriberAccounts();
+    assertEquals(1, result.size());
+  }
+
+  @Test
+  void testFetchSubscriberAccountById_Success() {
+    when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
+    when(modelMapper.map(account, CommonLookUp.class)).thenReturn(lookupAccount);
+
+    CommonLookUp result = service.fetchSubscriberAccountById(accountId);
+    assertNotNull(result);
+    assertEquals(accountId, result.getId());
+  }
+
+  @Test
+  void testFetchSubscriberAccountById_NotFound() {
+    when(accountRepository.findById(accountId)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(
+            EntityNotFoundException.class, () -> service.fetchSubscriberAccountById(accountId));
+    assertEquals("SubscriberAccount not found with id: " + accountId, exception.getMessage());
   }
 }

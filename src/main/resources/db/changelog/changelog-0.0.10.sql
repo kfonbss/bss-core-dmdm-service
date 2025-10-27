@@ -54,12 +54,28 @@ VALUES
 DROP TABLE IF EXISTS subscriber_status_type;
 
 CREATE TABLE subscriber_status_type (
-    status_id SERIAL PRIMARY KEY,
-    description VARCHAR(100)
+    id UUID NOT NULL PRIMARY KEY,
+    status_id SERIAL,
+    description VARCHAR(100),
+    code VARCHAR(50),
+    name VARCHAR(100),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
 
 CREATE INDEX idx_subscriber_status_type_description
     ON subscriber_status_type(description);
+
+INSERT INTO subscriber_status_type (
+    id, status_id, description, code, name, name_in_local, is_active,
+    created_date, modified_date, created_by, modified_by
+) VALUES (gen_random_uuid(), 1, 'Active subscriber status', 'STAT001', 'Active', 'സജീവം', TRUE,
+    NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 
 -- subscriberaccount
@@ -69,9 +85,23 @@ CREATE TABLE subscriberaccount (
     id UUID NOT NULL PRIMARY KEY,
     subscriberid INTEGER,
     balance NUMERIC(13,2),
-    lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    code VARCHAR(50),
+    name VARCHAR(100),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
 
+
+INSERT INTO subscriberaccount (
+    id, subscriberid, balance, code, name, name_in_local, is_active,
+    created_date, modified_date, created_by, modified_by
+) VALUES (gen_random_uuid(), 1001, 250.50, 'ACC001', 'John Doe', 'ജോൺ ഡോ', TRUE,
+    NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 -- subscriberaccountstaticip
 DROP TABLE IF EXISTS subscriberaccountstaticip;

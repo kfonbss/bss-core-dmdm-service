@@ -33,6 +33,11 @@ public class SubscriberControllerTest {
   private CommonLookUp lookupFeedback;
   private CommonLookUp lookupOffer;
 
+  private UUID idStatusType;
+  private UUID idSubscriberAccount;
+  private CommonLookUp lookupStatusType;
+  private CommonLookUp lookupSubscriberAccount;
+
   @BeforeEach
   void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
@@ -53,6 +58,23 @@ public class SubscriberControllerTest {
     lookupOffer.setName("Offer 1");
     lookupOffer.setNameInLocal("ഓഫർ 1");
     lookupOffer.setIsActive(true);
+
+    idStatusType = UUID.randomUUID();
+    idSubscriberAccount = UUID.randomUUID();
+
+    lookupStatusType = new CommonLookUp();
+    lookupStatusType.setId(idStatusType);
+    lookupStatusType.setCode("STAT001");
+    lookupStatusType.setName("Active");
+    lookupStatusType.setNameInLocal("സജീവം");
+    lookupStatusType.setIsActive(true);
+
+    lookupSubscriberAccount = new CommonLookUp();
+    lookupSubscriberAccount.setId(idSubscriberAccount);
+    lookupSubscriberAccount.setCode("ACC001");
+    lookupSubscriberAccount.setName("John Doe");
+    lookupSubscriberAccount.setNameInLocal("ജോൺ ഡോ");
+    lookupSubscriberAccount.setIsActive(true);
   }
 
   @Test
@@ -103,5 +125,56 @@ public class SubscriberControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched subscriber offer"))
         .andExpect(jsonPath("$.data.id").value(offerId.toString()))
         .andExpect(jsonPath("$.data.name").value("Offer 1"));
+  }
+
+  @Test
+  void testFetchAllSubscriberStatusTypes() throws Exception {
+    when(service.fetchAllSubscriberStatusTypes()).thenReturn(List.of(lookupStatusType));
+
+    mockMvc
+        .perform(get("/api/subscriber/status-types"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all subscriber status types"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idStatusType.toString()));
+  }
+
+  @Test
+  void testFetchSubscriberStatusTypeById() throws Exception {
+    when(service.fetchSubscriberStatusTypeById(idStatusType)).thenReturn(lookupStatusType);
+
+    mockMvc
+        .perform(get("/api/subscriber/status-type/{id}", idStatusType))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched subscriber status type"))
+        .andExpect(jsonPath("$.data.id").value(idStatusType.toString()))
+        .andExpect(jsonPath("$.data.name").value("Active"));
+  }
+
+  @Test
+  void testFetchAllSubscriberAccounts() throws Exception {
+    when(service.fetchAllSubscriberAccounts()).thenReturn(List.of(lookupSubscriberAccount));
+
+    mockMvc
+        .perform(get("/api/subscriber/accounts"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all subscriber accounts"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idSubscriberAccount.toString()));
+  }
+
+  @Test
+  void testFetchSubscriberAccountById() throws Exception {
+    when(service.fetchSubscriberAccountById(idSubscriberAccount))
+        .thenReturn(lookupSubscriberAccount);
+
+    mockMvc
+        .perform(get("/api/subscriber/account/{id}", idSubscriberAccount))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched subscriber account"))
+        .andExpect(jsonPath("$.data.id").value(idSubscriberAccount.toString()))
+        .andExpect(jsonPath("$.data.name").value("John Doe"));
   }
 }
