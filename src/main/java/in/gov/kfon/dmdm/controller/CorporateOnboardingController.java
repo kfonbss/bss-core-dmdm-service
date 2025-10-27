@@ -42,4 +42,28 @@ public class CorporateOnboardingController {
     var data = service.locationFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
+
+  @GetMapping("connection-breakups/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> connectionsFetchAll() {
+    var data = service.connectionsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("connection-breakup/{id}")
+  public ResponseEntity<Response<CommonLookUp>> connectionFetchById(@PathVariable UUID id) {
+    var data = service.connectionFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("movement-breakups/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> movementsFetchAll() {
+    var data = service.movementsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("movement-breakup/{id}")
+  public ResponseEntity<Response<CommonLookUp>> movementFetchById(@PathVariable UUID id) {
+    var data = service.movementFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
 }

@@ -150,6 +150,10 @@ DROP TABLE IF EXISTS ce_connection_breakup CASCADE;
 
 CREATE TABLE ce_connection_breakup (
   breakup_id UUID NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active BOOLEAN,
   id SERIAL,
   serviceid int DEFAULT NULL,
   quoationid int DEFAULT NULL,
@@ -159,33 +163,40 @@ CREATE TABLE ce_connection_breakup (
   discount decimal(5,1) DEFAULT 0.0,
   description varchar(250) DEFAULT NULL,
   alternate_name varchar(250) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_connection_breakup PRIMARY KEY (breakup_id)
 );
 
-COMMENT ON COLUMN ce_connection_breakup.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_connection_breakup (breakup_id, code, name, name_in_local, is_active, serviceid, quoationid, packageid, otc_cost, noof_connections, discount, description, alternate_name, created_by, modified_by)
+VALUES ('2a9e5e6f-58e3-4b94-9b91-fc7e2f8e2a19', 'CE001', 'Enterprise Fiber Connection', 'എന്റർപ്രൈസ് ഫൈബർ കണക്ഷൻ', TRUE, 101, 2001, 3001, 2500, 5, 10.0, 'High-speed enterprise fiber plan for corporate clients', 'Corporate Fiber Plan', 'b9fba2de-72b8-4d21-8cf3-6c9e1b9ad8ff', 'b9fba2de-72b8-4d21-8cf3-6c9e1b9ad8ff');
 
 
 DROP TABLE IF EXISTS ce_connection_breakup_movement CASCADE;
 
 CREATE TABLE ce_connection_breakup_movement (
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active BOOLEAN,
   movement_id UUID NOT NULL,
   id SERIAL,
   breakupid int DEFAULT NULL,
   quoationid int DEFAULT NULL,
   approve_status int DEFAULT NULL,
   discount int DEFAULT 0,
-  created_by varchar(128) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_by_platform varchar(128) DEFAULT NULL,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_connection_breakup_movement PRIMARY KEY (movement_id)
 );
 
-COMMENT ON COLUMN ce_connection_breakup_movement.is_active IS '0=In Active,1=Active';
-
+INSERT INTO ce_connection_breakup_movement (movement_id, code, name, name_in_local, is_active, breakupId, quoationId, approve_status, discount, created_by_platform, created_by, modified_by)
+VALUES ('b8e1c5f7-01a2-4db3-8a73-3c34f1d8d1c1', 'MOV001', 'Initial Connection Movement', 'ആദ്യ കണക്ഷൻ മൂവ്‌മെന്റ്', TRUE, 101, 2001, 1, 5, 'WebPortal', 'c7a4e8a3-23ef-4d8b-a7e5-1a2b3c4d5e6f', 'c7a4e8a3-23ef-4d8b-a7e5-1a2b3c4d5e6f');
 
 DROP TABLE IF EXISTS ce_connection_breakup_movement_revision CASCADE;
 
