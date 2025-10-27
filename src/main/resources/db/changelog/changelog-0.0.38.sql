@@ -202,21 +202,24 @@ DROP TABLE IF EXISTS ce_connection_breakup_movement_revision CASCADE;
 
 CREATE TABLE ce_connection_breakup_movement_revision (
   revision_id UUID NOT NULL,
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   breakupid int DEFAULT NULL,
   quoationid int DEFAULT NULL,
   approve_status int DEFAULT NULL,
   discount int DEFAULT 0,
-  created_by varchar(128) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_by_platform varchar(128) DEFAULT NULL,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   migrated int DEFAULT NULL,
   CONSTRAINT pk_ce_connection_breakup_movement_revision PRIMARY KEY (revision_id)
 );
-
-COMMENT ON COLUMN ce_connection_breakup_movement_revision.is_active IS '0=In Active,1=Active';
-
+INSERT INTO ce_connection_breakup_movement_revision (revision_id, name, name_in_local, is_active, breakupId, quoationId, approve_status, discount, created_by_platform, created_by, modified_by, migrated)
+VALUES ('9c7d2e2f-45b8-4f32-9b77-9e6b9a2a1f77', 'Revised Connection Movement', 'പുനഃപരിശോധിച്ച കണക്ഷൻ മൂവ്‌മെന്റ്', TRUE, 101, 2001, 2, 15, 'AdminPortal', 'b1f7c2e3-12a4-4f5b-8c7a-9d2e4f6a1b8c', 'b1f7c2e3-12a4-4f5b-8c7a-9d2e4f6a1b8c', 0);
 
 DROP TABLE IF EXISTS ce_customers CASCADE;
 

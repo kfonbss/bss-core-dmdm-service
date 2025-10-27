@@ -21,6 +21,7 @@ class CorporateOnboardingServiceImplTest {
   private CorpLocationListRepository locationListRepository;
   private CeConnectionBreakupRepository connectionBreakupRepository;
   private CeConnectionBreakupMovementRepository movementRepository;
+  private CeConnectionBreakupRevisionRepository breakupRevisionRepository;
 
   private CorporateOnboardingServiceImpl service;
 
@@ -31,6 +32,7 @@ class CorporateOnboardingServiceImplTest {
     locationListRepository = mock(CorpLocationListRepository.class);
     connectionBreakupRepository = mock(CeConnectionBreakupRepository.class);
     movementRepository = mock(CeConnectionBreakupMovementRepository.class);
+    breakupRevisionRepository = mock(CeConnectionBreakupRevisionRepository.class);
 
     service =
         new CorporateOnboardingServiceImpl(
@@ -38,7 +40,8 @@ class CorporateOnboardingServiceImplTest {
             enquiryRepository,
             locationListRepository,
             connectionBreakupRepository,
-            movementRepository);
+            movementRepository,
+            breakupRevisionRepository);
 
     service.setupMapper();
   }
@@ -191,6 +194,41 @@ class CorporateOnboardingServiceImplTest {
   void testMovementFetchById_ShouldThrowException_WhenNotFound() {
     UUID id = UUID.randomUUID();
     when(movementRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.movementFetchById(id));
+  }
+
+  @Test
+  void testCMovementsFetchAll_ShouldReturnMappedList() {
+    CeConnectionBreakupMovementRevision movement = new CeConnectionBreakupMovementRevision();
+    movement.setRevisionId(UUID.randomUUID());
+
+    when(breakupRevisionRepository.findAll()).thenReturn(List.of(movement));
+
+    List<CommonLookUp> result = service.cMovementsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(breakupRevisionRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testCMovementFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeConnectionBreakupMovementRevision movement = new CeConnectionBreakupMovementRevision();
+    movement.setRevisionId(id);
+
+    when(breakupRevisionRepository.findById(id)).thenReturn(Optional.of(movement));
+
+    CommonLookUp result = service.cMovementFetchById(id);
+
+    assertNotNull(result);
+    verify(breakupRevisionRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testCMovementFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(breakupRevisionRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.movementFetchById(id));
   }

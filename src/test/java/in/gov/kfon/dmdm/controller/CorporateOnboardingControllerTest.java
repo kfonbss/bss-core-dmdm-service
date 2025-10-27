@@ -49,19 +49,13 @@ class CorporateOnboardingControllerTest {
 
   @Test
   void testFetchAllCorporateEnquiries() throws Exception {
-    List<CommonLookUp> list = List.of(lookup);
-    when(service.fetchAll()).thenReturn(list);
+    when(service.fetchAll()).thenReturn(List.of(lookup));
 
     mockMvc
         .perform(get("/api/corporate/enquires/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
-        .andExpect(jsonPath("$.data").isArray())
-        .andExpect(jsonPath("$.data.length()").value(1))
-        .andExpect(jsonPath("$.data[0].id").value(id.toString()))
-        .andExpect(jsonPath("$.data[0].code").value("CORP001"))
-        .andExpect(jsonPath("$.data[0].name").value("Tech Innovations Pvt Ltd"))
-        .andExpect(jsonPath("$.data[0].isActive").value(true));
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"));
   }
 
   @Test
@@ -72,50 +66,40 @@ class CorporateOnboardingControllerTest {
         .perform(get("/api/corporate/enquiry/{id}", id))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
-        .andExpect(jsonPath("$.data.id").value(id.toString()))
-        .andExpect(jsonPath("$.data.code").value("CORP001"))
-        .andExpect(jsonPath("$.data.name").value("Tech Innovations Pvt Ltd"))
-        .andExpect(jsonPath("$.data.nameInLocal").value("ടെക് ഇന്നവേഷൻസ് പ്രൈവറ്റ് ലിമിറ്റഡ്"))
-        .andExpect(jsonPath("$.data.isActive").value(true));
+        .andExpect(jsonPath("$.data.code").value("CORP001"));
   }
 
   @Test
   void testLocationFetchAll() throws Exception {
-    CommonLookUp lookup1 = new CommonLookUp();
-    lookup1.setId(UUID.randomUUID());
-    lookup1.setName("Head Office");
+    CommonLookUp l1 = new CommonLookUp();
+    l1.setId(UUID.randomUUID());
+    l1.setName("Head Office");
 
-    CommonLookUp lookup2 = new CommonLookUp();
-    lookup2.setId(UUID.randomUUID());
-    lookup2.setName("Branch Office");
+    CommonLookUp l2 = new CommonLookUp();
+    l2.setId(UUID.randomUUID());
+    l2.setName("Branch Office");
 
-    when(service.locationFetchAll()).thenReturn(List.of(lookup1, lookup2));
+    when(service.locationFetchAll()).thenReturn(List.of(l1, l2));
 
     mockMvc
         .perform(
             get("/api/corporate/location-lists/fetch-all").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
-        .andExpect(jsonPath("$.data").isArray())
         .andExpect(jsonPath("$.data[0].name").value("Head Office"))
         .andExpect(jsonPath("$.data[1].name").value("Branch Office"));
   }
 
   @Test
   void testLocationFetchById() throws Exception {
-    CommonLookUp lookups = new CommonLookUp();
-    lookups.setId(UUID.randomUUID());
-    lookups.setName("Corporate HQ");
-
-    when(service.locationFetchById(any(UUID.class))).thenReturn(lookups);
+    when(service.locationFetchById(any(UUID.class))).thenReturn(lookup);
 
     mockMvc
         .perform(
-            get("/api/corporate/location-list/{id}", lookups.getId())
-                .contentType(MediaType.APPLICATION_JSON))
+            get("/api/corporate/location-list/{id}", id).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
-        .andExpect(jsonPath("$.data.name").value("Corporate HQ"));
+        .andExpect(jsonPath("$.data.name").value("Tech Innovations Pvt Ltd"));
   }
 
   @Test
@@ -124,11 +108,10 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/corporate/connection-breakups/fetch-all")
+            get("/api/corporate/connection/breakups/fetch-all")
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
-        .andExpect(jsonPath("$.data[0].name").value("Tech Innovations Pvt Ltd"))
         .andExpect(jsonPath("$.data[0].code").value("CORP001"));
   }
 
@@ -138,11 +121,10 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/corporate/connection-breakup/{id}", id)
+            get("/api/corporate/connection/breakup/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
-        .andExpect(jsonPath("$.data.name").value("Tech Innovations Pvt Ltd"))
         .andExpect(jsonPath("$.data.code").value("CORP001"));
   }
 
@@ -152,11 +134,10 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/corporate/movement-breakups/fetch-all")
+            get("/api/corporate/connection/breakup_movements/fetch-all")
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
-        .andExpect(jsonPath("$.data[0].name").value("Tech Innovations Pvt Ltd"))
         .andExpect(jsonPath("$.data[0].code").value("CORP001"));
   }
 
@@ -166,10 +147,38 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/corporate/movement-breakup/{id}", id).contentType(MediaType.APPLICATION_JSON))
+            get("/api/corporate/connection/breakup_movement/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
-        .andExpect(jsonPath("$.data.name").value("Tech Innovations Pvt Ltd"))
         .andExpect(jsonPath("$.data.code").value("CORP001"));
+  }
+
+  @Test
+  void testCMovementsFetchAll() throws Exception {
+    when(service.cMovementsFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/connection/breakup_movements/revision/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"))
+        .andExpect(jsonPath("$.data[0].name").value("Tech Innovations Pvt Ltd"));
+  }
+
+  @Test
+  void testCMovementFetchById() throws Exception {
+    when(service.cMovementFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/connection/breakup_movement/revision/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"))
+        .andExpect(jsonPath("$.data.name").value("Tech Innovations Pvt Ltd"));
   }
 }

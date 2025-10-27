@@ -20,4 +20,8 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> movementsFetchAll();
 
   CommonLookUp movementFetchById(UUID id);
+
+  List<CommonLookUp> cMovementsFetchAll();
+
+  CommonLookUp cMovementFetchById(UUID id);
 }
