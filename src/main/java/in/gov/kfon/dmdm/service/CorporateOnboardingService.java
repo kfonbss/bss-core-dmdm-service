@@ -12,4 +12,12 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> locationFetchAll();
 
   CommonLookUp locationFetchById(UUID id);
+
+  List<CommonLookUp> connectionsFetchAll();
+
+  CommonLookUp connectionFetchById(UUID id);
+
+  List<CommonLookUp> movementsFetchAll();
+
+  CommonLookUp movementFetchById(UUID id);
 }

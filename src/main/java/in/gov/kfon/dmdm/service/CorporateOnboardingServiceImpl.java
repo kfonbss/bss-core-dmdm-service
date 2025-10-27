@@ -1,8 +1,12 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.model.CeConnectionBreakup;
+import in.gov.kfon.dmdm.model.CeConnectionBreakupMovement;
 import in.gov.kfon.dmdm.model.CorpLocationList;
 import in.gov.kfon.dmdm.model.CorporateEnquiry;
+import in.gov.kfon.dmdm.repository.CeConnectionBreakupMovementRepository;
+import in.gov.kfon.dmdm.repository.CeConnectionBreakupRepository;
 import in.gov.kfon.dmdm.repository.CorpLocationListRepository;
 import in.gov.kfon.dmdm.repository.CorporateEnquiryRepository;
 import jakarta.annotation.PostConstruct;
@@ -23,6 +27,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final ModelMapper modelMapper;
   private final CorporateEnquiryRepository repository;
   private final CorpLocationListRepository locationListRepository;
+  private final CeConnectionBreakupRepository connectionBreakupRepository;
+  private final CeConnectionBreakupMovementRepository movementRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -101,5 +107,41 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
     lookup.setId(list.getListId());
 
     return lookup;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> connectionsFetchAll() {
+    return connectionBreakupRepository.findAll().stream()
+        .map(connection -> modelMapper.map(connection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp connectionFetchById(UUID id) {
+
+    CeConnectionBreakup breakup =
+        connectionBreakupRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Not found with id: " + id));
+    return modelMapper.map(breakup, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> movementsFetchAll() {
+    return movementRepository.findAll().stream()
+        .map(connection -> modelMapper.map(connection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp movementFetchById(UUID id) {
+    CeConnectionBreakupMovement movement =
+        movementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Not found with id: " + id));
+    return modelMapper.map(movement, CommonLookUp.class);
   }
 }

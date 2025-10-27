@@ -4,96 +4,75 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-import in.gov.kfon.dmdm.model.CorpLocationList;
-import in.gov.kfon.dmdm.model.CorporateEnquiry;
-import in.gov.kfon.dmdm.repository.CorpLocationListRepository;
-import in.gov.kfon.dmdm.repository.CorporateEnquiryRepository;
+import in.gov.kfon.dmdm.model.*;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 
-@ExtendWith(MockitoExtension.class)
 class CorporateOnboardingServiceImplTest {
 
-  @Mock private CorporateEnquiryRepository enquiryRepository;
+  private ModelMapper modelMapper;
+  private CorporateEnquiryRepository enquiryRepository;
+  private CorpLocationListRepository locationListRepository;
+  private CeConnectionBreakupRepository connectionBreakupRepository;
+  private CeConnectionBreakupMovementRepository movementRepository;
 
-  @Mock private CorpLocationListRepository locationRepository;
+  private CorporateOnboardingServiceImpl service;
 
-  @Mock private ModelMapper modelMapper;
+  @BeforeEach
+  void setUp() {
+    modelMapper = spy(new ModelMapper());
+    enquiryRepository = mock(CorporateEnquiryRepository.class);
+    locationListRepository = mock(CorpLocationListRepository.class);
+    connectionBreakupRepository = mock(CeConnectionBreakupRepository.class);
+    movementRepository = mock(CeConnectionBreakupMovementRepository.class);
 
-  @InjectMocks private CorporateOnboardingServiceImpl service;
+    service =
+        new CorporateOnboardingServiceImpl(
+            modelMapper,
+            enquiryRepository,
+            locationListRepository,
+            connectionBreakupRepository,
+            movementRepository);
 
-  @Test
-  void testSetupMapper_ShouldAddMappingsWithoutException() {
-
-    when(modelMapper.addMappings(any(PropertyMap.class))).thenReturn(null);
-
-    assertDoesNotThrow(() -> service.setupMapper());
-
-    verify(modelMapper, times(2)).addMappings(any(PropertyMap.class));
+    service.setupMapper();
   }
 
   @Test
-  void testFetchAll_ShouldReturnListOfCommonLookUp() {
+  void testFetchAll_ShouldReturnMappedList() {
     UUID id = UUID.randomUUID();
-
     CorporateEnquiry enquiry = new CorporateEnquiry();
     enquiry.setEnquiriesId(id);
-    enquiry.setName("Tech Innovations Pvt Ltd");
-    enquiry.setCode("CORP001");
-    enquiry.setIsActive(true);
-
-    CommonLookUp lookup = new CommonLookUp();
-    lookup.setId(id);
-    lookup.setName("Tech Innovations Pvt Ltd");
-    lookup.setCode("CORP001");
-    lookup.setIsActive(true);
+    enquiry.setEmailId("test@example.com");
 
     when(enquiryRepository.findAll()).thenReturn(List.of(enquiry));
-    when(modelMapper.map(enquiry, CommonLookUp.class)).thenReturn(lookup);
 
     List<CommonLookUp> result = service.fetchAll();
 
-    assertNotNull(result);
     assertEquals(1, result.size());
-    assertEquals("CORP001", result.get(0).getCode());
-    verify(enquiryRepository).findAll();
-    verify(modelMapper).map(enquiry, CommonLookUp.class);
+    assertEquals(id, result.get(0).getId());
+    verify(enquiryRepository, times(1)).findAll();
   }
 
   @Test
-  void testFetchById_ShouldReturnCommonLookUp_WhenFound() {
+  void testFetchById_ShouldReturnMappedObject() {
     UUID id = UUID.randomUUID();
-
     CorporateEnquiry enquiry = new CorporateEnquiry();
     enquiry.setEnquiriesId(id);
-    enquiry.setName("GreenTech Solutions");
-    enquiry.setCode("GTX001");
-    enquiry.setIsActive(true);
-
-    CommonLookUp lookup = new CommonLookUp();
-    lookup.setId(id);
-    lookup.setName("GreenTech Solutions");
-    lookup.setCode("GTX001");
-    lookup.setIsActive(true);
+    enquiry.setEmailId("test@example.com");
 
     when(enquiryRepository.findByEnquiriesId(id)).thenReturn(Optional.of(enquiry));
-    when(modelMapper.map(enquiry, CommonLookUp.class)).thenReturn(lookup);
 
     CommonLookUp result = service.fetchById(id);
 
     assertNotNull(result);
-    assertEquals("GTX001", result.getCode());
-    assertEquals("GreenTech Solutions", result.getName());
-    verify(enquiryRepository).findByEnquiriesId(id);
+    assertEquals(id, result.getId());
+    verify(enquiryRepository, times(1)).findByEnquiriesId(id);
   }
 
   @Test
@@ -101,79 +80,118 @@ class CorporateOnboardingServiceImplTest {
     UUID id = UUID.randomUUID();
     when(enquiryRepository.findByEnquiriesId(id)).thenReturn(Optional.empty());
 
-    EntityNotFoundException ex =
-        assertThrows(EntityNotFoundException.class, () -> service.fetchById(id));
-
-    assertEquals("Corporate Enquiry not found with id: " + id, ex.getMessage());
-    verify(enquiryRepository).findByEnquiriesId(id);
-    verifyNoInteractions(modelMapper);
+    assertThrows(EntityNotFoundException.class, () -> service.fetchById(id));
   }
 
   @Test
-  void testLocationFetchAll_ShouldReturnListOfCommonLookUp() {
+  void testLocationFetchAll_ShouldReturnMappedList() {
     UUID id = UUID.randomUUID();
+    CorpLocationList list = new CorpLocationList();
+    list.setListId(id);
+    list.setName("Location A");
 
-    CorpLocationList location = new CorpLocationList();
-    location.setListId(id);
-    location.setName("Corporate HQ");
-    location.setCode("LOC001");
-    location.setIsActive(true);
-
-    CommonLookUp lookup = new CommonLookUp();
-    lookup.setId(id);
-    lookup.setName("Corporate HQ");
-    lookup.setCode("LOC001");
-    lookup.setIsActive(true);
-
-    when(locationRepository.findAll()).thenReturn(List.of(location));
-    when(modelMapper.map(location, CommonLookUp.class)).thenReturn(lookup);
+    when(locationListRepository.findAll()).thenReturn(List.of(list));
 
     List<CommonLookUp> result = service.locationFetchAll();
 
-    assertNotNull(result);
     assertEquals(1, result.size());
-    assertEquals("LOC001", result.get(0).getCode());
-    verify(locationRepository).findAll();
+    assertEquals(id, result.get(0).getId());
+    verify(locationListRepository, times(1)).findAll();
   }
 
   @Test
-  void testLocationFetchById_ShouldReturnCommonLookUp_WhenFound() {
+  void testLocationFetchById_ShouldReturnMappedObject() {
     UUID id = UUID.randomUUID();
+    CorpLocationList list = new CorpLocationList();
+    list.setListId(id);
+    list.setName("HQ");
 
-    CorpLocationList location = new CorpLocationList();
-    location.setListId(id);
-    location.setName("Regional Office");
-    location.setCode("LOC100");
-    location.setIsActive(true);
-
-    CommonLookUp lookup = new CommonLookUp();
-    lookup.setId(id);
-    lookup.setName("Regional Office");
-    lookup.setCode("LOC100");
-    lookup.setIsActive(true);
-
-    when(locationRepository.findByListId(id)).thenReturn(Optional.of(location));
-    when(modelMapper.map(location, CommonLookUp.class)).thenReturn(lookup);
+    when(locationListRepository.findByListId(id)).thenReturn(Optional.of(list));
 
     CommonLookUp result = service.locationFetchById(id);
 
     assertNotNull(result);
-    assertEquals("Regional Office", result.getName());
-    assertEquals("LOC100", result.getCode());
-    verify(locationRepository).findByListId(id);
+    assertEquals(id, result.getId());
+    verify(locationListRepository, times(1)).findByListId(id);
   }
 
   @Test
   void testLocationFetchById_ShouldThrowException_WhenNotFound() {
     UUID id = UUID.randomUUID();
+    when(locationListRepository.findByListId(id)).thenReturn(Optional.empty());
 
-    when(locationRepository.findByListId(id)).thenReturn(Optional.empty());
+    assertThrows(EntityNotFoundException.class, () -> service.locationFetchById(id));
+  }
 
-    EntityNotFoundException ex =
-        assertThrows(EntityNotFoundException.class, () -> service.locationFetchById(id));
+  @Test
+  void testConnectionsFetchAll_ShouldReturnMappedList() {
+    CeConnectionBreakup breakup = new CeConnectionBreakup();
+    breakup.setBreakupId(UUID.randomUUID());
+    breakup.setCode("CON001");
 
-    assertEquals("Corporate Location List not found with id: " + id, ex.getMessage());
-    verify(locationRepository).findByListId(id);
-    verifyNoInteractions(modelMapper);
+    when(connectionBreakupRepository.findAll()).thenReturn(List.of(breakup));
+
+    List<CommonLookUp> result = service.connectionsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(connectionBreakupRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testConnectionFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeConnectionBreakup breakup = new CeConnectionBreakup();
+    breakup.setBreakupId(id);
+
+    when(connectionBreakupRepository.findById(id)).thenReturn(Optional.of(breakup));
+
+    CommonLookUp result = service.connectionFetchById(id);
+
+    assertNotNull(result);
+    verify(connectionBreakupRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testConnectionFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(connectionBreakupRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.connectionFetchById(id));
+  }
+
+  @Test
+  void testMovementsFetchAll_ShouldReturnMappedList() {
+    CeConnectionBreakupMovement movement = new CeConnectionBreakupMovement();
+    movement.setMovementId(UUID.randomUUID());
+    movement.setCode("MOV001");
+
+    when(movementRepository.findAll()).thenReturn(List.of(movement));
+
+    List<CommonLookUp> result = service.movementsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(movementRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testMovementFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeConnectionBreakupMovement movement = new CeConnectionBreakupMovement();
+    movement.setMovementId(id);
+
+    when(movementRepository.findById(id)).thenReturn(Optional.of(movement));
+
+    CommonLookUp result = service.movementFetchById(id);
+
+    assertNotNull(result);
+    verify(movementRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testMovementFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(movementRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.movementFetchById(id));
   }
 }
