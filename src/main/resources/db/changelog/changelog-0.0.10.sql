@@ -110,16 +110,28 @@ CREATE TABLE subscriberaccountstaticip (
     id UUID NOT NULL PRIMARY KEY,
     subscriberid INTEGER,
     balance NUMERIC(10,2) DEFAULT 0.00,
-    lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    code VARCHAR(50),
+    name VARCHAR(100),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO subscriberaccountstaticip
+(id, subscriberid, balance, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 101, 1000.00, 'STATIC001', 'Static IP 1', 'സ്റ്റാറ്റിക് ഐപി 1', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- subscriberdatausege
 DROP TABLE IF EXISTS subscriberdatausege;
 
 CREATE TABLE subscriberdatausege (
-    data_usage_id UUID NOT NULL PRIMARY KEY,
-    id BIGSERIAL,
+    id UUID NOT NULL PRIMARY KEY,
+    data_usage_id BIGSERIAL,
     subscriberid INTEGER,
     username VARCHAR(64),
     partnerid BIGINT,
@@ -128,8 +140,21 @@ CREATE TABLE subscriberdatausege (
     downloaded VARCHAR(45),
     startdate DATE,
     enddate DATE,
-    billingtype VARCHAR(30)
+    billingtype VARCHAR(30),
+    code VARCHAR(50),
+    name VARCHAR(100),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO subscriberdatausege
+(id, data_usage_id, subscriberid, username, partnerid, packagename, uploaded, downloaded, startdate, enddate, billingtype, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 101, 'John Doe', 201, 'Internet Pack 1', '500MB', '1GB', '2025-10-01', '2025-10-31', 'PREPAID', 'DATA001', 'John Data Usage', 'ജോൺ ഡാറ്റ ഉപയോഗം', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- subscriberdetail
