@@ -12,7 +12,7 @@ Create a default fully qualified app name.
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- $name := include "bss-core-dmdm-services.name" . -}}
+{{- $name := include "bss-core-dmdm-service.name" . -}}
 {{- if contains $name .Release.Name -}}
 {{- .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -24,8 +24,8 @@ Create a default fully qualified app name.
 {{/*
 Common labels
 */}}
-{{- define "bss-core-dmdm-services.labels" -}}
-app.kubernetes.io/name: {{ include "bss-core-dmdm-services.name" . }}
+{{- define "bss-core-dmdm-service.labels" -}}
+app.kubernetes.io/name: {{ include "bss-core-dmdm-service.name" . }}
 helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 app.kubernetes.io/version: {{ .Chart.AppVersion }}

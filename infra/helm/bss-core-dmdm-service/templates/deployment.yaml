@@ -42,7 +42,7 @@ spec:
 
             # Keep your known context path
             - name: SERVER_SERVLET_CONTEXT_PATH
-              value: "/bss-core-dmdm-services"
+              value: "/bss-core-dmdm-service"
             # ---- DB secrets (explicit form to avoid value/valueFrom conflicts) ----
             - name: DB_HOST
               valueFrom:
