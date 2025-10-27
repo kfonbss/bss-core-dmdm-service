@@ -21,4 +21,12 @@ public interface SubscriberService {
   List<CommonLookUp> fetchAllSubscriberAccounts();
 
   CommonLookUp fetchSubscriberAccountById(UUID id);
+
+  List<CommonLookUp> fetchAllSubscriberAccountStaticIps();
+
+  CommonLookUp fetchSubscriberAccountStaticIpById(UUID id);
+
+  List<CommonLookUp> fetchAllSubscriberDataUsages();
+
+  CommonLookUp fetchSubscriberDataUsageById(UUID id);
 }

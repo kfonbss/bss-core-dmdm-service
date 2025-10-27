@@ -38,6 +38,11 @@ public class SubscriberControllerTest {
   private CommonLookUp lookupStatusType;
   private CommonLookUp lookupSubscriberAccount;
 
+  private UUID idStaticIp;
+  private UUID idDataUsage;
+  private CommonLookUp lookupStaticIp;
+  private CommonLookUp lookupDataUsage;
+
   @BeforeEach
   void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
@@ -75,6 +80,23 @@ public class SubscriberControllerTest {
     lookupSubscriberAccount.setName("John Doe");
     lookupSubscriberAccount.setNameInLocal("ജോൺ ഡോ");
     lookupSubscriberAccount.setIsActive(true);
+
+    idStaticIp = UUID.randomUUID();
+    idDataUsage = UUID.randomUUID();
+
+    lookupStaticIp = new CommonLookUp();
+    lookupStaticIp.setId(idStaticIp);
+    lookupStaticIp.setCode("STATIC001");
+    lookupStaticIp.setName("Static IP 1");
+    lookupStaticIp.setNameInLocal("സ്റ്റാറ്റിക് ഐപി 1");
+    lookupStaticIp.setIsActive(true);
+
+    lookupDataUsage = new CommonLookUp();
+    lookupDataUsage.setId(idDataUsage);
+    lookupDataUsage.setCode("DATA001");
+    lookupDataUsage.setName("John Data Usage");
+    lookupDataUsage.setNameInLocal("ജോൺ ഡാറ്റ ഉപയോഗം");
+    lookupDataUsage.setIsActive(true);
   }
 
   @Test
@@ -176,5 +198,51 @@ public class SubscriberControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched subscriber account"))
         .andExpect(jsonPath("$.data.id").value(idSubscriberAccount.toString()))
         .andExpect(jsonPath("$.data.name").value("John Doe"));
+  }
+
+  @Test
+  void testFetchAllSubscriberAccountStaticIps() throws Exception {
+    when(service.fetchAllSubscriberAccountStaticIps()).thenReturn(List.of(lookupStaticIp));
+
+    mockMvc
+        .perform(get("/api/subscriber/account-static-ips"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all subscriber account static IPs"))
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idStaticIp.toString()));
+  }
+
+  @Test
+  void testFetchSubscriberAccountStaticIpById() throws Exception {
+    when(service.fetchSubscriberAccountStaticIpById(idStaticIp)).thenReturn(lookupStaticIp);
+
+    mockMvc
+        .perform(get("/api/subscriber/account-static-ip/{id}", idStaticIp))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched subscriber account static IP"))
+        .andExpect(jsonPath("$.data.id").value(idStaticIp.toString()));
+  }
+
+  @Test
+  void testFetchAllSubscriberDataUsages() throws Exception {
+    when(service.fetchAllSubscriberDataUsages()).thenReturn(List.of(lookupDataUsage));
+
+    mockMvc
+        .perform(get("/api/subscriber/data-usages"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all subscriber data usages"))
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idDataUsage.toString()));
+  }
+
+  @Test
+  void testFetchSubscriberDataUsageById() throws Exception {
+    when(service.fetchSubscriberDataUsageById(idDataUsage)).thenReturn(lookupDataUsage);
+
+    mockMvc
+        .perform(get("/api/subscriber/data-usage/{id}", idDataUsage))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched subscriber data usage"))
+        .andExpect(jsonPath("$.data.id").value(idDataUsage.toString()));
   }
 }
