@@ -85,7 +85,7 @@ DROP TABLE IF EXISTS package CASCADE;
 CREATE TABLE package (
     id UUID NOT NULL PRIMARY KEY,
     packageid SERIAL ,
-    packagename VARCHAR(45) NOT NULL,
+    name VARCHAR(45) NOT NULL,
     renewperiod INT NOT NULL,
     free_service INT,
     initial_free_service INT,
@@ -114,9 +114,19 @@ CREATE TABLE package (
     bod_min BIGINT DEFAULT 0,
     bod_max BIGINT DEFAULT 0,
     fbspeedinkbps BIGINT,
-    created_on TIMESTAMP,
     qos VARCHAR(45),
-    revenueshareid INT
+    revenueshareid INT,
+    code VARCHAR(50),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
 
 CREATE INDEX package_index ON package(portspeedid, billingtypeid);
+
+INSERT INTO package (id, packageid, name, renewperiod, free_service, initial_free_service, subscriberprofileid, portspeedid, serviceid, billingtypeid, onetimecharge, discount, renewalfee, lastupdate, renewaltaxtypeid, trailpackage, active, enddate, bandid, maxvolume, fallbackspeed, description, speedinkbps, m_profile, j_profile, category, plan_type, parent_package, bod_min, bod_max, fbspeedinkbps, qos, revenueshareid, code, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 'Premium Internet', 30, 2, 1, 201, 1, 101, 1, 100.00, 10.00, 500.00, NOW(), 1, 0, 1, NOW() + interval '30 days', 1, 1000, '50Mbps', 'High speed package', 100000, 'M1', 'J1', 'REGULAR', 'ALL', 0, 0, 0, 50000,'HIGH', 1, 'PKG002', 'പ്രീമിയം ഇന്റർനെറ്റ്', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());

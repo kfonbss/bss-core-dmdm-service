@@ -77,7 +77,7 @@ DROP TABLE IF EXISTS packages CASCADE;
 CREATE TABLE packages (
     id UUID NOT NULL PRIMARY KEY,
     packageid SERIAL ,
-    packagename VARCHAR(45),
+    name VARCHAR(45),
     serviceid INT,
     package_type VARCHAR(45),
     customer_type VARCHAR(45),
@@ -92,8 +92,18 @@ CREATE TABLE packages (
     discount NUMERIC(10,2),
     mrc VARCHAR(45),
     otc NUMERIC(10,2),
-    created_on TIMESTAMP
+    code VARCHAR(50),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO packages (id, packageid, name, serviceid, package_type, customer_type, category, qos, speed, unit, connection_type, allocated_volume, validity, offers, discount, mrc, otc, code, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 'Basic Internet', 101, 'STANDARD', 'RESIDENTIAL', 'REGULAR', 'HIGH', '100Mbps', 'Mbps', 'Fiber', '100GB', '30 days', 'None', 0.00, '500', 0.00,'PKG001', 'ബേസിക് ഇന്റർനെറ്റ്', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 -- pan_gst_history
 DROP TABLE IF EXISTS pan_gst_history CASCADE;

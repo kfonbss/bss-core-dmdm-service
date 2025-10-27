@@ -4,12 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.model.Package;
 import in.gov.kfon.dmdm.model.PackageCategory;
 import in.gov.kfon.dmdm.model.PackageChangeRequests;
 import in.gov.kfon.dmdm.model.PackageMap;
-import in.gov.kfon.dmdm.repository.PackageCategoryRepository;
-import in.gov.kfon.dmdm.repository.PackageChangeRequestsRepository;
-import in.gov.kfon.dmdm.repository.PackageMapRepository;
+import in.gov.kfon.dmdm.model.Packages;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +26,8 @@ public class PackageServiceImplTest {
   @Mock private PackageMapRepository mapRepository;
   @Mock private PackageCategoryRepository categoryRepository;
   @Mock private PackageChangeRequestsRepository changeRequestRepository;
+  @Mock private PackagesRepository packagesRepository;
+  @Mock private PackageRepository packageRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private PackageServiceImpl service;
@@ -33,12 +35,18 @@ public class PackageServiceImplTest {
   private UUID idMap;
   private UUID idCategory;
   private UUID idChangeRequest;
+  private UUID idPackages;
+  private UUID idPackage;
   private PackageMap packageMap;
   private PackageCategory packageCategory;
   private PackageChangeRequests changeRequest;
+  private Packages packages;
+  private Package packageEntity;
   private CommonLookUp lookupMap;
   private CommonLookUp lookupCategory;
   private CommonLookUp lookupChangeRequest;
+  private CommonLookUp lookupPackages;
+  private CommonLookUp lookupPackage;
 
   @BeforeEach
   void setUp() {
@@ -71,6 +79,22 @@ public class PackageServiceImplTest {
     lookupChangeRequest = new CommonLookUp();
     lookupChangeRequest.setId(idChangeRequest);
     lookupChangeRequest.setName("Change Request 1");
+
+    packages = new Packages();
+    packages.setId(idPackages);
+    packages.setName("Internet Pack 1");
+
+    packageEntity = new Package();
+    packageEntity.setId(idPackage);
+    packageEntity.setName("Regular Pack 1");
+
+    lookupPackages = new CommonLookUp();
+    lookupPackages.setId(idPackages);
+    lookupPackages.setName("Internet Pack 1");
+
+    lookupPackage = new CommonLookUp();
+    lookupPackage.setId(idPackage);
+    lookupPackage.setName("Regular Pack 1");
   }
 
   @Test
@@ -155,5 +179,62 @@ public class PackageServiceImplTest {
             EntityNotFoundException.class, () -> service.fetchChangeRequestById(idChangeRequest));
     assertEquals("ChangeRequest not found with id: " + idChangeRequest, exception.getMessage());
     verify(changeRequestRepository, times(1)).findById(idChangeRequest);
+  }
+
+  @Test
+  void testFetchAllPackages() {
+    when(packagesRepository.findAll()).thenReturn(List.of(packages));
+    when(modelMapper.map(packages, CommonLookUp.class)).thenReturn(lookupPackages);
+
+    List<CommonLookUp> result = service.fetchAllPackages();
+    assertEquals(1, result.size());
+    assertEquals(idPackages, result.get(0).getId());
+  }
+
+  @Test
+  void testFetchPackagesById_Success() {
+    when(packagesRepository.findById(idPackages)).thenReturn(Optional.of(packages));
+    when(modelMapper.map(packages, CommonLookUp.class)).thenReturn(lookupPackages);
+
+    CommonLookUp result = service.fetchPackagesById(idPackages);
+    assertEquals(idPackages, result.getId());
+  }
+
+  @Test
+  void testFetchPackagesById_NotFound() {
+    when(packagesRepository.findById(idPackages)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchPackagesById(idPackages));
+
+    assertEquals("Packages not found with id: " + idPackages, exception.getMessage());
+  }
+
+  @Test
+  void testFetchAllPackageEntities() {
+    when(packageRepository.findAll()).thenReturn(List.of(packageEntity));
+    when(modelMapper.map(packageEntity, CommonLookUp.class)).thenReturn(lookupPackage);
+
+    List<CommonLookUp> result = service.fetchAllPackage();
+    assertEquals(1, result.size());
+    assertEquals(idPackage, result.get(0).getId());
+  }
+
+  @Test
+  void testFetchPackageEntityById_Success() {
+    when(packageRepository.findById(idPackage)).thenReturn(Optional.of(packageEntity));
+    when(modelMapper.map(packageEntity, CommonLookUp.class)).thenReturn(lookupPackage);
+
+    CommonLookUp result = service.fetchPackageById(idPackage);
+    assertEquals(idPackage, result.getId());
+  }
+
+  @Test
+  void testFetchPackageEntityById_NotFound() {
+    when(packageRepository.findById(idPackage)).thenReturn(Optional.empty());
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchPackageById(idPackage));
+
+    assertEquals("Package not found with id: " + idPackage, exception.getMessage());
   }
 }
