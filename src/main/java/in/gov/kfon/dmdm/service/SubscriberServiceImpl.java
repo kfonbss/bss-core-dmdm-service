@@ -22,6 +22,8 @@ public class SubscriberServiceImpl implements SubscriberService {
   private final SubscriberAccountRepository accountRepository;
   private final SubscriberAccountStaticIpRepository subscriberAccountStaticIpRepository;
   private final SubscriberDataUsageRepository dataUsageRepository;
+  private final SubscriberDetailRepository subscriberDetailRepository;
+  private final SubscriberEmailRepository subscriberEmailRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -138,5 +140,43 @@ public class SubscriberServiceImpl implements SubscriberService {
             .orElseThrow(
                 () -> new EntityNotFoundException("SubscriberDataUsage not found with id: " + id));
     return modelMapper.map(du, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllSubscriberDetails() {
+    return subscriberDetailRepository.findAll().stream()
+        .map(s -> modelMapper.map(s, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchSubscriberDetailById(UUID id) {
+    SubscriberDetail sd =
+        subscriberDetailRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("SubscriberDetail not found with id: " + id));
+    return modelMapper.map(sd, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllSubscriberEmails() {
+    return subscriberEmailRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchSubscriberEmailById(UUID id) {
+    SubscriberEmail se =
+        subscriberEmailRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("SubscriberEmail not found with id: " + id));
+    return modelMapper.map(se, CommonLookUp.class);
   }
 }

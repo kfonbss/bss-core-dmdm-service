@@ -43,6 +43,11 @@ public class SubscriberControllerTest {
   private CommonLookUp lookupStaticIp;
   private CommonLookUp lookupDataUsage;
 
+  private UUID idSubscriberDetail;
+  private UUID idSubscriberEmail;
+  private CommonLookUp lookupSubscriberDetail;
+  private CommonLookUp lookupSubscriberEmail;
+
   @BeforeEach
   void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
@@ -97,6 +102,23 @@ public class SubscriberControllerTest {
     lookupDataUsage.setName("John Data Usage");
     lookupDataUsage.setNameInLocal("ജോൺ ഡാറ്റ ഉപയോഗം");
     lookupDataUsage.setIsActive(true);
+
+    idSubscriberDetail = UUID.randomUUID();
+    idSubscriberEmail = UUID.randomUUID();
+
+    lookupSubscriberDetail = new CommonLookUp();
+    lookupSubscriberDetail.setId(idSubscriberDetail);
+    lookupSubscriberDetail.setCode("SUBDET001");
+    lookupSubscriberDetail.setName("John Doe");
+    lookupSubscriberDetail.setNameInLocal("ജോൺ ഡോ");
+    lookupSubscriberDetail.setIsActive(true);
+
+    lookupSubscriberEmail = new CommonLookUp();
+    lookupSubscriberEmail.setId(idSubscriberEmail);
+    lookupSubscriberEmail.setCode("SE001");
+    lookupSubscriberEmail.setName("John Email");
+    lookupSubscriberEmail.setNameInLocal("ജോൺ ഇമെയിൽ");
+    lookupSubscriberEmail.setIsActive(true);
   }
 
   @Test
@@ -244,5 +266,54 @@ public class SubscriberControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched subscriber data usage"))
         .andExpect(jsonPath("$.data.id").value(idDataUsage.toString()));
+  }
+
+  @Test
+  void testFetchAllSubscriberDetails() throws Exception {
+    when(service.fetchAllSubscriberDetails()).thenReturn(List.of(lookupSubscriberDetail));
+    mockMvc
+        .perform(get("/api/subscriber/details"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all subscriber details"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idSubscriberDetail.toString()));
+  }
+
+  @Test
+  void testFetchSubscriberDetailById() throws Exception {
+    when(service.fetchSubscriberDetailById(idSubscriberDetail)).thenReturn(lookupSubscriberDetail);
+
+    mockMvc
+        .perform(get("/api/subscriber/detail/{id}", idSubscriberDetail))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched subscriber detail"))
+        .andExpect(jsonPath("$.data.id").value(idSubscriberDetail.toString()))
+        .andExpect(jsonPath("$.data.name").value("John Doe"));
+  }
+
+  @Test
+  void testFetchAllSubscriberEmails() throws Exception {
+    when(service.fetchAllSubscriberEmails()).thenReturn(List.of(lookupSubscriberEmail));
+
+    mockMvc
+        .perform(get("/api/subscriber/emails"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all subscriber emails"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idSubscriberEmail.toString()));
+  }
+
+  @Test
+  void testFetchSubscriberEmailById() throws Exception {
+    when(service.fetchSubscriberEmailById(idSubscriberEmail)).thenReturn(lookupSubscriberEmail);
+
+    mockMvc
+        .perform(get("/api/subscriber/email/{id}", idSubscriberEmail))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched subscriber email"))
+        .andExpect(jsonPath("$.data.id").value(idSubscriberEmail.toString()))
+        .andExpect(jsonPath("$.data.name").value("John Email"));
   }
 }

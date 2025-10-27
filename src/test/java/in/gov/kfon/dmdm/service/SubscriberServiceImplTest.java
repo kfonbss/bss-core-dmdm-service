@@ -25,6 +25,8 @@ public class SubscriberServiceImplTest {
   @Mock private SubscriberAccountRepository accountRepository;
   @Mock private SubscriberAccountStaticIpRepository staticIpRepository;
   @Mock private SubscriberDataUsageRepository dataUsageRepository;
+  @Mock private SubscriberDetailRepository subscriberDetailRepository;
+  @Mock private SubscriberEmailRepository subscriberEmailRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private SubscriberServiceImpl service;
@@ -47,6 +49,12 @@ public class SubscriberServiceImplTest {
   private SubscriberDataUsage dataUsage;
   private CommonLookUp lookupStaticIp;
   private CommonLookUp lookupDataUsage;
+  private UUID idSubscriberDetail;
+  private UUID idSubscriberEmail;
+  private SubscriberDetail subscriberDetail;
+  private SubscriberEmail subscriberEmail;
+  private CommonLookUp lookupSubscriberDetail;
+  private CommonLookUp lookupSubscriberEmail;
 
   @BeforeEach
   void setUp() {
@@ -141,6 +149,41 @@ public class SubscriberServiceImplTest {
     lookupDataUsage.setName("Data Usage 1");
     lookupDataUsage.setNameInLocal("ഡാറ്റാ യൂസേജ് 1");
     lookupDataUsage.setIsActive(true);
+
+    idSubscriberDetail = UUID.randomUUID();
+    idSubscriberEmail = UUID.randomUUID();
+
+    subscriberDetail = new SubscriberDetail();
+    subscriberDetail.setId(idSubscriberDetail);
+    subscriberDetail.setUsername("johndoe");
+    subscriberDetail.setCode("SUBDET001");
+    subscriberDetail.setName("John Doe");
+    subscriberDetail.setNameInLocal("ജോൺ ഡോ");
+    subscriberDetail.setIsActive(true);
+
+    subscriberEmail = new SubscriberEmail();
+    subscriberEmail.setId(idSubscriberEmail);
+    subscriberEmail.setSubscriberid(1001);
+    subscriberEmail.setUsername("johndoe");
+    subscriberEmail.setEmail("john.doe@example.com");
+    subscriberEmail.setCode("SE001");
+    subscriberEmail.setName("John Email");
+    subscriberEmail.setNameInLocal("ജോൺ ഇമെയിൽ");
+    subscriberEmail.setIsActive(true);
+
+    lookupSubscriberDetail = new CommonLookUp();
+    lookupSubscriberDetail.setId(idSubscriberDetail);
+    lookupSubscriberDetail.setCode("SUBDET001");
+    lookupSubscriberDetail.setName("John Doe");
+    lookupSubscriberDetail.setNameInLocal("ജോൺ ഡോ");
+    lookupSubscriberDetail.setIsActive(true);
+
+    lookupSubscriberEmail = new CommonLookUp();
+    lookupSubscriberEmail.setId(idSubscriberEmail);
+    lookupSubscriberEmail.setCode("SE001");
+    lookupSubscriberEmail.setName("John Email");
+    lookupSubscriberEmail.setNameInLocal("ജോൺ ഇമെയിൽ");
+    lookupSubscriberEmail.setIsActive(true);
   }
 
   @Test
@@ -321,5 +364,65 @@ public class SubscriberServiceImplTest {
             EntityNotFoundException.class, () -> service.fetchSubscriberDataUsageById(idDataUsage));
 
     assertEquals("SubscriberDataUsage not found with id: " + idDataUsage, ex.getMessage());
+  }
+
+  @Test
+  void testFetchAllSubscriberDetails() {
+    when(subscriberDetailRepository.findAll()).thenReturn(List.of(subscriberDetail));
+    when(modelMapper.map(subscriberDetail, CommonLookUp.class)).thenReturn(lookupSubscriberDetail);
+
+    List<CommonLookUp> result = service.fetchAllSubscriberDetails();
+    assertEquals(1, result.size());
+    assertEquals(idSubscriberDetail, result.get(0).getId());
+  }
+
+  @Test
+  void testFetchSubscriberDetailById_Success() {
+    when(subscriberDetailRepository.findById(idSubscriberDetail))
+        .thenReturn(Optional.of(subscriberDetail));
+    when(modelMapper.map(subscriberDetail, CommonLookUp.class)).thenReturn(lookupSubscriberDetail);
+
+    CommonLookUp result = service.fetchSubscriberDetailById(idSubscriberDetail);
+    assertEquals(idSubscriberDetail, result.getId());
+  }
+
+  @Test
+  void testFetchSubscriberDetailById_NotFound() {
+    when(subscriberDetailRepository.findById(idSubscriberDetail)).thenReturn(Optional.empty());
+    EntityNotFoundException ex =
+        assertThrows(
+            EntityNotFoundException.class,
+            () -> service.fetchSubscriberDetailById(idSubscriberDetail));
+    assertEquals("SubscriberDetail not found with id: " + idSubscriberDetail, ex.getMessage());
+  }
+
+  @Test
+  void testFetchAllSubscriberEmails() {
+    when(subscriberEmailRepository.findAll()).thenReturn(List.of(subscriberEmail));
+    when(modelMapper.map(subscriberEmail, CommonLookUp.class)).thenReturn(lookupSubscriberEmail);
+
+    List<CommonLookUp> result = service.fetchAllSubscriberEmails();
+    assertEquals(1, result.size());
+    assertEquals(idSubscriberEmail, result.get(0).getId());
+  }
+
+  @Test
+  void testFetchSubscriberEmailById_Success() {
+    when(subscriberEmailRepository.findById(idSubscriberEmail))
+        .thenReturn(Optional.of(subscriberEmail));
+    when(modelMapper.map(subscriberEmail, CommonLookUp.class)).thenReturn(lookupSubscriberEmail);
+
+    CommonLookUp result = service.fetchSubscriberEmailById(idSubscriberEmail);
+    assertEquals(idSubscriberEmail, result.getId());
+  }
+
+  @Test
+  void testFetchSubscriberEmailById_NotFound() {
+    when(subscriberEmailRepository.findById(idSubscriberEmail)).thenReturn(Optional.empty());
+    EntityNotFoundException ex =
+        assertThrows(
+            EntityNotFoundException.class,
+            () -> service.fetchSubscriberEmailById(idSubscriberEmail));
+    assertEquals("SubscriberEmail not found with id: " + idSubscriberEmail, ex.getMessage());
   }
 }

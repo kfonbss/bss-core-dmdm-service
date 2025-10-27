@@ -29,4 +29,12 @@ public interface SubscriberService {
   List<CommonLookUp> fetchAllSubscriberDataUsages();
 
   CommonLookUp fetchSubscriberDataUsageById(UUID id);
+
+  List<CommonLookUp> fetchAllSubscriberDetails();
+
+  CommonLookUp fetchSubscriberDetailById(UUID id);
+
+  List<CommonLookUp> fetchAllSubscriberEmails();
+
+  CommonLookUp fetchSubscriberEmailById(UUID id);
 }
