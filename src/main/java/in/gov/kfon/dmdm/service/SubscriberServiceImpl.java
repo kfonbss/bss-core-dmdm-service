@@ -6,52 +6,57 @@ import in.gov.kfon.dmdm.model.SubscriberOffers;
 import in.gov.kfon.dmdm.repository.SubscriberFeedbackRepository;
 import in.gov.kfon.dmdm.repository.SubscriberOffersRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class SubscriberServiceImpl implements SubscriberService{
+public class SubscriberServiceImpl implements SubscriberService {
 
-    private final SubscriberFeedbackRepository feedbackRepository;
-    private final SubscriberOffersRepository offersRepository;
-    private final ModelMapper modelMapper;
+  private final SubscriberFeedbackRepository feedbackRepository;
+  private final SubscriberOffersRepository offersRepository;
+  private final ModelMapper modelMapper;
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<CommonLookUp> fetchAllFeedbacks() {
-        return feedbackRepository.findAll().stream()
-                .map(f -> modelMapper.map(f, CommonLookUp.class))
-                .toList();
-    }
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllFeedbacks() {
+    return feedbackRepository.findAll().stream()
+        .map(f -> modelMapper.map(f, CommonLookUp.class))
+        .toList();
+  }
 
-    @Override
-    @Transactional(readOnly = true)
-    public CommonLookUp fetchFeedbackById(UUID id) {
-        SubscriberFeedback f = feedbackRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("SubscriberFeedback not found with id: " + id));
-        return modelMapper.map(f, CommonLookUp.class);
-    }
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchFeedbackById(UUID id) {
+    SubscriberFeedback f =
+        feedbackRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("SubscriberFeedback not found with id: " + id));
+    return modelMapper.map(f, CommonLookUp.class);
+  }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<CommonLookUp> fetchAllOffers() {
-        return offersRepository.findAll().stream()
-                .map(o -> modelMapper.map(o, CommonLookUp.class))
-                .toList();
-    }
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllOffers() {
+    return offersRepository.findAll().stream()
+        .map(o -> modelMapper.map(o, CommonLookUp.class))
+        .toList();
+  }
 
-    @Override
-    @Transactional(readOnly = true)
-    public CommonLookUp fetchOfferById(UUID id) {
-        SubscriberOffers o = offersRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("SubscriberOffer not found with id: " + id));
-        return modelMapper.map(o, CommonLookUp.class);
-    }
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchOfferById(UUID id) {
+    SubscriberOffers o =
+        offersRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("SubscriberOffer not found with id: " + id));
+    return modelMapper.map(o, CommonLookUp.class);
+  }
 }
