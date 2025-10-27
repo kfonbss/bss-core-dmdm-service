@@ -74,4 +74,30 @@ public class SubscriberController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched subscriber account"));
   }
+
+  @GetMapping("/account-static-ips")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllSubscriberAccountStaticIps() {
+    var data = service.fetchAllSubscriberAccountStaticIps();
+    return ResponseEntity.ok(Response.ok(data, "Fetched all subscriber account static IPs"));
+  }
+
+  @GetMapping("/account-static-ip/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchSubscriberAccountStaticIpById(
+      @PathVariable UUID id) {
+    var data = service.fetchSubscriberAccountStaticIpById(id);
+    return ResponseEntity.ok(Response.ok(data, "Fetched subscriber account static IP"));
+  }
+
+  @GetMapping("/data-usages")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllSubscriberDataUsages() {
+    var data = service.fetchAllSubscriberDataUsages();
+    return ResponseEntity.ok(Response.ok(data, "Fetched all subscriber data usages"));
+  }
+
+  @GetMapping("/data-usage/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchSubscriberDataUsageById(
+      @PathVariable UUID id) {
+    var data = service.fetchSubscriberDataUsageById(id);
+    return ResponseEntity.ok(Response.ok(data, "Fetched subscriber data usage"));
+  }
 }

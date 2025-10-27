@@ -4,14 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-import in.gov.kfon.dmdm.model.SubscriberAccount;
-import in.gov.kfon.dmdm.model.SubscriberFeedback;
-import in.gov.kfon.dmdm.model.SubscriberOffers;
-import in.gov.kfon.dmdm.model.SubscriberStatusType;
-import in.gov.kfon.dmdm.repository.SubscriberAccountRepository;
-import in.gov.kfon.dmdm.repository.SubscriberFeedbackRepository;
-import in.gov.kfon.dmdm.repository.SubscriberOffersRepository;
-import in.gov.kfon.dmdm.repository.SubscriberStatusTypeRepository;
+import in.gov.kfon.dmdm.model.*;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +23,8 @@ public class SubscriberServiceImplTest {
   @Mock private SubscriberOffersRepository offersRepository;
   @Mock private SubscriberStatusTypeRepository statusRepository;
   @Mock private SubscriberAccountRepository accountRepository;
+  @Mock private SubscriberAccountStaticIpRepository staticIpRepository;
+  @Mock private SubscriberDataUsageRepository dataUsageRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private SubscriberServiceImpl service;
@@ -45,6 +41,12 @@ public class SubscriberServiceImplTest {
   private CommonLookUp lookupOffer;
   private CommonLookUp lookupStatus;
   private CommonLookUp lookupAccount;
+  private UUID idStaticIp;
+  private UUID idDataUsage;
+  private SubscriberAccountStaticIp staticIp;
+  private SubscriberDataUsage dataUsage;
+  private CommonLookUp lookupStaticIp;
+  private CommonLookUp lookupDataUsage;
 
   @BeforeEach
   void setUp() {
@@ -113,6 +115,32 @@ public class SubscriberServiceImplTest {
     lookupAccount.setName("Subscriber Account 1");
     lookupAccount.setNameInLocal("സബ്സ്ക്രൈബർ അക്കൗണ്ട് 1");
     lookupAccount.setIsActive(true);
+
+    idStaticIp = UUID.randomUUID();
+    idDataUsage = UUID.randomUUID();
+
+    staticIp = new SubscriberAccountStaticIp();
+    staticIp.setId(idStaticIp);
+    staticIp.setSubscriberId(1001);
+
+    dataUsage = new SubscriberDataUsage();
+    dataUsage.setId(idDataUsage);
+    dataUsage.setSubscriberId(2001);
+    dataUsage.setUsername("user1");
+
+    lookupStaticIp = new CommonLookUp();
+    lookupStaticIp.setId(idStaticIp);
+    lookupStaticIp.setCode("STATICIP001");
+    lookupStaticIp.setName("Static IP 1");
+    lookupStaticIp.setNameInLocal("സ്റ്റാറ്റിക് ഐപി 1");
+    lookupStaticIp.setIsActive(true);
+
+    lookupDataUsage = new CommonLookUp();
+    lookupDataUsage.setId(idDataUsage);
+    lookupDataUsage.setCode("DATAUSG001");
+    lookupDataUsage.setName("Data Usage 1");
+    lookupDataUsage.setNameInLocal("ഡാറ്റാ യൂസേജ് 1");
+    lookupDataUsage.setIsActive(true);
   }
 
   @Test
@@ -230,5 +258,68 @@ public class SubscriberServiceImplTest {
         assertThrows(
             EntityNotFoundException.class, () -> service.fetchSubscriberAccountById(accountId));
     assertEquals("SubscriberAccount not found with id: " + accountId, exception.getMessage());
+  }
+
+  @Test
+  void testFetchAllSubscriberAccountStaticIps() {
+    when(staticIpRepository.findAll()).thenReturn(List.of(staticIp));
+    when(modelMapper.map(staticIp, CommonLookUp.class)).thenReturn(lookupStaticIp);
+
+    List<CommonLookUp> result = service.fetchAllSubscriberAccountStaticIps();
+
+    assertEquals(1, result.size());
+    assertEquals(idStaticIp, result.get(0).getId());
+  }
+
+  @Test
+  void testFetchSubscriberAccountStaticIpById_Success() {
+    when(staticIpRepository.findById(idStaticIp)).thenReturn(Optional.of(staticIp));
+    when(modelMapper.map(staticIp, CommonLookUp.class)).thenReturn(lookupStaticIp);
+
+    CommonLookUp result = service.fetchSubscriberAccountStaticIpById(idStaticIp);
+    assertEquals(idStaticIp, result.getId());
+  }
+
+  @Test
+  void testFetchSubscriberAccountStaticIpById_NotFound() {
+    when(staticIpRepository.findById(idStaticIp)).thenReturn(Optional.empty());
+
+    EntityNotFoundException ex =
+        assertThrows(
+            EntityNotFoundException.class,
+            () -> service.fetchSubscriberAccountStaticIpById(idStaticIp));
+
+    assertEquals("SubscriberAccountStaticIp not found with id: " + idStaticIp, ex.getMessage());
+  }
+
+  @Test
+  void testFetchAllSubscriberDataUsages() {
+    when(dataUsageRepository.findAll()).thenReturn(List.of(dataUsage));
+    when(modelMapper.map(dataUsage, CommonLookUp.class)).thenReturn(lookupDataUsage);
+
+    List<CommonLookUp> result = service.fetchAllSubscriberDataUsages();
+
+    assertEquals(1, result.size());
+    assertEquals(idDataUsage, result.get(0).getId());
+  }
+
+  @Test
+  void testFetchSubscriberDataUsageById_Success() {
+    when(dataUsageRepository.findById(idDataUsage)).thenReturn(Optional.of(dataUsage));
+    when(modelMapper.map(dataUsage, CommonLookUp.class)).thenReturn(lookupDataUsage);
+
+    CommonLookUp result = service.fetchSubscriberDataUsageById(idDataUsage);
+    assertEquals(idDataUsage, result.getId());
+  }
+
+  @Test
+  void testFetchSubscriberDataUsageById_NotFound() {
+    when(dataUsageRepository.findById(idDataUsage)).thenReturn(Optional.empty());
+
+    EntityNotFoundException ex =
+        assertThrows(
+            EntityNotFoundException.class, () -> service.fetchSubscriberDataUsageById(idDataUsage));
+
+    assertEquals("SubscriberDataUsage not found with id: " + idDataUsage, ex.getMessage());
   }
 }
