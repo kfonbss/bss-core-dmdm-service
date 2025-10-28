@@ -28,6 +28,9 @@ public class SubscriberServiceImpl implements SubscriberService {
   private final SubscriberContactInformationRepository contactRepository;
   private final SubscriberGstDetailRepository subscriberGstDetailRepository;
   private final SubscriberInvoiceRepository subscriberInvoiceRepository;
+  private final SubscriberProfileRepository subscriberProfileRepository;
+  private final SubscriberUsernamesRepository subscriberUsernamesRepository;
+
   private final ModelMapper modelMapper;
 
   @Override
@@ -258,5 +261,43 @@ public class SubscriberServiceImpl implements SubscriberService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Invoice not found"));
     return modelMapper.map(invoice, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllProfiles() {
+    return subscriberProfileRepository.findAll().stream()
+        .map(p -> modelMapper.map(p, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchProfileById(UUID id) {
+    SubscriberProfile profile =
+        subscriberProfileRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("SubscriberProfile not found with id: " + id));
+    return modelMapper.map(profile, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllSubscriberUsernames() {
+    return subscriberUsernamesRepository.findAll().stream()
+        .map(entity -> modelMapper.map(entity, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchSubscriberUsernameById(UUID id) {
+    var entity =
+        subscriberUsernamesRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("SubscriberUsername not found with id: " + id));
+    return modelMapper.map(entity, CommonLookUp.class);
   }
 }
