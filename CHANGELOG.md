@@ -115,3 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.10.0] - 2025-10-28
 ### Added
 - Get subscriber gst and invoice details
+
+## [0.11.0] - 2025-10-28
+### Added
+- Get corporate renewal history and eo details
