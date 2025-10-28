@@ -48,6 +48,11 @@ public class SubscriberControllerTest {
   private CommonLookUp lookupSubscriberDetail;
   private CommonLookUp lookupSubscriberEmail;
 
+  private UUID idFinance;
+  private UUID idContact;
+  private CommonLookUp lookupFinance;
+  private CommonLookUp lookupContact;
+
   @BeforeEach
   void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
@@ -119,6 +124,23 @@ public class SubscriberControllerTest {
     lookupSubscriberEmail.setName("John Email");
     lookupSubscriberEmail.setNameInLocal("ജോൺ ഇമെയിൽ");
     lookupSubscriberEmail.setIsActive(true);
+
+    idFinance = UUID.randomUUID();
+    idContact = UUID.randomUUID();
+
+    lookupFinance = new CommonLookUp();
+    lookupFinance.setId(idFinance);
+    lookupFinance.setCode("FIN001");
+    lookupFinance.setName("Finance Record 1");
+    lookupFinance.setNameInLocal("ഫിനാൻസ് റെക്കോർഡ് 1");
+    lookupFinance.setIsActive(true);
+
+    lookupContact = new CommonLookUp();
+    lookupContact.setId(idContact);
+    lookupContact.setCode("CONTACT001");
+    lookupContact.setName("John Doe");
+    lookupContact.setNameInLocal("ജോൺ ഡോ");
+    lookupContact.setIsActive(true);
   }
 
   @Test
@@ -315,5 +337,55 @@ public class SubscriberControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched subscriber email"))
         .andExpect(jsonPath("$.data.id").value(idSubscriberEmail.toString()))
         .andExpect(jsonPath("$.data.name").value("John Email"));
+  }
+
+  @Test
+  void testFetchAllFinance() throws Exception {
+    when(service.fetchAllFinance()).thenReturn(List.of(lookupFinance));
+
+    mockMvc
+        .perform(get("/api/subscriber/finance/fetch-all"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all subscriber finance records"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idFinance.toString()));
+  }
+
+  @Test
+  void testFetchFinanceById() throws Exception {
+    when(service.fetchFinanceById(idFinance)).thenReturn(lookupFinance);
+
+    mockMvc
+        .perform(get("/api/subscriber/finance/{id}", idFinance))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched subscriber finance record"))
+        .andExpect(jsonPath("$.data.id").value(idFinance.toString()))
+        .andExpect(jsonPath("$.data.name").value("Finance Record 1"));
+  }
+
+  @Test
+  void testFetchAllContactInfo() throws Exception {
+    when(service.fetchAllContactInfo()).thenReturn(List.of(lookupContact));
+
+    mockMvc
+        .perform(get("/api/subscriber/contact-informations"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all subscriber contact information"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idContact.toString()));
+  }
+
+  @Test
+  void testFetchContactInfoById() throws Exception {
+    when(service.fetchContactInfoById(idContact)).thenReturn(lookupContact);
+
+    mockMvc
+        .perform(get("/api/subscriber/contact-information/{id}", idContact))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched subscriber contact information"))
+        .andExpect(jsonPath("$.data.id").value(idContact.toString()))
+        .andExpect(jsonPath("$.data.name").value("John Doe"));
   }
 }
