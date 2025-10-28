@@ -7,16 +7,28 @@ CREATE TABLE subscriberfinance (
     subscriberid INTEGER,
     amount NUMERIC(13,2),
     cause VARCHAR(100),
-    lastupdate TIMESTAMP,
     partnerfinanceid INTEGER,
     rstatus INT NOT NULL DEFAULT 1,
     subonlineref BIGINT,
     packageid INTEGER,
     term_count INT,
-    cause_detail_id INTEGER DEFAULT 0
+    cause_detail_id INTEGER DEFAULT 0,
+    code VARCHAR(50),
+    name VARCHAR(100),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
 
-CREATE INDEX sub_indx ON subscriberfinance(subscriberid, cause, lastupdate);
+CREATE INDEX sub_indx ON subscriberfinance(subscriberid, cause, modified_date);
+
+INSERT INTO subscriberfinance
+(id, finid, subscriberid, amount, cause, partnerfinanceid, rstatus, subonlineref, packageid, term_count, cause_detail_id, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 1001, 250.75, 'Monthly Payment', 2001, 1, 50001, 101, 12, 0, 'FIN001', 'Finance Record 1', 'ഫിനാൻസ് രേഖ 1', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- subscribergstdetail

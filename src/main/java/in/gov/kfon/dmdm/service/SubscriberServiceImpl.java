@@ -24,6 +24,8 @@ public class SubscriberServiceImpl implements SubscriberService {
   private final SubscriberDataUsageRepository dataUsageRepository;
   private final SubscriberDetailRepository subscriberDetailRepository;
   private final SubscriberEmailRepository subscriberEmailRepository;
+  private final SubscriberFinanceRepository financeRepository;
+  private final SubscriberContactInformationRepository contactRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -178,5 +180,45 @@ public class SubscriberServiceImpl implements SubscriberService {
             .orElseThrow(
                 () -> new EntityNotFoundException("SubscriberEmail not found with id: " + id));
     return modelMapper.map(se, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllFinance() {
+    return financeRepository.findAll().stream()
+        .map(f -> modelMapper.map(f, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchFinanceById(UUID id) {
+    SubscriberFinance f =
+        financeRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("SubscriberFinance not found with id: " + id));
+    return modelMapper.map(f, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllContactInfo() {
+    return contactRepository.findAll().stream()
+        .map(c -> modelMapper.map(c, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchContactInfoById(UUID id) {
+    SubscriberContactInformation c =
+        contactRepository
+            .findById(id)
+            .orElseThrow(
+                () ->
+                    new EntityNotFoundException(
+                        "SubscriberContactInformation not found with id: " + id));
+    return modelMapper.map(c, CommonLookUp.class);
   }
 }
