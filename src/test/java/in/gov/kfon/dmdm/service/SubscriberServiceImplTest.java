@@ -31,6 +31,8 @@ public class SubscriberServiceImplTest {
   @Mock private SubscriberContactInformationRepository contactRepository;
   @Mock private SubscriberGstDetailRepository gstDetailRepository;
   @Mock private SubscriberInvoiceRepository invoiceRepository;
+  @Mock private SubscriberProfileRepository subscriberProfileRepository;
+  @Mock private SubscriberUsernamesRepository subscriberUsernamesRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private SubscriberServiceImpl service;
@@ -71,6 +73,12 @@ public class SubscriberServiceImplTest {
   private SubscriberInvoice invoice;
   private CommonLookUp lookupGstDetail;
   private CommonLookUp lookupInvoice;
+  private UUID id;
+  private SubscriberProfile profile;
+  private CommonLookUp lookup;
+  private UUID idUsername;
+  private SubscriberUsernames subscriberUsernames;
+  private CommonLookUp lookUpUserName;
 
   @BeforeEach
   void setUp() {
@@ -251,6 +259,31 @@ public class SubscriberServiceImplTest {
     lookupInvoice.setName("Invoice 1");
     lookupInvoice.setNameInLocal("ഇൻവോയിസ് 1");
     lookupInvoice.setIsActive(true);
+
+    id = UUID.randomUUID();
+
+    profile = new SubscriberProfile();
+    profile.setId(id);
+    profile.setName("Standard Plan");
+    profile.setDiscount(5.0);
+
+    lookup = new CommonLookUp();
+    lookup.setId(id);
+    lookup.setName("Standard Plan");
+    lookup.setCode("SP001");
+    lookup.setNameInLocal("സ്റ്റാൻഡേർഡ് പ്ലാൻ");
+    lookup.setIsActive(true);
+
+    idUsername = UUID.randomUUID();
+
+    subscriberUsernames = new SubscriberUsernames();
+    subscriberUsernames.setId(idUsername);
+    subscriberUsernames.setSubscriberId(1L);
+    subscriberUsernames.setUsername("john_doe");
+
+    lookUpUserName = new CommonLookUp();
+    lookUpUserName.setId(idUsername);
+    lookUpUserName.setName("john_doe");
   }
 
   @Test
@@ -609,5 +642,92 @@ public class SubscriberServiceImplTest {
         assertThrows(EntityNotFoundException.class, () -> service.fetchInvoiceById(idInvoice));
 
     assertEquals("Invoice not found", ex.getMessage());
+  }
+
+  @Test
+  void testFetchAllProfiles() {
+    when(subscriberProfileRepository.findAll()).thenReturn(List.of(profile));
+    when(modelMapper.map(profile, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = service.fetchAllProfiles();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(subscriberProfileRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(profile, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchProfileById_Success() {
+    when(subscriberProfileRepository.findById(id)).thenReturn(Optional.of(profile));
+    when(modelMapper.map(profile, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = service.fetchProfileById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(subscriberProfileRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(profile, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchProfileById_NotFound() {
+    when(subscriberProfileRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException ex =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchProfileById(id));
+
+    assertEquals("SubscriberProfile not found with id: " + id, ex.getMessage());
+
+    verify(subscriberProfileRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllUsernames() {
+    when(subscriberUsernamesRepository.findAll()).thenReturn(List.of(subscriberUsernames));
+    when(modelMapper.map(subscriberUsernames, CommonLookUp.class)).thenReturn(lookUpUserName);
+
+    List<CommonLookUp> result = service.fetchAllSubscriberUsernames();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(idUsername, result.get(0).getId());
+
+    verify(subscriberUsernamesRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(subscriberUsernames, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchUsernameById_Success() {
+    when(subscriberUsernamesRepository.findById(idUsername))
+        .thenReturn(Optional.of(subscriberUsernames));
+    when(modelMapper.map(subscriberUsernames, CommonLookUp.class)).thenReturn(lookUpUserName);
+
+    CommonLookUp result = service.fetchSubscriberUsernameById(idUsername);
+
+    assertNotNull(result);
+    assertEquals(idUsername, result.getId());
+    assertEquals("john_doe", result.getName());
+
+    verify(subscriberUsernamesRepository, times(1)).findById(idUsername);
+    verify(modelMapper, times(1)).map(subscriberUsernames, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchUsernameById_NotFound() {
+    when(subscriberUsernamesRepository.findById(idUsername)).thenReturn(Optional.empty());
+
+    EntityNotFoundException ex =
+        assertThrows(
+            EntityNotFoundException.class, () -> service.fetchSubscriberUsernameById(idUsername));
+
+    assertEquals("SubscriberUsername not found with id: " + idUsername, ex.getMessage());
+
+    verify(subscriberUsernamesRepository, times(1)).findById(idUsername);
+    verifyNoInteractions(modelMapper);
   }
 }

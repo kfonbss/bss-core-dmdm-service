@@ -169,14 +169,21 @@ DROP TABLE IF EXISTS subscriberprofile;
 CREATE TABLE subscriberprofile (
     id UUID NOT NULL PRIMARY KEY,
     profileid INT,
-    name VARCHAR(80) NOT NULL,
+    name VARCHAR(100) NOT NULL,
     discount NUMERIC(10,2) NOT NULL,
-    update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    is_active INT DEFAULT 1
+    code VARCHAR(50),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
 
 CREATE INDEX idx_subscriberprofile_name ON subscriberprofile(name);
+
+INSERT INTO subscriberprofile (id, profileid, name, discount, code, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES (gen_random_uuid(), 1, 'Standard Plan', 5.00, 'SP001', 'സ്റ്റാൻഡേർഡ് പ്ലാൻ', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- subscriberusernames
@@ -185,9 +192,25 @@ DROP TABLE IF EXISTS subscriberusernames;
 CREATE TABLE subscriberusernames (
     id UUID NOT NULL PRIMARY KEY,
     subscriberid SERIAL,
-    username VARCHAR(50)
+    username VARCHAR(50),
+    code VARCHAR(50),
+    name VARCHAR(100) NOT NULL,
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
 
+INSERT INTO subscriberusernames (
+    id, subscriberid, username, code, name, name_in_local, is_active,
+    created_date, modified_date, created_by, modified_by
+) VALUES
+(
+    gen_random_uuid(), 1001, 'john.doe', 'USR001', 'John Doe', 'ജോൺ ഡോ', TRUE,
+    NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 -- subscription
 DROP TABLE IF EXISTS subscription;
@@ -199,7 +222,6 @@ CREATE TABLE subscription (
     expiry TIMESTAMP,
     packageid INTEGER DEFAULT 1,
     firstuse INT NOT NULL DEFAULT 1,
-    lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     partnergroupid INTEGER,
     vlantableid INTEGER,
     alloted_vol BIGINT,
