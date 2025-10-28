@@ -20,6 +20,9 @@ public class CeDisbursementHistory extends Auditor {
   @Column(name = "name")
   private String name;
 
+  @Column(name = "code")
+  private String code;
+
   @Column(name = "name_in_local")
   private String nameInLocal;
 

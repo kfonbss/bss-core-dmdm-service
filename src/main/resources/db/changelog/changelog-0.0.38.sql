@@ -202,6 +202,7 @@ DROP TABLE IF EXISTS ce_connection_breakup_movement_revision CASCADE;
 
 CREATE TABLE ce_connection_breakup_movement_revision (
   revision_id UUID NOT NULL,
+  code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
   is_active boolean,
@@ -218,13 +219,14 @@ CREATE TABLE ce_connection_breakup_movement_revision (
   migrated int DEFAULT NULL,
   CONSTRAINT pk_ce_connection_breakup_movement_revision PRIMARY KEY (revision_id)
 );
-INSERT INTO ce_connection_breakup_movement_revision (revision_id, name, name_in_local, is_active, breakupId, quoationId, approve_status, discount, created_by_platform, created_by, modified_by, migrated)
-VALUES ('9c7d2e2f-45b8-4f32-9b77-9e6b9a2a1f77', 'Revised Connection Movement', 'പുനഃപരിശോധിച്ച കണക്ഷൻ മൂവ്‌മെന്റ്', TRUE, 101, 2001, 2, 15, 'AdminPortal', 'b1f7c2e3-12a4-4f5b-8c7a-9d2e4f6a1b8c', 'b1f7c2e3-12a4-4f5b-8c7a-9d2e4f6a1b8c', 0);
+INSERT INTO ce_connection_breakup_movement_revision (revision_id, code,name, name_in_local, is_active, breakupId, quoationId, approve_status, discount, created_by_platform, created_by, modified_by, migrated)
+VALUES ('9c7d2e2f-45b8-4f32-9b77-9e6b9a2a1f77', 'RI001','Revised Connection Movement', 'പുനഃപരിശോധിച്ച കണക്ഷൻ മൂവ്‌മെന്റ്', TRUE, 101, 2001, 2, 15, 'AdminPortal', 'b1f7c2e3-12a4-4f5b-8c7a-9d2e4f6a1b8c', 'b1f7c2e3-12a4-4f5b-8c7a-9d2e4f6a1b8c', 0);
 
 DROP TABLE IF EXISTS ce_customers CASCADE;
 
 CREATE TABLE ce_customers (
   customer_id UUID NOT NULL,
+  code VARCHAR(45),
   id SERIAL,
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -255,13 +257,13 @@ CREATE TABLE ce_customers (
 );
 
 INSERT INTO ce_customers (
-    customer_id, id, name, name_in_local, is_active, company_name, short_name, contact_person,
+    customer_id, code,id, name, name_in_local, is_active, company_name, short_name, contact_person,
     mobile, email, address, pincode, description, kyc_added, service_type, pay_via_invoice,
     created_by, modified_by, enquiry_id, company_type, billing_category, parent_dept_id,
     enable_cdnote, location_wise_dnote
 )
 VALUES
-('44444444-4444-4444-4444-444444444444', 2, 'Green Energy Solutions', 'ഗ്രീൻ എനർജി സൊല്യൂഷൻസ്', true,
+('44444444-4444-4444-4444-444444444444', 'CUS001',2, 'Green Energy Solutions', 'ഗ്രീൻ എനർജി സൊല്യൂഷൻസ്', true,
  'Green Energy Solutions LLP', 'GES', 'Sneha Raj', '9123456789', 'contact@greenenergy.com',
  'Technopark, Trivandrum, Kerala', '695581', 'Renewable energy project client', false, 2, false,
  '55555555-5555-5555-5555-555555555555', '66666666-6666-6666-6666-666666666666', 102,
@@ -272,6 +274,7 @@ DROP TABLE IF EXISTS ce_disbursement CASCADE;
 
 CREATE TABLE ce_disbursement (
   id UUID NOT NULL,
+  code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
   is_active boolean,
@@ -291,5 +294,5 @@ CREATE TABLE ce_disbursement (
   modified_by UUID,
   CONSTRAINT pk_ce_disbursement PRIMARY KEY (id)
 );
-INSERT INTO ce_disbursement (id, name, name_in_local, is_active, partnergroupid, locid, packageid, subscriberid, cause, revenue, disbursestatusid, subfinanceid, revenueshareid, created_by, modified_by)
-VALUES ('b47f82b2-6781-4cb0-8d91-7c4b1b0aebd2', 'Monthly Fiber Revenue Share', 'മാസാന്ത്യ ഫൈബർ വരുമാന പങ്ക്', TRUE, 10, 205, 301, 4502, 'Quarterly disbursement for subscriber group A', 12500.7500000000, 1, 1001, 2001, 'b1a5d82b-6712-4bb0-91f5-9a3a9f1e1b23', 'b1a5d82b-6712-4bb0-91f5-9a3a9f1e1b23');
+INSERT INTO ce_disbursement (id, code,name, name_in_local, is_active, partnergroupid, locid, packageid, subscriberid, cause, revenue, disbursestatusid, subfinanceid, revenueshareid, created_by, modified_by)
+VALUES ('b47f82b2-6781-4cb0-8d91-7c4b1b0aebd2', 'DIS001','Monthly Fiber Revenue Share', 'മാസാന്ത്യ ഫൈബർ വരുമാന പങ്ക്', TRUE, 10, 205, 301, 4502, 'Quarterly disbursement for subscriber group A', 12500.7500000000, 1, 1001, 2001, 'b1a5d82b-6712-4bb0-91f5-9a3a9f1e1b23', 'b1a5d82b-6712-4bb0-91f5-9a3a9f1e1b23');

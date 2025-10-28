@@ -17,6 +17,9 @@ public class CeCustomer extends Auditor {
   @Column(name = "customer_id", nullable = false)
   private UUID customerId;
 
+  @Column(name = "code")
+  private String code;
+
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Integer id;

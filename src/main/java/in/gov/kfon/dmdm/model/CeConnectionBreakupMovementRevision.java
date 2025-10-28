@@ -16,6 +16,9 @@ public class CeConnectionBreakupMovementRevision extends Auditor {
   @Column(name = "revision_id", nullable = false)
   private UUID revisionId;
 
+  @Column(name = "code")
+  private String code;
+
   @Column(name = "name")
   private String name;
 
