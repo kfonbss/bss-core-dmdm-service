@@ -45,4 +45,12 @@ public interface SubscriberService {
   List<CommonLookUp> fetchAllContactInfo();
 
   CommonLookUp fetchContactInfoById(UUID id);
+
+  List<CommonLookUp> fetchAllGstDetails();
+
+  CommonLookUp fetchGstDetailsById(UUID id);
+
+  List<CommonLookUp> fetchAllInvoices();
+
+  CommonLookUp fetchInvoiceById(UUID id);
 }

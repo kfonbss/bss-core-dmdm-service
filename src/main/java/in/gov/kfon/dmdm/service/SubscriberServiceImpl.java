@@ -26,6 +26,8 @@ public class SubscriberServiceImpl implements SubscriberService {
   private final SubscriberEmailRepository subscriberEmailRepository;
   private final SubscriberFinanceRepository financeRepository;
   private final SubscriberContactInformationRepository contactRepository;
+  private final SubscriberGstDetailRepository subscriberGstDetailRepository;
+  private final SubscriberInvoiceRepository subscriberInvoiceRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -220,5 +222,41 @@ public class SubscriberServiceImpl implements SubscriberService {
                     new EntityNotFoundException(
                         "SubscriberContactInformation not found with id: " + id));
     return modelMapper.map(c, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllGstDetails() {
+    return subscriberGstDetailRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchGstDetailsById(UUID id) {
+    var gstDetail =
+        subscriberGstDetailRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("GST Detail not found"));
+    return modelMapper.map(gstDetail, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllInvoices() {
+    return subscriberInvoiceRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchInvoiceById(UUID id) {
+    var invoice =
+        subscriberInvoiceRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Invoice not found"));
+    return modelMapper.map(invoice, CommonLookUp.class);
   }
 }

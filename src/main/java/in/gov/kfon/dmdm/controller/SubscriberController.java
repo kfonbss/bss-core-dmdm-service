@@ -155,4 +155,29 @@ public class SubscriberController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched subscriber contact information"));
   }
+
+  @GetMapping("/gsts/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllGstDetails() {
+    var data = service.fetchAllGstDetails();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all GST details"));
+  }
+
+  @GetMapping("/gst/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchGstDetailById(@PathVariable UUID id) {
+    var data = service.fetchGstDetailsById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched GST detail"));
+  }
+
+  @GetMapping("/invoices/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllInvoices() {
+    var data = service.fetchAllInvoices();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all invoices"));
+  }
+
+  @GetMapping("/invoice/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchInvoiceById(@PathVariable UUID id) {
+    var data = service.fetchInvoiceById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched subscriber invoice"));
+  }
 }
