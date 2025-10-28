@@ -100,4 +100,31 @@ public class SubscriberController {
     var data = service.fetchSubscriberDataUsageById(id);
     return ResponseEntity.ok(Response.ok(data, "Fetched subscriber data usage"));
   }
+
+  @GetMapping("/details")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllSubscriberDetails() {
+    var data = service.fetchAllSubscriberDetails();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all subscriber details"));
+  }
+
+  @GetMapping("/detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchSubscriberDetailById(@PathVariable UUID id) {
+    var data = service.fetchSubscriberDetailById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched subscriber detail"));
+  }
+
+  @GetMapping("/emails")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllSubscriberEmails() {
+    var data = service.fetchAllSubscriberEmails();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all subscriber emails"));
+  }
+
+  @GetMapping("/email/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchSubscriberEmailById(@PathVariable UUID id) {
+    var data = service.fetchSubscriberEmailById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched subscriber email"));
+  }
 }

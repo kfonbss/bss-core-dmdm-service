@@ -175,7 +175,6 @@ CREATE TABLE subscriberdetail (
     registrationdate TIMESTAMP,
     machineaddress VARCHAR(17),
     subscriberprofileid INTEGER DEFAULT 1,
-    lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     landlineno BIGINT,
     doorno VARCHAR(10),
     apno VARCHAR(45),
@@ -199,20 +198,51 @@ CREATE TABLE subscriberdetail (
     latitude VARCHAR(100),
     longitude VARCHAR(100),
     ponport_details_sub_id INTEGER,
-    workorderid INTEGER
+    workorderid INTEGER,
+    code VARCHAR(50),
+    name VARCHAR(150),
+    name_in_local VARCHAR(150),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
 
 CREATE INDEX idx_subscriberdetail_premiseid ON subscriberdetail(premiseid);
+
+INSERT INTO subscriberdetail (id, subscriberid, username, partnerid, firstname, middlename, lastname, premiseid, mobileno, email, dateofbirth,
+registrationdate, machineaddress, subscriberprofileid, landlineno, doorno, apno, oltabid, address, disabled, gstin, sac, pan, pancard_copy,
+gstindoc, lutdoc, subprofile, otp, otpstarttime, taxpayertype, gst_status, gender, apptype, sez_verfied, latitude, longitude,
+ponport_details_sub_id, workorderid, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES (gen_random_uuid(), DEFAULT, 'john_doe', 'P12345', 'John', 'M', 'Doe', 1001, 9876543210, 'john.doe@example.com', '1990-05-10', NOW(),
+'00:1A:79:5B:6F:11', 1, 4712345, '12A', 'AP-1234', 12, '123, ABC Street, Trivandrum', 0, '32ABCDE1234F1Z5', '998877', 'ABCDE1234F',
+'pancopy.pdf', 'gstcopy.pdf', 'lutcopy.pdf', 'Subscriber', 567890, NOW(), 0, 1, 1, 1, 0, '8.5241', '76.9366', 10, 2001, 'SUB001',
+'John Doe Subscriber', 'ജോൺ ഡോ സബ്‌സ്‌ക്രൈബർ', TRUE, NOW(), NULL, gen_random_uuid(), NULL);
 
 
 -- subscriberemail
 DROP TABLE IF EXISTS subscriberemail;
 
 CREATE TABLE subscriberemail (
-    email_id UUID NOT NULL PRIMARY KEY,
-    id SERIAL,
+    id UUID NOT NULL PRIMARY KEY,
+    email_id SERIAL,
     subscriberid INTEGER,
     username VARCHAR(250),
     email VARCHAR(250),
-    sentdate TIMESTAMP
+    code VARCHAR(50),
+    name VARCHAR(150),
+    name_in_local VARCHAR(150),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
+);
+
+INSERT INTO subscriberemail (
+  id, email_id, subscriberid, username, email,
+  code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 1001, 'johndoe', 'john.doe@example.com', 'EMAIL001', 'John Email', 'ജോൺ ഇമെയിൽ', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
 );
