@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CeDisbursement extends Auditor {
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id", nullable = false)
   private UUID id;
 
