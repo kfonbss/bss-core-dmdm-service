@@ -32,4 +32,12 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> disbursementsFetchAll();
 
   CommonLookUp disbursementFetchById(UUID id);
+
+  List<CommonLookUp> disbursementsHisFetchAll();
+
+  CommonLookUp disbursementHisFetchById(UUID id);
+
+  List<CommonLookUp> mastersFetchAll();
+
+  CommonLookUp masterFetchById(UUID id);
 }

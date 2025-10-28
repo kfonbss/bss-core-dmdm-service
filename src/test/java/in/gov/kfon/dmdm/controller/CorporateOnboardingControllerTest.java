@@ -205,4 +205,72 @@ class CorporateOnboardingControllerTest {
         .andExpect(jsonPath("$.data.code").value("CORP001"))
         .andExpect(jsonPath("$.data.name").value("Tech Innovations Pvt Ltd"));
   }
+
+  @Test
+  void testDisbursementsFetchAll() throws Exception {
+    when(service.customersFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/disbursements/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"));
+  }
+
+  @Test
+  void testDisbursementsFetchById() throws Exception {
+    when(service.customerFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/disbursement/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"));
+  }
+
+  @Test
+  void testDisbursementsHisFetchAll() throws Exception {
+    when(service.customersFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/disbursements-history/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"));
+  }
+
+  @Test
+  void testDisbursementHisFetchById() throws Exception {
+    when(service.customerFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/disbursement-history/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"));
+  }
+
+  @Test
+  void testDnoteMastersFetchAll() throws Exception {
+    when(service.customersFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/CeDnoteMasters/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"));
+  }
+
+  @Test
+  void testDnoteMasterFetchById() throws Exception {
+    when(service.customerFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/CeDnoteMaster/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"));
+  }
 }

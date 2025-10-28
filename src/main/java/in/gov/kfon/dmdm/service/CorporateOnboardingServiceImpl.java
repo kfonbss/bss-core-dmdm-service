@@ -26,6 +26,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CeConnectionBreakupRevisionRepository revisionRepository;
   private final CeCustomerRepository customerRepository;
   private final CeDisbursementRepository disbursementRepository;
+  private final CeDisbursementHistoryRepository disbursementHistoryRepository;
+  private final CeDnoteMasterRepository dnoteMasterRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -194,5 +196,37 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Not found with id: " + id));
     return modelMapper.map(disbursement, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> disbursementsHisFetchAll() {
+    return disbursementHistoryRepository.findAll().stream()
+        .map(connection -> modelMapper.map(connection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp disbursementHisFetchById(UUID id) {
+    CeDisbursementHistory disbursement =
+        disbursementHistoryRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Not found with id: " + id));
+    return modelMapper.map(disbursement, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> mastersFetchAll() {
+    return dnoteMasterRepository.findAll().stream()
+        .map(connection -> modelMapper.map(connection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp masterFetchById(UUID id) {
+    CeDnoteMaster master =
+        dnoteMasterRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Not found with id: " + id));
+    return modelMapper.map(master, CommonLookUp.class);
   }
 }
