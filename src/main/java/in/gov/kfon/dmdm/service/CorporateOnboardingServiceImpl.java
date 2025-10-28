@@ -282,8 +282,7 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
     CeEodetails details =
         eodetailsRepository
             .findById(id)
-            .orElseThrow(
-                () -> new EntityNotFoundException("Corporate Enquiry not found with id: " + id));
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
 
     CommonLookUp lookup = modelMapper.map(details, CommonLookUp.class);
     lookup.setId(details.getEodetailsId());
