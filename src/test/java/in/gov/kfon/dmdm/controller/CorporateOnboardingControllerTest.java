@@ -258,7 +258,7 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/corporate/CeDnoteMasters/fetch-all").contentType(MediaType.APPLICATION_JSON))
+            get("/api/corporate/dNoteMasters/fetch-all").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"));
   }
@@ -268,8 +268,7 @@ class CorporateOnboardingControllerTest {
     when(service.customerFetchById(any(UUID.class))).thenReturn(lookup);
 
     mockMvc
-        .perform(
-            get("/api/corporate/CeDnoteMaster/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .perform(get("/api/corporate/dNoteMaster/{id}", id).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"));
   }

@@ -115,13 +115,13 @@ public class CorporateOnboardingController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 
-  @GetMapping("CeDnoteMasters/fetch-all")
+  @GetMapping("dNoteMasters/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> mastersFetchAll() {
     var data = service.mastersFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 
-  @GetMapping("CeDnoteMaster/{id}")
+  @GetMapping("dNoteMaster/{id}")
   public ResponseEntity<Response<CommonLookUp>> masterFetchById(@PathVariable UUID id) {
     var data = service.masterFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
