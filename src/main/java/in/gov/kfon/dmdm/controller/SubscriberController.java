@@ -127,4 +127,32 @@ public class SubscriberController {
     var data = service.fetchSubscriberEmailById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched subscriber email"));
   }
+
+  @GetMapping("/finances/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllFinance() {
+    var data = service.fetchAllFinance();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all subscriber finance records"));
+  }
+
+  @GetMapping("/finance/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchFinanceById(@PathVariable UUID id) {
+    var data = service.fetchFinanceById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched subscriber finance record"));
+  }
+
+  @GetMapping("/contact-informations")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllContactInfo() {
+    var data = service.fetchAllContactInfo();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all subscriber contact information"));
+  }
+
+  @GetMapping("/contact-information/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchContactInfoById(@PathVariable UUID id) {
+    var data = service.fetchContactInfoById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched subscriber contact information"));
+  }
 }

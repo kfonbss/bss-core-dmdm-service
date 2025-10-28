@@ -27,6 +27,8 @@ public class SubscriberServiceImplTest {
   @Mock private SubscriberDataUsageRepository dataUsageRepository;
   @Mock private SubscriberDetailRepository subscriberDetailRepository;
   @Mock private SubscriberEmailRepository subscriberEmailRepository;
+  @Mock private SubscriberFinanceRepository financeRepository;
+  @Mock private SubscriberContactInformationRepository contactRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private SubscriberServiceImpl service;
@@ -55,6 +57,12 @@ public class SubscriberServiceImplTest {
   private SubscriberEmail subscriberEmail;
   private CommonLookUp lookupSubscriberDetail;
   private CommonLookUp lookupSubscriberEmail;
+  private UUID idFinance;
+  private UUID idContact;
+  private SubscriberFinance finance;
+  private SubscriberContactInformation contact;
+  private CommonLookUp lookupFinance;
+  private CommonLookUp lookupContact;
 
   @BeforeEach
   void setUp() {
@@ -184,6 +192,25 @@ public class SubscriberServiceImplTest {
     lookupSubscriberEmail.setName("John Email");
     lookupSubscriberEmail.setNameInLocal("ജോൺ ഇമെയിൽ");
     lookupSubscriberEmail.setIsActive(true);
+
+    idFinance = UUID.randomUUID();
+    idContact = UUID.randomUUID();
+
+    finance = new SubscriberFinance();
+    finance.setId(idFinance);
+    finance.setName("Finance Record 1");
+
+    contact = new SubscriberContactInformation();
+    contact.setId(idContact);
+    contact.setName("John Doe");
+
+    lookupFinance = new CommonLookUp();
+    lookupFinance.setId(idFinance);
+    lookupFinance.setName("Finance Record 1");
+
+    lookupContact = new CommonLookUp();
+    lookupContact.setId(idContact);
+    lookupContact.setName("John Doe");
   }
 
   @Test
@@ -424,5 +451,63 @@ public class SubscriberServiceImplTest {
             EntityNotFoundException.class,
             () -> service.fetchSubscriberEmailById(idSubscriberEmail));
     assertEquals("SubscriberEmail not found with id: " + idSubscriberEmail, ex.getMessage());
+  }
+
+  @Test
+  void testFetchAllFinance() {
+    when(financeRepository.findAll()).thenReturn(List.of(finance));
+    when(modelMapper.map(finance, CommonLookUp.class)).thenReturn(lookupFinance);
+
+    List<CommonLookUp> result = service.fetchAllFinance();
+    assertEquals(1, result.size());
+    assertEquals(idFinance, result.get(0).getId());
+  }
+
+  @Test
+  void testFetchFinanceById_Success() {
+    when(financeRepository.findById(idFinance)).thenReturn(Optional.of(finance));
+    when(modelMapper.map(finance, CommonLookUp.class)).thenReturn(lookupFinance);
+
+    CommonLookUp result = service.fetchFinanceById(idFinance);
+    assertEquals(idFinance, result.getId());
+    assertEquals("Finance Record 1", result.getName());
+  }
+
+  @Test
+  void testFetchFinanceById_NotFound() {
+    when(financeRepository.findById(idFinance)).thenReturn(Optional.empty());
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchFinanceById(idFinance));
+    assertEquals("SubscriberFinance not found with id: " + idFinance, exception.getMessage());
+  }
+
+  @Test
+  void testFetchAllContactInfo() {
+    when(contactRepository.findAll()).thenReturn(List.of(contact));
+    when(modelMapper.map(contact, CommonLookUp.class)).thenReturn(lookupContact);
+
+    List<CommonLookUp> result = service.fetchAllContactInfo();
+    assertEquals(1, result.size());
+    assertEquals(idContact, result.get(0).getId());
+  }
+
+  @Test
+  void testFetchContactInfoById_Success() {
+    when(contactRepository.findById(idContact)).thenReturn(Optional.of(contact));
+    when(modelMapper.map(contact, CommonLookUp.class)).thenReturn(lookupContact);
+
+    CommonLookUp result = service.fetchContactInfoById(idContact);
+    assertEquals(idContact, result.getId());
+    assertEquals("John Doe", result.getName());
+  }
+
+  @Test
+  void testFetchContactInfoById_NotFound() {
+    when(contactRepository.findById(idContact)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchContactInfoById(idContact));
+    assertEquals(
+        "SubscriberContactInformation not found with id: " + idContact, exception.getMessage());
   }
 }

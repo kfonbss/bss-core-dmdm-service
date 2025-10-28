@@ -103,3 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.7.0] - 2025-10-28
 ### Added
 - Get corporate disbursement and customer details
+
+## [0.8.0] - 2025-10-28
+### Added
+- Get subscriber finance and contact information details

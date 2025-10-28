@@ -37,4 +37,12 @@ public interface SubscriberService {
   List<CommonLookUp> fetchAllSubscriberEmails();
 
   CommonLookUp fetchSubscriberEmailById(UUID id);
+
+  List<CommonLookUp> fetchAllFinance();
+
+  CommonLookUp fetchFinanceById(UUID id);
+
+  List<CommonLookUp> fetchAllContactInfo();
+
+  CommonLookUp fetchContactInfoById(UUID id);
 }
