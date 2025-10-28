@@ -19,6 +19,9 @@ public class CeDnoteMaster extends Auditor {
   @Column(name = "master_id", nullable = false)
   private UUID masterId;
 
+  @Column(name = "code")
+  private String code;
+
   @Column(name = "name")
   private String name;
 

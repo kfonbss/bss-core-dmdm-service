@@ -208,33 +208,48 @@ class CorporateOnboardingControllerTest {
 
   @Test
   void testDisbursementsFetchAll() throws Exception {
-    when(service.customersFetchAll()).thenReturn(List.of(lookup));
+    CommonLookUp lookups = new CommonLookUp();
+    lookups.setCode("CORP001");
+    lookups.setName("Tech Innovations Pvt Ltd");
+
+    when(service.disbursementsFetchAll()).thenReturn(List.of(lookups));
 
     mockMvc
         .perform(
             get("/api/corporate/disbursements/fetch-all").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.message").value("Fetched"));
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"))
+        .andExpect(jsonPath("$.data[0].name").value("Tech Innovations Pvt Ltd"));
   }
 
   @Test
   void testDisbursementsFetchById() throws Exception {
-    when(service.customerFetchById(any(UUID.class))).thenReturn(lookup);
+    UUID ids = UUID.randomUUID();
+
+    CommonLookUp look = new CommonLookUp();
+    look.setId(ids);
+    look.setCode("CORP001");
+    look.setName("Tech Innovations Pvt Ltd");
+
+    when(service.disbursementFetchById(any(UUID.class))).thenReturn(look);
 
     mockMvc
         .perform(
-            get("/api/corporate/disbursement/{id}", id).contentType(MediaType.APPLICATION_JSON))
+            get("/api/corporate/disbursement/{id}", ids).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.message").value("Fetched"));
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"))
+        .andExpect(jsonPath("$.data.name").value("Tech Innovations Pvt Ltd"));
   }
 
   @Test
   void testDisbursementsHisFetchAll() throws Exception {
-    when(service.customersFetchAll()).thenReturn(List.of(lookup));
+    when(service.disbursementsHisFetchAll()).thenReturn(List.of(lookup));
 
     mockMvc
         .perform(
-            get("/api/corporate/disbursements-history/fetch-all")
+            get("/api/corporate/disbursement-histories/fetch-all")
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"));
@@ -242,7 +257,7 @@ class CorporateOnboardingControllerTest {
 
   @Test
   void testDisbursementHisFetchById() throws Exception {
-    when(service.customerFetchById(any(UUID.class))).thenReturn(lookup);
+    when(service.disbursementHisFetchById(any(UUID.class))).thenReturn(lookup);
 
     mockMvc
         .perform(
@@ -254,7 +269,7 @@ class CorporateOnboardingControllerTest {
 
   @Test
   void testDnoteMastersFetchAll() throws Exception {
-    when(service.customersFetchAll()).thenReturn(List.of(lookup));
+    when(service.mastersFetchAll()).thenReturn(List.of(lookup));
 
     mockMvc
         .perform(
@@ -265,11 +280,63 @@ class CorporateOnboardingControllerTest {
 
   @Test
   void testDnoteMasterFetchById() throws Exception {
-    when(service.customerFetchById(any(UUID.class))).thenReturn(lookup);
+    when(service.masterFetchById(any(UUID.class))).thenReturn(lookup);
 
     mockMvc
         .perform(get("/api/corporate/dNoteMaster/{id}", id).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"));
+  }
+
+  @Test
+  void tesRenewalFetchAll() throws Exception {
+    when(service.renewalsHistoryFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/dNote/Renewal-histories/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"))
+        .andExpect(jsonPath("$.data[0].name").value("Tech Innovations Pvt Ltd"));
+  }
+
+  @Test
+  void testRenewalFetchById() throws Exception {
+    when(service.renewalHistoryFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/dNote/Renewal-history/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"))
+        .andExpect(jsonPath("$.data.name").value("Tech Innovations Pvt Ltd"));
+  }
+
+  @Test
+  void tesEoDetailsFetchAll() throws Exception {
+    when(service.eoDetailsFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/corporate/eoDetails/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"))
+        .andExpect(jsonPath("$.data[0].name").value("Tech Innovations Pvt Ltd"));
+  }
+
+  @Test
+  void testEoDetailsetchById() throws Exception {
+    when(service.eoDetailFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/corporate/eoDetail/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"))
+        .andExpect(jsonPath("$.data.name").value("Tech Innovations Pvt Ltd"));
   }
 }

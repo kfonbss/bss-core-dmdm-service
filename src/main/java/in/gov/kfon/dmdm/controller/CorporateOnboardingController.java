@@ -103,7 +103,7 @@ public class CorporateOnboardingController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 
-  @GetMapping("disbursements-history/fetch-all")
+  @GetMapping("disbursement-histories/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> disbursementsHisFetchAll() {
     var data = service.disbursementsHisFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
@@ -124,6 +124,30 @@ public class CorporateOnboardingController {
   @GetMapping("dNoteMaster/{id}")
   public ResponseEntity<Response<CommonLookUp>> masterFetchById(@PathVariable UUID id) {
     var data = service.masterFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("dNote/Renewal-histories/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> renewalsHistoryFetchAll() {
+    var data = service.renewalsHistoryFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("dNote/Renewal-history/{id}")
+  public ResponseEntity<Response<CommonLookUp>> renewalHistoryFetchById(@PathVariable UUID id) {
+    var data = service.renewalHistoryFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("eoDetails/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> eoDetailsFetchAll() {
+    var data = service.eoDetailsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("eoDetail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> eoDetailFetchById(@PathVariable UUID id) {
+    var data = service.eoDetailFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 }

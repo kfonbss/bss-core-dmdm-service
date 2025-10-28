@@ -27,6 +27,8 @@ class CorporateOnboardingServiceImplTest {
   private CeDisbursementRepository disbursementRepository;
   private CeDisbursementHistoryRepository disbursementHistoryRepository;
   private CeDnoteMasterRepository dnoteMasterRepository;
+  private CeDnoteRenewalHistoryRepository renewalHistoryRepository;
+  private CeEodetailsRepository eodetailsRepository;
 
   @BeforeEach
   void setUp() {
@@ -40,6 +42,8 @@ class CorporateOnboardingServiceImplTest {
     disbursementRepository = mock(CeDisbursementRepository.class);
     disbursementHistoryRepository = mock(CeDisbursementHistoryRepository.class);
     dnoteMasterRepository = mock(CeDnoteMasterRepository.class);
+    renewalHistoryRepository = mock(CeDnoteRenewalHistoryRepository.class);
+    eodetailsRepository = mock(CeEodetailsRepository.class);
 
     service =
         new CorporateOnboardingServiceImpl(
@@ -52,7 +56,9 @@ class CorporateOnboardingServiceImplTest {
             customerRepository,
             disbursementRepository,
             disbursementHistoryRepository,
-            dnoteMasterRepository);
+            dnoteMasterRepository,
+            renewalHistoryRepository,
+            eodetailsRepository);
 
     service.setupMapper();
   }
@@ -382,5 +388,75 @@ class CorporateOnboardingServiceImplTest {
     when(dnoteMasterRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.masterFetchById(id));
+  }
+
+  @Test
+  void testRenewalsHistoryFetchAll_ShouldReturnMappedList() {
+    CeDnoteRenewalHistory history = new CeDnoteRenewalHistory();
+    history.setHistoryId(UUID.randomUUID());
+
+    when(renewalHistoryRepository.findAll()).thenReturn(List.of(history));
+
+    List<CommonLookUp> result = service.renewalsHistoryFetchAll();
+
+    assertEquals(1, result.size());
+    verify(renewalHistoryRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testRenewalsHistoryFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeDnoteRenewalHistory history = new CeDnoteRenewalHistory();
+    history.setHistoryId(id);
+
+    when(renewalHistoryRepository.findById(id)).thenReturn(Optional.of(history));
+
+    CommonLookUp result = service.renewalHistoryFetchById(id);
+
+    assertNotNull(result);
+    verify(renewalHistoryRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testRenewalsHistoryById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(renewalHistoryRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.renewalHistoryFetchById(id));
+  }
+
+  @Test
+  void testEoDetailsFetchAll_ShouldReturnMappedList() {
+    CeEodetails eodetails = new CeEodetails();
+    eodetails.setEodetailsId(UUID.randomUUID());
+
+    when(eodetailsRepository.findAll()).thenReturn(List.of(eodetails));
+
+    List<CommonLookUp> result = service.eoDetailsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(eodetailsRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testEoDetailFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeEodetails ceEodetails = new CeEodetails();
+    ceEodetails.setEodetailsId(id);
+
+    when(eodetailsRepository.findById(id)).thenReturn(Optional.of(ceEodetails));
+
+    CommonLookUp result = service.eoDetailFetchById(id);
+
+    assertNotNull(result);
+    verify(eodetailsRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testEoDetailFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(eodetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.eoDetailFetchById(id));
   }
 }

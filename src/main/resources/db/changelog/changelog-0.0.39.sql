@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS ce_disbursement_history CASCADE;
 
 CREATE TABLE ce_disbursement_history (
   history_id UUID NOT NULL,
+  code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
   is_active boolean,
@@ -26,13 +27,14 @@ CREATE TABLE ce_disbursement_history (
   CONSTRAINT pk_ce_disbursement_history PRIMARY KEY (history_id)
 );
 
-INSERT INTO ce_disbursement_history (history_id, name, name_in_local, is_active, type, disbid, partnergroupid, subscriberid, locid, packageid, cause, servicestartdate, serviceenddate, revenue, subfinanceid, revenueshareid, disbursestatusid, created_by, modified_by)
-VALUES (gen_random_uuid(), 'Subscriber Revenue Distribution History', 'സബ്സ്ക്രൈബർ വരുമാന വിതരണം ചരിത്രം', TRUE, TRUE, 1001, 201, 5002, 305, 450, 'Monthly revenue distribution', '2025-09-01 00:00:00', '2025-09-30 23:59:59', 15890.7500000000, 1201, 2201, TRUE, gen_random_uuid(), gen_random_uuid());
+INSERT INTO ce_disbursement_history (history_id, code,name, name_in_local, is_active, type, disbid, partnergroupid, subscriberid, locid, packageid, cause, servicestartdate, serviceenddate, revenue, subfinanceid, revenueshareid, disbursestatusid, created_by, modified_by)
+VALUES (gen_random_uuid(), 'HA001','Subscriber Revenue Distribution History', 'സബ്സ്ക്രൈബർ വരുമാന വിതരണം ചരിത്രം', TRUE, TRUE, 1001, 201, 5002, 305, 450, 'Monthly revenue distribution', '2025-09-01 00:00:00', '2025-09-30 23:59:59', 15890.7500000000, 1201, 2201, TRUE, gen_random_uuid(), gen_random_uuid());
 
 DROP TABLE IF EXISTS ce_dnote_master CASCADE;
 
 CREATE TABLE ce_dnote_master (
   master_id UUID NOT NULL,
+  code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
   is_active boolean,
@@ -69,14 +71,18 @@ CREATE TABLE ce_dnote_master (
   CONSTRAINT pk_ce_dnote_master PRIMARY KEY (master_id)
 );
 
-INSERT INTO ce_dnote_master (master_id, name, name_in_local, is_active, subscriberid, locid, subfinanceid, notenumber, notemonth, notedate, grossamount, locamount, servicetax, servicetaxrate, servicestartdate, serviceenddate, quarter_start_date, quarter_end_date, gst_value, cgst_value, sgst_value, igst_value, cgst_rate, sgst_rate, igst_rate, paid_amount, gstin, taxpayertype, particulars, created_by, modified_by)
-VALUES (gen_random_uuid(), 'Quarterly Disbursement Note', 'ത്രൈമാസ വിതരണ കുറിപ്പ്', TRUE, 5501, 305, 1201, 'DN-2025-10-001', 'October-2025', '2025-10-15', 25000.7500000000, 24000.5000000000, 500.0000000000, 2.00, '2025-07-01', '2025-09-30', '2025-07-01', '2025-09-30', 4500.0, 2250.0000000000, 2250.0, 0.00, 9.000, 9.0000, 0.00, 20000.000, '32ABCDE1234F1Z5', 1, 'Disbursement note for Q3 FY2025 subscribers', gen_random_uuid(), gen_random_uuid());
+INSERT INTO ce_dnote_master (master_id, code, name, name_in_local, is_active, subscriberid, locid, subfinanceid, notenumber, notemonth, notedate, grossamount, locamount, servicetax, servicetaxrate, servicestartdate, serviceenddate, quarter_start_date, quarter_end_date, gst_value, cgst_value, sgst_value, igst_value, cgst_rate, sgst_rate, igst_rate, paid_amount, gstin, taxpayertype, particulars, created_by, modified_by)
+VALUES (gen_random_uuid(), 'MA001', 'Quarterly Disbursement Note', 'ത്രൈമാസ വിതരണ കുറിപ്പ്', TRUE, 5501, 305, 1201, 'DN-2025-10-001', 'October-2025', '2025-10-15', 25000.7500000000, 24000.5000000000, 500.0000000000, 2.00, '2025-07-01', '2025-09-30', '2025-07-01', '2025-09-30', 4500.0, 2250.0000000000, 2250.0, 0.00, 9.000, 9.0000, 0.00, 20000.000, '32ABCDE1234F1Z5', 1, 'Disbursement note for Q3 FY2025 subscribers', gen_random_uuid(), gen_random_uuid());
 
 
 DROP TABLE IF EXISTS ce_dnote_renewal_history CASCADE;
 
 CREATE TABLE ce_dnote_renewal_history (
   history_id UUID NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   locid int DEFAULT NULL,
   subscriberid int DEFAULT NULL,
@@ -96,19 +102,26 @@ CREATE TABLE ce_dnote_renewal_history (
   loc_amount decimal(26,10) DEFAULT NULL,
   loc_gst_amount decimal(26,10) DEFAULT NULL,
   loc_grand_amount decimal(26,10) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_dnote_renewal_history PRIMARY KEY (history_id)
 );
 
-COMMENT ON COLUMN ce_dnote_renewal_history.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_dnote_renewal_history (history_id, code, name, name_in_local, is_active, locid, subscriberid, breakupid, serviceid, packageid, mg_invoiceid, service_sdate, service_edate, subfinanceid, total_sdays, discount_percent, disount_amount, original_renewalfee, renewalfee_after_disount, cost_per_day, loc_amount, loc_gst_amount, loc_grand_amount, created_by, modified_by)
+VALUES (gen_random_uuid(),'HS001', 'Renewal Entry - October 2025', 'പുതുക്കൽ രേഖ - ഒക്ടോബർ 2025', TRUE, 305, 5501, 1001, 2001, 3001, 4001, '2025-10-01', '2026-09-30', 1201, 365, 10, 150.0000000000, 1500.0000000000, 1350.0000000000, 4.0000000000, 1350.0000000000, 243.0000000000, 1593.0000000000, gen_random_uuid(), gen_random_uuid());
+
 
 
 DROP TABLE IF EXISTS ce_eodetails CASCADE;
 
 CREATE TABLE ce_eodetails (
   eodetails_id UUID NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   locid int DEFAULT NULL,
   subid int DEFAULT NULL,
@@ -120,16 +133,16 @@ CREATE TABLE ce_eodetails (
   installation_address varchar(250) DEFAULT NULL,
   commission_date date DEFAULT NULL,
   commission_doc varchar(250) DEFAULT NULL,
-  created_by varchar(50) DEFAULT NULL,
+  created_by_platform varchar(50) DEFAULT NULL,
   end_office_name varchar(100) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_eodetails PRIMARY KEY (eodetails_id)
 );
-
-COMMENT ON COLUMN ce_eodetails.is_active IS '0=In Active,1=Active';
-
+INSERT INTO ce_eodetails (eodetails_id,code,name, name_in_local, is_active, locid, subid, contact_person_name, mobileno, land_line_number, emailid, customer_address, installation_address, commission_date, commission_doc, created_by_platform, end_office_name, created_by, modified_by)
+VALUES (gen_random_uuid(), 'EO001','End Office Fiber Installation', 'എൻഡ് ഓഫീസ് ഫൈബർ ഇൻസ്റ്റലേഷൻ', TRUE, 305, 5501, 'Rajesh Kumar', '9876543210', '0484222334', 'rajesh.kumar@example.com', '123 MG Road, Kochi, Kerala', '456 Installation Site, Kakkanad, Kochi', '2025-10-01', 'commission_doc_2025.pdf', 'WebPortal', 'Kochi Main End Office', gen_random_uuid(), gen_random_uuid());
 
 DROP TABLE IF EXISTS ce_inovoice CASCADE;
 

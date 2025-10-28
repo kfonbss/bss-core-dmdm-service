@@ -40,4 +40,12 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> mastersFetchAll();
 
   CommonLookUp masterFetchById(UUID id);
+
+  List<CommonLookUp> renewalsHistoryFetchAll();
+
+  CommonLookUp renewalHistoryFetchById(UUID id);
+
+  List<CommonLookUp> eoDetailsFetchAll();
+
+  CommonLookUp eoDetailFetchById(UUID id);
 }

@@ -20,6 +20,9 @@ public class CeDisbursement extends Auditor {
   @Column(name = "id", nullable = false)
   private UUID id;
 
+  @Column(name = "code")
+  private String code;
+
   @Column(name = "name")
   private String name;
 
