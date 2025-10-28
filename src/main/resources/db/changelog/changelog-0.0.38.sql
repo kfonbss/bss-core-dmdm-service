@@ -226,6 +226,9 @@ DROP TABLE IF EXISTS ce_customers CASCADE;
 CREATE TABLE ce_customers (
   customer_id UUID NOT NULL,
   id SERIAL,
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   company_name varchar(100) DEFAULT NULL,
   short_name varchar(50) DEFAULT NULL,
   contact_person varchar(50) DEFAULT NULL,
@@ -235,11 +238,13 @@ CREATE TABLE ce_customers (
   pincode varchar(6) DEFAULT NULL,
   description varchar(250) DEFAULT NULL,
   kyc_added boolean DEFAULT false,
+  --0=Not Added,1=Added
   service_type int NOT NULL DEFAULT 1,
   pay_via_invoice boolean DEFAULT false,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   enquiry_id int DEFAULT NULL,
   company_type varchar(100) DEFAULT NULL,
   billing_category varchar(50) DEFAULT NULL,
@@ -249,14 +254,27 @@ CREATE TABLE ce_customers (
   CONSTRAINT pk_ce_customers PRIMARY KEY (customer_id)
 );
 
-COMMENT ON COLUMN ce_customers.kyc_added IS '0=Not Added,1=Added';
-COMMENT ON COLUMN ce_customers.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_customers (
+    customer_id, id, name, name_in_local, is_active, company_name, short_name, contact_person,
+    mobile, email, address, pincode, description, kyc_added, service_type, pay_via_invoice,
+    created_by, modified_by, enquiry_id, company_type, billing_category, parent_dept_id,
+    enable_cdnote, location_wise_dnote
+)
+VALUES
+('44444444-4444-4444-4444-444444444444', 2, 'Green Energy Solutions', 'ഗ്രീൻ എനർജി സൊല്യൂഷൻസ്', true,
+ 'Green Energy Solutions LLP', 'GES', 'Sneha Raj', '9123456789', 'contact@greenenergy.com',
+ 'Technopark, Trivandrum, Kerala', '695581', 'Renewable energy project client', false, 2, false,
+ '55555555-5555-5555-5555-555555555555', '66666666-6666-6666-6666-666666666666', 102,
+ 'LLP', 'Industrial', 'Energy-Dept', false, true);
 
 
 DROP TABLE IF EXISTS ce_disbursement CASCADE;
 
 CREATE TABLE ce_disbursement (
   id UUID NOT NULL,
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   disburseid SERIAL,
   partnergroupid int DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -267,10 +285,11 @@ CREATE TABLE ce_disbursement (
   disbursestatusid int DEFAULT 0,
   subfinanceid int DEFAULT NULL,
   revenueshareid int DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_disbursement PRIMARY KEY (id)
 );
-
-COMMENT ON COLUMN ce_disbursement.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_disbursement (id, name, name_in_local, is_active, partnergroupid, locid, packageid, subscriberid, cause, revenue, disbursestatusid, subfinanceid, revenueshareid, created_by, modified_by)
+VALUES ('b47f82b2-6781-4cb0-8d91-7c4b1b0aebd2', 'Monthly Fiber Revenue Share', 'മാസാന്ത്യ ഫൈബർ വരുമാന പങ്ക്', TRUE, 10, 205, 301, 4502, 'Quarterly disbursement for subscriber group A', 12500.7500000000, 1, 1001, 2001, 'b1a5d82b-6712-4bb0-91f5-9a3a9f1e1b23', 'b1a5d82b-6712-4bb0-91f5-9a3a9f1e1b23');

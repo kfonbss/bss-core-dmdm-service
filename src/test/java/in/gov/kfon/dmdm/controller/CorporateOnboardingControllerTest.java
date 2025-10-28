@@ -181,4 +181,28 @@ class CorporateOnboardingControllerTest {
         .andExpect(jsonPath("$.data.code").value("CORP001"))
         .andExpect(jsonPath("$.data.name").value("Tech Innovations Pvt Ltd"));
   }
+
+  @Test
+  void testCustomersFetchAll() throws Exception {
+    when(service.customersFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/corporate/customers/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"))
+        .andExpect(jsonPath("$.data[0].name").value("Tech Innovations Pvt Ltd"));
+  }
+
+  @Test
+  void testCustomerFetchById() throws Exception {
+    when(service.customerFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/corporate/customer/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"))
+        .andExpect(jsonPath("$.data.name").value("Tech Innovations Pvt Ltd"));
+  }
 }

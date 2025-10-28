@@ -99,3 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.6.0] - 2025-10-27
 ### Added
 - Get subscriber detail and subscriber email details
+
+## [0.7.0] - 2025-10-28
+### Added
+- Get corporate disbursement and customer details

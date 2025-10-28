@@ -22,8 +22,9 @@ class CorporateOnboardingServiceImplTest {
   private CeConnectionBreakupRepository connectionBreakupRepository;
   private CeConnectionBreakupMovementRepository movementRepository;
   private CeConnectionBreakupRevisionRepository breakupRevisionRepository;
-
+  private CeCustomerRepository customerRepository;
   private CorporateOnboardingServiceImpl service;
+  private CeDisbursementRepository disbursementRepository;
 
   @BeforeEach
   void setUp() {
@@ -33,7 +34,8 @@ class CorporateOnboardingServiceImplTest {
     connectionBreakupRepository = mock(CeConnectionBreakupRepository.class);
     movementRepository = mock(CeConnectionBreakupMovementRepository.class);
     breakupRevisionRepository = mock(CeConnectionBreakupRevisionRepository.class);
-
+    customerRepository = mock(CeCustomerRepository.class);
+    disbursementRepository = mock(CeDisbursementRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -41,7 +43,9 @@ class CorporateOnboardingServiceImplTest {
             locationListRepository,
             connectionBreakupRepository,
             movementRepository,
-            breakupRevisionRepository);
+            breakupRevisionRepository,
+            customerRepository,
+            disbursementRepository);
 
     service.setupMapper();
   }
@@ -230,6 +234,76 @@ class CorporateOnboardingServiceImplTest {
     UUID id = UUID.randomUUID();
     when(breakupRevisionRepository.findById(id)).thenReturn(Optional.empty());
 
-    assertThrows(EntityNotFoundException.class, () -> service.movementFetchById(id));
+    assertThrows(EntityNotFoundException.class, () -> service.cMovementFetchById(id));
+  }
+
+  @Test
+  void testCustomerFetchAll_ShouldReturnMappedList() {
+    CeCustomer customer = new CeCustomer();
+    customer.setCustomerId(UUID.randomUUID());
+
+    when(customerRepository.findAll()).thenReturn(List.of(customer));
+
+    List<CommonLookUp> result = service.customersFetchAll();
+
+    assertEquals(1, result.size());
+    verify(customerRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testCustomerFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeCustomer customer = new CeCustomer();
+    customer.setCustomerId(id);
+
+    when(customerRepository.findById(id)).thenReturn(Optional.of(customer));
+
+    CommonLookUp result = service.customerFetchById(id);
+
+    assertNotNull(result);
+    verify(customerRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testCustomerFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(customerRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.customerFetchById(id));
+  }
+
+  @Test
+  void testDisbursementFetchAll_ShouldReturnMappedList() {
+    CeDisbursement customer = new CeDisbursement();
+    customer.setId(UUID.randomUUID());
+
+    when(disbursementRepository.findAll()).thenReturn(List.of(customer));
+
+    List<CommonLookUp> result = service.disbursementsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(disbursementRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testDisbursementFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeDisbursement customer = new CeDisbursement();
+    customer.setId(id);
+
+    when(disbursementRepository.findById(id)).thenReturn(Optional.of(customer));
+
+    CommonLookUp result = service.disbursementFetchById(id);
+
+    assertNotNull(result);
+    verify(disbursementRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testDisbursementFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(disbursementRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.disbursementFetchById(id));
   }
 }
