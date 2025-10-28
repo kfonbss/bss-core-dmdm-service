@@ -2,6 +2,9 @@ DROP TABLE IF EXISTS ce_disbursement_history CASCADE;
 
 CREATE TABLE ce_disbursement_history (
   history_id UUID NOT NULL,
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   type boolean DEFAULT true,
   disbid int DEFAULT NULL,
@@ -16,16 +19,23 @@ CREATE TABLE ce_disbursement_history (
   subfinanceid int DEFAULT NULL,
   revenueshareid int DEFAULT NULL,
   disbursestatusid boolean DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp DEFAULT CURRENT_TIMESTAMP,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_disbursement_history PRIMARY KEY (history_id)
 );
 
+INSERT INTO ce_disbursement_history (history_id, name, name_in_local, is_active, type, disbid, partnergroupid, subscriberid, locid, packageid, cause, servicestartdate, serviceenddate, revenue, subfinanceid, revenueshareid, disbursestatusid, created_by, modified_by)
+VALUES (gen_random_uuid(), 'Subscriber Revenue Distribution History', 'സബ്സ്ക്രൈബർ വരുമാന വിതരണം ചരിത്രം', TRUE, TRUE, 1001, 201, 5002, 305, 450, 'Monthly revenue distribution', '2025-09-01 00:00:00', '2025-09-30 23:59:59', 15890.7500000000, 1201, 2201, TRUE, gen_random_uuid(), gen_random_uuid());
 
 DROP TABLE IF EXISTS ce_dnote_master CASCADE;
 
 CREATE TABLE ce_dnote_master (
   master_id UUID NOT NULL,
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   slno BIGSERIAL,
   subscriberid bigint DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -35,7 +45,7 @@ CREATE TABLE ce_dnote_master (
   notedate date DEFAULT NULL,
   grossamount decimal(26,10) DEFAULT NULL,
   locamount decimal(26,10) DEFAULT NULL,
-  servicetax decimal(10,10) DEFAULT NULL,
+  servicetax decimal(26,10) DEFAULT NULL,
   servicetaxrate decimal(10,2) DEFAULT NULL,
   servicestartdate date DEFAULT NULL,
   serviceenddate date DEFAULT NULL,
@@ -52,13 +62,15 @@ CREATE TABLE ce_dnote_master (
   gstin varchar(18) DEFAULT NULL,
   taxpayertype smallint DEFAULT NULL,
   particulars varchar(180) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_dnote_master PRIMARY KEY (master_id)
 );
 
-COMMENT ON COLUMN ce_dnote_master.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_dnote_master (master_id, name, name_in_local, is_active, subscriberid, locid, subfinanceid, notenumber, notemonth, notedate, grossamount, locamount, servicetax, servicetaxrate, servicestartdate, serviceenddate, quarter_start_date, quarter_end_date, gst_value, cgst_value, sgst_value, igst_value, cgst_rate, sgst_rate, igst_rate, paid_amount, gstin, taxpayertype, particulars, created_by, modified_by)
+VALUES (gen_random_uuid(), 'Quarterly Disbursement Note', 'ത്രൈമാസ വിതരണ കുറിപ്പ്', TRUE, 5501, 305, 1201, 'DN-2025-10-001', 'October-2025', '2025-10-15', 25000.7500000000, 24000.5000000000, 500.0000000000, 2.00, '2025-07-01', '2025-09-30', '2025-07-01', '2025-09-30', 4500.0, 2250.0000000000, 2250.0, 0.00, 9.000, 9.0000, 0.00, 20000.000, '32ABCDE1234F1Z5', 1, 'Disbursement note for Q3 FY2025 subscribers', gen_random_uuid(), gen_random_uuid());
 
 
 DROP TABLE IF EXISTS ce_dnote_renewal_history CASCADE;

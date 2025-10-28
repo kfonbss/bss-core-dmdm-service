@@ -25,6 +25,8 @@ class CorporateOnboardingServiceImplTest {
   private CeCustomerRepository customerRepository;
   private CorporateOnboardingServiceImpl service;
   private CeDisbursementRepository disbursementRepository;
+  private CeDisbursementHistoryRepository disbursementHistoryRepository;
+  private CeDnoteMasterRepository dnoteMasterRepository;
 
   @BeforeEach
   void setUp() {
@@ -36,6 +38,9 @@ class CorporateOnboardingServiceImplTest {
     breakupRevisionRepository = mock(CeConnectionBreakupRevisionRepository.class);
     customerRepository = mock(CeCustomerRepository.class);
     disbursementRepository = mock(CeDisbursementRepository.class);
+    disbursementHistoryRepository = mock(CeDisbursementHistoryRepository.class);
+    dnoteMasterRepository = mock(CeDnoteMasterRepository.class);
+
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -45,7 +50,9 @@ class CorporateOnboardingServiceImplTest {
             movementRepository,
             breakupRevisionRepository,
             customerRepository,
-            disbursementRepository);
+            disbursementRepository,
+            disbursementHistoryRepository,
+            dnoteMasterRepository);
 
     service.setupMapper();
   }
@@ -305,5 +312,75 @@ class CorporateOnboardingServiceImplTest {
     when(disbursementRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.disbursementFetchById(id));
+  }
+
+  @Test
+  void testDisbursementsHisFetchAll_ShouldReturnMappedList() {
+    CeDisbursementHistory history = new CeDisbursementHistory();
+    history.setHistoryId(UUID.randomUUID());
+
+    when(disbursementHistoryRepository.findAll()).thenReturn(List.of(history));
+
+    List<CommonLookUp> result = service.disbursementsHisFetchAll();
+
+    assertEquals(1, result.size());
+    verify(disbursementHistoryRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testDisbursementHisFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeDisbursementHistory history = new CeDisbursementHistory();
+    history.setHistoryId(id);
+
+    when(disbursementHistoryRepository.findById(id)).thenReturn(Optional.of(history));
+
+    CommonLookUp result = service.disbursementHisFetchById(id);
+
+    assertNotNull(result);
+    verify(disbursementHistoryRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testDisbursementHisFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(disbursementHistoryRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.disbursementHisFetchById(id));
+  }
+
+  @Test
+  void testMastersFetchAll_ShouldReturnMappedList() {
+    CeDnoteMaster master = new CeDnoteMaster();
+    master.setMasterId(UUID.randomUUID());
+
+    when(dnoteMasterRepository.findAll()).thenReturn(List.of(master));
+
+    List<CommonLookUp> result = service.mastersFetchAll();
+
+    assertEquals(1, result.size());
+    verify(dnoteMasterRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testMasterFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeDnoteMaster master = new CeDnoteMaster();
+    master.setMasterId(id);
+
+    when(dnoteMasterRepository.findById(id)).thenReturn(Optional.of(master));
+
+    CommonLookUp result = service.masterFetchById(id);
+
+    assertNotNull(result);
+    verify(dnoteMasterRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testMasterFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(dnoteMasterRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.masterFetchById(id));
   }
 }

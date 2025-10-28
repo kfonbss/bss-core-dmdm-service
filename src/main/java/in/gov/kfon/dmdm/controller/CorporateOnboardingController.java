@@ -102,4 +102,28 @@ public class CorporateOnboardingController {
     var data = service.disbursementFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
+
+  @GetMapping("disbursements-history/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> disbursementsHisFetchAll() {
+    var data = service.disbursementsHisFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("disbursement-history/{id}")
+  public ResponseEntity<Response<CommonLookUp>> disbursementHisFetchById(@PathVariable UUID id) {
+    var data = service.disbursementHisFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("dNoteMasters/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> mastersFetchAll() {
+    var data = service.mastersFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("dNoteMaster/{id}")
+  public ResponseEntity<Response<CommonLookUp>> masterFetchById(@PathVariable UUID id) {
+    var data = service.masterFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
 }
