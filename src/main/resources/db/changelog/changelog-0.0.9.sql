@@ -261,8 +261,35 @@ CREATE TABLE subscription (
     onetimecharges VARCHAR(45),
     newrad VARCHAR(20),
     free_validity INTEGER,
-    frc_date TIMESTAMP
+    frc_date TIMESTAMP,
+    code VARCHAR(50),
+    name VARCHAR(100) NOT NULL,
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
 
 CREATE INDEX idx_subscription_status_expiry_packageid 
     ON subscription(status, expiry, packageid);
+
+INSERT INTO subscription (
+    id, subscriberid, status, expiry, packageid, firstuse, partnergroupid, vlantableid, alloted_vol, consumed_vol,
+    cur_speed, bod_profile, offerid, reset_request, reset_request_date, remarks, last_topup_date, last_topup_amount,
+    disabled, plan_mig, payment_mode, reactive_date, addon_data, addon_consumed, volume_afterfallback, usage_flag,
+    last_recharge, addon_data_start, fallback_data_start, acctlastupdatetime, rad_account, fallback_coa, profile_type,
+    send_alert_id, send_alert_date, term_count, term_validity, fup_alert, recharge_lock, extension_remarks,
+    iptv_package, iptv_bss_expiry, onetimecharges, newrad, free_validity, frc_date, code, name, name_in_local,
+    is_active, created_date, modified_date, created_by, modified_by
+)
+VALUES (
+    gen_random_uuid(), 10001, 1, NOW() + INTERVAL '30 days', 1, 1, 10, 20, 5000, 1000,
+    '100Mbps', 'DefaultProfile', 1, 0, NOW(), 'Initial subscription', NOW() - INTERVAL '5 days', 100.00,
+    0, 0, 1, NOW() - INTERVAL '10 days', 50.00, 10.00, 4990.00, 0,
+    NOW() - INTERVAL '2 days', NOW() - INTERVAL '30 days', NOW() - INTERVAL '60 days', NOW(), 0, 0, 'Juniper',
+    0, NOW() - INTERVAL '1 day', 0, NOW() + INTERVAL '365 days', 0, 0, 'No remarks',
+    2, NOW() + INTERVAL '60 days', 'OneTimeCharge1', 'RAD001', 30, NOW() + INTERVAL '90 days', 'SUB001', 'John Doe',
+    'ജോൺ ഡോ', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);

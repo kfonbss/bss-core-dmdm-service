@@ -61,4 +61,8 @@ public interface SubscriberService {
   List<CommonLookUp> fetchAllSubscriberUsernames();
 
   CommonLookUp fetchSubscriberUsernameById(UUID id);
+
+  List<CommonLookUp> fetchAllSubscriptions();
+
+  CommonLookUp fetchSubscriptionById(UUID id);
 }

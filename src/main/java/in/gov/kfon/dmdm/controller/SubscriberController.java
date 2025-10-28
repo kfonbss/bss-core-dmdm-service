@@ -204,4 +204,17 @@ public class SubscriberController {
     var data = service.fetchSubscriberUsernameById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched username"));
   }
+
+  @GetMapping("/subscriptions")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllSubscriptions() {
+    var data = service.fetchAllSubscriptions();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all subscriptions"));
+  }
+
+  @GetMapping("/subscription/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchSubscriptionById(@PathVariable UUID id) {
+    var data = service.fetchSubscriptionById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched subscription"));
+  }
 }
