@@ -29,6 +29,8 @@ public class SubscriberServiceImplTest {
   @Mock private SubscriberEmailRepository subscriberEmailRepository;
   @Mock private SubscriberFinanceRepository financeRepository;
   @Mock private SubscriberContactInformationRepository contactRepository;
+  @Mock private SubscriberGstDetailRepository gstDetailRepository;
+  @Mock private SubscriberInvoiceRepository invoiceRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private SubscriberServiceImpl service;
@@ -63,6 +65,12 @@ public class SubscriberServiceImplTest {
   private SubscriberContactInformation contact;
   private CommonLookUp lookupFinance;
   private CommonLookUp lookupContact;
+  private UUID idGstDetail;
+  private UUID idInvoice;
+  private SubscriberGstDetail gstDetail;
+  private SubscriberInvoice invoice;
+  private CommonLookUp lookupGstDetail;
+  private CommonLookUp lookupInvoice;
 
   @BeforeEach
   void setUp() {
@@ -211,6 +219,38 @@ public class SubscriberServiceImplTest {
     lookupContact = new CommonLookUp();
     lookupContact.setId(idContact);
     lookupContact.setName("John Doe");
+
+    idGstDetail = UUID.randomUUID();
+    idInvoice = UUID.randomUUID();
+
+    gstDetail = new SubscriberGstDetail();
+    gstDetail.setId(idGstDetail);
+    gstDetail.setGstin("27ABCDE1234F1Z5");
+    gstDetail.setCode("GST001");
+    gstDetail.setName("GST Detail 1");
+    gstDetail.setNameInLocal("ജിഎസ്എസ് ഡീറ്റയിൽ 1");
+    gstDetail.setIsActive(true);
+
+    invoice = new SubscriberInvoice();
+    invoice.setId(idInvoice);
+    invoice.setCode("INV001");
+    invoice.setName("Invoice 1");
+    invoice.setNameInLocal("ഇൻവോയിസ് 1");
+    invoice.setIsActive(true);
+
+    lookupGstDetail = new CommonLookUp();
+    lookupGstDetail.setId(idGstDetail);
+    lookupGstDetail.setCode("GST001");
+    lookupGstDetail.setName("GST Detail 1");
+    lookupGstDetail.setNameInLocal("ജിഎസ്എസ് ഡീറ്റയിൽ 1");
+    lookupGstDetail.setIsActive(true);
+
+    lookupInvoice = new CommonLookUp();
+    lookupInvoice.setId(idInvoice);
+    lookupInvoice.setCode("INV001");
+    lookupInvoice.setName("Invoice 1");
+    lookupInvoice.setNameInLocal("ഇൻവോയിസ് 1");
+    lookupInvoice.setIsActive(true);
   }
 
   @Test
@@ -509,5 +549,65 @@ public class SubscriberServiceImplTest {
         assertThrows(EntityNotFoundException.class, () -> service.fetchContactInfoById(idContact));
     assertEquals(
         "SubscriberContactInformation not found with id: " + idContact, exception.getMessage());
+  }
+
+  @Test
+  void testFetchAllGstDetails() {
+    when(gstDetailRepository.findAll()).thenReturn(List.of(gstDetail));
+    when(modelMapper.map(gstDetail, CommonLookUp.class)).thenReturn(lookupGstDetail);
+
+    List<CommonLookUp> result = service.fetchAllGstDetails();
+    assertEquals(1, result.size());
+    assertEquals(idGstDetail, result.get(0).getId());
+  }
+
+  @Test
+  void testFetchGstDetailById_Success() {
+    when(gstDetailRepository.findById(idGstDetail)).thenReturn(Optional.of(gstDetail));
+    when(modelMapper.map(gstDetail, CommonLookUp.class)).thenReturn(lookupGstDetail);
+
+    CommonLookUp result = service.fetchGstDetailsById(idGstDetail);
+    assertEquals(idGstDetail, result.getId());
+    assertEquals("GST Detail 1", result.getName());
+  }
+
+  @Test
+  void testFetchGstDetailById_NotFound() {
+    when(gstDetailRepository.findById(idGstDetail)).thenReturn(Optional.empty());
+
+    EntityNotFoundException ex =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchGstDetailsById(idGstDetail));
+
+    assertEquals("GST Detail not found", ex.getMessage());
+  }
+
+  @Test
+  void testFetchAllInvoices() {
+    when(invoiceRepository.findAll()).thenReturn(List.of(invoice));
+    when(modelMapper.map(invoice, CommonLookUp.class)).thenReturn(lookupInvoice);
+
+    List<CommonLookUp> result = service.fetchAllInvoices();
+    assertEquals(1, result.size());
+    assertEquals(idInvoice, result.get(0).getId());
+  }
+
+  @Test
+  void testFetchInvoiceById_Success() {
+    when(invoiceRepository.findById(idInvoice)).thenReturn(Optional.of(invoice));
+    when(modelMapper.map(invoice, CommonLookUp.class)).thenReturn(lookupInvoice);
+
+    CommonLookUp result = service.fetchInvoiceById(idInvoice);
+    assertEquals(idInvoice, result.getId());
+    assertEquals("Invoice 1", result.getName());
+  }
+
+  @Test
+  void testFetchInvoiceById_NotFound() {
+    when(invoiceRepository.findById(idInvoice)).thenReturn(Optional.empty());
+
+    EntityNotFoundException ex =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchInvoiceById(idInvoice));
+
+    assertEquals("Invoice not found", ex.getMessage());
   }
 }

@@ -53,6 +53,11 @@ public class SubscriberControllerTest {
   private CommonLookUp lookupFinance;
   private CommonLookUp lookupContact;
 
+  private UUID idGstDetail;
+  private UUID idInvoice;
+  private CommonLookUp lookupGstDetail;
+  private CommonLookUp lookupInvoice;
+
   @BeforeEach
   void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
@@ -124,6 +129,23 @@ public class SubscriberControllerTest {
     lookupSubscriberEmail.setName("John Email");
     lookupSubscriberEmail.setNameInLocal("ജോൺ ഇമെയിൽ");
     lookupSubscriberEmail.setIsActive(true);
+
+    idGstDetail = UUID.randomUUID();
+    idInvoice = UUID.randomUUID();
+
+    lookupGstDetail = new CommonLookUp();
+    lookupGstDetail.setId(idGstDetail);
+    lookupGstDetail.setCode("GST001");
+    lookupGstDetail.setName("GST Detail 1");
+    lookupGstDetail.setNameInLocal("ജിഎസ്എസ് ഡീറ്റയിൽ 1");
+    lookupGstDetail.setIsActive(true);
+
+    lookupInvoice = new CommonLookUp();
+    lookupInvoice.setId(idInvoice);
+    lookupInvoice.setCode("INV001");
+    lookupInvoice.setName("Invoice 1");
+    lookupInvoice.setNameInLocal("ഇൻവോയിസ് 1");
+    lookupInvoice.setIsActive(true);
 
     idFinance = UUID.randomUUID();
     idContact = UUID.randomUUID();
@@ -387,5 +409,55 @@ public class SubscriberControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched subscriber contact information"))
         .andExpect(jsonPath("$.data.id").value(idContact.toString()))
         .andExpect(jsonPath("$.data.name").value("John Doe"));
+  }
+
+  @Test
+  void testFetchAllGstDetails() throws Exception {
+    when(service.fetchAllGstDetails()).thenReturn(List.of(lookupGstDetail));
+
+    mockMvc
+        .perform(get("/api/subscriber/gsts/fetch-all"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all GST details"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idGstDetail.toString()));
+  }
+
+  @Test
+  void testFetchGstDetailById() throws Exception {
+    when(service.fetchGstDetailsById(idGstDetail)).thenReturn(lookupGstDetail);
+
+    mockMvc
+        .perform(get("/api/subscriber/gst/{id}", idGstDetail))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched GST detail"))
+        .andExpect(jsonPath("$.data.id").value(idGstDetail.toString()))
+        .andExpect(jsonPath("$.data.name").value("GST Detail 1"));
+  }
+
+  @Test
+  void testFetchAllInvoices() throws Exception {
+    when(service.fetchAllInvoices()).thenReturn(List.of(lookupInvoice));
+
+    mockMvc
+        .perform(get("/api/subscriber/invoices/fetch-all"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all invoices"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idInvoice.toString()));
+  }
+
+  @Test
+  void testFetchInvoiceById() throws Exception {
+    when(service.fetchInvoiceById(idInvoice)).thenReturn(lookupInvoice);
+
+    mockMvc
+        .perform(get("/api/subscriber/invoice/{id}", idInvoice))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched subscriber invoice"))
+        .andExpect(jsonPath("$.data.id").value(idInvoice.toString()))
+        .andExpect(jsonPath("$.data.name").value("Invoice 1"));
   }
 }

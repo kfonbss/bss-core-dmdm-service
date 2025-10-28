@@ -44,14 +44,34 @@ CREATE TABLE subscribergstdetail (
     gstindoc VARCHAR(120),
     lutdoc VARCHAR(255),
     gst_verfied INT DEFAULT 0,
-    created_date TIMESTAMP,
-    createdby INTEGER,
     verified_date TIMESTAMP,
     verfied_by VARCHAR(50),
     taxpayertype INT NOT NULL DEFAULT 0,
     gst_status INT,
     legalname VARCHAR(100),
-    tradename VARCHAR(100)
+    tradename VARCHAR(100),
+    code VARCHAR(50),
+    name VARCHAR(100),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
+);
+
+INSERT INTO subscribergstdetail (
+    id, subscriberid, gstin, sac, pan, pancard_copy, gstindoc, lutdoc,
+    gst_verfied, verified_date, verfied_by, taxpayertype, gst_status,
+    legalname, tradename, code, name, name_in_local,
+    is_active, created_date, modified_date, created_by, modified_by
+)
+VALUES (
+    gen_random_uuid(), 10001, '32ABCDE1234F1Z9', '9984', 'ABCDE1234F',
+    'pancard.png', 'gst.png', 'lut.pdf',
+    1, NOW(), 'Admin', 0, 1,
+    'ABC Pvt Ltd', 'ABC Traders', 'GST1001', 'GST Details', 'ജിഎസ്ടി വിവരങ്ങൾ',
+    TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
 );
 
 
@@ -104,12 +124,43 @@ CREATE TABLE subscriberinovoice (
     crnote_amount NUMERIC(26,10) DEFAULT 0,
     crnote_gst NUMERIC(26,10) DEFAULT 0,
     crnote_total NUMERIC(26,10) DEFAULT 0,
-    create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    code VARCHAR(50),
+    name VARCHAR(100),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
 
 CREATE INDEX index2 ON subscriberinovoice(subscriberid, invoicedate);
 CREATE INDEX idx_service_start_end ON subscriberinovoice(serviceenddate, servicestartdate);
+
+INSERT INTO subscriberinovoice (
+    id, subscriberid, invoiceno, invoicedate, grossamount, particulars, referenceid,
+    package, packagefee, servicetax, servicetaxrate, servicestartdate, serviceenddate,
+    gst_value, cgst_value, sgst_value, igst_value, cgst_rate, sgst_rate, igst_rate,
+    gstin, tariff, discount_rate, discount_value, post_upload, post_download,
+    term_count, packageid, taxpayertype, kfc_rate, kfc_value, acctsessiontime,
+    gst_status, rechargemode, partnerid, plantype, sub_caf_type, reccount,
+    churn_recovery_days, is_churn_recovery, einvoice_generated, crnote_amount,
+    crnote_gst, crnote_total, code, name, name_in_local,
+    is_active, created_date, modified_date, created_by, modified_by
+)
+VALUES (
+    gen_random_uuid(), 10001, 'INV-2025-001', '2025-10-01', 1500.255,
+    'Monthly Internet Package', 'REF-10001',
+    'Fiber 100Mbps', 999.99, 18.00, 18.00, '2025-10-01', '2025-10-31',
+    270.045, 135.0225, 135.0225, 0.00, 9.00, 9.00, 0.00,
+    '32ABCDE1234F1Z9', 999.99, 10.00, 100.00, 0.00, 0.00,
+    1, 101, 1, 1.00, 15.50, 86400,
+    1, 0, 2001, 1, 2, 1,
+    0, 0, 1, 0.0000000000, 0.0000000000, 0.0000000000,
+    'INV001', 'Invoice Details', 'ഇൻവോയ്സ് വിശദാംശങ്ങൾ',
+    TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
+
 
 
 -- subscriberprofile
