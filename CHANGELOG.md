@@ -95,3 +95,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.5.0] - 2025-10-27
 ### Added
 - Get Corporate Connection Breakup Movement Revision details
+
+## [0.6.0] - 2025-10-27
+### Added
+- Get subscriber detail and subscriber email details
