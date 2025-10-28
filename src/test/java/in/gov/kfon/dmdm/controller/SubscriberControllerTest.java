@@ -344,7 +344,7 @@ public class SubscriberControllerTest {
     when(service.fetchAllFinance()).thenReturn(List.of(lookupFinance));
 
     mockMvc
-        .perform(get("/api/subscriber/finance/fetch-all"))
+        .perform(get("/api/subscriber/finances/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all subscriber finance records"))
         .andExpect(jsonPath("$.data").isArray())

@@ -128,7 +128,7 @@ public class SubscriberController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched subscriber email"));
   }
 
-  @GetMapping("/finance/fetch-all")
+  @GetMapping("/finances/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllFinance() {
     var data = service.fetchAllFinance();
     return ResponseEntity.status(HttpStatus.OK)
