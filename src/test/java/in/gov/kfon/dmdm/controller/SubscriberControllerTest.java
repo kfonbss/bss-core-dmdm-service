@@ -58,6 +58,12 @@ public class SubscriberControllerTest {
   private CommonLookUp lookupGstDetail;
   private CommonLookUp lookupInvoice;
 
+  private UUID id;
+  private CommonLookUp lookup;
+
+  private UUID idUsername;
+  private CommonLookUp lookupUsername;
+
   @BeforeEach
   void setUp() {
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
@@ -163,6 +169,23 @@ public class SubscriberControllerTest {
     lookupContact.setName("John Doe");
     lookupContact.setNameInLocal("ജോൺ ഡോ");
     lookupContact.setIsActive(true);
+
+    id = UUID.randomUUID();
+
+    lookup = new CommonLookUp();
+    lookup.setId(id);
+    lookup.setName("Standard Plan");
+    lookup.setCode("SP001");
+    lookup.setNameInLocal("സ്റ്റാൻഡേർഡ് പ്ലാൻ");
+    lookup.setIsActive(true);
+
+    idUsername = UUID.randomUUID();
+    lookupUsername = new CommonLookUp();
+    lookupUsername.setId(idUsername);
+    lookupUsername.setName("john_doe");
+    lookupUsername.setCode(null);
+    lookupUsername.setNameInLocal(null);
+    lookupUsername.setIsActive(null);
   }
 
   @Test
@@ -459,5 +482,61 @@ public class SubscriberControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched subscriber invoice"))
         .andExpect(jsonPath("$.data.id").value(idInvoice.toString()))
         .andExpect(jsonPath("$.data.name").value("Invoice 1"));
+  }
+
+  @Test
+  void testFetchAllProfiles() throws Exception {
+    List<CommonLookUp> list = List.of(lookup);
+    when(service.fetchAllProfiles()).thenReturn(list);
+
+    mockMvc
+        .perform(get("/api/subscriber/profiles"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all profiles"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchProfileById() throws Exception {
+    when(service.fetchProfileById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/subscriber/profile/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched profile"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()))
+        .andExpect(jsonPath("$.data.name").value("Standard Plan"))
+        .andExpect(jsonPath("$.data.nameInLocal").value("സ്റ്റാൻഡേർഡ് പ്ലാൻ"))
+        .andExpect(jsonPath("$.data.code").value("SP001"))
+        .andExpect(jsonPath("$.data.isActive").value(true));
+  }
+
+  @Test
+  void testFetchAllUsernames() throws Exception {
+    List<CommonLookUp> list = List.of(lookupUsername);
+    when(service.fetchAllSubscriberUsernames()).thenReturn(list);
+
+    mockMvc
+        .perform(get("/api/subscriber/usernames"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all usernames"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idUsername.toString()))
+        .andExpect(jsonPath("$.data[0].name").value("john_doe"));
+  }
+
+  @Test
+  void testFetchUsernameById() throws Exception {
+    when(service.fetchSubscriberUsernameById(idUsername)).thenReturn(lookupUsername);
+
+    mockMvc
+        .perform(get("/api/subscriber/username/{id}", idUsername))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched username"))
+        .andExpect(jsonPath("$.data.id").value(idUsername.toString()))
+        .andExpect(jsonPath("$.data.name").value("john_doe"));
   }
 }

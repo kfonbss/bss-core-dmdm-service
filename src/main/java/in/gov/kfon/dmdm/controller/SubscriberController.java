@@ -180,4 +180,28 @@ public class SubscriberController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched subscriber invoice"));
   }
+
+  @GetMapping("/profiles")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllProfiles() {
+    var data = service.fetchAllProfiles();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all profiles"));
+  }
+
+  @GetMapping("/profile/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchProfileById(@PathVariable UUID id) {
+    var data = service.fetchProfileById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched profile"));
+  }
+
+  @GetMapping("/usernames")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllUsernames() {
+    var data = service.fetchAllSubscriberUsernames();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all usernames"));
+  }
+
+  @GetMapping("/username/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchUsernameById(@PathVariable UUID id) {
+    var data = service.fetchSubscriberUsernameById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched username"));
+  }
 }
