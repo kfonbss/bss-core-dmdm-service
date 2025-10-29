@@ -36,6 +36,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CeKycDetailsRepository ceKycDetailsRepository;
   private final CeLocationMovementRepository locationMovementRepository;
   private final CeLocationRenewalHistoryRepository locationRenewalHistoryRepository;
+  private final CeLocationsRepository locationsRepository;
+  private final CeOnlineApplicationRepository onlineApplicationRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -59,6 +61,14 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
     // For CeEodetails
     modelMapper.addMappings(
         new PropertyMap<CeEodetails, CommonLookUp>() {
+          @Override
+          protected void configure() {
+            skip(destination.getId());
+          }
+        });
+    // forOnlineApplication
+    modelMapper.addMappings(
+        new PropertyMap<CeOnlineApplication, CommonLookUp>() {
           @Override
           protected void configure() {
             skip(destination.getId());
@@ -383,5 +393,51 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> locationsFetchAll() {
+    return locationsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp locationsFetchById(UUID id) {
+    CeLocations entity =
+        locationsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> onlineApplicationFetchAll() {
+    return onlineApplicationRepository.findAll().stream()
+        .map(
+            onlineApplication -> {
+              CommonLookUp lookup = modelMapper.map(onlineApplication, CommonLookUp.class);
+              lookup.setId(onlineApplication.getApplicationId());
+              return lookup;
+            })
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp onlineApplicationFetchById(UUID id) {
+
+    CeOnlineApplication entity =
+        onlineApplicationRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+
+    CommonLookUp lookup = modelMapper.map(entity, CommonLookUp.class);
+    lookup.setId(entity.getApplicationId());
+
+    return lookup;
   }
 }

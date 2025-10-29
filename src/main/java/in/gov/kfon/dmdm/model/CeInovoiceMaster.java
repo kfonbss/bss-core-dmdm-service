@@ -11,6 +11,7 @@ import lombok.Data;
 @Data
 public class CeInovoiceMaster extends Auditor {
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "master_id", nullable = false)
   private UUID masterId;
 
