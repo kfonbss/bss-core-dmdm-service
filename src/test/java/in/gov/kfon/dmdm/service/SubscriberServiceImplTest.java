@@ -31,6 +31,7 @@ public class SubscriberServiceImplTest {
   @Mock private SubscriberContactInformationRepository contactRepository;
   @Mock private SubscriberGstDetailRepository gstDetailRepository;
   @Mock private SubscriberInvoiceRepository invoiceRepository;
+  @Mock private SubscriptionRepository subscriptionRepository;
   @Mock private SubscriberProfileRepository subscriberProfileRepository;
   @Mock private SubscriberUsernamesRepository subscriberUsernamesRepository;
   @Mock private ModelMapper modelMapper;
@@ -73,6 +74,9 @@ public class SubscriberServiceImplTest {
   private SubscriberInvoice invoice;
   private CommonLookUp lookupGstDetail;
   private CommonLookUp lookupInvoice;
+  private UUID idSubscription;
+  private Subscription subscription;
+  private CommonLookUp lookUpSubscription;
   private UUID id;
   private SubscriberProfile profile;
   private CommonLookUp lookup;
@@ -259,6 +263,18 @@ public class SubscriberServiceImplTest {
     lookupInvoice.setName("Invoice 1");
     lookupInvoice.setNameInLocal("ഇൻവോയിസ് 1");
     lookupInvoice.setIsActive(true);
+
+    idSubscription = UUID.randomUUID();
+
+    subscription = new Subscription();
+    subscription.setId(idSubscription);
+    subscription.setSubscriberid(100L);
+    subscription.setStatus(1);
+    subscription.setName("Subscription-100");
+
+    lookUpSubscription = new CommonLookUp();
+    lookUpSubscription.setId(idSubscription);
+    lookUpSubscription.setName("Subscription-100");
 
     id = UUID.randomUUID();
 
@@ -642,6 +658,49 @@ public class SubscriberServiceImplTest {
         assertThrows(EntityNotFoundException.class, () -> service.fetchInvoiceById(idInvoice));
 
     assertEquals("Invoice not found", ex.getMessage());
+  }
+
+  @Test
+  void testFetchAllSubscriptions() {
+    when(subscriptionRepository.findAll()).thenReturn(List.of(subscription));
+    when(modelMapper.map(subscription, CommonLookUp.class)).thenReturn(lookUpSubscription);
+
+    List<CommonLookUp> result = service.fetchAllSubscriptions();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(idSubscription, result.get(0).getId());
+
+    verify(subscriptionRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(subscription, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchSubscriptionById_Success() {
+    when(subscriptionRepository.findById(idSubscription)).thenReturn(Optional.of(subscription));
+    when(modelMapper.map(subscription, CommonLookUp.class)).thenReturn(lookUpSubscription);
+
+    CommonLookUp result = service.fetchSubscriptionById(idSubscription);
+
+    assertNotNull(result);
+    assertEquals(idSubscription, result.getId());
+    assertEquals("Subscription-100", result.getName());
+
+    verify(subscriptionRepository, times(1)).findById(idSubscription);
+    verify(modelMapper, times(1)).map(subscription, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchSubscriptionById_NotFound() {
+    when(subscriptionRepository.findById(idSubscription)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(
+            EntityNotFoundException.class, () -> service.fetchSubscriptionById(idSubscription));
+
+    assertEquals("Subscription not found with id: " + idSubscription, exception.getMessage());
+    verify(subscriptionRepository, times(1)).findById(idSubscription);
+    verifyNoInteractions(modelMapper);
   }
 
   @Test
