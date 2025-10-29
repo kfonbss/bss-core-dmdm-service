@@ -2,16 +2,31 @@
 DROP TABLE IF EXISTS df_pop_list CASCADE;
 
 CREATE TABLE df_pop_list (
-  df_pop_list_id UUID NOT NULL,
-  id SERIAL,
-  pop_name varchar(255) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
-  -- '0=In Active,1=Active',
-  -- Primary key constraint
-CONSTRAINT pk_df_pop_list PRIMARY KEY (df_pop_list_id)
+  id UUID NOT NULL,
+  df_pop_list_id SERIAL,
+  pop_name VARCHAR(255),
+  name VARCHAR(256),
+  name_in_local VARCHAR(256),
+  is_active BOOLEAN DEFAULT TRUE,
+  code VARCHAR(50),
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+  --'0=In Active,1=Active',
+    -- Primary key constraint
+  CONSTRAINT pk_df_pop_list PRIMARY KEY (id)
 );
+
+
+INSERT INTO df_pop_list (
+    id, pop_name, name, name_in_local, is_active, code,
+    created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'Thiruvananthapuram POP', 'TVM POP', 'തിരുവനന്തപുരം POP', TRUE, 'POP01',
+    NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
+
 
 -- Table : df_power_rating
 DROP TABLE IF EXISTS df_power_rating CASCADE;

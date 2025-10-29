@@ -112,4 +112,34 @@ class PopControllerTest {
         .andExpect(jsonPath("$.data.code").value("001"))
         .andExpect(jsonPath("$.data.isActive").value(true));
   }
+
+  @Test
+  void testFetchAllDfPopList() throws Exception {
+    List<CommonLookUp> list = List.of(dfPopLookup);
+    when(service.fetchAllDfPopLists()).thenReturn(list);
+
+    mockMvc
+        .perform(get("/api/pop/df-pop-lists"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(dfPopListId.toString()))
+        .andExpect(jsonPath("$.data[0].name").value("Thiruvananthapuram POP"))
+        .andExpect(jsonPath("$.data[0].nameInLocal").value("തിരുവനന്തപുരം POP"))
+        .andExpect(jsonPath("$.data[0].code").value("POP01"))
+        .andExpect(jsonPath("$.data[0].isActive").value(true));
+  }
+
+  @Test
+  void testFetchDfPopListById() throws Exception {
+    when(service.fetchDfPopById(dfPopListId)).thenReturn(dfPopLookup);
+
+    mockMvc
+        .perform(get("/api/pop/df-pop-list/{id}", dfPopListId))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.data.id").value(dfPopListId.toString()))
+        .andExpect(jsonPath("$.data.name").value("Thiruvananthapuram POP"))
+        .andExpect(jsonPath("$.data.nameInLocal").value("തിരുവനന്തപുരം POP"))
+        .andExpect(jsonPath("$.data.code").value("POP01"))
+        .andExpect(jsonPath("$.data.isActive").value(true));
+  }
 }

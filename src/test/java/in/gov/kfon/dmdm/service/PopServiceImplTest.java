@@ -155,4 +155,46 @@ class PopServiceImplTest {
     verify(popMasterBackupRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
+
+  @Test
+  void testFetchAllDfPopList() {
+    when(dfPopListRepository.findAll()).thenReturn(List.of(dfPopList));
+    when(modelMapper.map(dfPopList, CommonLookUp.class)).thenReturn(dfPopLookup);
+
+    List<CommonLookUp> result = service.fetchAllDfPopLists();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(dfPopListId, result.get(0).getId());
+
+    verify(dfPopListRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(dfPopList, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDfPopListById_Success() {
+    when(dfPopListRepository.findById(dfPopListId)).thenReturn(Optional.of(dfPopList));
+    when(modelMapper.map(dfPopList, CommonLookUp.class)).thenReturn(dfPopLookup);
+
+    CommonLookUp result = service.fetchDfPopById(dfPopListId);
+
+    assertNotNull(result);
+    assertEquals(dfPopListId, result.getId());
+
+    verify(dfPopListRepository, times(1)).findById(dfPopListId);
+    verify(modelMapper, times(1)).map(dfPopList, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDfPopListById_NotFound() {
+    when(dfPopListRepository.findById(dfPopListId)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchDfPopById(dfPopListId));
+
+    assertEquals("DfPopList not found with id: " + dfPopListId, exception.getMessage());
+
+    verify(dfPopListRepository, times(1)).findById(dfPopListId);
+    verifyNoInteractions(modelMapper);
+  }
 }
