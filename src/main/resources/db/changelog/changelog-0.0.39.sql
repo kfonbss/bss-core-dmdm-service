@@ -195,6 +195,10 @@ DROP TABLE IF EXISTS ce_inovoice_master CASCADE;
 
 CREATE TABLE ce_inovoice_master (
   master_id UUID NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   slno BIGSERIAL,
   subscriberid bigint DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -204,8 +208,8 @@ CREATE TABLE ce_inovoice_master (
   invoicedate date DEFAULT NULL,
   grossamount decimal(26,10) DEFAULT NULL,
   locamount decimal(26,10) DEFAULT NULL,
-  servicetax decimal(10,10) DEFAULT NULL,
-  servicetaxrate decimal(10,2) DEFAULT NULL,
+  servicetax decimal(26,10) DEFAULT NULL,
+  servicetaxrate decimal(26,2) DEFAULT NULL,
   servicestartdate date DEFAULT NULL,
   serviceenddate date DEFAULT NULL,
   quarter_start_date date DEFAULT NULL,
@@ -226,19 +230,25 @@ CREATE TABLE ce_inovoice_master (
   crnote_gst decimal(26,10) DEFAULT 0.0000000000,
   crnote_total decimal(26,10) DEFAULT 0.0000000000,
   poid int DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_inovoice_master PRIMARY KEY (master_id)
 );
+INSERT INTO ce_inovoice_master (master_id, code, name, name_in_local, is_active, subscriberid, locid, subfinanceid, invoiceno, invoicemonth, invoicedate, grossamount, locamount, servicetax, servicetaxrate, servicestartdate, serviceenddate, quarter_start_date, quarter_end_date, gst_value, cgst_value, sgst_value, igst_value, cgst_rate, sgst_rate, igst_rate, paid_amount, gstin, taxpayertype, particulars, einvoice_generated, crnote_amount, crnote_gst, crnote_total, poid, created_by, modified_by)
+VALUES (gen_random_uuid(), 'INV-M001', 'Broadband October Invoice', 'ബ്രോഡ്ബാൻഡ് ഒക്ടോബർ ഇൻവോയ്സ്', true, 12001, 15, 300, 'INV-2025-10-001', 'OCT-2025', CURRENT_DATE, 7500.00, 7000.00, 375.00, 5.00, CURRENT_DATE - INTERVAL '30 days', CURRENT_DATE, CURRENT_DATE - INTERVAL '90 days', CURRENT_DATE, 1350.00, 675.00, 675.00, 0.00, 9.00, 9.00, 0.00, 7500.00, '32AAAAA0000A1Z5', 1, 'Monthly broadband and maintenance service', false, 0.00, 0.00, 0.00, 101, gen_random_uuid(), gen_random_uuid());
 
-COMMENT ON COLUMN ce_inovoice_master.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS ce_kyc_details CASCADE;
 
 CREATE TABLE ce_kyc_details (
   kyc_id UUID NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   customerid int DEFAULT NULL,
   pan_numer varchar(10) DEFAULT NULL,
@@ -255,28 +265,35 @@ CREATE TABLE ce_kyc_details (
   lut_doc varchar(200) DEFAULT NULL,
   sez_verified boolean DEFAULT false,
   approve_status boolean DEFAULT false,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_kyc_details PRIMARY KEY (kyc_id)
 );
-
-COMMENT ON COLUMN ce_kyc_details.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_kyc_details (kyc_id, code, name, name_in_local, is_active, customerid, pan_numer, pan_copy, gstin, gstindoc, supportdoc, taxpayertype, legalname, tradename, sac, service_description, gst_status, lut_doc, sez_verified, approve_status, created_by, modified_by)
+VALUES (gen_random_uuid(), 'KYC001', 'John Traders Pvt Ltd', 'ജോൺ ട്രേഡേഴ്സ് പ്രൈവറ്റ് ലിമിറ്റഡ്', true, 2001, 'ABCDE1234F', 'pan_copy.pdf', '32AAAAA0000A1Z5', 'gst_doc.pdf', 'supporting_doc.pdf', true, 'John Traders Private Limited', 'John Traders', '9984', 'Internet and broadband service', true, 'lut_2025.pdf', false, true, gen_random_uuid(), gen_random_uuid());
 
 
 DROP TABLE IF EXISTS ce_location_movement CASCADE;
 
 CREATE TABLE ce_location_movement (
   movement_id UUID NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   locid int DEFAULT NULL,
   approve_status int DEFAULT NULL,
   remarks varchar(255) DEFAULT NULL,
-  created_by varchar(128) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_by_platform varchar(128) DEFAULT NULL,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_location_movement PRIMARY KEY (movement_id)
 );
 
-COMMENT ON COLUMN ce_location_movement.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_location_movement (movement_id, code, name, name_in_local, is_active, locid, approve_status, remarks, created_by_platform, created_by, modified_by)
+VALUES (gen_random_uuid(), 'MOV001', 'Warehouse Relocation', 'വെയർഹൗസ് മാറ്റം', true, 101, 1, 'Location moved from Kochi to Trivandrum', 'WebApp', gen_random_uuid(), gen_random_uuid());
