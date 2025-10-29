@@ -52,4 +52,20 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> invoicesFetchAll();
 
   CommonLookUp invoiceFetchById(UUID id);
+
+  List<CommonLookUp> invoiceMasterFetchAll();
+
+  CommonLookUp invoiceMasterFetchById(UUID id);
+
+  List<CommonLookUp> kycDetailsFetchAll();
+
+  CommonLookUp kycDetailsFetchById(UUID id);
+
+  List<CommonLookUp> locationMovementFetchAll();
+
+  CommonLookUp locationMovementFetchById(UUID id);
+
+  List<CommonLookUp> locationRenewalHistoryFetchAll();
+
+  CommonLookUp locationRenewalHistoryFetchById(UUID id);
 }

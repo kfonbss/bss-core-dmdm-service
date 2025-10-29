@@ -2,6 +2,10 @@ DROP TABLE IF EXISTS ce_location_renewal_history CASCADE;
 
 CREATE TABLE ce_location_renewal_history (
   history_id UUID NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   locid int DEFAULT NULL,
   subscriberid int DEFAULT NULL,
@@ -23,13 +27,15 @@ CREATE TABLE ce_location_renewal_history (
   loc_grand_amount decimal(26,10) DEFAULT NULL,
   otc_amount decimal(26,10) DEFAULT NULL,
   otc_gst_amount decimal(26,10) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_location_renewal_history PRIMARY KEY (history_id)
 );
 
-COMMENT ON COLUMN ce_location_renewal_history.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_location_renewal_history (history_id, code, name, name_in_local, is_active, locid, subscriberid, breakupid, serviceid, packageid, mg_invoiceid, service_sdate, service_edate, subfinanceid, total_sdays, discount_percent, disount_amount, original_renewalfee, renewalfee_after_disount, cost_per_day, loc_amount, loc_gst_amount, loc_grand_amount, otc_amount, otc_gst_amount, created_by, modified_by)
+VALUES (gen_random_uuid(), 'RH001', 'Renewal History - Oct 2025', 'റീനുവൽ ചരിത്രം - ഒക്ടോബർ 2025', true, 101, 2001, 301, 401, 501, 601, CURRENT_DATE - INTERVAL '30 days', CURRENT_DATE, 701, 30, 10, 100.00, 1000.00, 900.00, 30.00, 850.00, 150.00, 1000.00, 100.00, 18.00, gen_random_uuid(), gen_random_uuid());
 
 
 DROP TABLE IF EXISTS ce_locations CASCADE;
