@@ -30,6 +30,10 @@ class CorporateOnboardingServiceImplTest {
   private CeDnoteRenewalHistoryRepository renewalHistoryRepository;
   private CeEodetailsRepository eodetailsRepository;
   private CeInovoiceRepository inovoiceRepository;
+  private CeInovoiceMasterRepository inovoiceMasterRepository;
+  private CeKycDetailsRepository kycDetailsRepository;
+  private CeLocationMovementRepository locationMovementRepository;
+  private CeLocationRenewalHistoryRepository locationRenewalHistoryRepository;
 
   @BeforeEach
   void setUp() {
@@ -46,6 +50,10 @@ class CorporateOnboardingServiceImplTest {
     renewalHistoryRepository = mock(CeDnoteRenewalHistoryRepository.class);
     eodetailsRepository = mock(CeEodetailsRepository.class);
     inovoiceRepository = mock(CeInovoiceRepository.class);
+    inovoiceMasterRepository = mock(CeInovoiceMasterRepository.class);
+    kycDetailsRepository = mock(CeKycDetailsRepository.class);
+    locationMovementRepository = mock(CeLocationMovementRepository.class);
+    locationRenewalHistoryRepository = mock(CeLocationRenewalHistoryRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -60,7 +68,11 @@ class CorporateOnboardingServiceImplTest {
             dnoteMasterRepository,
             renewalHistoryRepository,
             eodetailsRepository,
-            inovoiceRepository);
+            inovoiceRepository,
+            inovoiceMasterRepository,
+            kycDetailsRepository,
+            locationMovementRepository,
+            locationRenewalHistoryRepository);
 
     service.setupMapper();
   }
@@ -495,5 +507,145 @@ class CorporateOnboardingServiceImplTest {
     when(inovoiceRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.invoiceFetchById(id));
+  }
+
+  @Test
+  void testInvoiceMasterFetchAll_ShouldReturnMappedList() {
+    CeInovoiceMaster inovoice = new CeInovoiceMaster();
+    inovoice.setMasterId(UUID.randomUUID());
+
+    when(inovoiceMasterRepository.findAll()).thenReturn(List.of(inovoice));
+
+    List<CommonLookUp> result = service.invoiceMasterFetchAll();
+
+    assertEquals(1, result.size());
+    verify(inovoiceMasterRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testInvoiceMasterFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeInovoiceMaster inovoice = new CeInovoiceMaster();
+    inovoice.setMasterId(id);
+
+    when(inovoiceMasterRepository.findById(id)).thenReturn(Optional.of(inovoice));
+
+    CommonLookUp result = service.invoiceMasterFetchById(id);
+
+    assertNotNull(result);
+    verify(inovoiceMasterRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testInoviceMasterFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(inovoiceMasterRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.invoiceMasterFetchById(id));
+  }
+
+  @Test
+  void testKycDetailsFetchAll_ShouldReturnMappedList() {
+    CeKycDetails inovoice = new CeKycDetails();
+    inovoice.setKycId(UUID.randomUUID());
+
+    when(kycDetailsRepository.findAll()).thenReturn(List.of(inovoice));
+
+    List<CommonLookUp> result = service.kycDetailsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(kycDetailsRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testKycDetailsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeKycDetails inovoice = new CeKycDetails();
+    inovoice.setKycId(id);
+
+    when(kycDetailsRepository.findById(id)).thenReturn(Optional.of(inovoice));
+
+    CommonLookUp result = service.kycDetailsFetchById(id);
+
+    assertNotNull(result);
+    verify(kycDetailsRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testKycDetailsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(kycDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.kycDetailsFetchById(id));
+  }
+
+  @Test
+  void testLocationMovementFetchAll_ShouldReturnMappedList() {
+    CeLocationMovement inovoice = new CeLocationMovement();
+    inovoice.setMovementId(UUID.randomUUID());
+
+    when(locationMovementRepository.findAll()).thenReturn(List.of(inovoice));
+
+    List<CommonLookUp> result = service.locationMovementFetchAll();
+
+    assertEquals(1, result.size());
+    verify(locationMovementRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testLocationMovementFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeLocationMovement inovoice = new CeLocationMovement();
+    inovoice.setMovementId(id);
+
+    when(locationMovementRepository.findById(id)).thenReturn(Optional.of(inovoice));
+
+    CommonLookUp result = service.locationMovementFetchById(id);
+
+    assertNotNull(result);
+    verify(locationMovementRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testLocationMovementFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(locationMovementRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.locationMovementFetchById(id));
+  }
+
+  @Test
+  void testLocationRenewalHistoryFetchAll_ShouldReturnMappedList() {
+    CeLocationRenewalHistory history = new CeLocationRenewalHistory();
+    history.setHistoryId(UUID.randomUUID());
+
+    when(locationRenewalHistoryRepository.findAll()).thenReturn(List.of(history));
+
+    List<CommonLookUp> result = service.locationRenewalHistoryFetchAll();
+
+    assertEquals(1, result.size());
+    verify(locationRenewalHistoryRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testLocationRenewalHistoryFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeLocationRenewalHistory history = new CeLocationRenewalHistory();
+    history.setHistoryId(id);
+
+    when(locationRenewalHistoryRepository.findById(id)).thenReturn(Optional.of(history));
+
+    CommonLookUp result = service.locationRenewalHistoryFetchById(id);
+
+    assertNotNull(result);
+    verify(locationRenewalHistoryRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testLocationRenewalHistoryFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(locationRenewalHistoryRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.locationRenewalHistoryFetchById(id));
   }
 }
