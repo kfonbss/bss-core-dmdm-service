@@ -29,6 +29,7 @@ class CorporateOnboardingServiceImplTest {
   private CeDnoteMasterRepository dnoteMasterRepository;
   private CeDnoteRenewalHistoryRepository renewalHistoryRepository;
   private CeEodetailsRepository eodetailsRepository;
+  private CeInovoiceRepository inovoiceRepository;
 
   @BeforeEach
   void setUp() {
@@ -44,7 +45,7 @@ class CorporateOnboardingServiceImplTest {
     dnoteMasterRepository = mock(CeDnoteMasterRepository.class);
     renewalHistoryRepository = mock(CeDnoteRenewalHistoryRepository.class);
     eodetailsRepository = mock(CeEodetailsRepository.class);
-
+    inovoiceRepository = mock(CeInovoiceRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -58,7 +59,8 @@ class CorporateOnboardingServiceImplTest {
             disbursementHistoryRepository,
             dnoteMasterRepository,
             renewalHistoryRepository,
-            eodetailsRepository);
+            eodetailsRepository,
+            inovoiceRepository);
 
     service.setupMapper();
   }
@@ -458,5 +460,40 @@ class CorporateOnboardingServiceImplTest {
     when(eodetailsRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.eoDetailFetchById(id));
+  }
+
+  @Test
+  void testInvoiceFetchAll_ShouldReturnMappedList() {
+    CeInovoice inovoice = new CeInovoice();
+    inovoice.setInovoiceId(UUID.randomUUID());
+
+    when(inovoiceRepository.findAll()).thenReturn(List.of(inovoice));
+
+    List<CommonLookUp> result = service.invoicesFetchAll();
+
+    assertEquals(1, result.size());
+    verify(inovoiceRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testInvoiceFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeInovoice inovoice = new CeInovoice();
+    inovoice.setInovoiceId(id);
+
+    when(inovoiceRepository.findById(id)).thenReturn(Optional.of(inovoice));
+
+    CommonLookUp result = service.invoiceFetchById(id);
+
+    assertNotNull(result);
+    verify(inovoiceRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testInoviceFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(inovoiceRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.invoiceFetchById(id));
   }
 }

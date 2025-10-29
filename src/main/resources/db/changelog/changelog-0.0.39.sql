@@ -148,6 +148,10 @@ DROP TABLE IF EXISTS ce_inovoice CASCADE;
 
 CREATE TABLE ce_inovoice (
   inovoice_id UUID NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   slno BIGSERIAL,
   subscriberid bigint DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -157,8 +161,8 @@ CREATE TABLE ce_inovoice (
   invoicedate date DEFAULT NULL,
   grossamount decimal(26,10) DEFAULT NULL,
   locamount decimal(26,10) DEFAULT NULL,
-  servicetax decimal(10,10) DEFAULT NULL,
-  servicetaxrate decimal(10,10) DEFAULT NULL,
+  servicetax decimal(26,10) DEFAULT NULL,
+  servicetaxrate decimal(26,10) DEFAULT NULL,
   servicestartdate date DEFAULT NULL,
   serviceenddate date DEFAULT NULL,
   quarter_start_date date DEFAULT NULL,
@@ -175,16 +179,17 @@ CREATE TABLE ce_inovoice (
   packageid int DEFAULT NULL,
   enable_opay boolean DEFAULT false,
   status_opay boolean DEFAULT false,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   taxpayertype smallint DEFAULT NULL,
   loc_reccount int DEFAULT 0,
   CONSTRAINT pk_ce_inovoice PRIMARY KEY (inovoice_id)
 );
 
-COMMENT ON COLUMN ce_inovoice.is_active IS '0=In Active,1=Active';
-
+INSERT INTO ce_inovoice (inovoice_id, code, name, name_in_local, is_active, subscriberid, locid, mg_invoiceid, subfinanceid, invoiceno, invoicedate, grossamount, locamount, servicetax, servicetaxrate, servicestartdate, serviceenddate, quarter_start_date, quarter_end_date, gst_value, cgst_value, sgst_value, igst_value, cgst_rate, sgst_rate, igst_rate, gstin, particulars, packageid, enable_opay, status_opay, created_by, modified_by, taxpayertype, loc_reccount)
+VALUES (gen_random_uuid(), 'INV001', 'Test Invoice', 'ടെസ്റ്റ് ഇൻവോയ്സ്', true, 1001, 12, 501, 201, 'INV-2025-001', CURRENT_DATE, 5000.00, 4500.00, 250.00, 5.00, CURRENT_DATE - INTERVAL '30 days', CURRENT_DATE, CURRENT_DATE - INTERVAL '90 days', CURRENT_DATE, 900.00, 450.00, 450.00, 0.00, 9.00, 9.00, 0.00, '32AAAAA0000A1Z5', 'Monthly broadband service', 1, false, false, gen_random_uuid(), gen_random_uuid(), 1, 10);
 
 DROP TABLE IF EXISTS ce_inovoice_master CASCADE;
 
