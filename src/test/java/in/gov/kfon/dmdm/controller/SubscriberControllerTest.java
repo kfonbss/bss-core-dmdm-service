@@ -58,6 +58,9 @@ public class SubscriberControllerTest {
   private CommonLookUp lookupGstDetail;
   private CommonLookUp lookupInvoice;
 
+  private UUID idSubscription;
+  private CommonLookUp lookUpSubscription;
+
   private UUID id;
   private CommonLookUp lookup;
 
@@ -169,6 +172,12 @@ public class SubscriberControllerTest {
     lookupContact.setName("John Doe");
     lookupContact.setNameInLocal("ജോൺ ഡോ");
     lookupContact.setIsActive(true);
+
+    idSubscription = UUID.randomUUID();
+
+    lookUpSubscription = new CommonLookUp();
+    lookUpSubscription.setId(idSubscription);
+    lookUpSubscription.setName("Subscription-100");
 
     id = UUID.randomUUID();
 
@@ -482,6 +491,32 @@ public class SubscriberControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched subscriber invoice"))
         .andExpect(jsonPath("$.data.id").value(idInvoice.toString()))
         .andExpect(jsonPath("$.data.name").value("Invoice 1"));
+  }
+
+  @Test
+  void testFetchAllSubscriptions() throws Exception {
+    when(service.fetchAllSubscriptions()).thenReturn(List.of(lookUpSubscription));
+
+    mockMvc
+        .perform(get("/api/subscriber/subscriptions"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all subscriptions"))
+        .andExpect(jsonPath("$.data").isArray())
+        .andExpect(jsonPath("$.data.length()").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(idSubscription.toString()))
+        .andExpect(jsonPath("$.data[0].name").value("Subscription-100"));
+  }
+
+  @Test
+  void testFetchSubscriptionById() throws Exception {
+    when(service.fetchSubscriptionById(idSubscription)).thenReturn(lookUpSubscription);
+
+    mockMvc
+        .perform(get("/api/subscriber/subscription/{id}", idSubscription))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched subscription"))
+        .andExpect(jsonPath("$.data.id").value(idSubscription.toString()))
+        .andExpect(jsonPath("$.data.name").value("Subscription-100"));
   }
 
   @Test

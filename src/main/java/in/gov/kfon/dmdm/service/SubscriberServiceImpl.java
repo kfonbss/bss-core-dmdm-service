@@ -28,6 +28,7 @@ public class SubscriberServiceImpl implements SubscriberService {
   private final SubscriberContactInformationRepository contactRepository;
   private final SubscriberGstDetailRepository subscriberGstDetailRepository;
   private final SubscriberInvoiceRepository subscriberInvoiceRepository;
+  private final SubscriptionRepository subscriptionRepository;
   private final SubscriberProfileRepository subscriberProfileRepository;
   private final SubscriberUsernamesRepository subscriberUsernamesRepository;
 
@@ -261,6 +262,25 @@ public class SubscriberServiceImpl implements SubscriberService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Invoice not found"));
     return modelMapper.map(invoice, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllSubscriptions() {
+    return subscriptionRepository.findAll().stream()
+        .map(subscription -> modelMapper.map(subscription, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchSubscriptionById(UUID id) {
+    Subscription subscription =
+        subscriptionRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Subscription not found with id: " + id));
+    return modelMapper.map(subscription, CommonLookUp.class);
   }
 
   @Override
