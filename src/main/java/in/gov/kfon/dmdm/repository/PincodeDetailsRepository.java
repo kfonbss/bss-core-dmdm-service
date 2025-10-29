@@ -1,0 +1,7 @@
+package in.gov.kfon.dmdm.repository;
+
+import in.gov.kfon.dmdm.model.PincodeDetails;
+import java.util.UUID;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PincodeDetailsRepository extends JpaRepository<PincodeDetails, UUID> {}

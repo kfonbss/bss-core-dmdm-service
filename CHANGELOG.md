@@ -131,3 +131,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.14.0] - 2025-10-29
 ### Added
 - Get corporate  invoice details
+
+## [0.15.0] - 2025-10-29
+### Added
+- Get pincode details
