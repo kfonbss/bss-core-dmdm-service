@@ -13,4 +13,8 @@ public interface PopService {
   List<CommonLookUp> fetchAllPopMasterBackups();
 
   CommonLookUp fetchPopMasterBackupById(UUID id);
+
+  List<CommonLookUp> fetchAllDfPopLists();
+
+  CommonLookUp fetchDfPopById(UUID id);
 }
