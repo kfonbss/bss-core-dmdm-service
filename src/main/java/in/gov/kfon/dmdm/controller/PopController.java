@@ -45,4 +45,16 @@ public class PopController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched pop master backup"));
   }
+
+  @GetMapping("/df-pop-lists")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDfPopLists() {
+    var data = service.fetchAllDfPopLists();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all DF POP lists"));
+  }
+
+  @GetMapping("/df-pop-list/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchDfPopById(@PathVariable UUID id) {
+    var data = service.fetchDfPopById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched DF POP"));
+  }
 }

@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.model.DfPopList;
 import in.gov.kfon.dmdm.model.PopMaster;
 import in.gov.kfon.dmdm.model.PopMasterBackup;
 import in.gov.kfon.dmdm.repository.DfPopListRepository;
@@ -59,5 +60,23 @@ public class PopServiceImpl implements PopService {
             .orElseThrow(
                 () -> new EntityNotFoundException("PopMasterBackup not found with id: " + id));
     return modelMapper.map(popMasterBackup, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllDfPopLists() {
+    return dfPopListRepository.findAll().stream()
+        .map(df -> modelMapper.map(df, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchDfPopById(UUID id) {
+    DfPopList dfPop =
+        dfPopListRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("DfPopList not found with id: " + id));
+    return modelMapper.map(dfPop, CommonLookUp.class);
   }
 }
