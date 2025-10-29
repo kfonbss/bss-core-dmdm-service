@@ -25,24 +25,56 @@ CREATE TABLE ponport_mapping_subscriber (
 
 -- Table: pop_master
 CREATE TABLE pop_master (
-    master_id UUID NOT NULL PRIMARY KEY,
-    id SERIAL,
+    id UUID NOT NULL PRIMARY KEY,
+    master_id SERIAL,
     popname VARCHAR(256),
     district VARCHAR(100),
     poptype VARCHAR(50),
     popid VARCHAR(100),
-    created_by VARCHAR(100),
-    created_dt TIMESTAMP
+    code VARCHAR(50),
+    name VARCHAR(256),
+    name_in_local VARCHAR(256),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO pop_master (
+    id, master_id, popname, district, poptype, popid, code, name, name_in_local,
+    is_active, created_date, modified_date, created_by, modified_by
+) VALUES
+(
+    gen_random_uuid(), DEFAULT, 'Thiruvananthapuram POP', 'Thiruvananthapuram', 'TypeA', 'POP001',
+    'POP01', 'TVM POP', 'തിരുവനന്തപുരം POP', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
+
 
 -- Table: pop_master_backup2june
 CREATE TABLE pop_master_backup2june (
-    master_id UUID NOT NULL PRIMARY KEY,
-    id INT DEFAULT 0,
+    id UUID NOT NULL PRIMARY KEY,
+    master_id INT DEFAULT 0,
     popname VARCHAR(256),
-    created_by VARCHAR(100),
-    created_dt TIMESTAMP
+    code VARCHAR(50),
+    name VARCHAR(256),
+    name_in_local VARCHAR(256),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO pop_master_backup2june (
+    id, master_id, popname, code, name, name_in_local,
+    is_active, created_date, modified_date, created_by, modified_by
+) VALUES
+(
+    gen_random_uuid(), 0, 'Thiruvananthapuram POP Backup', 'POP01', 'TVM POP Backup', 'തിരുവനന്തപുരം POP ബാക്കപ്പ്',
+    TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
+
 
 -- Table: portspeed
 CREATE TABLE portspeed (
