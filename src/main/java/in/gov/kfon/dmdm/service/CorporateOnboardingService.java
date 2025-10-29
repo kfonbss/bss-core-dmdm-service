@@ -48,4 +48,8 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> eoDetailsFetchAll();
 
   CommonLookUp eoDetailFetchById(UUID id);
+
+  List<CommonLookUp> invoicesFetchAll();
+
+  CommonLookUp invoiceFetchById(UUID id);
 }

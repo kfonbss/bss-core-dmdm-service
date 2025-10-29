@@ -31,6 +31,7 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CeDnoteMasterRepository dnoteMasterRepository;
   private final CeDnoteRenewalHistoryRepository renewalHistoryRepository;
   private final CeEodetailsRepository eodetailsRepository;
+  private final CeInovoiceRepository inovoiceRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -288,5 +289,21 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
     lookup.setId(details.getEodetailsId());
 
     return lookup;
+  }
+
+  @Override
+  public List<CommonLookUp> invoicesFetchAll() {
+    return inovoiceRepository.findAll().stream()
+        .map(connection -> modelMapper.map(connection, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp invoiceFetchById(UUID id) {
+    CeInovoice invoice =
+        inovoiceRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(invoice, CommonLookUp.class);
   }
 }

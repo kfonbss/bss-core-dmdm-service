@@ -150,4 +150,16 @@ public class CorporateOnboardingController {
     var data = service.eoDetailFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
+
+  @GetMapping("invoices/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> invoicesFetchAll() {
+    var data = service.invoicesFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("invoice/{id}")
+  public ResponseEntity<Response<CommonLookUp>> invoiceFetchById(@PathVariable UUID id) {
+    var data = service.invoiceFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
 }
