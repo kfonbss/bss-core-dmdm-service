@@ -162,4 +162,53 @@ public class CorporateOnboardingController {
     var data = service.invoiceFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
+
+  @GetMapping("invoice-masters/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> invoiceMasterFetchAll() {
+    var data = service.invoiceMasterFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("invoice-master/{id}")
+  public ResponseEntity<Response<CommonLookUp>> invoiceMasterFetchById(@PathVariable UUID id) {
+    var data = service.invoiceMasterFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("kyc-details/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> kycDetailsFetchAll() {
+    var data = service.kycDetailsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("kyc-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> kycDetailsFetchById(@PathVariable UUID id) {
+    var data = service.kycDetailsFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("location/movements/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> locationMovementFetchAll() {
+    var data = service.locationMovementFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("location/movement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> locationMovementFetchById(@PathVariable UUID id) {
+    var data = service.locationMovementFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("location/renewal-histories/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> locationRenewalHistoryFetchAll() {
+    var data = service.locationRenewalHistoryFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("location/renewal-history/{id}")
+  public ResponseEntity<Response<CommonLookUp>> locationRenewalHistoryFetchById(
+      @PathVariable UUID id) {
+    var data = service.locationRenewalHistoryFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
 }

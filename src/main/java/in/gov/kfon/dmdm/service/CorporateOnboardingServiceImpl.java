@@ -32,6 +32,10 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CeDnoteRenewalHistoryRepository renewalHistoryRepository;
   private final CeEodetailsRepository eodetailsRepository;
   private final CeInovoiceRepository inovoiceRepository;
+  private final CeInovoiceMasterRepository inovoiceMasterRepository;
+  private final CeKycDetailsRepository ceKycDetailsRepository;
+  private final CeLocationMovementRepository locationMovementRepository;
+  private final CeLocationRenewalHistoryRepository locationRenewalHistoryRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -292,6 +296,7 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<CommonLookUp> invoicesFetchAll() {
     return inovoiceRepository.findAll().stream()
         .map(connection -> modelMapper.map(connection, CommonLookUp.class))
@@ -299,11 +304,84 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   }
 
   @Override
+  @Transactional(readOnly = true)
   public CommonLookUp invoiceFetchById(UUID id) {
     CeInovoice invoice =
         inovoiceRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(invoice, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> invoiceMasterFetchAll() {
+    return inovoiceMasterRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp invoiceMasterFetchById(UUID id) {
+    CeInovoiceMaster entity =
+        inovoiceMasterRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> kycDetailsFetchAll() {
+    return ceKycDetailsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp kycDetailsFetchById(UUID id) {
+    CeKycDetails entity =
+        ceKycDetailsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> locationMovementFetchAll() {
+    return locationMovementRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp locationMovementFetchById(UUID id) {
+    CeLocationMovement entity =
+        locationMovementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> locationRenewalHistoryFetchAll() {
+    return locationRenewalHistoryRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp locationRenewalHistoryFetchById(UUID id) {
+    CeLocationRenewalHistory entity =
+        locationRenewalHistoryRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
   }
 }
