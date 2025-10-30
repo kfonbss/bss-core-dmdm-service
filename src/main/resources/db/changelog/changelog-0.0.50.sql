@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS companygstdetail CASCADE;
 
 CREATE TABLE companygstdetail (
-  detail_id UUID NOT NULL,
+  detail_id UUID DEFAULT gen_random_uuid() NOT NULL,
   companyid bigint NOT NULL,
   gstin varchar(20) DEFAULT NULL,
   sac varchar(20) DEFAULT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE companygstdetail (
 DROP TABLE IF EXISTS connectiontype CASCADE;
 
 CREATE TABLE connectiontype (
-  type_id UUID NOT NULL,
+  type_id UUID DEFAULT gen_random_uuid() NOT NULL,
   connectiontypeid SERIAL,
   connectiontype varchar(45) NOT NULL,
   lastupdate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -40,7 +40,7 @@ CREATE UNIQUE INDEX Index_2_connectiontype ON connectiontype (connectiontype);
 DROP TABLE IF EXISTS contactcenter CASCADE;
 
 CREATE TABLE contactcenter (
-  center_id UUID NOT NULL,
+  center_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id int NOT NULL,
   center varchar(128) DEFAULT NULL,
   address1 varchar(256) DEFAULT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE contactcenter (
 DROP TABLE IF EXISTS cor_agplist_approval CASCADE;
 
 CREATE TABLE cor_agplist_approval (
-  approval_id UUID NOT NULL,
+  approval_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   agpid bigint DEFAULT NULL,
   state varchar(15) DEFAULT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE cor_agplist_approval (
 DROP TABLE IF EXISTS cor_fin_agpinvoicing CASCADE;
 
 CREATE TABLE cor_fin_agpinvoicing (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subgroup smallint DEFAULT NULL,
   invoicemonth varchar(20) DEFAULT NULL,

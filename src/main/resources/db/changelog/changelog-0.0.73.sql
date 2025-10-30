@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS endoffice_master_details CASCADE;
 
 CREATE TABLE endoffice_master_details (
-  endoffice_master_details_id UUID NOT NULL,
+  endoffice_master_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   boqid varchar(50) DEFAULT NULL,
   mstype char(5) DEFAULT NULL,
@@ -26,7 +26,7 @@ CONSTRAINT pk_endoffice_master_details PRIMARY KEY (endoffice_master_details_id)
 DROP TABLE IF EXISTS endoffice_nms_master CASCADE;
 
 CREATE TABLE endoffice_nms_master (
-  endoffice_nms_master_id UUID NOT NULL,
+  endoffice_nms_master_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   boqid varchar(100) DEFAULT NULL,
   loc_code varchar(20) DEFAULT NULL,
@@ -41,7 +41,7 @@ CONSTRAINT pk_endoffice_nms_master PRIMARY KEY (endoffice_nms_master_id)
 DROP TABLE IF EXISTS enq_location CASCADE;
 
 CREATE TABLE enq_location (
-  enq_location_id UUID NOT NULL,
+  enq_location_id UUID DEFAULT gen_random_uuid() NOT NULL,
   enq_ref varchar(60) DEFAULT NULL,
   enq_id SERIAL,
   location_name varchar(200) DEFAULT NULL,
@@ -76,7 +76,7 @@ CONSTRAINT pk_enq_location PRIMARY KEY (enq_location_id)
 DROP TABLE IF EXISTS enquiry_management CASCADE;
 
 CREATE TABLE enquiry_management (
-  enquiry_management_id UUID NOT NULL,
+  enquiry_management_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   enq_ref varchar(60) DEFAULT NULL,
   cmp_name varchar(60) DEFAULT NULL,
@@ -105,7 +105,7 @@ CONSTRAINT pk_enquiry_management PRIMARY KEY (enquiry_management_id)
 DROP TABLE IF EXISTS eo CASCADE;
 
 CREATE TABLE eo (
-  eo_id UUID NOT NULL,
+  eo_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   linkcode char(10) DEFAULT NULL,
   boqid varchar(256) DEFAULT NULL,
@@ -123,7 +123,7 @@ CONSTRAINT pk_eo PRIMARY KEY (eo_id)
 DROP TABLE IF EXISTS eo_master CASCADE;
 
 CREATE TABLE eo_master (
-  eo_master_id UUID NOT NULL,
+  eo_master_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   mstype char(10) DEFAULT NULL,
   district varchar(128) DEFAULT NULL,
@@ -151,7 +151,7 @@ CONSTRAINT pk_eo_master PRIMARY KEY (eo_master_id)
 DROP TABLE IF EXISTS eo_master_tmp CASCADE;
 
 CREATE TABLE eo_master_tmp (
-  eo_master_tmp_id UUID NOT NULL,
+  eo_master_tmp_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   mstype char(10) DEFAULT NULL,
   district varchar(128) DEFAULT NULL,
@@ -179,7 +179,7 @@ CONSTRAINT pk_eo_master_tmp PRIMARY KEY (eo_master_tmp_id)
 DROP TABLE IF EXISTS expirycheck CASCADE;
 
 CREATE TABLE expirycheck (
-  expirycheck_id UUID NOT NULL,
+  expirycheck_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   subscriberid int DEFAULT NULL,
   username varchar(64) DEFAULT NULL,
@@ -196,7 +196,7 @@ CONSTRAINT pk_expirycheck PRIMARY KEY (expirycheck_id)
 DROP TABLE IF EXISTS failed_jobs CASCADE;
 
 CREATE TABLE failed_jobs (
-  failed_jobs_id UUID NOT NULL,
+  failed_jobs_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   uuid varchar(255) NOT NULL,
   connection text NOT NULL,
@@ -214,7 +214,7 @@ CONSTRAINT pk_failed_jobs PRIMARY KEY (failed_jobs_id)
 DROP TABLE IF EXISTS fengremarks CASCADE;
 
 CREATE TABLE fengremarks (
-  fengremarks_id UUID NOT NULL,
+  fengremarks_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   taskid int DEFAULT NULL,
   remarks varchar(500) DEFAULT NULL,
@@ -230,7 +230,7 @@ CONSTRAINT pk_fengremarks PRIMARY KEY (fengremarks_id)
 DROP TABLE IF EXISTS fengtask CASCADE;
 
 CREATE TABLE fengtask (
-  fengtask_id UUID NOT NULL,
+  fengtask_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   emp_id int DEFAULT NULL,
   task text DEFAULT NULL,

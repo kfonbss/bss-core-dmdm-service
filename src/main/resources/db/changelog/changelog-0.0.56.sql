@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cor_otc_invoicing CASCADE;
 
 CREATE TABLE cor_otc_invoicing (
-  invoicing_id UUID NOT NULL,
+  invoicing_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subgroup SMALLINT DEFAULT NULL,
   pgroupid INTEGER DEFAULT NULL,
@@ -81,7 +81,7 @@ COMMENT ON COLUMN cor_otc_invoicing.is_active IS '0=Inactive,1=Active';
 DROP TABLE IF EXISTS cor_otc_partnertransfer CASCADE;
 
 CREATE TABLE cor_otc_partnertransfer (
-  transfer_id UUID NOT NULL,
+  transfer_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   partnerid BIGINT DEFAULT NULL,
   invoiceid VARCHAR(128) DEFAULT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE cor_otc_partnertransfer (
 DROP TABLE IF EXISTS cor_package CASCADE;
 
 CREATE TABLE cor_package (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   packageid SERIAL,
   packagename VARCHAR(45) NOT NULL,
   renewperiod INTEGER NOT NULL,
@@ -132,7 +132,7 @@ COMMENT ON COLUMN cor_package.trailpackage IS '0=Regular Package,1=Trial Package
 DROP TABLE IF EXISTS cor_partneraccount CASCADE;
 
 CREATE TABLE cor_partneraccount (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   partneraccountid SERIAL,
   partnerid BIGINT DEFAULT NULL,
   balance DECIMAL(10,2) DEFAULT NULL,

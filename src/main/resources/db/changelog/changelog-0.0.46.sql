@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_subscriberdetails CASCADE;
 
 CREATE TABLE ce_subscriberdetails (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   username varchar(64) DEFAULT NULL,
@@ -43,7 +43,7 @@ COMMENT ON COLUMN ce_subscriberdetails.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_subscribers CASCADE;
 
 CREATE TABLE ce_subscribers (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   subscriberid SERIAL,
   username varchar(64) DEFAULT NULL,
   password varchar(50) DEFAULT NULL,
@@ -62,7 +62,7 @@ COMMENT ON COLUMN ce_subscribers.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_subscribers_document CASCADE;
 
 CREATE TABLE ce_subscribers_document (
-  document_id UUID NOT NULL,
+  document_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   sub_document varchar(50) DEFAULT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE ce_subscribers_document (
 DROP TABLE IF EXISTS ce_subshifdetails CASCADE;
 
 CREATE TABLE ce_subshifdetails (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   serviceprovider int DEFAULT NULL,
   subscriberid bigint DEFAULT NULL,
@@ -99,7 +99,7 @@ COMMENT ON COLUMN ce_subshifdetails.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_supportsub_document CASCADE;
 
 CREATE TABLE ce_supportsub_document (
-  document_id UUID NOT NULL,
+  document_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   caf_doc varchar(50) DEFAULT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE ce_supportsub_document (
 DROP TABLE IF EXISTS ce_workorder CASCADE;
 
 CREATE TABLE ce_workorder (
-  workorder_id UUID NOT NULL,
+  workorder_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   po_id int DEFAULT NULL,
   wo_no varchar(25) DEFAULT NULL,
@@ -149,7 +149,7 @@ COMMENT ON COLUMN ce_workorder.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS check_xmls CASCADE;
 
 CREATE TABLE check_xmls (
-  xmls_id UUID NOT NULL,
+  xmls_id UUID DEFAULT gen_random_uuid() NOT NULL,
   post text DEFAULT NULL,
   files text DEFAULT NULL,
   CONSTRAINT pk_check_xmls PRIMARY KEY (xmls_id)
@@ -161,7 +161,7 @@ COMMENT ON COLUMN check_xmls.xmls_id IS 'Unique identifier for check XMLs record
 DROP TABLE IF EXISTS ci_sessions CASCADE;
 
 CREATE TABLE ci_sessions (
-  sessions_id UUID NOT NULL,
+  sessions_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id varchar(40) NOT NULL,
   username varchar(100) DEFAULT NULL,
   ip_address varchar(45) NOT NULL,

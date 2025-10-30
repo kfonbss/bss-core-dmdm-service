@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cor_fin_agpinvoicing_q CASCADE;
 
 CREATE TABLE cor_fin_agpinvoicing_q (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   invoicemonth varchar(45) DEFAULT NULL,
   status int DEFAULT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE cor_fin_agpinvoicing_q (
 DROP TABLE IF EXISTS cor_fin_lcoinvoicing CASCADE;
 
 CREATE TABLE cor_fin_lcoinvoicing (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subgroup smallint DEFAULT NULL,
   pgroupid int DEFAULT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE cor_fin_lcoinvoicing (
 DROP TABLE IF EXISTS cor_fin_lcoinvoicing_q CASCADE;
 
 CREATE TABLE cor_fin_lcoinvoicing_q (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   invoicemonth varchar(45) DEFAULT NULL,
   status int DEFAULT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE cor_fin_lcoinvoicing_q (
 DROP TABLE IF EXISTS cor_fin_mspinvoicing CASCADE;
 
 CREATE TABLE cor_fin_mspinvoicing (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subgroup boolean DEFAULT NULL,
   invoicemonth varchar(20) DEFAULT NULL,

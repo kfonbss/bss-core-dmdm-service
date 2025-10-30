@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS sampletax CASCADE;
 
 -- Table: revenueshare_monthwise
 CREATE TABLE revenueshare_monthwise (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL ,
   pgid INTEGER DEFAULT 0,
   subid BIGINT DEFAULT 0,
@@ -52,7 +52,7 @@ CREATE TABLE revenueshare_monthwise (
 
 -- Table: role_type
 CREATE TABLE role_type (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   type_id SERIAL,
   code VARCHAR(50),
   name VARCHAR(100),
@@ -68,7 +68,7 @@ VALUES
 
 -- Table: roles
 CREATE TABLE roles (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   role_id SMALLSERIAL ,
   code VARCHAR(50),
   name VARCHAR(255),
@@ -98,7 +98,7 @@ VALUES
 
 -- Table: roles_modules
 CREATE TABLE roles_modules (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   rm_id SERIAL ,
   code VARCHAR(50),
   name VARCHAR(100),
@@ -123,7 +123,7 @@ VALUES
 
 -- Table: rules
 CREATE TABLE rules (
-  rule_id UUID NOT NULL PRIMARY KEY,
+  rule_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL ,
   action TEXT,
   status INT,
@@ -137,7 +137,7 @@ CREATE TABLE rules (
 
 -- Table: sampletax
 CREATE TABLE sampletax (
-  tax_id UUID NOT NULL PRIMARY KEY,
+  tax_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),

@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS fin_lcoinvoicing CASCADE;
 
 CREATE TABLE fin_lcoinvoicing (
-  fin_lcoinvoicing_id UUID NOT NULL,
+  fin_lcoinvoicing_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   invoicemonth varchar(20) DEFAULT NULL,
   status INT DEFAULT NULL,
@@ -86,7 +86,7 @@ CONSTRAINT pk_fin_lcoinvoicing PRIMARY KEY (fin_lcoinvoicing_id)
 DROP TABLE IF EXISTS fin_mspinvoicing CASCADE;
 
 CREATE TABLE fin_mspinvoicing (
-  fin_mspinvoicing_id UUID NOT NULL,
+  fin_mspinvoicing_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subtype INT DEFAULT 1,
   invoicemonth varchar(20) DEFAULT NULL,
@@ -167,7 +167,7 @@ CONSTRAINT pk_fin_mspinvoicing PRIMARY KEY (fin_mspinvoicing_id)
 DROP TABLE IF EXISTS fin_ottinvoice CASCADE;
 
 CREATE TABLE fin_ottinvoice (
-  fin_ottinvoice_id UUID NOT NULL,
+  fin_ottinvoice_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   providerid bigint DEFAULT NULL,
   invoicemonth varchar(20) DEFAULT NULL,
@@ -210,7 +210,7 @@ CONSTRAINT pk_fin_ottinvoice PRIMARY KEY (fin_ottinvoice_id)
 DROP TABLE IF EXISTS flatincentive CASCADE;
 
 CREATE TABLE flatincentive (
-  flatincentive_id UUID NOT NULL,
+  flatincentive_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   partnerid bigint DEFAULT NULL,
   pgid bigint DEFAULT NULL,
@@ -238,7 +238,7 @@ CONSTRAINT pk_flatincentive PRIMARY KEY (flatincentive_id)
 DROP TABLE IF EXISTS flatincentive_breakup CASCADE;
 
 CREATE TABLE flatincentive_breakup (
-  flatincentive_breakup_id UUID NOT NULL,
+  flatincentive_breakup_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   category INT DEFAULT NULL,
   subscribercount int DEFAULT NULL,
@@ -261,7 +261,7 @@ CONSTRAINT pk_flatincentive_breakup PRIMARY KEY (flatincentive_breakup_id)
 DROP TABLE IF EXISTS floor CASCADE;
 
 CREATE TABLE floor (
-  floor_id UUID NOT NULL,
+  floor_id UUID DEFAULT gen_random_uuid() NOT NULL,
   floorid SERIAL,
   floorname varchar(250) DEFAULT NULL,
   -- Primary key constraint

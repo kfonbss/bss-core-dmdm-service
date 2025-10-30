@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS ponport_mapping_lnp CASCADE;
 
 -- Table: po_renewal_status
 CREATE TABLE po_renewal_status (
-    status_id UUID NOT NULL PRIMARY KEY,
+    status_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     pono VARCHAR(100),
     version INT,
@@ -24,7 +24,7 @@ CREATE TABLE po_renewal_status (
 
 -- Table: po_unit
 CREATE TABLE po_unit (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     unit VARCHAR(10),
     region VARCHAR(100)
@@ -32,7 +32,7 @@ CREATE TABLE po_unit (
 
 -- Table: po_upload
 CREATE TABLE po_upload (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     time_date TIMESTAMP,
     uploadedby VARCHAR(100),
@@ -46,7 +46,7 @@ CREATE TABLE po_upload (
 
 -- Table: po_wo_location
 CREATE TABLE po_wo_location (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     loc_code VARCHAR(8),
     circle VARCHAR(50),
@@ -70,7 +70,7 @@ CREATE TABLE po_wo_location (
 
 -- Table: po_workorder
 CREATE TABLE po_workorder (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     po_no VARCHAR(25),
     wo_no VARCHAR(25),
@@ -86,7 +86,7 @@ CREATE TABLE po_workorder (
 
 -- Table: ponport_mapping_lnp
 CREATE TABLE ponport_mapping_lnp (
-    lnp_id UUID NOT NULL PRIMARY KEY,
+    lnp_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     partnerid BIGINT,
     device_id BIGINT,

@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS discovered_offices CASCADE;
 
 CREATE TABLE discovered_offices (
-  discovered_offices_id UUID NOT NULL,
+  discovered_offices_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   domain_name varchar(20) DEFAULT NULL,
   state varchar(20) DEFAULT NULL,
@@ -30,7 +30,7 @@ CONSTRAINT pk_discovered_offices PRIMARY KEY (discovered_offices_id)
 DROP TABLE IF EXISTS discovered_offices_tmp CASCADE;
 
 CREATE TABLE discovered_offices_tmp (
-  discovered_offices_tmp_id UUID NOT NULL,
+  discovered_offices_tmp_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   domain_name varchar(20) DEFAULT NULL,
   state varchar(20) DEFAULT NULL,
@@ -58,7 +58,7 @@ CONSTRAINT pk_discovered_offices_tmp PRIMARY KEY (discovered_offices_tmp_id)
 DROP TABLE IF EXISTS district CASCADE;
 
 CREATE TABLE district (
-  district_id UUID NOT NULL,
+  district_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   code VARCHAR(250),
   state_code VARCHAR(45),
@@ -84,7 +84,7 @@ VALUES (
 DROP TABLE IF EXISTS dittotv CASCADE;
 
 CREATE TABLE dittotv (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   subid SERIAL,
   username varchar(45) DEFAULT NULL,
   create_date timestamp DEFAULT NULL,
@@ -97,7 +97,7 @@ CONSTRAINT pk_dittotv PRIMARY KEY (id)
 DROP TABLE IF EXISTS dth_subscribers CASCADE;
 
 CREATE TABLE dth_subscribers (
-  dth_subscribers_id UUID NOT NULL,
+  dth_subscribers_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   slno varchar(128) DEFAULT NULL,
   couponid varchar(256) DEFAULT NULL,
@@ -121,7 +121,7 @@ CONSTRAINT pk_dth_subscribers PRIMARY KEY (dth_subscribers_id)
 DROP TABLE IF EXISTS dunning_config CASCADE;
 
 CREATE TABLE dunning_config (
-  dunning_config_id UUID NOT NULL,
+  dunning_config_id UUID DEFAULT gen_random_uuid() NOT NULL,
   did SERIAL,
   name varchar(250) DEFAULT NULL,
   template varchar(500) DEFAULT NULL,
@@ -148,7 +148,7 @@ CONSTRAINT pk_dunning_config PRIMARY KEY (dunning_config_id)
 DROP TABLE IF EXISTS dunning_period_master CASCADE;
 
 CREATE TABLE dunning_period_master (
-  dunning_period_master_id UUID NOT NULL,
+  dunning_period_master_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   period varchar(15) DEFAULT NULL,
   -- Primary key constraint

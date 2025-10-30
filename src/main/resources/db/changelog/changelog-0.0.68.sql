@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS po_location_dup CASCADE;
 
 -- Table: plan_mig
 CREATE TABLE plan_mig (
-   plan_id UUID NOT NULL PRIMARY KEY,
+   plan_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     oldplan INT,
     newplan INT,
@@ -23,7 +23,7 @@ CREATE TABLE plan_mig (
 
 -- Table: pmonthlyinvoice
 CREATE TABLE pmonthlyinvoice (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     Partnerid BIGINT,
     monthpart VARCHAR(20),
@@ -34,7 +34,7 @@ CREATE TABLE pmonthlyinvoice (
 
 -- Table: pnew
 CREATE TABLE pnew (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     pgid INT,
     statecode VARCHAR(10),
@@ -71,7 +71,7 @@ CREATE TABLE pnew (
 
 -- Table: po_approval_clarify
 CREATE TABLE po_approval_clarify (
-    approval_id UUID NOT NULL PRIMARY KEY,
+    approval_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     remarks VARCHAR(500),
     role VARCHAR(100),
@@ -82,7 +82,7 @@ CREATE TABLE po_approval_clarify (
 
 -- Table: po_connection_breakup
 CREATE TABLE po_connection_breakup (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     po_no VARCHAR(30),
     circle VARCHAR(50),
@@ -97,7 +97,7 @@ CREATE TABLE po_connection_breakup (
 
 -- Table: po_finance
 CREATE TABLE po_finance (
-    finance_id UUID NOT NULL PRIMARY KEY,
+    finance_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     po_no VARCHAR(50) NOT NULL,
     date TIMESTAMP,
@@ -110,7 +110,7 @@ CREATE TABLE po_finance (
 
 -- Table: po_location
 CREATE TABLE po_location (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     loc_code VARCHAR(200),
     circle VARCHAR(50),
@@ -142,7 +142,7 @@ CREATE TABLE po_location (
 
 -- Table: po_location_dup
 CREATE TABLE po_location_dup (
-    location_id UUID NOT NULL PRIMARY KEY,
+    location_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     slno INT,
     po_no VARCHAR(50),

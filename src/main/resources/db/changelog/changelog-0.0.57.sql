@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS retail_control CASCADE;
 
 -- Table: reconcile
 CREATE TABLE reconcile (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL ,
   partnerid VARCHAR(20) NOT NULL,
   p_op_balance NUMERIC(10,2) DEFAULT 0.00,
@@ -58,7 +58,7 @@ CREATE TABLE reconcile (
 
 -- Table: reconcile_details
 CREATE TABLE reconcile_details (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL ,
   table_id INT,
   table_name VARCHAR(255),
@@ -78,7 +78,7 @@ CREATE TABLE reconcile_details (
 
 -- Table: reconcile_temp2
 CREATE TABLE reconcile_temp2 (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL ,
   partnerid VARCHAR(20) NOT NULL,
   p_op_balance NUMERIC(10,2) DEFAULT 0.00,
@@ -127,7 +127,7 @@ CREATE TABLE reconcile_temp2 (
 
 -- Table: regions
 CREATE TABLE regions (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   region_id SERIAL ,
   state_code VARCHAR(5),
   state_name VARCHAR(128),
@@ -138,7 +138,7 @@ CREATE TABLE regions (
 
 -- Table: remarks
 CREATE TABLE remarks (
-  remarks_id UUID NOT NULL PRIMARY KEY,
+  remarks_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL ,
   remarks VARCHAR(4000),
   ticketid VARCHAR(50),
@@ -152,7 +152,7 @@ CREATE INDEX remticket ON remarks(ticketid);
 
 -- Table: residenceprooftype
 CREATE TABLE residenceprooftype (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   residenceprooftypeid SERIAL ,
   residenceprooftype VARCHAR(45) NOT NULL UNIQUE,
   lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -160,7 +160,7 @@ CREATE TABLE residenceprooftype (
 
 -- Table: retail_control
 CREATE TABLE retail_control (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL ,
   ptr NUMERIC(10,2),
   sinflow NUMERIC(10,2),

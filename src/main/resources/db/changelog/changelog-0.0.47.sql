@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS security CASCADE;
 
 -- Table: se_proposal_movement
 CREATE TABLE se_proposal_movement (
-  movement_id UUID NOT NULL PRIMARY KEY,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   propid INTEGER,
   approve_status INTEGER,
@@ -21,7 +21,7 @@ CREATE TABLE se_proposal_movement (
 
 -- Table: se_proposals
 CREATE TABLE se_proposals (
-  proposals_id UUID NOT NULL PRIMARY KEY,
+  proposals_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   customerid INTEGER,
   proposal_name VARCHAR(100),
@@ -37,7 +37,7 @@ CREATE TABLE se_proposals (
 
 -- Table: se_purchase_order
 CREATE TABLE se_purchase_order (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL,
   customerid INTEGER,
   propid INTEGER,
@@ -53,7 +53,7 @@ CREATE TABLE se_purchase_order (
 
 -- Table: se_renewal_details
 CREATE TABLE se_renewal_details (
-  details_id UUID NOT NULL PRIMARY KEY,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   locid INTEGER,
   cause VARCHAR(100),
@@ -74,7 +74,7 @@ CREATE TABLE se_renewal_details (
 
 -- Table: se_workorders
 CREATE TABLE se_workorders (
-  orders_id UUID NOT NULL PRIMARY KEY,
+  orders_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   poid INTEGER,
   proposalid INTEGER,
@@ -87,7 +87,7 @@ CREATE TABLE se_workorders (
 
 -- Table: security
 CREATE TABLE security (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   subscriberid BIGSERIAL,
   username VARCHAR(128) NOT NULL UNIQUE,
   password VARCHAR(45) NOT NULL DEFAULT 'Railwire123',

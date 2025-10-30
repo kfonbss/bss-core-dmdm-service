@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cor_railtel_payment CASCADE;
 
 CREATE TABLE cor_railtel_payment (
-  payment_id UUID NOT NULL,
+  payment_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   invoice_no VARCHAR(200) NOT NULL,
   payment_Date DATE DEFAULT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE cor_railtel_payment (
 DROP TABLE IF EXISTS cor_revenueshare_monthwise CASCADE;
 
 CREATE TABLE cor_revenueshare_monthwise (
-  monthwise_id UUID NOT NULL,
+  monthwise_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subgroup SMALLINT DEFAULT NULL,
   type SMALLINT DEFAULT 1,
@@ -84,7 +84,7 @@ COMMENT ON COLUMN cor_revenueshare_monthwise.subgroup IS '1-enterprise,2-govt,3-
 DROP TABLE IF EXISTS cor_smonthlyinvoice CASCADE;
 
 CREATE TABLE cor_smonthlyinvoice (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   Partnerid BIGINT DEFAULT NULL,
   pgid INTEGER DEFAULT NULL,
@@ -103,7 +103,7 @@ CREATE TABLE cor_smonthlyinvoice (
 DROP TABLE IF EXISTS cor_smonthlyinvoice_BKP CASCADE;
 
 CREATE TABLE cor_smonthlyinvoice_BKP (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   Partnerid BIGINT DEFAULT NULL,
   pgid INTEGER DEFAULT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE cor_smonthlyinvoice_BKP (
 DROP TABLE IF EXISTS cor_vrfattri_users CASCADE;
 
 CREATE TABLE cor_vrfattri_users (
-  users_id UUID NOT NULL,
+  users_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   subscriberid BIGINT DEFAULT NULL,
   username VARCHAR(256) DEFAULT NULL,

@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cp_organization_type_list CASCADE;
 
 CREATE TABLE cp_organization_type_list (
-  list_id UUID NOT NULL,
+  list_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   org_id INTEGER NOT NULL,
   org_name VARCHAR(100) NOT NULL,
@@ -16,7 +16,7 @@ COMMENT ON COLUMN cp_organization_type_list.is_active IS '0=Inactive,1=Active';
 DROP TABLE IF EXISTS created_quotation CASCADE;
 
 CREATE TABLE created_quotation (
-  quotation_id UUID NOT NULL,
+  quotation_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   cmpname VARCHAR(60) DEFAULT NULL,
   ref_no VARCHAR(40) NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE created_quotation (
 DROP TABLE IF EXISTS created_quotation_requote CASCADE;
 
 CREATE TABLE created_quotation_requote (
-  requote_id UUID NOT NULL,
+  requote_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   cmpname VARCHAR(60) DEFAULT NULL,
   ref_no VARCHAR(40) NOT NULL,
@@ -69,7 +69,7 @@ COMMENT ON COLUMN created_quotation_requote.fin_status IS 'Pending,Approved,Reje
 DROP TABLE IF EXISTS crm_issue_mapping_list CASCADE;
 
 CREATE TABLE crm_issue_mapping_list (
-  list_id UUID NOT NULL,
+  list_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   issue_cat INTEGER DEFAULT NULL,
   issue_sub_cat INTEGER DEFAULT NULL,
@@ -86,7 +86,7 @@ COMMENT ON COLUMN crm_issue_mapping_list.is_active IS '0=Inactive,1=Active';
 DROP TABLE IF EXISTS crm_issue_mapping_list_backup CASCADE;
 
 CREATE TABLE crm_issue_mapping_list_backup (
-  backup_id UUID NOT NULL,
+  backup_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   issue_cat INTEGER DEFAULT NULL,
   issue_sub_cat INTEGER DEFAULT NULL,
@@ -102,7 +102,7 @@ COMMENT ON COLUMN crm_issue_mapping_list_backup.is_active IS '0=Inactive,1=Activ
 DROP TABLE IF EXISTS crm_msptarget CASCADE;
 
 CREATE TABLE crm_msptarget (
-  msptarget_id UUID NOT NULL,
+  msptarget_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   mspid VARCHAR(20) DEFAULT NULL,
   statecode VARCHAR(5) DEFAULT NULL,
@@ -116,7 +116,7 @@ CREATE TABLE crm_msptarget (
 DROP TABLE IF EXISTS crm_support_persons_actual CASCADE;
 
 CREATE TABLE crm_support_persons_actual (
-  actual_id UUID NOT NULL,
+  actual_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   createdby VARCHAR(100) DEFAULT NULL,
   subscriber VARCHAR(100) DEFAULT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE crm_support_persons_actual (
 DROP TABLE IF EXISTS crmusers CASCADE;
 
 CREATE TABLE crmusers (
-  crmusers_id UUID NOT NULL,
+  crmusers_id UUID DEFAULT gen_random_uuid() NOT NULL,
   username VARCHAR(128) NOT NULL,
   role VARCHAR(50) DEFAULT NULL,
   remarks VARCHAR(128) DEFAULT NULL,
@@ -148,7 +148,7 @@ CREATE TABLE crmusers (
 DROP TABLE IF EXISTS crossroad CASCADE;
 
 CREATE TABLE crossroad (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   crossroadid SERIAL,
   crossroadname VARCHAR(250) DEFAULT NULL,
   CONSTRAINT pk_crossroad PRIMARY KEY (id)
