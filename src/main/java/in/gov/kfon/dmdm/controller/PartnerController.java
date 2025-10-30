@@ -103,4 +103,33 @@ public class PartnerController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched partner online recharge by id"));
   }
+
+  @GetMapping("/receipts")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerReceipts() {
+    var data = service.fetchAllPartnerReceipts();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all partner receipts"));
+  }
+
+  @GetMapping("/receipt/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPartnerReceiptById(@PathVariable UUID id) {
+    var data = service.fetchPartnerReceiptById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched partner receipt by id"));
+  }
+
+  @GetMapping("/account-reports")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerAccountReports() {
+    var data = service.fetchAllPartnerAccountReports();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all partner account reports"));
+  }
+
+  @GetMapping("/account-report/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPartnerAccountReportById(
+      @PathVariable UUID id) {
+    var data = service.fetchPartnerAccountReportById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched partner account report by id"));
+  }
 }

@@ -19,6 +19,8 @@ public class PartnerServiceImpl implements PartnerService {
   private final PartnerGstDetailRepository partnerGstDetailRepository;
   private final PartnerGstInvoiceRepository partnerGstInvoiceRepository;
   private final PartnerOnlineRechargeRepository partnerOnlineRechargeRepository;
+  private final PartnerReceiptRepository partnerReceiptRepository;
+  private final PartnerAccountBalanceReportRepository partnerAccountBalanceReportRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -114,6 +116,41 @@ public class PartnerServiceImpl implements PartnerService {
         partnerOnlineRechargeRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Online Recharge not found: " + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllPartnerReceipts() {
+    return partnerReceiptRepository.findAll().stream()
+        .map(partnerReceipt -> modelMapper.map(partnerReceipt, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchPartnerReceiptById(UUID id) {
+    var entity =
+        partnerReceiptRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("PartnerReciept not found: " + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllPartnerAccountReports() {
+    return partnerAccountBalanceReportRepository.findAll().stream()
+        .map(
+            partnerAccountBalanceReport ->
+                modelMapper.map(partnerAccountBalanceReport, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchPartnerAccountReportById(UUID id) {
+    var entity =
+        partnerAccountBalanceReportRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("PartnerAccountBalanceReport not found: " + id));
     return modelMapper.map(entity, CommonLookUp.class);
   }
 }

@@ -25,6 +25,8 @@ public class PartnerServiceImplTest {
   @Mock private PartnerGstDetailRepository partnerGstDetailRepository;
   @Mock private PartnerGstInvoiceRepository partnerGstInvoiceRepository;
   @Mock private PartnerOnlineRechargeRepository partnerOnlineRechargeRepository;
+  @Mock private PartnerReceiptRepository partnerReceiptRepository;
+  @Mock private PartnerAccountBalanceReportRepository partnerAccountBalanceReportRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private PartnerServiceImpl service;
@@ -37,6 +39,8 @@ public class PartnerServiceImplTest {
   private PartnerGstDetail gstDetail;
   private PartnerGstInvoice gstInvoice;
   private PartnerOnlineRecharge onlineRecharge;
+  private PartnerReceipt receipt;
+  private PartnerAccountBalanceReport accountReport;
 
   @BeforeEach
   void setUp() {
@@ -60,6 +64,12 @@ public class PartnerServiceImplTest {
 
     onlineRecharge = new PartnerOnlineRecharge();
     onlineRecharge.setRechargeId(id);
+
+    receipt = new PartnerReceipt();
+    receipt.setId(id);
+
+    accountReport = new PartnerAccountBalanceReport();
+    accountReport.setId(id);
 
     lookup = new CommonLookUp();
     lookup.setId(id);
@@ -227,5 +237,67 @@ public class PartnerServiceImplTest {
   void testFetchOnlineRechargeById_NotFound() {
     when(partnerOnlineRechargeRepository.findById(id)).thenReturn(Optional.empty());
     assertThrows(EntityNotFoundException.class, () -> service.fetchOnlineRechargeById(id));
+  }
+
+  @Test
+  void testFetchAllPartnerReceipts() {
+    when(partnerReceiptRepository.findAll()).thenReturn(List.of(receipt));
+    when(modelMapper.map(receipt, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAllPartnerReceipts();
+
+    assertEquals(1, result.size());
+    verify(partnerReceiptRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testFetchPartnerReceiptById_Success() {
+    when(partnerReceiptRepository.findById(id)).thenReturn(Optional.of(receipt));
+    when(modelMapper.map(receipt, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchPartnerReceiptById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(partnerReceiptRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchPartnerReceiptById_NotFound() {
+    when(partnerReceiptRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.fetchPartnerReceiptById(id));
+    verify(partnerReceiptRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchAllPartnerAccountReports() {
+    when(partnerAccountBalanceReportRepository.findAll()).thenReturn(List.of(accountReport));
+    when(modelMapper.map(accountReport, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAllPartnerAccountReports();
+
+    assertEquals(1, result.size());
+    verify(partnerAccountBalanceReportRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testFetchPartnerAccountReportById_Success() {
+    when(partnerAccountBalanceReportRepository.findById(id)).thenReturn(Optional.of(accountReport));
+    when(modelMapper.map(accountReport, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchPartnerAccountReportById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(partnerAccountBalanceReportRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchPartnerAccountReportById_NotFound() {
+    when(partnerAccountBalanceReportRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.fetchPartnerAccountReportById(id));
+    verify(partnerAccountBalanceReportRepository, times(1)).findById(id);
   }
 }
