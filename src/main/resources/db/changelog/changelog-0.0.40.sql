@@ -42,6 +42,10 @@ DROP TABLE IF EXISTS ce_locations CASCADE;
 
 CREATE TABLE ce_locations (
   locations_id UUID NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   slno SERIAL,
   quotationid int DEFAULT NULL,
   breakupid int DEFAULT NULL,
@@ -60,7 +64,9 @@ CREATE TABLE ce_locations (
   expirydate date DEFAULT NULL,
   balance decimal(10,2) NOT NULL DEFAULT 0.00,
   service_provider int DEFAULT NULL,
+  --'1=LNP,2=KFON'
   loc_type smallint DEFAULT NULL,
+  --'1-Urban,2-Rural'
   partnerid bigint DEFAULT NULL,
   partnergroupid int DEFAULT NULL,
   popname varchar(100) DEFAULT NULL,
@@ -73,6 +79,7 @@ CREATE TABLE ce_locations (
   commission_doc varchar(100) DEFAULT NULL,
   circuit_details varchar(100) DEFAULT NULL,
   d_status int DEFAULT 0,
+  --0=In Active,1=Active,2=De commissioned'
   d_status_date date DEFAULT NULL,
   cur_speed varchar(100) DEFAULT NULL,
   rccount int DEFAULT 0,
@@ -80,9 +87,6 @@ CREATE TABLE ce_locations (
   ce_kyc_id int DEFAULT NULL,
   purposeofill varchar(200) DEFAULT NULL,
   ipaddress varchar(100) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
   username varchar(64) DEFAULT NULL,
   password varchar(45) DEFAULT NULL,
   latitude varchar(100) DEFAULT NULL,
@@ -109,26 +113,30 @@ CREATE TABLE ce_locations (
   aadharno varchar(20) DEFAULT NULL,
   ration_card_number varchar(256) DEFAULT NULL,
   billing_type boolean DEFAULT true,
+  --'1 = Central, 2 = Individual'
   enable_individual_wo boolean DEFAULT false,
   ir_reject_remarks varchar(255) DEFAULT NULL,
   ir_rejected_date timestamp DEFAULT NULL,
   ir_resubmit_remarks varchar(255) DEFAULT NULL,
   ir_resubmit_date timestamp DEFAULT NULL,
   subcustomerid varchar(100) DEFAULT NULL,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_locations PRIMARY KEY (locations_id)
 );
-
-COMMENT ON COLUMN ce_locations.service_provider IS '1=LNP,2=KFON';
-COMMENT ON COLUMN ce_locations.loc_type IS '1-Urban,2-Rural';
-COMMENT ON COLUMN ce_locations.d_status IS '0=In Active,1=Active,2=De commissioned';
-COMMENT ON COLUMN ce_locations.is_active IS '0=In Active,1=Active';
-COMMENT ON COLUMN ce_locations.billing_type IS '1 = Central, 2 = Individual';
-
+INSERT INTO ce_locations (locations_id, code, name, name_in_local, is_active, quotationid, breakupid, poid, serviceid, packageid, loc_code, loc_name, loc_pincode, loc_district, post_office_name, loc_addr, lmc_doc, remarks, approve_status, expirydate, balance, service_provider, loc_type, partnerid, partnergroupid, popname, port_details, multicast_type, multicast_source, rp_address, multicast_group_address, commission_date, commission_doc, circuit_details, d_status, d_status_date, cur_speed, rccount, last_recharge_date, ce_kyc_id, purposeofill, ipaddress, username, password, latitude, longitude, nearest_box_name, nearest_box_distance, nearest_box_pop, nearest_sub_id, nearest_sub_partnerid, nearest_sub_partnername, nearest_sub_partnermobile, nearest_sub_distance, nearest_partner_id, nearest_partner_name, nearest_partner_mobile, nearest_partner_distance, nearest_fe_id, nearest_box_latitude, nearest_box_longitude, newly_identified_eo, old_boqid, contactno, email, aadharno, ration_card_number, billing_type, enable_individual_wo, ir_reject_remarks, ir_rejected_date, ir_resubmit_remarks, ir_resubmit_date, subcustomerid, created_by, modified_by)
+VALUES (gen_random_uuid(), 'LOC001', 'Fiber Connection - Kochi', 'ഫൈബർ കണക്ഷൻ - കൊച്ചി', true, 1001, 2001, 3001, 4001, 5001, 'LC-KOC-001', 'Kochi Broadband Hub', '682001', 'Ernakulam', 'MG Road PO', '123, MG Road, Ernakulam', 'lmc_doc.pdf', 'Approved', 1, CURRENT_DATE + INTERVAL '365 days', 1500.00, 2, 1, 80001, 100, 'POP-Kochi', 'Port-12A', 'Multicast', 'Source-A', '10.10.10.1', '239.0.0.1', CURRENT_DATE - INTERVAL '60 days', 'commission_doc.pdf', 'Circuit-FTTH-101', 1, CURRENT_DATE, '100 Mbps', 2, CURRENT_TIMESTAMP, 501, 'Office connection', '192.168.1.10', 'admin', 'pass@123', '9.9312N', '76.2673E', 'Box-A', '150m', 'POP1', 301, 'P001', 'Partner A', '9876543210', 0.50, 'NP001', 'Nearest Partner', '9123456789', 0.75, 41, '9.9313N', '76.2675E', 0, 'BOQ123', '9876543210', 'info@kfon.in', '123456789012', 'RC-98765', true, false, NULL, NULL, NULL, NULL, 'SUBCUST001', gen_random_uuid(), gen_random_uuid());
 
 DROP TABLE IF EXISTS ce_onlineapplication CASCADE;
 
 CREATE TABLE ce_onlineapplication (
   application_id UUID NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   apno varchar(45) NOT NULL,
   status varchar(45) NOT NULL DEFAULT 'Submitted',
@@ -195,6 +203,7 @@ CREATE TABLE ce_onlineapplication (
   paddress_as_aadhar int DEFAULT 0,
   iaddress_as_paddress int DEFAULT 0,
   kyc_type boolean DEFAULT false,
+  --'0=Normal KYC,1=EKYC'
   lnp_vlanid varchar(20) DEFAULT NULL,
   ssid_2_4ghz varchar(30) DEFAULT NULL,
   preshared_2_4ghz varchar(20) DEFAULT NULL,
@@ -202,13 +211,17 @@ CREATE TABLE ce_onlineapplication (
   preshared_5_0ghz varchar(20) DEFAULT NULL,
   corp_loc_id int DEFAULT NULL,
   ration_card_type boolean DEFAULT NULL,
-  create_date timestamp DEFAULT NULL,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_onlineapplication PRIMARY KEY (application_id)
 );
 
-CREATE INDEX index2_ce_online ON ce_onlineapplication (packageid, update_date, status);
-COMMENT ON COLUMN ce_onlineapplication.kyc_type IS '0=Normal KYC,1=EKYC';
+CREATE INDEX index2_ce_online ON ce_onlineapplication (packageid, modified_date, status);
+
+INSERT INTO ce_onlineapplication (application_id, code, name, name_in_local, is_active, apno, status, partnerid, packageid, agpid, firstname, middlename, lastname, mobileno, email, dateofbirth, address, idproof, addressproof, appform, submit_remarks, verify_remarks, reject_remarks, disconnect_remarks, resubmit_remarks, street, addressproof_no, idproof_no, id_type, address_type, proofstatus, resubmit_date, aadharno, uname, doorno, stcode, city, district, pincode, villagename, block, caf_type, employer_name, cafid, gender, subdistrict, photo, post_office_name, panchayat_type, loc_type, doorno_insta, streetlo_insta, cityname_insta, pincode_insta, post_office_name_insta, district_insta, loc_type_insta, panchayat_type_insta, village_name_insta, block_insta, deviceid, device_provid, device_typeid, device_make, device_model, device_address, olt_type, paddress_as_aadhar, iaddress_as_paddress, kyc_type, lnp_vlanid, ssid_2_4ghz, preshared_2_4ghz, ssid_5_0ghz, preshared_5_0ghz, corp_loc_id, ration_card_type, created_by, modified_by)
+VALUES (gen_random_uuid(), 'APP001', 'Online Application', 'ഓൺലൈൻ അപേക്ഷ', true, 'APNO12345', 'Submitted', 'PART001', 101, 'AGP123', 'John', 'M', 'Doe', '9876543210', 'john.doe@example.com', '1990-05-12', '123 Main Street, Kochi', 'IDProof123.jpg', 'AddressProof123.jpg', 'AppForm123.pdf', 'Submitted successfully', 'Verified', 'Not Applicable', 'No disconnect remarks', 'No resubmit needed', 'MG Road', 'ADDR123', 'ID123', 'Aadhar', 'Permanent', 1, '2024-12-01 10:00:00', 987654321012, 'johndoe', '12A', 'KL', 'Kochi', 'Ernakulam', '682001', 'Vennala', 'Block 3', 'Residential', 'ABC Pvt Ltd', 1001, 'Male', 'Aluva', 'photo.jpg', 'Edappally PO', 1, 2, '45B', 'Main Street', 'Ernakulam', '682020', 'Kalamassery PO', 'Ernakulam', 1, 1, 'Village Insta', 'Block Insta', 501, 10, 3, 'Cisco', 'ModelX', '192.168.1.1', 2, 1, 0, false, 'VLAN100', 'SSID24', 'pass24', 'SSID50', 'pass50', 200, true, gen_random_uuid(), gen_random_uuid());
 
 
 DROP TABLE IF EXISTS ce_otcinovoice CASCADE;

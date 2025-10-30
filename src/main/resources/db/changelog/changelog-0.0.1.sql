@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS workorderupload CASCADE;
 -- Table: workorder
 -- ========================================
 CREATE TABLE workorder (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   workorderid VARCHAR(45),
   shortname VARCHAR(64),
   corporateid VARCHAR(45),
@@ -39,7 +39,7 @@ CREATE TABLE workorder (
 -- Table: workorderfinance
 -- ========================================
 CREATE TABLE workorderfinance (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   wofinanceid BIGSERIAL,
   workorderid VARCHAR(45),
   amount NUMERIC(10,2),
@@ -53,7 +53,7 @@ CREATE TABLE workorderfinance (
 -- Table: workorderreciept
 -- ========================================
 CREATE TABLE workorderreciept (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   worecieptid BIGSERIAL,
   workorderid VARCHAR(45),
   amount NUMERIC(10,2) NOT NULL DEFAULT 0.00,
@@ -65,7 +65,7 @@ CREATE TABLE workorderreciept (
 -- Table: workordersummary
 -- ========================================
 CREATE TABLE workordersummary (
-  workorder_summary_id UUID NOT NULL PRIMARY KEY,
+  workorder_summary_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id INTEGER NOT NULL DEFAULT 0,
   workorderid VARCHAR(256),
   username VARCHAR(256),
@@ -77,7 +77,7 @@ CREATE TABLE workordersummary (
 -- Table: workorderupload
 -- ========================================
 CREATE TABLE workorderupload (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL,
   time_date TIMESTAMP,
   fileupload VARCHAR(255),

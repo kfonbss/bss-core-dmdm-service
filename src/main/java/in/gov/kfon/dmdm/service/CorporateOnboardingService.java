@@ -68,4 +68,12 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> locationRenewalHistoryFetchAll();
 
   CommonLookUp locationRenewalHistoryFetchById(UUID id);
+
+  List<CommonLookUp> locationsFetchAll();
+
+  CommonLookUp locationsFetchById(UUID id);
+
+  List<CommonLookUp> onlineApplicationFetchAll();
+
+  CommonLookUp onlineApplicationFetchById(UUID id);
 }

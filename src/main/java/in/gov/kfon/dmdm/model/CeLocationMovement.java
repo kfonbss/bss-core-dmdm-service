@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class CeLocationMovement extends Auditor {
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "movement_id")
   private UUID movementId;
 

@@ -11,6 +11,7 @@ import lombok.Data;
 @Data
 public class CeLocationRenewalHistory extends Auditor {
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "history_id")
   private UUID historyId;
 

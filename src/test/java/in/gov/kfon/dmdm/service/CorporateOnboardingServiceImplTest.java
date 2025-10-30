@@ -34,6 +34,8 @@ class CorporateOnboardingServiceImplTest {
   private CeKycDetailsRepository kycDetailsRepository;
   private CeLocationMovementRepository locationMovementRepository;
   private CeLocationRenewalHistoryRepository locationRenewalHistoryRepository;
+  private CeLocationsRepository locationsRepository;
+  private CeOnlineApplicationRepository onlineApplicationRepository;
 
   @BeforeEach
   void setUp() {
@@ -54,6 +56,8 @@ class CorporateOnboardingServiceImplTest {
     kycDetailsRepository = mock(CeKycDetailsRepository.class);
     locationMovementRepository = mock(CeLocationMovementRepository.class);
     locationRenewalHistoryRepository = mock(CeLocationRenewalHistoryRepository.class);
+    locationsRepository = mock(CeLocationsRepository.class);
+    onlineApplicationRepository = mock(CeOnlineApplicationRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -72,7 +76,9 @@ class CorporateOnboardingServiceImplTest {
             inovoiceMasterRepository,
             kycDetailsRepository,
             locationMovementRepository,
-            locationRenewalHistoryRepository);
+            locationRenewalHistoryRepository,
+            locationsRepository,
+            onlineApplicationRepository);
 
     service.setupMapper();
   }
@@ -647,5 +653,75 @@ class CorporateOnboardingServiceImplTest {
     when(locationRenewalHistoryRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.locationRenewalHistoryFetchById(id));
+  }
+
+  @Test
+  void testCeLocationsFetchAll_ShouldReturnMappedList() {
+    CeLocations locations = new CeLocations();
+    locations.setLocationsId(UUID.randomUUID());
+
+    when(locationsRepository.findAll()).thenReturn(List.of(locations));
+
+    List<CommonLookUp> result = service.locationsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(locationsRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testCeLocationsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeLocations locations = new CeLocations();
+    locations.setLocationsId(id);
+
+    when(locationsRepository.findById(id)).thenReturn(Optional.of(locations));
+
+    CommonLookUp result = service.locationsFetchById(id);
+
+    assertNotNull(result);
+    verify(locationsRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testCeLocationsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(locationsRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.locationFetchById(id));
+  }
+
+  @Test
+  void testOnlineApplicationFetchAll_ShouldReturnMappedList() {
+    CeOnlineApplication onlineApplication = new CeOnlineApplication();
+    onlineApplication.setApplicationId(UUID.randomUUID());
+
+    when(onlineApplicationRepository.findAll()).thenReturn(List.of(onlineApplication));
+
+    List<CommonLookUp> result = service.onlineApplicationFetchAll();
+
+    assertEquals(1, result.size());
+    verify(onlineApplicationRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testOnlineApplicationFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeOnlineApplication onlineApplication = new CeOnlineApplication();
+    onlineApplication.setApplicationId(id);
+
+    when(onlineApplicationRepository.findById(id)).thenReturn(Optional.of(onlineApplication));
+
+    CommonLookUp result = service.onlineApplicationFetchById(id);
+
+    assertNotNull(result);
+    verify(onlineApplicationRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testOnlineApplicationFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(onlineApplicationRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.onlineApplicationFetchById(id));
   }
 }

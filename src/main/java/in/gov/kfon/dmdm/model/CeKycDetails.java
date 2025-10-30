@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class CeKycDetails extends Auditor {
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "kyc_id")
   private UUID kycId;
 

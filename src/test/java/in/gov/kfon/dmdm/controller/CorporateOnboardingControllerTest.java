@@ -462,4 +462,52 @@ class CorporateOnboardingControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("CORP001"));
   }
+
+  @Test
+  void testLocationsFetchAll() throws Exception {
+    when(service.locationsFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/corporate/locations/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"));
+  }
+
+  @Test
+  void testLocationById() throws Exception {
+    when(service.locationsFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/corporate/location/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"));
+  }
+
+  @Test
+  void testOnlineApplicationFetchAll() throws Exception {
+    when(service.onlineApplicationFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/online-applications/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"));
+  }
+
+  @Test
+  void testOnlineApplicationById() throws Exception {
+    when(service.onlineApplicationFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/online-application/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"));
+  }
 }

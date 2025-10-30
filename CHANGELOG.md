@@ -151,3 +151,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.19.0] - 2025-10-29
 ### Added
 - Get pop list details
+
+## [0.20.0] - 2025-10-29
+### Added
+-  Get corporate locations and online application details
