@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS appliedonline_customers CASCADE;
 
 CREATE TABLE appliedonline_customers (
-  customers_id UUID NOT NULL,
+  customers_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id BIGSERIAL,
   prefix varchar(10) DEFAULT NULL,
   cus_name varchar(200) DEFAULT NULL,

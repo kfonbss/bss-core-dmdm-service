@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_package CASCADE;
 
 CREATE TABLE ce_package (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   packageid SERIAL,
   packagename varchar(45) NOT NULL,
   renewperiod int NOT NULL,
@@ -30,7 +30,7 @@ COMMENT ON COLUMN ce_package.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_parent_customers CASCADE;
 
 CREATE TABLE ce_parent_customers (
-  customers_id UUID NOT NULL,
+  customers_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   department_name varchar(250) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
@@ -45,7 +45,7 @@ COMMENT ON COLUMN ce_parent_customers.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_payment_history CASCADE;
 
 CREATE TABLE ce_payment_history (
-  history_id UUID NOT NULL,
+  history_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   invoiceid varchar(15) DEFAULT NULL,
   utr_number varchar(25) DEFAULT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE ce_payment_history (
 DROP TABLE IF EXISTS ce_payment_kyc_details CASCADE;
 
 CREATE TABLE ce_payment_kyc_details (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   subid int DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE ce_payment_kyc_details (
 DROP TABLE IF EXISTS ce_po_movement CASCADE;
 
 CREATE TABLE ce_po_movement (
-  movement_id UUID NOT NULL,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   poid int DEFAULT NULL,
   approve_status int DEFAULT NULL,

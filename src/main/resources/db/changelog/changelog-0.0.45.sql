@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS smonthlyinvoicenov CASCADE;
 
 -- Table: selfcare_eo
 CREATE TABLE selfcare_eo (
-  eo_id UUID NOT NULL PRIMARY KEY,
+  eo_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   district VARCHAR(50),
   name VARCHAR(256),
@@ -33,7 +33,7 @@ CREATE TABLE selfcare_eo (
 
 -- Table: service
 CREATE TABLE service (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   serviceid SERIAL,
   code VARCHAR(50),
   name VARCHAR(100) NOT NULL UNIQUE,
@@ -52,7 +52,7 @@ VALUES
 
 -- Table: service_type
 CREATE TABLE service_type (
-    id UUID PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     type_id SERIAL,
     code VARCHAR(50),
     name VARCHAR(45),
@@ -74,7 +74,7 @@ INSERT INTO service_type (
 
 -- Table: servicetype
 CREATE TABLE servicetype (
-  service_id UUID NOT NULL PRIMARY KEY,
+  service_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SMALLSERIAL,
   servicename VARCHAR(128),
   status INT,
@@ -84,7 +84,7 @@ CREATE TABLE servicetype (
 
 -- Table: sez_approval_movement
 CREATE TABLE sez_approval_movement (
-  movement_id UUID NOT NULL PRIMARY KEY,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   requestid INTEGER,
   subtype INT DEFAULT 1,
@@ -97,7 +97,7 @@ CREATE TABLE sez_approval_movement (
 
 -- Table: sfin_monthly
 CREATE TABLE sfin_monthly (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL,
   subscriberid INTEGER,
   amount NUMERIC(10,2) DEFAULT 0.00,
@@ -110,7 +110,7 @@ CREATE INDEX idx_sfin_subscriberid ON sfin_monthly(subscriberid);
 
 -- Table: sidebar_menus
 CREATE TABLE sidebar_menus (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   menuid SERIAL,
   parent_menuid INTEGER NOT NULL DEFAULT 0,
   menu_groupid INTEGER NOT NULL DEFAULT 0,
@@ -132,7 +132,7 @@ CREATE TABLE sidebar_menus (
 
 -- Table: smonthlyinvoice
 CREATE TABLE smonthlyinvoice (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno INTEGER NOT NULL DEFAULT 0,
   partnerid BIGINT,
   pgid INTEGER,
@@ -150,7 +150,7 @@ CREATE TABLE smonthlyinvoice (
 
 -- Table: smonthlyinvoicenov
 CREATE TABLE smonthlyinvoicenov (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL,
   partnerid BIGINT,
   pgid INTEGER,

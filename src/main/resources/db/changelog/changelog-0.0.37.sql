@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS bss_copy CASCADE;
 
 CREATE TABLE bss_copy (
-  copy_id UUID NOT NULL,
+  copy_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id int DEFAULT NULL,
   description varchar(20) DEFAULT NULL,
   CONSTRAINT pk_bss_copy PRIMARY KEY (copy_id)
@@ -11,7 +11,7 @@ CREATE TABLE bss_copy (
 DROP TABLE IF EXISTS bunits_districts CASCADE;
 
 CREATE TABLE bunits_districts (
-  districts_id UUID NOT NULL,
+  districts_id UUID DEFAULT gen_random_uuid() NOT NULL,
   bu_id int DEFAULT NULL,
   district_id int DEFAULT NULL,
   CONSTRAINT pk_bunits_districts PRIMARY KEY (districts_id)
@@ -21,7 +21,7 @@ CREATE TABLE bunits_districts (
 DROP TABLE IF EXISTS business_rules CASCADE;
 
 CREATE TABLE business_rules (
-  rules_id UUID NOT NULL,
+  rules_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   name varchar(256) DEFAULT NULL,
   level char(20) DEFAULT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE business_rules (
 DROP TABLE IF EXISTS business_rules_movement CASCADE;
 
 CREATE TABLE business_rules_movement (
-  movement_id UUID NOT NULL,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   mid SERIAL,
   brid int DEFAULT NULL,
   remarks text DEFAULT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE business_rules_movement (
 DROP TABLE IF EXISTS businessunits CASCADE;
 
 CREATE TABLE businessunits (
-  units_id UUID NOT NULL,
+  units_id UUID DEFAULT gen_random_uuid() NOT NULL,
   companyid bigint NOT NULL,
   partnercompanyname varchar(150) DEFAULT NULL,
   status boolean NOT NULL DEFAULT false,

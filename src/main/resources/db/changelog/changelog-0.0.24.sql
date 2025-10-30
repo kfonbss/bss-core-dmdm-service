@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS anpmimoissue CASCADE;
 
 CREATE TABLE anpmimoissue (
-  issue_id UUID NOT NULL,
+  issue_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id BIGSERIAL,
   ordernumber varchar(64) DEFAULT NULL,
   txnid varchar(64) DEFAULT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE anpmimoissue (
 DROP TABLE IF EXISTS anpstaticiptopup CASCADE;
 
 CREATE TABLE anpstaticiptopup (
-  topup_id UUID NOT NULL,
+  topup_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   staticpackageid int DEFAULT NULL,
   subscriberid bigint DEFAULT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE anpstaticiptopup (
 DROP TABLE IF EXISTS anpstaticiptopupcopy CASCADE;
 
 CREATE TABLE anpstaticiptopupcopy (
-  copy_id UUID NOT NULL,
+  copy_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id int NOT NULL DEFAULT 0,
   staticpackageid int DEFAULT NULL,
   subscriberid bigint DEFAULT NULL,

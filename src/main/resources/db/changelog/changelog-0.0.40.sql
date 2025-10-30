@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_location_renewal_history CASCADE;
 
 CREATE TABLE ce_location_renewal_history (
-  history_id UUID NOT NULL,
+  history_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -41,7 +41,7 @@ VALUES (gen_random_uuid(), 'RH001', 'Renewal History - Oct 2025', 'റീനു�
 DROP TABLE IF EXISTS ce_locations CASCADE;
 
 CREATE TABLE ce_locations (
-  locations_id UUID NOT NULL,
+  locations_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -132,7 +132,7 @@ VALUES (gen_random_uuid(), 'LOC001', 'Fiber Connection - Kochi', 'ഫൈബർ �
 DROP TABLE IF EXISTS ce_onlineapplication CASCADE;
 
 CREATE TABLE ce_onlineapplication (
-  application_id UUID NOT NULL,
+  application_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -227,7 +227,7 @@ VALUES (gen_random_uuid(), 'APP001', 'Online Application', 'ഓൺലൈൻ അ�
 DROP TABLE IF EXISTS ce_otcinovoice CASCADE;
 
 CREATE TABLE ce_otcinovoice (
-  inovoice_id UUID NOT NULL,
+  inovoice_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno BIGSERIAL,
   subscriberid bigint DEFAULT NULL,
   locid int DEFAULT NULL,

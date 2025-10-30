@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS appliedonline_agnp CASCADE;
 
 CREATE TABLE appliedonline_agnp (
-  online_agnp_id UUID NOT NULL,
+  online_agnp_id UUID DEFAULT gen_random_uuid() NOT NULL,
   agnp_id BIGSERIAL,
   agnp_name varchar(200) DEFAULT NULL,
   agnp_assoc_any_other_isp varchar(10) DEFAULT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE appliedonline_agnp (
 DROP TABLE IF EXISTS appliedonline_agnp_movement CASCADE;
 
 CREATE TABLE appliedonline_agnp_movement (
-  movement_id UUID NOT NULL,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id BIGSERIAL,
   agnp_id bigint DEFAULT NULL,
   note text DEFAULT NULL,

@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS audittable CASCADE;
 
 CREATE TABLE audittable (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   audittableid SERIAL,
   subscriberid int NOT NULL,
   dblogin varchar(45) DEFAULT '',
@@ -18,7 +18,7 @@ CREATE TABLE audittable (
 DROP TABLE IF EXISTS b2b_packages CASCADE;
 
 CREATE TABLE b2b_packages (
-  packages_id UUID NOT NULL,
+  packages_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   package_name varchar(60) DEFAULT NULL,
   speed varchar(45) DEFAULT NULL,
@@ -37,7 +37,7 @@ COMMENT ON COLUMN b2b_packages.status IS '0=Inactive,1=Active';
 DROP TABLE IF EXISTS back_disbure_weekly_reversal CASCADE;
 
 CREATE TABLE back_disbure_weekly_reversal (
-  reversal_id UUID NOT NULL,
+  reversal_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   partnerid bigint DEFAULT NULL,
   balance_before decimal(13,2) NOT NULL DEFAULT 0.00,

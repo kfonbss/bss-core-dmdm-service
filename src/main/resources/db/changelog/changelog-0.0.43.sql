@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS sop_doc_details CASCADE;
 
 -- Table: sms
 CREATE TABLE sms (
-  sms_id UUID NOT NULL PRIMARY KEY,
+  sms_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id BIGSERIAL,
   sms_date TIMESTAMP,
   sms_to VARCHAR(15),
@@ -22,7 +22,7 @@ CREATE INDEX idx_sms_to ON sms(sms_to);
 
 -- Table: sms_check
 CREATE TABLE sms_check (
-  check_id UUID NOT NULL PRIMARY KEY,
+  check_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   template INTEGER,
   circle VARCHAR(10),
@@ -34,7 +34,7 @@ CREATE TABLE sms_check (
 
 -- Table: smscheck
 CREATE TABLE smscheck (
-  check_id UUID NOT NULL PRIMARY KEY,
+  check_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   tempid INTEGER,
   mobileno BIGINT,
@@ -46,7 +46,7 @@ CREATE TABLE smscheck (
 
 -- Table: sop_category
 CREATE TABLE sop_category (
-  category_id UUID NOT NULL PRIMARY KEY,
+  category_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   deptid INTEGER NOT NULL,
   sopcat_name VARCHAR(300),
@@ -58,7 +58,7 @@ CREATE TABLE sop_category (
 
 -- Table: sop_department
 CREATE TABLE sop_department (
-  department_id UUID NOT NULL PRIMARY KEY,
+  department_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   department VARCHAR(300),
   approval_role VARCHAR(300),
@@ -70,7 +70,7 @@ CREATE TABLE sop_department (
 
 -- Table: sop_doc_details
 CREATE TABLE sop_doc_details (
-  details_id UUID NOT NULL PRIMARY KEY,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   deptid INTEGER NOT NULL,
   catid INTEGER NOT NULL,

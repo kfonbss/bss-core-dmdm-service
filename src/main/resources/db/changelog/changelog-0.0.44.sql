@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_sub_package CASCADE;
 
 CREATE TABLE ce_sub_package (
-  package_id UUID NOT NULL,
+  package_id UUID DEFAULT gen_random_uuid() NOT NULL,
   sub_packageid SERIAL,
   packageid int NOT NULL,
   sub_renewperiod int DEFAULT 0,
@@ -20,7 +20,7 @@ COMMENT ON COLUMN ce_sub_package.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_sub_package_renewal_history CASCADE;
 
 CREATE TABLE ce_sub_package_renewal_history (
-  history_id UUID NOT NULL,
+  history_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   sub_packageid int DEFAULT NULL,
@@ -49,7 +49,7 @@ COMMENT ON COLUMN ce_sub_package_renewal_history.is_active IS '0=In Active,1=Act
 DROP TABLE IF EXISTS ce_sub_service_list CASCADE;
 
 CREATE TABLE ce_sub_service_list (
-  list_id UUID NOT NULL,
+  list_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   ce_service_id int DEFAULT NULL,
   serviceid int DEFAULT NULL,
@@ -67,7 +67,7 @@ COMMENT ON COLUMN ce_sub_service_list.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_subfinance CASCADE;
 
 CREATE TABLE ce_subfinance (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   subfinanceid SERIAL,
   subscriberid int NOT NULL,
   amount decimal(10,2) NOT NULL,
@@ -90,7 +90,7 @@ COMMENT ON COLUMN ce_subfinance.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_subonlinerecharge CASCADE;
 
 CREATE TABLE ce_subonlinerecharge (
-  recharge_id UUID NOT NULL,
+  recharge_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id BIGSERIAL,
   ordernumber varchar(64) DEFAULT NULL,
   status char(18) DEFAULT NULL,
@@ -131,7 +131,7 @@ COMMENT ON COLUMN ce_subonlinerecharge.paymnetgateway IS '1=IKM,2=HDFC,3=Others'
 DROP TABLE IF EXISTS ce_subscriberdetails CASCADE;
 
 CREATE TABLE ce_subscriberdetails (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   username varchar(64) DEFAULT NULL,

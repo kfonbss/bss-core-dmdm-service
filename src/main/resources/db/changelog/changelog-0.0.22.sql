@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS agencydetail CASCADE;
 
 CREATE TABLE agencydetail (
-  detail_id UUID NOT NULL,
+  detail_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   agency varchar(20) DEFAULT NULL,
   statecode varchar(5) DEFAULT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE agencydetail (
 DROP TABLE IF EXISTS agnpbank CASCADE;
 
 CREATE TABLE agnpbank (
-  bank_id UUID NOT NULL,
+  bank_id UUID DEFAULT gen_random_uuid() NOT NULL,
   sl_no int DEFAULT NULL,
   agnpid bigint DEFAULT NULL,
   acholder varchar(53) DEFAULT NULL,

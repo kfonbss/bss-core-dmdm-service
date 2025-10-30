@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS bodsubscription CASCADE;
 
 CREATE TABLE bodsubscription (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   bodid SERIAL,
   subscriberid int NOT NULL,
   bodcharges decimal(10,2) NOT NULL,
@@ -19,7 +19,7 @@ CREATE UNIQUE INDEX idx_bodsubscription ON bodsubscription (subscriberid, bodsta
 DROP TABLE IF EXISTS bodsubscriptioncomplete CASCADE;
 
 CREATE TABLE bodsubscriptioncomplete (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   bodcompleteid int NOT NULL,
   subscriberid int NOT NULL,
   bodcharges decimal(10,2) NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE bodsubscriptioncomplete (
 DROP TABLE IF EXISTS bpl_duplicates CASCADE;
 
 CREATE TABLE bpl_duplicates (
-  duplicates_id UUID NOT NULL,
+  duplicates_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   po_no char(10) DEFAULT NULL,
   loc_code char(10) DEFAULT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE bpl_duplicates (
 DROP TABLE IF EXISTS bpl_duplicates_all CASCADE;
 
 CREATE TABLE bpl_duplicates_all (
-  duplicates_all_id UUID NOT NULL,
+  duplicates_all_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   po_no char(10) DEFAULT NULL,
   loc_code char(10) DEFAULT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE bpl_duplicates_all (
 DROP TABLE IF EXISTS bpl_masterdata CASCADE;
 
 CREATE TABLE bpl_masterdata (
-  masterdata_id UUID NOT NULL,
+  masterdata_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   locname varchar(128) DEFAULT NULL,
   address varchar(256) DEFAULT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE bpl_masterdata (
 DROP TABLE IF EXISTS bpl_users_tmp CASCADE;
 
 CREATE TABLE bpl_users_tmp (
-  tmp_id UUID NOT NULL,
+  tmp_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno int DEFAULT NULL,
   gp varchar(100) DEFAULT NULL,
   name varchar(100) DEFAULT NULL,
@@ -102,7 +102,7 @@ CREATE TABLE bpl_users_tmp (
 DROP TABLE IF EXISTS bplgp_tmp CASCADE;
 
 CREATE TABLE bplgp_tmp (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   loc_code varchar(50) DEFAULT NULL,
   vtc varchar(156) DEFAULT NULL,
   gp varchar(156) DEFAULT NULL,
@@ -113,7 +113,7 @@ CREATE TABLE bplgp_tmp (
 DROP TABLE IF EXISTS bplgp_tmp1 CASCADE;
 
 CREATE TABLE bplgp_tmp1 (
-  tmp1_id UUID NOT NULL,
+  tmp1_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   loc_code varchar(50) DEFAULT NULL,
   vtc varchar(156) DEFAULT NULL,
