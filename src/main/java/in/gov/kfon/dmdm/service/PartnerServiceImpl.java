@@ -17,12 +17,14 @@ public class PartnerServiceImpl implements PartnerService {
   private final PartnerTaxpayerLogsRepository taxpayerLogsRepository;
   private final PartnerGroupRepository partnerGroupRepository;
   private final PartnerGstDetailRepository partnerGstDetailRepository;
+  private final PartnerGstInvoiceRepository partnerGstInvoiceRepository;
+  private final PartnerOnlineRechargeRepository partnerOnlineRechargeRepository;
   private final ModelMapper modelMapper;
 
   @Override
   public List<CommonLookUp> fetchAllFinanceDetails() {
     return partnerFinance2Repository.findAll().stream()
-        .map(f -> modelMapper.map(f, CommonLookUp.class))
+        .map(partnerFinance2 -> modelMapper.map(partnerFinance2, CommonLookUp.class))
         .toList();
   }
 
@@ -80,6 +82,38 @@ public class PartnerServiceImpl implements PartnerService {
         partnerGstDetailRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("PartnerGstDetail not found: " + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllGstInvoices() {
+    return partnerGstInvoiceRepository.findAll().stream()
+        .map(partnerGstInvoice -> modelMapper.map(partnerGstInvoice, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchGstInvoiceById(UUID id) {
+    var entity =
+        partnerGstInvoiceRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("GST Invoice not found: " + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllOnlineRecharges() {
+    return partnerOnlineRechargeRepository.findAll().stream()
+        .map(onlineRecharge -> modelMapper.map(onlineRecharge, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchOnlineRechargeById(UUID id) {
+    var entity =
+        partnerOnlineRechargeRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Online Recharge not found: " + id));
     return modelMapper.map(entity, CommonLookUp.class);
   }
 }

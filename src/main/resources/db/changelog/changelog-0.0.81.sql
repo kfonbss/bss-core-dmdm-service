@@ -28,7 +28,6 @@ INSERT INTO partnerfinance2 (
     TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
 );
 
-
 -- Table: partnergroup
 DROP TABLE IF EXISTS partnergroup;
 
@@ -137,13 +136,31 @@ CREATE TABLE partnergstinvoice (
   invoicedate date DEFAULT NULL,
   central_tax float(10) DEFAULT NULL,
   state_tax float(10) DEFAULT NULL,
-  created_by varchar(100) DEFAULT NULL,
-  created_on timestamp DEFAULT NULL,
-  updated_on timestamp DEFAULT NULL
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
 );
 
 CREATE INDEX id_partnerid ON partnergstinvoice(partnerid);
 CREATE INDEX id_invoicemonth ON partnergstinvoice(invoicemonth);
+
+INSERT INTO partnergstinvoice (
+    id, slno, state, partnerid, ptype, pst_code, billtype, invoiceno, invoicemonth,
+    taxable_value, bss_gstin, taxpayertype, cgst_value, sgst_value, gst_value,
+    invoice_value, anp_invoiceno, gst_invoiceno, invoicedate, central_tax, state_tax,
+    code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), DEFAULT, 'Kerala', 10001, 'TypeA', 'KL', 1, 'INV-001', '2025-10',
+    5000.00, '29ABCDE1234F1Z5', 1, 450.00, 450.00, 900.00,
+    5900.00, 'ANP-001', 'GST-001', '2025-10-30', 450.00, 450.00,
+    'PG001', 'GST Invoice Sample', 'ജിഎസ്‌ടി ഇൻവോയ്സ് സാമ്പിൾ',
+    TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 
 -- Table: partneronlinerecharge
@@ -151,7 +168,7 @@ DROP TABLE IF EXISTS partneronlinerecharge;
 
 CREATE TABLE partneronlinerecharge (
   recharge_id UUID DEFAULT gen_random_uuid(),
-  id BIGSERIAL ,
+  id UUID ,
   ordernumber varchar(64) DEFAULT NULL,
   status char(18) DEFAULT NULL,
   amount float(13) DEFAULT NULL,
@@ -167,12 +184,30 @@ CREATE TABLE partneronlinerecharge (
   gatewayname varchar(45) DEFAULT NULL,
   bankname varchar(256) DEFAULT NULL,
   paymentmode INT DEFAULT 0,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  rechargesite INT DEFAULT 1
+  rechargesite INT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
 );
 
 CREATE INDEX p_idx ON partneronlinerecharge(partnerid);
 
+INSERT INTO partneronlinerecharge (
+    recharge_id, id, ordernumber, status, amount, partnerid, order_time, txnid, banktxnid,
+    txnamout, txndate, currency, respcode, respmsg, gatewayname, bankname, paymentmode,
+    rechargesite, code, name, name_in_local, is_active, created_date, modified_date,
+    created_by, modified_by
+) VALUES (
+    gen_random_uuid(), gen_random_uuid(), 'ORD-1001', 'SUCCESS', 250.00, 'P10001', NOW(), 'TXN12345', 'BANKTXN12345',
+    250.00, NOW(), 'INR', '00', 'Transaction Successful', 'GatewayA', 'BankA', 1,
+    1, 'POR001', 'Online Recharge Sample', 'ഓൺലൈൻ റീചാർജ് സാമ്പിൾ',
+    TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 -- Table: partnerreciept
 DROP TABLE IF EXISTS partnerreciept;

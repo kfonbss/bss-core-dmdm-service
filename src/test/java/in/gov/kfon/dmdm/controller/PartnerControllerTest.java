@@ -132,4 +132,48 @@ public class PartnerControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched partner GST detail by id"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
+
+  @Test
+  void testFetchAllGstInvoices() throws Exception {
+    when(service.fetchAllGstInvoices()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/partner/gst-invoices"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all partner GST invoices"))
+        .andExpect(jsonPath("$.data.length()").value(1));
+  }
+
+  @Test
+  void testFetchGstInvoiceById() throws Exception {
+    when(service.fetchGstInvoiceById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/partner/gst-invoice/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched partner GST invoice by id"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchAllOnlineRecharges() throws Exception {
+    when(service.fetchAllOnlineRecharges()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/partner/online-recharges"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all partner online recharges"))
+        .andExpect(jsonPath("$.data.length()").value(1));
+  }
+
+  @Test
+  void testFetchOnlineRechargeById() throws Exception {
+    when(service.fetchOnlineRechargeById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/partner/online-recharge/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched partner online recharge by id"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
 }

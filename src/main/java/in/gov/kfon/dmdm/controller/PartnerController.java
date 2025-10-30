@@ -75,4 +75,32 @@ public class PartnerController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched partner GST detail by id"));
   }
+
+  @GetMapping("/gst-invoices")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllGstInvoices() {
+    var data = service.fetchAllGstInvoices();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all partner GST invoices"));
+  }
+
+  @GetMapping("/gst-invoice/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchGstInvoiceById(@PathVariable UUID id) {
+    var data = service.fetchGstInvoiceById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched partner GST invoice by id"));
+  }
+
+  @GetMapping("/online-recharges")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllOnlineRecharges() {
+    var data = service.fetchAllOnlineRecharges();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all partner online recharges"));
+  }
+
+  @GetMapping("/online-recharge/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchOnlineRechargeById(@PathVariable UUID id) {
+    var data = service.fetchOnlineRechargeById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched partner online recharge by id"));
+  }
 }
