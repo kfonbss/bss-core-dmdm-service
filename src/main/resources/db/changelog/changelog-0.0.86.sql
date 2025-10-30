@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS df_group_details CASCADE;
 
 CREATE TABLE df_group_details (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   group_name VARCHAR(250) DEFAULT NULL,
   woid INTEGER DEFAULT NULL,
@@ -32,7 +32,7 @@ COMMENT ON COLUMN df_group_details.group_type IS '1=Inter-City, 2=Intra-City, 3=
 DROP TABLE IF EXISTS df_group_details_movent CASCADE;
 
 CREATE TABLE df_group_details_movent (
-  movent_id UUID NOT NULL,
+  movent_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   groupid INTEGER DEFAULT NULL,
   approve_status INTEGER DEFAULT 0,
@@ -50,7 +50,7 @@ COMMENT ON COLUMN df_group_details_movent.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_groupinovoice CASCADE;
 
 CREATE TABLE df_groupinovoice (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subscriberid BIGINT DEFAULT NULL,
   groupid INTEGER DEFAULT NULL,
@@ -88,7 +88,7 @@ COMMENT ON COLUMN df_groupinovoice.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_groupinovoice_master CASCADE;
 
 CREATE TABLE df_groupinovoice_master (
-  master_id UUID NOT NULL,
+  master_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subscriberid BIGINT DEFAULT NULL,
   groupid INTEGER DEFAULT NULL,
@@ -131,7 +131,7 @@ COMMENT ON COLUMN df_groupinovoice_master.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_link_details CASCADE;
 
 CREATE TABLE df_link_details (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   woid INTEGER DEFAULT NULL,
   groupid INTEGER DEFAULT NULL,
@@ -162,7 +162,7 @@ COMMENT ON COLUMN df_link_details.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_link_renewal_history CASCADE;
 
 CREATE TABLE df_link_renewal_history (
-  history_id UUID NOT NULL,
+  history_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   mg_invoiceid INTEGER DEFAULT NULL,
   linkid INTEGER DEFAULT NULL,

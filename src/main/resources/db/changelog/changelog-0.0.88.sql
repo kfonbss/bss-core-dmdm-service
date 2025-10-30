@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS df_masterdata CASCADE;
 
 CREATE TABLE df_masterdata (
-  data_id UUID NOT NULL,
+  data_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   district VARCHAR(45) DEFAULT NULL,
   link_type VARCHAR(160) DEFAULT NULL,
@@ -23,7 +23,7 @@ COMMENT ON COLUMN df_masterdata.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_otccharges CASCADE;
 
 CREATE TABLE df_otccharges (
-  charges_id UUID NOT NULL,
+  charges_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   amount DECIMAL(13,2) DEFAULT 0.00,
   opgw_amount DECIMAL(13,2) DEFAULT 0.00,
@@ -50,7 +50,7 @@ COMMENT ON COLUMN df_otccharges.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_otcinovoice CASCADE;
 
 CREATE TABLE df_otcinovoice (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subscriberid BIGINT DEFAULT NULL,
   groupid INTEGER DEFAULT NULL,
@@ -88,7 +88,7 @@ COMMENT ON COLUMN df_otcinovoice.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_payment_history CASCADE;
 
 CREATE TABLE df_payment_history (
-  history_id UUID NOT NULL,
+  history_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   invoiceid INTEGER DEFAULT NULL,
   utr_number VARCHAR(25) DEFAULT NULL,

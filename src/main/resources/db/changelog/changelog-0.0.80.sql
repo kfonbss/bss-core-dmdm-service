@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS inv_device_make CASCADE;
 
 CREATE TABLE inv_device_make (
-  inv_device_make_id UUID NOT NULL,
+  inv_device_make_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   dtid int DEFAULT NULL,
   dm_name varchar(100) DEFAULT NULL,
@@ -22,7 +22,7 @@ CONSTRAINT pk_inv_device_make PRIMARY KEY (inv_device_make_id)
 DROP TABLE IF EXISTS inv_device_model CASCADE;
 
 CREATE TABLE inv_device_model (
-  inv_device_model_id UUID NOT NULL,
+  inv_device_model_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   dtid int DEFAULT NULL,
   dmid int DEFAULT NULL,
@@ -43,7 +43,7 @@ CONSTRAINT pk_inv_device_model PRIMARY KEY (inv_device_model_id)
 DROP TABLE IF EXISTS inv_device_return_tooem CASCADE;
 
 CREATE TABLE inv_device_return_tooem (
-  inv_device_return_tooem_id UUID NOT NULL,
+  inv_device_return_tooem_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   returncount int DEFAULT NULL,
   request_status int DEFAULT 1,
@@ -68,7 +68,7 @@ CONSTRAINT pk_inv_device_return_tooem PRIMARY KEY (inv_device_return_tooem_id)
 DROP TABLE IF EXISTS inv_device_status CASCADE;
 
 CREATE TABLE inv_device_status (
-  inv_device_status_id UUID NOT NULL,
+  inv_device_status_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   status_id int DEFAULT NULL,
   device_status_name varchar(100) DEFAULT NULL,
@@ -89,7 +89,7 @@ CONSTRAINT pk_inv_device_status PRIMARY KEY (inv_device_status_id)
 DROP TABLE IF EXISTS inv_device_type CASCADE;
 
 CREATE TABLE inv_device_type (
-  inv_device_type_id UUID NOT NULL,
+  inv_device_type_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   dt_name varchar(100) DEFAULT NULL,
   dt_desc varchar(250) DEFAULT NULL,
@@ -109,7 +109,7 @@ CONSTRAINT pk_inv_device_type PRIMARY KEY (inv_device_type_id)
 DROP TABLE IF EXISTS inv_device_vendor CASCADE;
 
 CREATE TABLE inv_device_vendor (
-  inv_device_vendor_id UUID NOT NULL,
+  inv_device_vendor_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   dtid int DEFAULT NULL,
   dmid int DEFAULT NULL,
@@ -131,7 +131,7 @@ CONSTRAINT pk_inv_device_vendor PRIMARY KEY (inv_device_vendor_id)
 DROP TABLE IF EXISTS inv_dtransfer_request CASCADE;
 
 CREATE TABLE inv_dtransfer_request (
-  inv_dtransfer_request_id UUID NOT NULL,
+  inv_dtransfer_request_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   dtid int DEFAULT NULL,
   dmid int DEFAULT NULL,
@@ -160,7 +160,7 @@ CONSTRAINT pk_inv_dtransfer_request PRIMARY KEY (inv_dtransfer_request_id)
 DROP TABLE IF EXISTS inv_dtransfer_rmovement CASCADE;
 
 CREATE TABLE inv_dtransfer_rmovement (
-  inv_dtransfer_rmovement_id UUID NOT NULL,
+  inv_dtransfer_rmovement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   reqid int DEFAULT NULL,
   request_status int DEFAULT 1,
@@ -180,7 +180,7 @@ CONSTRAINT pk_inv_dtransfer_rmovement PRIMARY KEY (inv_dtransfer_rmovement_id)
 DROP TABLE IF EXISTS inv_kfondc_device_request CASCADE;
 
 CREATE TABLE inv_kfondc_device_request (
-  inv_kfondc_device_request_id UUID NOT NULL,
+  inv_kfondc_device_request_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   device_count int DEFAULT 0,
   status INT DEFAULT 0,

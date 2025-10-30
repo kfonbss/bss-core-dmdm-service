@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS framed_pool_list CASCADE;
 
 CREATE TABLE framed_pool_list (
-  framed_pool_list_id UUID NOT NULL,
+  framed_pool_list_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   framed_pool varchar(200) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
@@ -18,7 +18,7 @@ CONSTRAINT pk_framed_pool_list PRIMARY KEY (framed_pool_list_id)
 DROP TABLE IF EXISTS framedipusers CASCADE;
 
 CREATE TABLE framedipusers (
-  framedipusers_id UUID NOT NULL,
+  framedipusers_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   framedip varchar(18) DEFAULT NULL,
   subscriberid int DEFAULT NULL,
@@ -33,7 +33,7 @@ CONSTRAINT pk_framedipusers PRIMARY KEY (framedipusers_id)
 DROP TABLE IF EXISTS func CASCADE;
 
 CREATE TABLE func (
-  func_id UUID NOT NULL,
+  func_id UUID DEFAULT gen_random_uuid() NOT NULL,
   name char(64) NOT NULL DEFAULT '',
   ret INT NOT NULL DEFAULT 0,
   dl char(128) NOT NULL DEFAULT '',
@@ -48,7 +48,7 @@ CONSTRAINT pk_func PRIMARY KEY (func_id)
 DROP TABLE IF EXISTS govsubscribers CASCADE;
 
 CREATE TABLE govsubscribers (
-  govsubscribers_id UUID NOT NULL,
+  govsubscribers_id UUID DEFAULT gen_random_uuid() NOT NULL,
   gsubid SERIAL,
   fullname varchar(128) NOT NULL,
   workoderid int NOT NULL,
@@ -74,7 +74,7 @@ CONSTRAINT pk_govsubscribers PRIMARY KEY (govsubscribers_id)
 DROP TABLE IF EXISTS gri_status_type CASCADE;
 
 CREATE TABLE gri_status_type (
-  gri_status_type_id UUID NOT NULL,
+  gri_status_type_id UUID DEFAULT gen_random_uuid() NOT NULL,
   gri_status_id SERIAL,
   Description varchar(100) DEFAULT NULL,
   "user" int DEFAULT NULL,
@@ -89,7 +89,7 @@ CREATE INDEX idx_gri_status_type_Description ON gri_status_type (Description);
 DROP TABLE IF EXISTS gri_ticket_movement CASCADE;
 
 CREATE TABLE gri_ticket_movement (
-  gri_ticket_movement_id UUID NOT NULL,
+  gri_ticket_movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   noteid SERIAL,
   ticketid bigint DEFAULT NULL,
   note text DEFAULT NULL,
@@ -115,7 +115,7 @@ CREATE INDEX idx_gri_ticket_movement_assignedto ON gri_ticket_movement (assigned
 DROP TABLE IF EXISTS gri_ticket_movement1 CASCADE;
 
 CREATE TABLE gri_ticket_movement1 (
-  gri_ticket_movement1_id UUID NOT NULL,
+  gri_ticket_movement1_id UUID DEFAULT gen_random_uuid() NOT NULL,
   noteid SERIAL,
   ticketid bigint DEFAULT NULL,
   note text DEFAULT NULL,
@@ -140,7 +140,7 @@ CREATE INDEX idx_gri_ticket_movement1_assignedto ON gri_ticket_movement1 (assign
 DROP TABLE IF EXISTS gri_tickets CASCADE;
 
 CREATE TABLE gri_tickets (
-  gri_tickets_id UUID NOT NULL,
+  gri_tickets_id UUID DEFAULT gen_random_uuid() NOT NULL,
   ticketid SERIAL,
   incident_dt timestamp DEFAULT NULL,
   submit_date timestamp DEFAULT NULL,
@@ -188,7 +188,7 @@ CREATE INDEX idx_gri_tickets_status ON gri_tickets (status);
 DROP TABLE IF EXISTS gri_tickets1 CASCADE;
 
 CREATE TABLE gri_tickets1 (
-  gri_tickets1_id UUID NOT NULL,
+  gri_tickets1_id UUID DEFAULT gen_random_uuid() NOT NULL,
   ticketid SERIAL,
   incident_dt timestamp DEFAULT NULL,
   submit_date timestamp DEFAULT NULL,

@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS monthlyreport CASCADE;
 
 CREATE TABLE monthlyreport (
-  monthlyreport_id UUID NOT NULL,
+  monthlyreport_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   partnername varchar(75) DEFAULT NULL,
   netsum decimal DEFAULT NULL,
@@ -40,7 +40,7 @@ CONSTRAINT pk_monthlyreport PRIMARY KEY (monthlyreport_id)
 DROP TABLE IF EXISTS mrk_marketing_list CASCADE;
 
 CREATE TABLE mrk_marketing_list (
-  mrk_marketing_list_id UUID NOT NULL,
+  mrk_marketing_list_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   marketing_type_id int NOT NULL,
   type_name varchar(200) DEFAULT NULL,
@@ -56,7 +56,7 @@ CONSTRAINT pk_mrk_marketing_list PRIMARY KEY (mrk_marketing_list_id)
 DROP TABLE IF EXISTS mrk_marketingdetails CASCADE;
 
 CREATE TABLE mrk_marketingdetails (
-  mrk_marketingdetails_id UUID NOT NULL,
+  mrk_marketingdetails_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   partnerid varchar(100) NOT NULL,
   marketing_type varchar(150) NOT NULL,
@@ -82,7 +82,7 @@ CONSTRAINT pk_mrk_marketingdetails PRIMARY KEY (mrk_marketingdetails_id)
 DROP TABLE IF EXISTS mrk_marketingdetails_movement CASCADE;
 
 CREATE TABLE mrk_marketingdetails_movement (
-  mrk_marketingdetails_movement_id UUID NOT NULL,
+  mrk_marketingdetails_movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   tracking_field varchar(200) DEFAULT NULL,
   tracking_field_values varchar(200) DEFAULT NULL,
@@ -100,7 +100,7 @@ CONSTRAINT pk_mrk_marketingdetails_movement PRIMARY KEY (mrk_marketingdetails_mo
 DROP TABLE IF EXISTS msp_details CASCADE;
 
 CREATE TABLE msp_details (
-  msp_details_id UUID NOT NULL,
+  msp_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   msp_name varchar(300) DEFAULT NULL,
   msp_address varchar(1000) DEFAULT NULL,
@@ -121,7 +121,7 @@ CONSTRAINT pk_msp_details PRIMARY KEY (msp_details_id)
 DROP TABLE IF EXISTS msp_sentsms CASCADE;
 
 CREATE TABLE msp_sentsms (
-  msp_sentsms_id UUID NOT NULL,
+  msp_sentsms_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   subscriberid int DEFAULT NULL,
   mobileno int DEFAULT NULL,
@@ -143,7 +143,7 @@ CONSTRAINT pk_msp_sentsms PRIMARY KEY (msp_sentsms_id)
 DROP TABLE IF EXISTS msplnp_status_master CASCADE;
 
 CREATE TABLE msplnp_status_master (
-  msplnp_status_master_id UUID NOT NULL,
+  msplnp_status_master_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id int NOT NULL,
   status_code varchar(30) NOT NULL,
   status_name varchar(50) NOT NULL,
@@ -165,7 +165,7 @@ CONSTRAINT pk_msplnp_status_master PRIMARY KEY (msplnp_status_master_id)
 DROP TABLE IF EXISTS msplnp_ticket_documents CASCADE;
 
 CREATE TABLE msplnp_ticket_documents (
-  msplnp_ticket_documents_id UUID NOT NULL,
+  msplnp_ticket_documents_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   ticket_id int NOT NULL,
   document_type varchar(50) NOT NULL,
@@ -181,7 +181,7 @@ CONSTRAINT pk_msplnp_ticket_documents PRIMARY KEY (msplnp_ticket_documents_id)
 DROP TABLE IF EXISTS msplnp_ticket_history CASCADE;
 
 CREATE TABLE msplnp_ticket_history (
-  msplnp_ticket_history_id UUID NOT NULL,
+  msplnp_ticket_history_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   ticket_id int NOT NULL,
   status varchar(50) NOT NULL,

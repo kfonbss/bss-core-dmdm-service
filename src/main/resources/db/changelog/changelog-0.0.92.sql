@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS kapartnergroup CASCADE;
 
 CREATE TABLE kapartnergroup (
-  kapartnergroup_id UUID NOT NULL,
+  kapartnergroup_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   partnergroupid int DEFAULT NULL,
   -- Primary key constraint
@@ -14,7 +14,7 @@ CONSTRAINT pk_kapartnergroup PRIMARY KEY (kapartnergroup_id)
 DROP TABLE IF EXISTS kapartners CASCADE;
 
 CREATE TABLE kapartners (
-  kapartners_id UUID NOT NULL,
+  kapartners_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   partnerid int DEFAULT NULL,
   -- Primary key constraint
@@ -26,7 +26,7 @@ CONSTRAINT pk_kapartners PRIMARY KEY (kapartners_id)
 DROP TABLE IF EXISTS keys CASCADE;
 
 CREATE TABLE keys (
-  keys_id UUID NOT NULL,
+  keys_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   user_id int NOT NULL,
   key varchar(40) NOT NULL,
@@ -44,7 +44,7 @@ CONSTRAINT pk_keys PRIMARY KEY (keys_id)
 DROP TABLE IF EXISTS kfon_users CASCADE;
 
 CREATE TABLE kfon_users (
-  kfon_users_id UUID NOT NULL,
+  kfon_users_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   loc_code varchar(20) DEFAULT NULL,
   username varchar(100) DEFAULT NULL,
@@ -62,7 +62,7 @@ CONSTRAINT pk_kfon_users PRIMARY KEY (kfon_users_id)
 DROP TABLE IF EXISTS kl_recover CASCADE;
 
 CREATE TABLE kl_recover (
-  kl_recover_id UUID NOT NULL,
+  kl_recover_id UUID DEFAULT gen_random_uuid() NOT NULL,
   scode varchar(40) NOT NULL,
   amt decimal(10,2) NOT NULL,
   -- Primary key constraint
@@ -74,7 +74,7 @@ CONSTRAINT pk_kl_recover PRIMARY KEY (kl_recover_id)
 DROP TABLE IF EXISTS klc CASCADE;
 
 CREATE TABLE klc (
-  klc_id UUID NOT NULL,
+  klc_id UUID DEFAULT gen_random_uuid() NOT NULL,
   sid int DEFAULT NULL,
   uname varchar(200) DEFAULT NULL,
   oldp int DEFAULT NULL,
@@ -92,7 +92,7 @@ CONSTRAINT pk_klc PRIMARY KEY (klc_id)
 DROP TABLE IF EXISTS kyc_login CASCADE;
 
 CREATE TABLE kyc_login (
-  kyc_login_id UUID NOT NULL,
+  kyc_login_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   username varchar(50) DEFAULT NULL,
   password varchar(50) DEFAULT NULL,
@@ -106,7 +106,7 @@ CONSTRAINT pk_kyc_login PRIMARY KEY (kyc_login_id)
 DROP TABLE IF EXISTS kyc_logs CASCADE;
 
 CREATE TABLE kyc_logs (
-  kyc_logs_id UUID NOT NULL,
+  kyc_logs_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   loc_code varchar(20) DEFAULT NULL,
   error_details text DEFAULT NULL,
@@ -119,7 +119,7 @@ CONSTRAINT pk_kyc_logs PRIMARY KEY (kyc_logs_id)
 DROP TABLE IF EXISTS kyc_update_detail CASCADE;
 
 CREATE TABLE kyc_update_detail (
-  kyc_update_detail_id UUID NOT NULL,
+  kyc_update_detail_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   olid bigint DEFAULT NULL,
   updatedby int DEFAULT NULL,
@@ -141,7 +141,7 @@ CREATE INDEX idx_kyc_update_detail_updatedby ON kyc_update_detail (updatedby);
 DROP TABLE IF EXISTS lb_master CASCADE;
 
 CREATE TABLE lb_master (
-  lb_master_id UUID NOT NULL,
+  lb_master_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   LBID int DEFAULT NULL,
   LBNameLoc varchar(156) DEFAULT NULL,
@@ -160,7 +160,7 @@ CONSTRAINT pk_lb_master PRIMARY KEY (lb_master_id)
 DROP TABLE IF EXISTS lco_agp_approve CASCADE;
 
 CREATE TABLE lco_agp_approve (
-  lco_agp_approve_id UUID NOT NULL,
+  lco_agp_approve_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   imonth varchar(10) DEFAULT NULL,
   approvedby varchar(100) DEFAULT NULL,
@@ -182,7 +182,7 @@ CONSTRAINT pk_lco_agp_approve PRIMARY KEY (lco_agp_approve_id)
 DROP TABLE IF EXISTS lco_agp_list CASCADE;
 
 CREATE TABLE lco_agp_list (
-  lco_agp_list_id UUID NOT NULL,
+  lco_agp_list_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   imonth varchar(10) DEFAULT NULL,
   partnerid varchar(25) DEFAULT NULL,
@@ -199,7 +199,7 @@ CONSTRAINT pk_lco_agp_list PRIMARY KEY (lco_agp_list_id)
 DROP TABLE IF EXISTS lco_mobilenos CASCADE;
 
 CREATE TABLE lco_mobilenos (
-  lco_mobilenos_id UUID NOT NULL,
+  lco_mobilenos_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   mobile varchar(12) DEFAULT NULL,
   sms_sent int DEFAULT 0,
@@ -212,7 +212,7 @@ CONSTRAINT pk_lco_mobilenos PRIMARY KEY (lco_mobilenos_id)
 DROP TABLE IF EXISTS limits CASCADE;
 
 CREATE TABLE limits (
-  limits_id UUID NOT NULL,
+  limits_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   uri varchar(255) NOT NULL,
   count int NOT NULL,

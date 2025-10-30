@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS mobile_app_version_details CASCADE;
 
 CREATE TABLE mobile_app_version_details (
-  mobile_app_version_details_id UUID NOT NULL,
+  mobile_app_version_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   devicetype varchar(100) DEFAULT NULL,
   latest_build_number int DEFAULT NULL,
@@ -18,7 +18,7 @@ CONSTRAINT pk_mobile_app_version_details PRIMARY KEY (mobile_app_version_details
 DROP TABLE IF EXISTS mobile_billing_state_list CASCADE;
 
 CREATE TABLE mobile_billing_state_list (
-  mobile_billing_state_list_id UUID NOT NULL,
+  mobile_billing_state_list_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   state_name varchar(50) DEFAULT NULL,
   state_code varchar(50) DEFAULT NULL,
@@ -34,7 +34,7 @@ CONSTRAINT pk_mobile_billing_state_list PRIMARY KEY (mobile_billing_state_list_i
 DROP TABLE IF EXISTS mobile_faqs_details CASCADE;
 
 CREATE TABLE mobile_faqs_details (
-  mobile_faqs_details_id UUID NOT NULL,
+  mobile_faqs_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   faq_question text DEFAULT NULL,
   faq_answer text DEFAULT NULL,
@@ -48,7 +48,7 @@ CONSTRAINT pk_mobile_faqs_details PRIMARY KEY (mobile_faqs_details_id)
 DROP TABLE IF EXISTS modules CASCADE;
 
 CREATE TABLE modules (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   module_id int  DEFAULT NULL,
   code varchar(45),
   name varchar(255) DEFAULT NULL,
@@ -106,7 +106,7 @@ INSERT INTO modules (
 DROP TABLE IF EXISTS monthgroup CASCADE;
 
 CREATE TABLE monthgroup (
-  monthgroup_id UUID NOT NULL,
+  monthgroup_id UUID DEFAULT gen_random_uuid() NOT NULL,
   monthgroupid SERIAL,
   monthgroupname varchar(45) NOT NULL DEFAULT 0,
   startmonth int NOT NULL,
@@ -123,7 +123,7 @@ CONSTRAINT pk_monthgroup PRIMARY KEY (monthgroup_id)
 DROP TABLE IF EXISTS monthlydata CASCADE;
 
 CREATE TABLE monthlydata (
-  monthlydata_id UUID NOT NULL,
+  monthlydata_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   partnername varchar(75) DEFAULT NULL,
   netsum decimal DEFAULT NULL,
@@ -151,7 +151,7 @@ CONSTRAINT pk_monthlydata PRIMARY KEY (monthlydata_id)
 DROP TABLE IF EXISTS monthlyinvoice CASCADE;
 
 CREATE TABLE monthlyinvoice (
-  monthlyinvoice_id UUID NOT NULL,
+  monthlyinvoice_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   pgid int DEFAULT 0,
   subid int DEFAULT 0,

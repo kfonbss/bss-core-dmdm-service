@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS package_map CASCADE;
 
 CREATE TABLE package_map (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     mapid BIGSERIAL ,
     partnerid BIGINT NOT NULL,
     packageid INT,
@@ -27,7 +27,7 @@ VALUES
 DROP TABLE IF EXISTS packagecategory CASCADE;
 
 CREATE TABLE packagecategory (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     pkg_ctgy_id SERIAL ,
     name VARCHAR(250) NOT NULL,
     code VARCHAR(50),
@@ -48,7 +48,7 @@ VALUES
 DROP TABLE IF EXISTS packagechangerequests CASCADE;
 
 CREATE TABLE packagechangerequests (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     requestno SERIAL ,
     requeststatus INT NOT NULL DEFAULT 0,
     subscriberid INT,
@@ -75,7 +75,7 @@ VALUES
 DROP TABLE IF EXISTS packages CASCADE;
 
 CREATE TABLE packages (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     packageid SERIAL ,
     name VARCHAR(45),
     serviceid INT,
@@ -109,7 +109,7 @@ VALUES
 DROP TABLE IF EXISTS pan_gst_history CASCADE;
 
 CREATE TABLE pan_gst_history (
-    history_id UUID NOT NULL PRIMARY KEY,
+    history_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     partnerid VARCHAR(15),
     partner_group INT,
@@ -125,7 +125,7 @@ CREATE TABLE pan_gst_history (
 DROP TABLE IF EXISTS partner_confirmation_from_agnp CASCADE;
 
 CREATE TABLE partner_confirmation_from_agnp (
-    agnp_id UUID NOT NULL PRIMARY KEY,
+    agnp_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id BIGSERIAL ,
     partnerid BIGINT,
     document VARCHAR(4200),
@@ -140,7 +140,7 @@ CREATE TABLE partner_confirmation_from_agnp (
 DROP TABLE IF EXISTS partner_confirmation_from_agnp_movement CASCADE;
 
 CREATE TABLE partner_confirmation_from_agnp_movement (
-    movement_id UUID NOT NULL PRIMARY KEY,
+    movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id BIGSERIAL ,
     pcf_id BIGINT,
     note TEXT,
@@ -153,7 +153,7 @@ CREATE TABLE partner_confirmation_from_agnp_movement (
 DROP TABLE IF EXISTS partner_gstvalet CASCADE;
 
 CREATE TABLE partner_gstvalet (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     partnerid BIGINT,
     partnername VARCHAR(200),
@@ -181,7 +181,7 @@ CREATE TABLE partner_gstvalet (
 DROP TABLE IF EXISTS partner_revenue CASCADE;
 
 CREATE TABLE partner_revenue (
-    revenue_id UUID NOT NULL PRIMARY KEY,
+    revenue_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     partnerid INT,
     partnername VARCHAR(60),
@@ -195,7 +195,7 @@ CREATE TABLE partner_revenue (
 DROP TABLE IF EXISTS partneraccount CASCADE;
 
 CREATE TABLE partneraccount (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     partneraccountid SERIAL ,
     partnerid BIGINT NOT NULL UNIQUE,
     balance DOUBLE PRECISION,

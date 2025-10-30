@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS inv_lnp_device_request CASCADE;
 
 CREATE TABLE inv_lnp_device_request (
-  inv_lnp_device_request_id UUID NOT NULL,
+  inv_lnp_device_request_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   dtid int DEFAULT NULL,
   req_dev_count int DEFAULT 0,
@@ -29,7 +29,7 @@ CONSTRAINT pk_inv_lnp_device_request PRIMARY KEY (inv_lnp_device_request_id)
 DROP TABLE IF EXISTS inv_lnp_device_request_movement CASCADE;
 
 CREATE TABLE inv_lnp_device_request_movement (
-  inv_lnp_device_request_movement_id UUID NOT NULL,
+  inv_lnp_device_request_movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   reqid int DEFAULT NULL,
   remarks varchar(250) DEFAULT NULL,
@@ -50,7 +50,7 @@ CONSTRAINT pk_inv_lnp_device_request_movement PRIMARY KEY (inv_lnp_device_reques
 DROP TABLE IF EXISTS inv_po_details CASCADE;
 
 CREATE TABLE inv_po_details (
-  inv_po_details_id UUID NOT NULL,
+  inv_po_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   po_no varchar(200) DEFAULT NULL,
   remarks varchar(250) DEFAULT NULL,
@@ -69,7 +69,7 @@ CONSTRAINT pk_inv_po_details PRIMARY KEY (inv_po_details_id)
 DROP TABLE IF EXISTS inv_po_documnets CASCADE;
 
 CREATE TABLE inv_po_documnets (
-  inv_po_documnets_id UUID NOT NULL,
+  inv_po_documnets_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   poid int DEFAULT NULL,
   documnet varchar(250) DEFAULT NULL,
@@ -86,7 +86,7 @@ CONSTRAINT pk_inv_po_documnets PRIMARY KEY (inv_po_documnets_id)
 DROP TABLE IF EXISTS inv_return_faulty_request CASCADE;
 
 CREATE TABLE inv_return_faulty_request (
-  inv_return_faulty_request_id UUID NOT NULL,
+  inv_return_faulty_request_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   deviceid int DEFAULT NULL,
   condition_statusid int DEFAULT NULL,
@@ -113,7 +113,7 @@ CONSTRAINT pk_inv_return_faulty_request PRIMARY KEY (inv_return_faulty_request_i
 DROP TABLE IF EXISTS invoice_creditnote CASCADE;
 
 CREATE TABLE invoice_creditnote (
-  invoice_creditnote_id UUID NOT NULL,
+  invoice_creditnote_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subtype int DEFAULT 1,
   customerid int DEFAULT NULL,
@@ -148,7 +148,7 @@ CONSTRAINT pk_invoice_creditnote PRIMARY KEY (invoice_creditnote_id)
 DROP TABLE IF EXISTS invoice_creditnote_details CASCADE;
 
 CREATE TABLE invoice_creditnote_details (
-  invoice_creditnote_details_id UUID NOT NULL,
+  invoice_creditnote_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subtype int DEFAULT 1,
   -- '2=ILL,3=DF,4-EO,5-SPE',
@@ -188,7 +188,7 @@ CONSTRAINT pk_invoice_creditnote_details PRIMARY KEY (invoice_creditnote_details
 DROP TABLE IF EXISTS invoice_statecode CASCADE;
 
 CREATE TABLE invoice_statecode (
-  invoice_statecode_id UUID NOT NULL,
+  invoice_statecode_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   STCode char(3) DEFAULT NULL,
   state_code varchar(10) DEFAULT NULL,
@@ -201,7 +201,7 @@ CONSTRAINT pk_invoice_statecode PRIMARY KEY (invoice_statecode_id)
 DROP TABLE IF EXISTS issuehistory CASCADE;
 
 CREATE TABLE issuehistory (
-  issuehistory_id UUID NOT NULL,
+  issuehistory_id UUID DEFAULT gen_random_uuid() NOT NULL,
   ticketid varchar(50) DEFAULT NULL,
   assignedto varchar(100) DEFAULT NULL,
   createdby varchar(100) DEFAULT NULL,
@@ -220,7 +220,7 @@ CONSTRAINT pk_issuehistory PRIMARY KEY (issuehistory_id)
 DROP TABLE IF EXISTS issuetracker CASCADE;
 
 CREATE TABLE issuetracker (
-  issuetracker_id UUID NOT NULL,
+  issuetracker_id UUID DEFAULT gen_random_uuid() NOT NULL,
   ticketno SERIAL,
   partnerid varchar(50) DEFAULT NULL,
   username varchar(100) DEFAULT NULL,

@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS demouser_account_request CASCADE;
 
 CREATE TABLE demouser_account_request (
-  request_id UUID NOT NULL,
+  request_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   partnerid BIGINT NOT NULL,
   activesubscriber INTEGER DEFAULT NULL,
@@ -23,7 +23,7 @@ COMMENT ON COLUMN demouser_account_request.is_active IS '0=Inactive,1=Active';
 DROP TABLE IF EXISTS demousers CASCADE;
 
 CREATE TABLE demousers (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   userid SERIAL,
   username VARCHAR(64) DEFAULT NULL,
   password VARCHAR(64) DEFAULT NULL,
@@ -50,7 +50,7 @@ COMMENT ON COLUMN demousers.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS designations CASCADE;
 
 CREATE TABLE designations (
-  designations_id UUID NOT NULL,
+  designations_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   name VARCHAR(20) NOT NULL,
   description VARCHAR(100) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE designations (
 DROP TABLE IF EXISTS df_bank_details CASCADE;
 
 CREATE TABLE df_bank_details (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   beneficiary_name VARCHAR(200) DEFAULT NULL,
   account_number VARCHAR(100) DEFAULT NULL,
@@ -81,7 +81,7 @@ COMMENT ON COLUMN df_bank_details.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_customer_details CASCADE;
 
 CREATE TABLE df_customer_details (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   customer_name VARCHAR(250) DEFAULT NULL,
   customer_email VARCHAR(156) DEFAULT NULL,
@@ -103,7 +103,7 @@ COMMENT ON COLUMN df_customer_details.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_demandnote_history CASCADE;
 
 CREATE TABLE df_demandnote_history (
-  history_id UUID NOT NULL,
+  history_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   cnid INTEGER DEFAULT NULL,
   linkid INTEGER DEFAULT NULL,
@@ -140,7 +140,7 @@ COMMENT ON COLUMN df_demandnote_history.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_demandnote_master CASCADE;
 
 CREATE TABLE df_demandnote_master (
-  master_id UUID NOT NULL,
+  master_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subscriberid BIGINT DEFAULT NULL,
   groupid INTEGER DEFAULT NULL,
@@ -176,7 +176,7 @@ COMMENT ON COLUMN df_demandnote_master.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_disbursement CASCADE;
 
 CREATE TABLE df_disbursement (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   disburseid SERIAL,
   partnergroupid INTEGER DEFAULT NULL,
   groupid INTEGER DEFAULT NULL,
@@ -198,7 +198,7 @@ COMMENT ON COLUMN df_disbursement.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS df_feeder_list CASCADE;
 
 CREATE TABLE df_feeder_list (
-  list_id UUID NOT NULL,
+  list_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   pop_id INTEGER NOT NULL,
   feeder_name VARCHAR(255) DEFAULT NULL,
