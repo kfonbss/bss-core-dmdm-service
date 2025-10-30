@@ -236,4 +236,28 @@ public class CorporateOnboardingController {
     var data = service.onlineApplicationFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("otc-invoice/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> otcInvoiceFetchAll() {
+    var data = service.otcInvoiceFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("otc-invoice/{id}")
+  public ResponseEntity<Response<CommonLookUp>> otcInvoiceFetchById(@PathVariable UUID id) {
+    var data = service.otcInvoiceFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("package/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> packageFetchAll() {
+    var data = service.packageFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("package/{id}")
+  public ResponseEntity<Response<CommonLookUp>> packageFetchById(@PathVariable UUID id) {
+    var data = service.packageFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }

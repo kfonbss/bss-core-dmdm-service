@@ -36,6 +36,8 @@ class CorporateOnboardingServiceImplTest {
   private CeLocationRenewalHistoryRepository locationRenewalHistoryRepository;
   private CeLocationsRepository locationsRepository;
   private CeOnlineApplicationRepository onlineApplicationRepository;
+  private CeOtcInvoiceRepository invoiceRepository;
+  private CePackageRepository packageRepository;
 
   @BeforeEach
   void setUp() {
@@ -58,6 +60,9 @@ class CorporateOnboardingServiceImplTest {
     locationRenewalHistoryRepository = mock(CeLocationRenewalHistoryRepository.class);
     locationsRepository = mock(CeLocationsRepository.class);
     onlineApplicationRepository = mock(CeOnlineApplicationRepository.class);
+    invoiceRepository = mock(CeOtcInvoiceRepository.class);
+    packageRepository = mock(CePackageRepository.class);
+
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -78,7 +83,9 @@ class CorporateOnboardingServiceImplTest {
             locationMovementRepository,
             locationRenewalHistoryRepository,
             locationsRepository,
-            onlineApplicationRepository);
+            onlineApplicationRepository,
+            invoiceRepository,
+            packageRepository);
 
     service.setupMapper();
   }
@@ -723,5 +730,75 @@ class CorporateOnboardingServiceImplTest {
     when(onlineApplicationRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.onlineApplicationFetchById(id));
+  }
+
+  @Test
+  void testOtcInvoiceFetchAll_ShouldReturnMappedList() {
+    CeOtcInvoice otcInvoice = new CeOtcInvoice();
+    otcInvoice.setInvoiceId(UUID.randomUUID());
+
+    when(invoiceRepository.findAll()).thenReturn(List.of(otcInvoice));
+
+    List<CommonLookUp> result = service.otcInvoiceFetchAll();
+
+    assertEquals(1, result.size());
+    verify(invoiceRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testOtcInvoiceFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeOtcInvoice otcInvoice = new CeOtcInvoice();
+    otcInvoice.setInvoiceId(id);
+
+    when(invoiceRepository.findById(id)).thenReturn(Optional.of(otcInvoice));
+
+    CommonLookUp result = service.otcInvoiceFetchById(id);
+
+    assertNotNull(result);
+    verify(invoiceRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testOtcInvoiceFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(invoiceRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.invoiceMasterFetchById(id));
+  }
+
+  @Test
+  void testPackageFetchAll_ShouldReturnMappedList() {
+    CePackage pck = new CePackage();
+    pck.setId(UUID.randomUUID());
+
+    when(packageRepository.findAll()).thenReturn(List.of(pck));
+
+    List<CommonLookUp> result = service.packageFetchAll();
+
+    assertEquals(1, result.size());
+    verify(packageRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testPackageFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CePackage cePackage = new CePackage();
+    cePackage.setId(id);
+
+    when(packageRepository.findById(id)).thenReturn(Optional.of(cePackage));
+
+    CommonLookUp result = service.packageFetchById(id);
+
+    assertNotNull(result);
+    verify(packageRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testPackageFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(packageRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.packageFetchById(id));
   }
 }

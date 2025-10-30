@@ -2,6 +2,10 @@ DROP TABLE IF EXISTS ce_package CASCADE;
 
 CREATE TABLE ce_package (
   id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   packageid SERIAL,
   packagename varchar(45) NOT NULL,
   renewperiod int NOT NULL,
@@ -9,23 +13,27 @@ CREATE TABLE ce_package (
   sub_serviceid int DEFAULT NULL,
   renewalfee double precision DEFAULT 0,
   service_type int DEFAULT 0,
+  --'1=Lease Line,2=L2-VPN,3=L3-VPN'
   speed_inmbps int DEFAULT NULL,
   m_profile varchar(45) DEFAULT NULL,
   plan_type int DEFAULT 1,
+  --'1=Unlimited, 2=FUP'
   maxvolume double precision DEFAULT NULL,
   fallbackspeed varchar(30) DEFAULT NULL,
   otcfee double precision DEFAULT NULL,
   fbspeedinkbps bigint DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_package PRIMARY KEY (id)
 );
 
-COMMENT ON COLUMN ce_package.service_type IS '1=Lease Line,2=L2-VPN,3=L3-VPN';
-COMMENT ON COLUMN ce_package.plan_type IS '1=Unlimited, 2=FUP';
-COMMENT ON COLUMN ce_package.is_active IS '0=In Active,1=Active';
-
+INSERT INTO ce_package (
+    id, code, name, name_in_local, is_active, packageid, packagename, renewperiod, serviceid, sub_serviceid, renewalfee, service_type, speed_inmbps, m_profile, plan_type, maxvolume, fallbackspeed, otcfee, fbspeedinkbps, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'PKG001', 'Premium Broadband Plan', 'പ്രീമിയം ബ്രോഡ്ബാൻഡ് പ്ലാൻ', true, 1, 'KFON Premium', 12, 101, 201, 999.99, 1, 100, 'MPROFILE001', 1, 500.00, '10Mbps', 250.00, 10240, gen_random_uuid(), gen_random_uuid()
+);
 
 DROP TABLE IF EXISTS ce_parent_customers CASCADE;
 

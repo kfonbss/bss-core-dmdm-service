@@ -227,7 +227,11 @@ VALUES (gen_random_uuid(), 'APP001', 'Online Application', 'ഓൺലൈൻ അ�
 DROP TABLE IF EXISTS ce_otcinovoice CASCADE;
 
 CREATE TABLE ce_otcinovoice (
-  inovoice_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  invoice_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   slno BIGSERIAL,
   subscriberid bigint DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -237,8 +241,8 @@ CREATE TABLE ce_otcinovoice (
   invoicedate date DEFAULT NULL,
   grossamount decimal(26,10) DEFAULT NULL,
   otcamount decimal(26,10) DEFAULT NULL,
-  servicetax decimal(10,10) DEFAULT NULL,
-  servicetaxrate decimal(10,10) DEFAULT NULL,
+  servicetax decimal(28,10) DEFAULT NULL,
+  servicetaxrate decimal(27,10) DEFAULT NULL,
   gst_value decimal(26,10) DEFAULT NULL,
   cgst_value decimal(26,10) DEFAULT NULL,
   sgst_value decimal(26,10) DEFAULT NULL,
@@ -248,10 +252,15 @@ CREATE TABLE ce_otcinovoice (
   igst_rate decimal(26,2) DEFAULT NULL,
   gstin varchar(18) DEFAULT NULL,
   particulars varchar(180) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active boolean DEFAULT true,
-  CONSTRAINT pk_ce_otcinovoice PRIMARY KEY (inovoice_id)
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+  CONSTRAINT pk_ce_otcinovoice PRIMARY KEY (invoice_id)
 );
 
-COMMENT ON COLUMN ce_otcinovoice.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_otcinovoice (
+    invoice_id, code, name, name_in_local, is_active, subscriberid, locid, mg_invoiceid, subfinanceid, invoiceno, invoicedate, grossamount, otcamount, servicetax, servicetaxrate, gst_value, cgst_value, sgst_value, igst_value, cgst_rate, sgst_rate, igst_rate, gstin, particulars, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'INV001', 'OTC Invoice', 'ഒടിസി ഇൻവോയ്സ്', true, 1001, 201, 301, 401, 'INV-2025-001', '2025-10-27', 1500.00, 1000.00, 18.00, 0.18, 180.00, 90.00, 90.00, 0.00, 9.00, 9.00, 0.00, '32ABCDE1234F1Z5', 'Installation and Setup Charges', gen_random_uuid(), gen_random_uuid()
+);

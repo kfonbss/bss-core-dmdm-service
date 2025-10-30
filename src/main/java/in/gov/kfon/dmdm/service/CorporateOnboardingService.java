@@ -76,4 +76,12 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> onlineApplicationFetchAll();
 
   CommonLookUp onlineApplicationFetchById(UUID id);
+
+  List<CommonLookUp> otcInvoiceFetchAll();
+
+  CommonLookUp otcInvoiceFetchById(UUID id);
+
+  List<CommonLookUp> packageFetchAll();
+
+  CommonLookUp packageFetchById(UUID id);
 }
