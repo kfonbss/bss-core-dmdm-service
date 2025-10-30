@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS onlinesub CASCADE;
 
 CREATE TABLE onlinesub (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     srno BIGSERIAL ,
     name VARCHAR(64),
     ip VARCHAR(64)
@@ -12,7 +12,7 @@ CREATE TABLE onlinesub (
 DROP TABLE IF EXISTS ont_device_providers CASCADE;
 
 CREATE TABLE ont_device_providers (
-    provider_id UUID NOT NULL PRIMARY KEY,
+    provider_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     provider_name VARCHAR(50),
     create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -24,7 +24,7 @@ CREATE TABLE ont_device_providers (
 DROP TABLE IF EXISTS ont_device_types CASCADE;
 
 CREATE TABLE ont_device_types (
-    types_id UUID NOT NULL PRIMARY KEY,
+    types_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     device_type INT,
     device_type_name VARCHAR(100),
@@ -39,7 +39,7 @@ CREATE TABLE ont_device_types (
 DROP TABLE IF EXISTS ont_subscriberaccount CASCADE;
 
 CREATE TABLE ont_subscriberaccount (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     subscriberid BIGSERIAL ,
     partnerid VARCHAR(45),
     balance NUMERIC(13,2),
@@ -54,7 +54,7 @@ CREATE TABLE ont_subscriberaccount (
 DROP TABLE IF EXISTS ont_subscriberfinance CASCADE;
 
 CREATE TABLE ont_subscriberfinance (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     finid SERIAL ,
     subscriberid INT,
     partnerid BIGINT,
@@ -69,7 +69,7 @@ CREATE TABLE ont_subscriberfinance (
 DROP TABLE IF EXISTS ott_platforms CASCADE;
 
 CREATE TABLE ott_platforms (
-    ott_id UUID NOT NULL PRIMARY KEY,
+    ott_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     pack_group_name VARCHAR(100),
     ott_platform_name VARCHAR(250),
@@ -83,7 +83,7 @@ CREATE TABLE ott_platforms (
 DROP TABLE IF EXISTS package CASCADE;
 
 CREATE TABLE package (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     packageid SERIAL ,
     name VARCHAR(45) NOT NULL,
     renewperiod INT NOT NULL,

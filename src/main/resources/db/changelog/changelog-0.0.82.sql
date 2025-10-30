@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS data_usage_details CASCADE;
 
 CREATE TABLE data_usage_details (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   username VARCHAR(45) DEFAULT NULL,
   total_upload DECIMAL(10,2) DEFAULT NULL,
@@ -20,7 +20,7 @@ COMMENT ON COLUMN data_usage_details.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS dategroup CASCADE;
 
 CREATE TABLE dategroup (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   dategroupid SERIAL,
   dategroupname VARCHAR(45) NOT NULL DEFAULT '0',
   startdate INTEGER NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE dategroup (
 DROP TABLE IF EXISTS daygroup CASCADE;
 
 CREATE TABLE daygroup (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   daygroupid SERIAL,
   daygroupname VARCHAR(45) NOT NULL DEFAULT '0',
   startday INTEGER NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE daygroup (
 DROP TABLE IF EXISTS daywise_data_usage_details CASCADE;
 
 CREATE TABLE daywise_data_usage_details (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   username VARCHAR(45) DEFAULT NULL,
   total_upload DECIMAL(10,2) DEFAULT NULL,
@@ -66,7 +66,7 @@ COMMENT ON COLUMN daywise_data_usage_details.is_active IS '0=In Active,1=Active'
 DROP TABLE IF EXISTS delete_radius_users CASCADE;
 
 CREATE TABLE delete_radius_users (
-  users_id UUID NOT NULL,
+  users_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id BIGINT NOT NULL,
   subscriber VARCHAR(512) DEFAULT NULL,
   username VARCHAR(512) DEFAULT NULL,
@@ -82,7 +82,7 @@ COMMENT ON COLUMN delete_radius_users.users_id IS 'Unique identifier for delete 
 DROP TABLE IF EXISTS deletedipusers CASCADE;
 
 CREATE TABLE deletedipusers (
-  users_id UUID NOT NULL,
+  users_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   customerid INTEGER DEFAULT NULL,
   subscriberid INTEGER DEFAULT NULL,
@@ -107,7 +107,7 @@ COMMENT ON COLUMN deletedipusers.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS deletedipusersk CASCADE;
 
 CREATE TABLE deletedipusersk (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   framedip VARCHAR(18) DEFAULT NULL,
   subscriberid INTEGER DEFAULT NULL,
@@ -123,7 +123,7 @@ CREATE TABLE deletedipusersk (
 DROP TABLE IF EXISTS demo_package CASCADE;
 
 CREATE TABLE demo_package (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   packageid SERIAL,
   packagename VARCHAR(50) NOT NULL,
   billingtypeid INTEGER DEFAULT 1,
@@ -144,7 +144,7 @@ COMMENT ON COLUMN demo_package.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS demo_users CASCADE;
 
 CREATE TABLE demo_users (
-  users_id UUID NOT NULL,
+  users_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   demo_id VARCHAR(20) DEFAULT NULL,
   password VARCHAR(256) DEFAULT NULL,

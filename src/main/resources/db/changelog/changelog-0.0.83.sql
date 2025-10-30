@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS partneraccount_balance_report;
 
 CREATE TABLE partneraccount_balance_report (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   rptid BIGSERIAL ,
   state VARCHAR(64) DEFAULT NULL,
   partnerid VARCHAR(45) DEFAULT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE partneraccount_balance_report (
 DROP TABLE IF EXISTS partneragreementdetail;
 
 CREATE TABLE partneragreementdetail (
-  details_id UUID NOT NULL PRIMARY KEY,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL ,
   partnerid BIGINT DEFAULT NULL,
   version INT DEFAULT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE partneragreementdetail (
 DROP TABLE IF EXISTS partnerdemousers;
 
 CREATE TABLE partnerdemousers (
-  user_id UUID NOT NULL PRIMARY KEY,
+  user_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   demoid BIGSERIAL ,
   partnerid VARCHAR(45) DEFAULT NULL,
   username VARCHAR(64) DEFAULT NULL,
@@ -57,7 +57,7 @@ CREATE INDEX index2_partnerdemousers ON partnerdemousers (partnerid, username);
 DROP TABLE IF EXISTS partnerdetail;
 
 CREATE TABLE partnerdetail (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   partnerid BIGINT ,
   partnercompanyname VARCHAR(150) DEFAULT NULL,
   status BOOLEAN NOT NULL DEFAULT FALSE,
@@ -184,7 +184,7 @@ CREATE INDEX index2_partnerdetail ON partnerdetail (statecode);
 DROP TABLE IF EXISTS partnerdisbursement;
 
 CREATE TABLE partnerdisbursement (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   partnerdisbursementid SERIAL ,
   partnergroupid INT NOT NULL,
   revenue NUMERIC(10,2) NOT NULL,
@@ -213,7 +213,7 @@ CREATE INDEX index2_partnerdisbursement ON partnerdisbursement (partnergroupid, 
 DROP TABLE IF EXISTS partnerfinance;
 
 CREATE TABLE partnerfinance (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   partnerfinanceid SERIAL ,
   partnerid BIGINT DEFAULT NULL,
   cause VARCHAR(100) DEFAULT NULL,

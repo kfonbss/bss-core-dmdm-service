@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS lnp_ont_invoicing CASCADE;
 
 CREATE TABLE lnp_ont_invoicing (
-  lnp_ont_invoicing_id UUID NOT NULL,
+  lnp_ont_invoicing_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   invoicemonth varchar(20) DEFAULT NULL,
   invoiceno varchar(50) DEFAULT NULL,
@@ -34,7 +34,7 @@ CONSTRAINT pk_lnp_ont_invoicing PRIMARY KEY (lnp_ont_invoicing_id)
 DROP TABLE IF EXISTS lnp_service_area_list CASCADE;
 
 CREATE TABLE lnp_service_area_list (
-  lnp_service_area_list_id UUID NOT NULL,
+  lnp_service_area_list_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   partnerid int DEFAULT NULL,
   pincode varchar(6) DEFAULT NULL,
@@ -52,7 +52,7 @@ CONSTRAINT pk_lnp_service_area_list PRIMARY KEY (lnp_service_area_list_id)
 DROP TABLE IF EXISTS loc_master CASCADE;
 
 CREATE TABLE loc_master (
-  loc_master_id UUID NOT NULL,
+  loc_master_id UUID DEFAULT gen_random_uuid() NOT NULL,
   loc_code varchar(20) DEFAULT NULL,
   subscriber_name varchar(256) DEFAULT NULL,
   address text DEFAULT NULL,
@@ -69,7 +69,7 @@ CONSTRAINT pk_loc_master PRIMARY KEY (loc_master_id)
 DROP TABLE IF EXISTS locality CASCADE;
 
 CREATE TABLE locality (
-  locality_id UUID NOT NULL,
+  locality_id UUID DEFAULT gen_random_uuid() NOT NULL,
   localityid SERIAL,
   localityname varchar(250) DEFAULT NULL,
   pin int DEFAULT NULL,
@@ -83,7 +83,7 @@ CONSTRAINT pk_locality PRIMARY KEY (locality_id)
 DROP TABLE IF EXISTS localitymap CASCADE;
 
 CREATE TABLE localitymap (
-  localitymap_id UUID NOT NULL,
+  localitymap_id UUID DEFAULT gen_random_uuid() NOT NULL,
   localitymapid SERIAL,
   partnerid int NOT NULL,
   localityid int NOT NULL,
@@ -97,7 +97,7 @@ CONSTRAINT pk_localitymap PRIMARY KEY (localitymap_id)
 DROP TABLE IF EXISTS logs CASCADE;
 
 CREATE TABLE logs (
-  logs_id UUID NOT NULL,
+  logs_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   uri varchar(255) NOT NULL,
   method varchar(6) NOT NULL,
@@ -117,7 +117,7 @@ CONSTRAINT pk_logs PRIMARY KEY (logs_id)
 DROP TABLE IF EXISTS mapp_users CASCADE;
 
 CREATE TABLE mapp_users (
-  mapp_users_id UUID NOT NULL,
+  mapp_users_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   username varchar(100) DEFAULT NULL,
   name varchar(150) DEFAULT NULL,
@@ -140,7 +140,7 @@ CREATE INDEX idx_mapp_users_index2 ON mapp_users (partnerid);
 DROP TABLE IF EXISTS mapp_version CASCADE;
 
 CREATE TABLE mapp_version (
-  mapp_version_id UUID NOT NULL,
+  mapp_version_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   version varchar(50) DEFAULT NULL,
   -- Primary key constraint
@@ -152,7 +152,7 @@ CONSTRAINT pk_mapp_version PRIMARY KEY (mapp_version_id)
 DROP TABLE IF EXISTS menu CASCADE;
 
 CREATE TABLE menu (
-  menu_id UUID NOT NULL,
+  menu_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   title varchar(100) NOT NULL DEFAULT '',
   link_type varchar(20) NOT NULL DEFAULT 'uri',
@@ -177,7 +177,7 @@ CONSTRAINT pk_menu PRIMARY KEY (menu_id)
 DROP TABLE IF EXISTS mimoonlinerecharge CASCADE;
 
 CREATE TABLE mimoonlinerecharge (
-  mimoonlinerecharge_id UUID NOT NULL,
+  mimoonlinerecharge_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   subscriberid int  NOT NULL,
   partnerid int DEFAULT NULL,
@@ -200,7 +200,7 @@ CONSTRAINT pk_mimoonlinerecharge PRIMARY KEY (mimoonlinerecharge_id)
 DROP TABLE IF EXISTS mobile_app_images CASCADE;
 
 CREATE TABLE mobile_app_images (
-  mobile_app_images_id UUID NOT NULL,
+  mobile_app_images_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   image_name varchar(100) DEFAULT NULL,
   screen_id int DEFAULT NULL,

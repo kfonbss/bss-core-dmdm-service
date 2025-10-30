@@ -3,7 +3,7 @@
 DROP TABLE IF EXISTS onboardanp_details CASCADE;
 
 CREATE TABLE onboardanp_details (
-  onboardanp_details_id UUID NOT NULL,
+  onboardanp_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   partnerid int NOT NULL,
   partnercompanyname varchar(150) DEFAULT NULL,
@@ -83,7 +83,7 @@ CREATE INDEX idx_onboardanp_details_index2 ON onboardanp_details (statecode);
 DROP TABLE IF EXISTS onboardanp_gstdetails CASCADE;
 
 CREATE TABLE onboardanp_gstdetails (
-  onboardanp_gstdetails_id UUID NOT NULL,
+  onboardanp_gstdetails_id UUID DEFAULT gen_random_uuid() NOT NULL,
   partnerid int  NOT NULL,
   gstin varchar(20) DEFAULT NULL,
   sac varchar(20) DEFAULT NULL,
@@ -109,7 +109,7 @@ CONSTRAINT pk_onboardanp_gstdetails PRIMARY KEY (onboardanp_gstdetails_id)
 DROP TABLE IF EXISTS onboardanp_movement CASCADE;
 
 CREATE TABLE onboardanp_movement (
-  onboardanp_movement_id UUID NOT NULL,
+  onboardanp_movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   requestid int DEFAULT NULL,
   approve_status char(50) DEFAULT NULL,
@@ -128,7 +128,7 @@ CONSTRAINT pk_onboardanp_movement PRIMARY KEY (onboardanp_movement_id)
 DROP TABLE IF EXISTS onboardanp_recharge_details CASCADE;
 
 CREATE TABLE onboardanp_recharge_details (
-  onboardanp_recharge_details_id UUID NOT NULL,
+  onboardanp_recharge_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   ordernumber varchar(64) DEFAULT NULL,
   status varchar(18) DEFAULT NULL,
@@ -165,7 +165,7 @@ CONSTRAINT pk_onboardanp_recharge_details PRIMARY KEY (onboardanp_recharge_detai
 DROP TABLE IF EXISTS oneplusone CASCADE;
 
 CREATE TABLE oneplusone (
-  oneplusone_id UUID NOT NULL,
+  oneplusone_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   subscriberid varchar(45) DEFAULT NULL,
   packageid varchar(45) DEFAULT NULL,

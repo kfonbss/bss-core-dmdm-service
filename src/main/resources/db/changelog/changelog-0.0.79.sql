@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS inv_device_cat CASCADE;
 
 CREATE TABLE inv_device_cat (
-  inv_device_cat_id UUID NOT NULL,
+  inv_device_cat_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   dtid int DEFAULT NULL,
   dmid int DEFAULT NULL,
@@ -26,7 +26,7 @@ CONSTRAINT pk_inv_device_cat PRIMARY KEY (inv_device_cat_id)
 DROP TABLE IF EXISTS inv_device_condition_status CASCADE;
 
 CREATE TABLE inv_device_condition_status (
-  inv_device_condition_status_id UUID NOT NULL,
+  inv_device_condition_status_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   condition_statusid int DEFAULT NULL,
   condition_status_name varchar(100) DEFAULT NULL,
@@ -45,7 +45,7 @@ CONSTRAINT pk_inv_device_condition_status PRIMARY KEY (inv_device_condition_stat
 DROP TABLE IF EXISTS inv_device_details CASCADE;
 
 CREATE TABLE inv_device_details (
-  inv_device_details_id UUID NOT NULL,
+  inv_device_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   dtid int DEFAULT NULL,
   dmid int DEFAULT NULL,
@@ -118,7 +118,7 @@ CREATE INDEX idx_inv_device_details_dc_reqid ON inv_device_details (dc_reqid);
 DROP TABLE IF EXISTS inv_device_details_audit CASCADE;
 
 CREATE TABLE inv_device_details_audit (
-  inv_device_details_audit_id UUID NOT NULL,
+  inv_device_details_audit_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   deviceid int DEFAULT NULL,
   old_deviceid int DEFAULT NULL,
@@ -141,7 +141,7 @@ CONSTRAINT pk_inv_device_details_audit PRIMARY KEY (inv_device_details_audit_id)
 DROP TABLE IF EXISTS inv_device_details_movement CASCADE;
 
 CREATE TABLE inv_device_details_movement (
-  inv_device_details_movement_id UUID NOT NULL,
+  inv_device_details_movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   deviceid int DEFAULT NULL,
   reqid int DEFAULT NULL,

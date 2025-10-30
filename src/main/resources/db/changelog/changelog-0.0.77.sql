@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS gri_tickets_dup CASCADE;
 
 CREATE TABLE gri_tickets_dup (
-  gri_tickets_dup_id UUID NOT NULL,
+  gri_tickets_dup_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   ticketid bigint NOT NULL,
   incident_dt timestamp DEFAULT NULL,
@@ -36,7 +36,7 @@ CONSTRAINT pk_gri_tickets_dup PRIMARY KEY (gri_tickets_dup_id)
 DROP TABLE IF EXISTS groups CASCADE;
 
 CREATE TABLE groups (
-  groups_id UUID NOT NULL,
+  groups_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id int  DEFAULT NULL,
   name varchar(20) NOT NULL,
   description varchar(100) NOT NULL,
@@ -50,7 +50,7 @@ CONSTRAINT pk_groups PRIMARY KEY (groups_id)
 DROP TABLE IF EXISTS gst_verification_details CASCADE;
 
 CREATE TABLE gst_verification_details (
-  gst_verification_details_id UUID NOT NULL,
+  gst_verification_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   partnerid varchar(50) DEFAULT NULL,
   partnercompanyname varchar(150) DEFAULT NULL,
@@ -78,7 +78,7 @@ CONSTRAINT pk_gst_verification_details PRIMARY KEY (gst_verification_details_id)
 DROP TABLE IF EXISTS gstvalet_movement CASCADE;
 
 CREATE TABLE gstvalet_movement (
-  gstvalet_movement_id UUID NOT NULL,
+  gstvalet_movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   noteid SERIAL,
   gstvalet_tid int DEFAULT NULL,
   note varchar(255) DEFAULT NULL,
@@ -95,7 +95,7 @@ CONSTRAINT pk_gstvalet_movement PRIMARY KEY (gstvalet_movement_id)
 DROP TABLE IF EXISTS helpdesk CASCADE;
 
 CREATE TABLE helpdesk (
-  helpdesk_id UUID NOT NULL,
+  helpdesk_id UUID DEFAULT gen_random_uuid() NOT NULL,
   deskid SERIAL,
   helpdesk varchar(64) DEFAULT NULL,
   description varchar(128) DEFAULT NULL,
@@ -114,7 +114,7 @@ CONSTRAINT pk_helpdesk PRIMARY KEY (helpdesk_id)
 DROP TABLE IF EXISTS idprooftype CASCADE;
 
 CREATE TABLE idprooftype (
-  idprooftype_id UUID NOT NULL,
+  idprooftype_id UUID DEFAULT gen_random_uuid() NOT NULL,
   idprooftypeid SERIAL,
   idprooftype varchar(45) NOT NULL,
   lastupdate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -128,7 +128,7 @@ CONSTRAINT pk_idprooftype PRIMARY KEY (idprooftype_id)
 DROP TABLE IF EXISTS ikm_pg CASCADE;
 
 CREATE TABLE ikm_pg (
-  ikm_pg_id UUID NOT NULL,
+  ikm_pg_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   company_id varchar(10) DEFAULT NULL,
   client_id int DEFAULT NULL,
@@ -156,7 +156,7 @@ CONSTRAINT pk_ikm_pg PRIMARY KEY (ikm_pg_id)
 DROP TABLE IF EXISTS inactsub_feedback CASCADE;
 
 CREATE TABLE inactsub_feedback (
-  inactsub_feedback_id UUID NOT NULL,
+  inactsub_feedback_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   subscriberid int DEFAULT NULL,
   subscriber varchar(100) DEFAULT NULL,
@@ -176,7 +176,7 @@ CONSTRAINT pk_inactsub_feedback PRIMARY KEY (inactsub_feedback_id)
 DROP TABLE IF EXISTS inactsub_remarks CASCADE;
 
 CREATE TABLE inactsub_remarks (
-  inactsub_remarks_id UUID NOT NULL,
+  inactsub_remarks_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   remarks varchar(100) DEFAULT NULL,
   -- Primary key constraint
@@ -188,7 +188,7 @@ CONSTRAINT pk_inactsub_remarks PRIMARY KEY (inactsub_remarks_id)
 DROP TABLE IF EXISTS inbound_sms CASCADE;
 
 CREATE TABLE inbound_sms (
-  inbound_sms_id UUID NOT NULL,
+  inbound_sms_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   from_mobile varchar(12) DEFAULT NULL,
   dest_mobile varchar(12) DEFAULT NULL,
@@ -207,7 +207,7 @@ CONSTRAINT pk_inbound_sms PRIMARY KEY (inbound_sms_id)
 DROP TABLE IF EXISTS incentive CASCADE;
 
 CREATE TABLE incentive (
-  incentive_id UUID NOT NULL,
+  incentive_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   partnerid int DEFAULT NULL,
   incentive decimal(10,2) DEFAULT NULL,

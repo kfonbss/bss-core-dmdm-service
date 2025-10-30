@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS msplnp_tickets CASCADE;
 
 CREATE TABLE msplnp_tickets (
-  msplnp_tickets_id UUID NOT NULL,
+  msplnp_tickets_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   ticket_number varchar(50) NOT NULL,
   enquiry_type varchar(50) NOT NULL,
@@ -69,7 +69,7 @@ CREATE INDEX idx_msplnp_tickets_idx_created_by ON msplnp_tickets (created_by);
 DROP TABLE IF EXISTS nas CASCADE;
 
 CREATE TABLE nas (
-  nas_id UUID NOT NULL,
+  nas_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   nasname varchar(128) NOT NULL,
   shortname varchar(32) DEFAULT NULL,
@@ -89,7 +89,7 @@ CREATE INDEX idx_nas_nasname ON nas (nasname);
 DROP TABLE IF EXISTS network_performance_details CASCADE;
 
 CREATE TABLE network_performance_details (
-  network_performance_details_id UUID NOT NULL,
+  network_performance_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   device_id varchar(200) DEFAULT NULL,
   username varchar(60) DEFAULT NULL,
@@ -131,7 +131,7 @@ CONSTRAINT pk_network_performance_details PRIMARY KEY (network_performance_detai
 DROP TABLE IF EXISTS nms_endoffices CASCADE;
 
 CREATE TABLE nms_endoffices (
-  nms_endoffices_id UUID NOT NULL,
+  nms_endoffices_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   eo_uid varchar(20) DEFAULT NULL,
   popname varchar(50) DEFAULT NULL,
@@ -158,7 +158,7 @@ CONSTRAINT pk_nms_endoffices PRIMARY KEY (nms_endoffices_id)
 DROP TABLE IF EXISTS node CASCADE;
 
 CREATE TABLE node (
-  node_id UUID NOT NULL,
+  node_id UUID DEFAULT gen_random_uuid() NOT NULL,
   nodeid int NOT NULL DEFAULT 0,
   nodename varchar(200) DEFAULT NULL,
   statecode varchar(5) DEFAULT NULL,
@@ -171,7 +171,7 @@ CONSTRAINT pk_node PRIMARY KEY (node_id)
 DROP TABLE IF EXISTS notice CASCADE;
 
 CREATE TABLE notice (
-  notice_id UUID NOT NULL,
+  notice_id UUID DEFAULT gen_random_uuid() NOT NULL,
   noticeid int NOT NULL,
   type char(5) DEFAULT NULL,
   start_date timestamp DEFAULT NULL,
@@ -195,7 +195,7 @@ CREATE INDEX idx_notice_index2 ON notice (type, start_date, end_date, "to", to_t
 DROP TABLE IF EXISTS of_splicers CASCADE;
 
 CREATE TABLE of_splicers (
-  of_splicers_id UUID NOT NULL,
+  of_splicers_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   name varchar(256) DEFAULT NULL,
   mobile varchar(15) DEFAULT NULL,
@@ -215,7 +215,7 @@ CONSTRAINT pk_of_splicers PRIMARY KEY (of_splicers_id)
 DROP TABLE IF EXISTS onboard_config CASCADE;
 
 CREATE TABLE onboard_config (
-  onboard_config_id UUID NOT NULL,
+  onboard_config_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   rgnnoc_mailid varchar(250) DEFAULT NULL,
   cnoc_mail_ids varchar(250) DEFAULT NULL,

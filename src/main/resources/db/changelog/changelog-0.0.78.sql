@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS incentive_breakup CASCADE;
 
 CREATE TABLE incentive_breakup (
-  incentive_breakup_id UUID NOT NULL,
+  incentive_breakup_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   slab int DEFAULT NULL,
   subscribercount int DEFAULT NULL,
@@ -22,7 +22,7 @@ CONSTRAINT pk_incentive_breakup PRIMARY KEY (incentive_breakup_id)
 DROP TABLE IF EXISTS incentive_slab CASCADE;
 
 CREATE TABLE incentive_slab (
-  incentive_slab_id UUID NOT NULL,
+  incentive_slab_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   name varchar(30) DEFAULT NULL,
   category varchar(50) DEFAULT NULL,
@@ -47,7 +47,7 @@ CONSTRAINT pk_incentive_slab PRIMARY KEY (incentive_slab_id)
 DROP TABLE IF EXISTS incident_mimo CASCADE;
 
 CREATE TABLE incident_mimo (
-  incident_mimo_id UUID NOT NULL,
+  incident_mimo_id UUID DEFAULT gen_random_uuid() NOT NULL,
   ticketno SERIAL,
   ticketid varchar(50) DEFAULT NULL,
   startdate timestamp DEFAULT NULL,
@@ -87,7 +87,7 @@ CREATE INDEX idx_incident_mimo_incdntmmo_tcktid ON incident_mimo (ticketid);
 DROP TABLE IF EXISTS incidenttracker CASCADE;
 
 CREATE TABLE incidenttracker (
-  incidenttracker_id UUID NOT NULL,
+  incidenttracker_id UUID DEFAULT gen_random_uuid() NOT NULL,
   ticketno SERIAL,
   time_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   nodeid int DEFAULT NULL,
@@ -115,7 +115,7 @@ CONSTRAINT pk_incidenttracker PRIMARY KEY (incidenttracker_id)
 DROP TABLE IF EXISTS inv_credit_notes CASCADE;
 
 CREATE TABLE inv_credit_notes (
-  inv_credit_notes_id UUID NOT NULL,
+  inv_credit_notes_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   dtid int DEFAULT NULL,
   dmid int DEFAULT NULL,
@@ -137,7 +137,7 @@ CONSTRAINT pk_inv_credit_notes PRIMARY KEY (inv_credit_notes_id)
 DROP TABLE IF EXISTS inv_dc_credit_notes CASCADE;
 
 CREATE TABLE inv_dc_credit_notes (
-  inv_dc_credit_notes_id UUID NOT NULL,
+  inv_dc_credit_notes_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   device_count int DEFAULT 0,
   remarks varchar(70) DEFAULT NULL,
@@ -156,7 +156,7 @@ CONSTRAINT pk_inv_dc_credit_notes PRIMARY KEY (inv_dc_credit_notes_id)
 DROP TABLE IF EXISTS inv_dccredit_notes CASCADE;
 
 CREATE TABLE inv_dccredit_notes (
-  inv_dccredit_notes_id UUID NOT NULL,
+  inv_dccredit_notes_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   device_count int DEFAULT 0,
   transfer_to INT DEFAULT 0,
@@ -181,7 +181,7 @@ CONSTRAINT pk_inv_dccredit_notes PRIMARY KEY (inv_dccredit_notes_id)
 DROP TABLE IF EXISTS inv_device_acknowledgement CASCADE;
 
 CREATE TABLE inv_device_acknowledgement (
-  inv_device_acknowledgement_id UUID NOT NULL,
+  inv_device_acknowledgement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   deviceid int DEFAULT NULL,
   lnp_reqid int DEFAULT NULL,

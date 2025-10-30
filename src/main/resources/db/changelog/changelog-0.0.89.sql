@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS online_customers_movement CASCADE;
 
 CREATE TABLE online_customers_movement (
-    movement_id UUID NOT NULL PRIMARY KEY,
+    movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     ticketid BIGINT,
     note TEXT,
@@ -20,7 +20,7 @@ CREATE TABLE online_customers_movement (
 DROP TABLE IF EXISTS online_customers_ticket_movement CASCADE;
 
 CREATE TABLE online_customers_ticket_movement (
-    movement_id UUID NOT NULL PRIMARY KEY,
+    movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     ticketid BIGINT,
     note TEXT,
@@ -33,7 +33,7 @@ CREATE TABLE online_customers_ticket_movement (
 DROP TABLE IF EXISTS online_fe_reference CASCADE;
 
 CREATE TABLE online_fe_reference (
-    reference_id UUID NOT NULL PRIMARY KEY,
+    reference_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     description VARCHAR(50),
     create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -45,7 +45,7 @@ CREATE TABLE online_fe_reference (
 DROP TABLE IF EXISTS online_partners_enquiry_movement CASCADE;
 
 CREATE TABLE online_partners_enquiry_movement (
-    online_id UUID NOT NULL PRIMARY KEY,
+    online_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     ticketid BIGINT,
     note TEXT,
@@ -58,7 +58,7 @@ CREATE TABLE online_partners_enquiry_movement (
 DROP TABLE IF EXISTS online_subscribers_movement CASCADE;
 
 CREATE TABLE online_subscribers_movement (
-    movement_id UUID NOT NULL PRIMARY KEY,
+    movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     ticketid BIGINT,
     note TEXT,
@@ -73,7 +73,7 @@ CREATE TABLE online_subscribers_movement (
 DROP TABLE IF EXISTS onlineapplication CASCADE;
 
 CREATE TABLE onlineapplication (
-    application_id UUID NOT NULL PRIMARY KEY,
+    application_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     apno VARCHAR(45) NOT NULL,
     status VARCHAR(45) NOT NULL DEFAULT 'Submitted',
@@ -188,7 +188,7 @@ CREATE INDEX application_index ON onlineapplication(packageid, update_date, stat
 DROP TABLE IF EXISTS onlinestatus CASCADE;
 
 CREATE TABLE onlinestatus (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     status VARCHAR(50)
 );
