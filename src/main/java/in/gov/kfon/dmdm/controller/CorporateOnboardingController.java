@@ -237,7 +237,7 @@ public class CorporateOnboardingController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("otc-invoice/fetch-all")
+  @GetMapping("otc-invoices/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> otcInvoiceFetchAll() {
     var data = service.otcInvoiceFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
@@ -249,7 +249,7 @@ public class CorporateOnboardingController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("package/fetch-all")
+  @GetMapping("packages/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> packageFetchAll() {
     var data = service.packageFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
