@@ -38,6 +38,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CeLocationRenewalHistoryRepository locationRenewalHistoryRepository;
   private final CeLocationsRepository locationsRepository;
   private final CeOnlineApplicationRepository onlineApplicationRepository;
+  private final CeOtcInvoiceRepository invoiceRepository;
+  private final CePackageRepository packageRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -439,5 +441,40 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
     lookup.setId(entity.getApplicationId());
 
     return lookup;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> otcInvoiceFetchAll() {
+    return invoiceRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp otcInvoiceFetchById(UUID id) {
+    CeOtcInvoice entity =
+        invoiceRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> packageFetchAll() {
+    return packageRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp packageFetchById(UUID id) {
+    CePackage entity =
+        packageRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
   }
 }
