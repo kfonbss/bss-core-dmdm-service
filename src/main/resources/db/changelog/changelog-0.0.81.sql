@@ -43,13 +43,29 @@ CREATE TABLE partnergroup (
   msp bigint DEFAULT NULL,
   mkt bigint DEFAULT NULL,
   isp bigint DEFAULT NULL,
-  lastupdate timestamp DEFAULT NULL,
   perm bigint DEFAULT NULL,
   revenueshareid int DEFAULT NULL,
-  isactive INT NOT NULL DEFAULT 1
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
 );
 
 CREATE INDEX index_group ON partnergroup(ibnp);
+
+INSERT INTO partnergroup (
+    id, partnergroupid, ibnp, ibwp, anp, agp, cnp, msp, mkt, isp, perm, revenueshareid,
+    code, name, name_in_local, is_active,
+    created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), DEFAULT, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 5001, 2001,
+    'PG001', 'Partner Group Alpha', 'പാർട്ണർ ഗ്രൂപ്പ് ആൽഫ',
+    TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 
 -- Table: partnergstdetail
@@ -63,8 +79,6 @@ CREATE TABLE partnergstdetail (
   gstindoc varchar(120) DEFAULT NULL,
   service_description varchar(150) DEFAULT NULL,
   gst_verfied INT DEFAULT 0,
-  created_date timestamp DEFAULT NULL,
-  createdby bigint DEFAULT NULL,
   verified_date timestamp DEFAULT NULL,
   verfied_by varchar(50) DEFAULT NULL,
   taxpayertype INT DEFAULT NULL,
@@ -72,7 +86,29 @@ CREATE TABLE partnergstdetail (
   legalname varchar(250) DEFAULT NULL,
   tradename varchar(250) DEFAULT NULL,
   pan varchar(10) DEFAULT NULL,
-  pan_copy varchar(200) DEFAULT NULL
+  pan_copy varchar(200) DEFAULT NULL,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+
+INSERT INTO partnergstdetail (
+    id, partnerid, gstin, sac, gstindoc, service_description,
+    gst_verfied, verified_date, verfied_by, taxpayertype, gst_status,
+    legalname, tradename, pan, pan_copy,
+    code, name, name_in_local, is_active,
+    created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 20001, '32ABCDE1234F1Z5', '9984', 'gst_doc_20001.pdf',
+    'Internet and Broadband Service', 1, NOW(), 'VerifierUser', 2, 1,
+    'ABC Communications Pvt Ltd', 'ABC FiberNet', 'ABCDE1234F', 'pan_copy_abc.pdf',
+    'GST001', 'GST Detail Alpha', 'ജി.എസ്.ടി. ഡീറ്റെയിൽ ആൽഫ',
+    TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
 );
 
 
