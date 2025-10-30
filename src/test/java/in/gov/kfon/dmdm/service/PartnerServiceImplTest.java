@@ -4,14 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-import in.gov.kfon.dmdm.model.PartnerFinance2;
-import in.gov.kfon.dmdm.model.PartnerGroup;
-import in.gov.kfon.dmdm.model.PartnerGstDetail;
-import in.gov.kfon.dmdm.model.PartnerTaxpayerLogs;
-import in.gov.kfon.dmdm.repository.PartnerFinance2Repository;
-import in.gov.kfon.dmdm.repository.PartnerGroupRepository;
-import in.gov.kfon.dmdm.repository.PartnerGstDetailRepository;
-import in.gov.kfon.dmdm.repository.PartnerTaxpayerLogsRepository;
+import in.gov.kfon.dmdm.model.*;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +23,8 @@ public class PartnerServiceImplTest {
   @Mock private PartnerTaxpayerLogsRepository partnerTaxpayerLogsRepository;
   @Mock private PartnerGroupRepository partnerGroupRepository;
   @Mock private PartnerGstDetailRepository partnerGstDetailRepository;
+  @Mock private PartnerGstInvoiceRepository partnerGstInvoiceRepository;
+  @Mock private PartnerOnlineRechargeRepository partnerOnlineRechargeRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private PartnerServiceImpl service;
@@ -39,6 +35,8 @@ public class PartnerServiceImplTest {
   private CommonLookUp lookup;
   private PartnerGroup group;
   private PartnerGstDetail gstDetail;
+  private PartnerGstInvoice gstInvoice;
+  private PartnerOnlineRecharge onlineRecharge;
 
   @BeforeEach
   void setUp() {
@@ -56,6 +54,12 @@ public class PartnerServiceImplTest {
 
     gstDetail = new PartnerGstDetail();
     gstDetail.setId(id);
+
+    gstInvoice = new PartnerGstInvoice();
+    gstInvoice.setId(id);
+
+    onlineRecharge = new PartnerOnlineRecharge();
+    onlineRecharge.setRechargeId(id);
 
     lookup = new CommonLookUp();
     lookup.setId(id);
@@ -172,5 +176,56 @@ public class PartnerServiceImplTest {
     when(partnerGstDetailRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.fetchPartnerGstDetailById(id));
+  }
+
+  @Test
+  void testFetchAllGstInvoices() {
+    when(partnerGstInvoiceRepository.findAll()).thenReturn(List.of(gstInvoice));
+    when(modelMapper.map(gstInvoice, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAllGstInvoices();
+    assertEquals(1, result.size());
+    verify(partnerGstInvoiceRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testFetchGstInvoiceById_Success() {
+    when(partnerGstInvoiceRepository.findById(id)).thenReturn(Optional.of(gstInvoice));
+    when(modelMapper.map(gstInvoice, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchGstInvoiceById(id);
+    assertEquals(id, result.getId());
+  }
+
+  @Test
+  void testFetchGstInvoiceById_NotFound() {
+    when(partnerGstInvoiceRepository.findById(id)).thenReturn(Optional.empty());
+    assertThrows(EntityNotFoundException.class, () -> service.fetchGstInvoiceById(id));
+  }
+
+  // --- Partner Online Recharges ---
+  @Test
+  void testFetchAllOnlineRecharges() {
+    when(partnerOnlineRechargeRepository.findAll()).thenReturn(List.of(onlineRecharge));
+    when(modelMapper.map(onlineRecharge, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAllOnlineRecharges();
+    assertEquals(1, result.size());
+    verify(partnerOnlineRechargeRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testFetchOnlineRechargeById_Success() {
+    when(partnerOnlineRechargeRepository.findById(id)).thenReturn(Optional.of(onlineRecharge));
+    when(modelMapper.map(onlineRecharge, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchOnlineRechargeById(id);
+    assertEquals(id, result.getId());
+  }
+
+  @Test
+  void testFetchOnlineRechargeById_NotFound() {
+    when(partnerOnlineRechargeRepository.findById(id)).thenReturn(Optional.empty());
+    assertThrows(EntityNotFoundException.class, () -> service.fetchOnlineRechargeById(id));
   }
 }

@@ -21,4 +21,12 @@ public interface PartnerService {
   List<CommonLookUp> fetchAllPartnerGstDetails();
 
   CommonLookUp fetchPartnerGstDetailById(UUID id);
+
+  List<CommonLookUp> fetchAllGstInvoices();
+
+  CommonLookUp fetchGstInvoiceById(UUID id);
+
+  List<CommonLookUp> fetchAllOnlineRecharges();
+
+  CommonLookUp fetchOnlineRechargeById(UUID id);
 }
