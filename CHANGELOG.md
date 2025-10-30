@@ -155,3 +155,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.20.0] - 2025-10-29
 ### Added
 -  Get corporate locations and online application details
+
+## [0.21.0] - 2025-10-30
+### Added
+-  Get partner finance and taxpayer log details

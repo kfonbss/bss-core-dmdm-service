@@ -8,19 +8,36 @@ DROP TABLE IF EXISTS pkg_discount CASCADE;
 
 -- Table: partnertaxpayerlogs
 CREATE TABLE partnertaxpayerlogs (
-    logs_id UUID NOT NULL PRIMARY KEY,
-    id SERIAL ,
+    id UUID DEFAULT gen_random_uuid(),
+    logs_id SERIAL ,
     partnerid BIGINT NOT NULL,
     partnercompanyname VARCHAR(30),
     gstin VARCHAR(50),
     taxpayertype INT,
     STcode INT,
-    update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    code VARCHAR(50),
+    name VARCHAR(100),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
+);
+
+INSERT INTO partnertaxpayerlogs (
+    id, logs_id, partnerid, partnercompanyname, gstin, taxpayertype, STcode,
+    code, name, name_in_local, is_active, created_date, modified_date,
+    created_by, modified_by
+) VALUES (
+    gen_random_uuid(), DEFAULT, 10001, 'ABC Enterprises', '32ABCDE1234F1Z5',
+    1, 32, 'PTL001', 'GST Info Update', 'GST വിവരങ്ങൾ അപ്‌ഡേറ്റ്',
+    TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: password_resets
 CREATE TABLE password_resets (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     email VARCHAR(255) NOT NULL UNIQUE,
     token VARCHAR(255) NOT NULL,
     created_at TIMESTAMP
@@ -28,7 +45,7 @@ CREATE TABLE password_resets (
 
 -- Table: pbalance_mclose
 CREATE TABLE pbalance_mclose (
-    close_id UUID NOT NULL PRIMARY KEY,
+    close_id UUID DEFAULT gen_random_uuid(),
     id SERIAL ,
     parnterid VARCHAR(45),
     balance DOUBLE PRECISION NOT NULL DEFAULT 0.00,
@@ -37,7 +54,7 @@ CREATE TABLE pbalance_mclose (
 
 -- Table: pincode_details
 CREATE TABLE pincode_details (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     details_id BIGSERIAL ,
     pincode INT,
     post_office_name VARCHAR(250),
@@ -64,7 +81,7 @@ INSERT INTO pincode_details (
 
 -- Table: pincodes
 CREATE TABLE pincodes (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid(),
     pin_id SERIAL ,
     PostOfficeName VARCHAR(256),
     Pincode VARCHAR(8),
@@ -94,7 +111,7 @@ INSERT INTO pincodes (
 
 -- Table: pkg_discount
 CREATE TABLE pkg_discount (
-    discount_id UUID NOT NULL PRIMARY KEY,
+    discount_id UUID DEFAULT gen_random_uuid(),
     id SERIAL ,
     discount_name VARCHAR(65),
     discount_mode INT,

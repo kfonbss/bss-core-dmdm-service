@@ -2,22 +2,38 @@
 DROP TABLE IF EXISTS partnerfinance2;
 
 CREATE TABLE partnerfinance2 (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid(),
   partnerfinanceid SERIAL ,
   partnerid bigint NOT NULL,
   cause varchar(128) NOT NULL,
-  lastupdate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  amount float(10) NOT NULL
+  amount float(10) NOT NULL,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
 );
 
-CREATE INDEX index_finance_group ON partnerfinance2(partnerid, cause, lastupdate);
+CREATE INDEX index_finance_group ON partnerfinance2(partnerid, cause, modified_date);
+
+INSERT INTO partnerfinance2 (
+    id, partnerfinanceid, partnerid, cause, amount, code, name, name_in_local,
+    is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), DEFAULT, 10001, 'Security Deposit', 25000.00, 'PF001',
+    'Security Deposit Entry', 'സെക്യൂരിറ്റി ഡെപ്പോസിറ്റ് എൻട്രി',
+    TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 
 -- Table: partnergroup
 DROP TABLE IF EXISTS partnergroup;
 
 CREATE TABLE partnergroup (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid(),
   partnergroupid SERIAL ,
   ibnp bigint DEFAULT NULL,
   ibwp bigint DEFAULT NULL,
@@ -40,7 +56,7 @@ CREATE INDEX index_group ON partnergroup(ibnp);
 DROP TABLE IF EXISTS partnergstdetail;
 
 CREATE TABLE partnergstdetail (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid(),
   partnerid bigint ,
   gstin varchar(20) DEFAULT NULL,
   sac varchar(20) DEFAULT NULL,
@@ -64,7 +80,7 @@ CREATE TABLE partnergstdetail (
 DROP TABLE IF EXISTS partnergstinvoice;
 
 CREATE TABLE partnergstinvoice (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid(),
   slno SERIAL ,
   state varchar(20) DEFAULT NULL,
   partnerid bigint DEFAULT NULL,
@@ -98,7 +114,7 @@ CREATE INDEX id_invoicemonth ON partnergstinvoice(invoicemonth);
 DROP TABLE IF EXISTS partneronlinerecharge;
 
 CREATE TABLE partneronlinerecharge (
-  recharge_id UUID NOT NULL PRIMARY KEY,
+  recharge_id UUID DEFAULT gen_random_uuid(),
   id BIGSERIAL ,
   ordernumber varchar(64) DEFAULT NULL,
   status char(18) DEFAULT NULL,
@@ -126,7 +142,7 @@ CREATE INDEX p_idx ON partneronlinerecharge(partnerid);
 DROP TABLE IF EXISTS partnerreciept;
 
 CREATE TABLE partnerreciept (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid(),
   recieptid SERIAL ,
   partnerid bigint NOT NULL,
   amount float(10) NOT NULL,
