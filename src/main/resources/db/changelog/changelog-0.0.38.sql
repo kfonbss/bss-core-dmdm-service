@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS caf_details CASCADE;
 
 CREATE TABLE caf_details (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   caf_no varchar(60) DEFAULT NULL,
   loc varchar(60) DEFAULT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE caf_details (
 DROP TABLE IF EXISTS campaign CASCADE;
 
 CREATE TABLE campaign (
-  campaign_uuid UUID NOT NULL,
+  campaign_uuid UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   campaign_id int NOT NULL,
   campaign_source varchar(200) DEFAULT NULL,
@@ -123,7 +123,7 @@ CREATE UNIQUE INDEX campaign_id_unique ON campaign (campaign_id);
 DROP TABLE IF EXISTS cause_details CASCADE;
 
 CREATE TABLE cause_details (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   rechargemode int DEFAULT NULL,
   sf_pscause varchar(250) DEFAULT NULL,
@@ -149,7 +149,7 @@ COMMENT ON COLUMN cause_details.is_active IS '0=Inactive,1=Active';
 DROP TABLE IF EXISTS ce_connection_breakup CASCADE;
 
 CREATE TABLE ce_connection_breakup (
-  breakup_id UUID NOT NULL,
+  breakup_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -177,11 +177,11 @@ VALUES ('2a9e5e6f-58e3-4b94-9b91-fc7e2f8e2a19', 'CE001', 'Enterprise Fiber Conne
 DROP TABLE IF EXISTS ce_connection_breakup_movement CASCADE;
 
 CREATE TABLE ce_connection_breakup_movement (
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
   is_active BOOLEAN,
-  movement_id UUID NOT NULL,
   id SERIAL,
   breakupid int DEFAULT NULL,
   quoationid int DEFAULT NULL,
@@ -201,7 +201,7 @@ VALUES ('b8e1c5f7-01a2-4db3-8a73-3c34f1d8d1c1', 'MOV001', 'Initial Connection Mo
 DROP TABLE IF EXISTS ce_connection_breakup_movement_revision CASCADE;
 
 CREATE TABLE ce_connection_breakup_movement_revision (
-  revision_id UUID NOT NULL,
+  revision_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -225,7 +225,7 @@ VALUES ('9c7d2e2f-45b8-4f32-9b77-9e6b9a2a1f77', 'RI001','Revised Connection Move
 DROP TABLE IF EXISTS ce_customers CASCADE;
 
 CREATE TABLE ce_customers (
-  customer_id UUID NOT NULL,
+  customer_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   id SERIAL,
   name VARCHAR(255),
@@ -273,7 +273,7 @@ VALUES
 DROP TABLE IF EXISTS ce_disbursement CASCADE;
 
 CREATE TABLE ce_disbursement (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),

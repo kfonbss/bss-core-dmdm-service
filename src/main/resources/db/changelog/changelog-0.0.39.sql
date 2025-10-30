@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_disbursement_history CASCADE;
 
 CREATE TABLE ce_disbursement_history (
-  history_id UUID NOT NULL,
+  history_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -33,7 +33,7 @@ VALUES (gen_random_uuid(), 'HA001','Subscriber Revenue Distribution History', '�
 DROP TABLE IF EXISTS ce_dnote_master CASCADE;
 
 CREATE TABLE ce_dnote_master (
-  master_id UUID NOT NULL,
+  master_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -78,7 +78,7 @@ VALUES (gen_random_uuid(), 'MA001', 'Quarterly Disbursement Note', 'ത്രൈ
 DROP TABLE IF EXISTS ce_dnote_renewal_history CASCADE;
 
 CREATE TABLE ce_dnote_renewal_history (
-  history_id UUID NOT NULL,
+  history_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -117,7 +117,7 @@ VALUES (gen_random_uuid(),'HS001', 'Renewal Entry - October 2025', 'പുതു
 DROP TABLE IF EXISTS ce_eodetails CASCADE;
 
 CREATE TABLE ce_eodetails (
-  eodetails_id UUID NOT NULL,
+  eodetails_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -147,7 +147,7 @@ VALUES (gen_random_uuid(), 'EO001','End Office Fiber Installation', 'എൻഡ�
 DROP TABLE IF EXISTS ce_inovoice CASCADE;
 
 CREATE TABLE ce_inovoice (
-  inovoice_id UUID NOT NULL,
+  inovoice_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -194,7 +194,7 @@ VALUES (gen_random_uuid(), 'INV001', 'Test Invoice', 'ടെസ്റ്റ് �
 DROP TABLE IF EXISTS ce_inovoice_master CASCADE;
 
 CREATE TABLE ce_inovoice_master (
-  master_id UUID NOT NULL,
+  master_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -244,7 +244,7 @@ VALUES (gen_random_uuid(), 'INV-M001', 'Broadband October Invoice', 'ബ്ര�
 DROP TABLE IF EXISTS ce_kyc_details CASCADE;
 
 CREATE TABLE ce_kyc_details (
-  kyc_id UUID NOT NULL,
+  kyc_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -278,7 +278,7 @@ VALUES (gen_random_uuid(), 'KYC001', 'John Traders Pvt Ltd', 'ജോൺ ട്�
 DROP TABLE IF EXISTS ce_location_movement CASCADE;
 
 CREATE TABLE ce_location_movement (
-  movement_id UUID NOT NULL,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),

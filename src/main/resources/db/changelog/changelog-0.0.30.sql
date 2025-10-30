@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS approvestatus CASCADE;
 
 CREATE TABLE approvestatus (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   status varchar(25) DEFAULT NULL,
   status_id int DEFAULT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE approvestatus (
 DROP TABLE IF EXISTS atom_refund_details CASCADE;
 
 CREATE TABLE atom_refund_details (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   orderid int DEFAULT NULL,
   orderd_sate_code varchar(100) DEFAULT NULL,
@@ -45,7 +45,7 @@ COMMENT ON COLUMN atom_refund_details.refund_requested_status IS '0=Means Not Fo
 DROP TABLE IF EXISTS atommerchantdetail CASCADE;
 
 CREATE TABLE atommerchantdetail (
-  detail_id UUID NOT NULL,
+  detail_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   merchanttid varchar(45) NOT NULL,
   merchantpassword varchar(45) NOT NULL,

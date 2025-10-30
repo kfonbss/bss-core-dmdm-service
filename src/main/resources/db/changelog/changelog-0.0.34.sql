@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS billdesksub CASCADE;
 
 CREATE TABLE billdesksub (
-  sub_id UUID NOT NULL,
+  sub_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id BIGSERIAL,
   ORDERNUMBER varchar(45) NOT NULL,
   status varchar(45) NOT NULL DEFAULT 'PENDING',
@@ -29,7 +29,7 @@ CREATE INDEX order_sub_idx ON billdesksub (ORDERNUMBER, subscriberid);
 DROP TABLE IF EXISTS billing_plans CASCADE;
 
 CREATE TABLE billing_plans (
-  plans_id UUID NOT NULL,
+  plans_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   planName varchar(128) DEFAULT NULL,
   planId varchar(128) DEFAULT NULL,
@@ -63,7 +63,7 @@ CREATE INDEX planName_idx ON billing_plans (planName);
 DROP TABLE IF EXISTS billmimotransaction CASCADE;
 
 CREATE TABLE billmimotransaction (
-  transaction_id UUID NOT NULL,
+  transaction_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id BIGSERIAL,
   subscriberid int NOT NULL,
   amount decimal(13,2) DEFAULT NULL,

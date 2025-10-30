@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS billdesk CASCADE;
 
 CREATE TABLE billdesk (
-  desk_id UUID NOT NULL,
+  desk_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id BIGSERIAL,
   ORDERNUMBER varchar(45) NOT NULL,
   status varchar(45) NOT NULL DEFAULT 'PENDING',
@@ -31,7 +31,7 @@ CREATE INDEX order_idx ON billdesk (ORDERNUMBER);
 DROP TABLE IF EXISTS billdesk_conf CASCADE;
 
 CREATE TABLE billdesk_conf (
-  conf_id UUID NOT NULL,
+  conf_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   MID varchar(45) DEFAULT NULL,
   SECURITYID varchar(45) DEFAULT NULL,

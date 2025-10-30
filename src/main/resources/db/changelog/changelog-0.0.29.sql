@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS appliedonline_partners CASCADE;
 
 CREATE TABLE appliedonline_partners (
-  partners_id UUID NOT NULL,
+  partners_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id BIGSERIAL,
   ptnr_name varchar(200) DEFAULT NULL,
   ptnr_mobile varchar(10) DEFAULT NULL,

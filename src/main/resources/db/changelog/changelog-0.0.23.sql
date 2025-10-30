@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS anp_field_engg CASCADE;
 
 CREATE TABLE anp_field_engg (
-  engg_id UUID NOT NULL,
+  engg_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   emp_id varchar(10) DEFAULT NULL,
   partnerid bigint DEFAULT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE anp_field_engg (
 DROP TABLE IF EXISTS anp_users CASCADE;
 
 CREATE TABLE anp_users (
-  anp_users_id UUID NOT NULL,
+  anp_users_id UUID DEFAULT gen_random_uuid() NOT NULL,
   user_id SERIAL,
   user_name varchar(64) DEFAULT NULL,
   emp_name varchar(150) DEFAULT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE anp_users (
 DROP TABLE IF EXISTS anpfeedback CASCADE;
 
 CREATE TABLE anpfeedback (
-  feedback_id UUID NOT NULL,
+  feedback_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   discription varchar(50) DEFAULT NULL,
   score int DEFAULT NULL,

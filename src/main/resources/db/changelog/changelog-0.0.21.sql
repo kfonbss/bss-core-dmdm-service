@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS admin CASCADE;
 
 CREATE TABLE admin (
-  admin_id UUID NOT NULL,
+  admin_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   username varchar(255) NOT NULL,
   password varchar(255) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE admin (
 DROP TABLE IF EXISTS admin_preferences CASCADE;
 
 CREATE TABLE admin_preferences (
-  preferences_id UUID NOT NULL,
+  preferences_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   user_panel boolean NOT NULL DEFAULT false,
   sidebar_form boolean NOT NULL DEFAULT false,
@@ -32,7 +32,7 @@ CREATE TABLE admin_preferences (
 DROP TABLE IF EXISTS advance_topup_receipt CASCADE;
 
 CREATE TABLE advance_topup_receipt (
-  receipt_id UUID NOT NULL,
+  receipt_id UUID DEFAULT gen_random_uuid() NOT NULL,
   receiptid BIGSERIAL,
   receipt_no varchar(45) DEFAULT NULL,
   receipt_date timestamp DEFAULT NULL,

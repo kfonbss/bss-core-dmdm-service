@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS api_configuration_details CASCADE;
 
 CREATE TABLE api_configuration_details (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   api_id int NOT NULL,
   endpoint varchar(300) DEFAULT NULL,
@@ -17,7 +17,7 @@ CREATE UNIQUE INDEX idx_api_id ON api_configuration_details (api_id);
 DROP TABLE IF EXISTS apikeys CASCADE;
 
 CREATE TABLE apikeys (
-  keys_id UUID NOT NULL,
+  keys_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   user_id int NOT NULL,
   apikey varchar(40) NOT NULL,

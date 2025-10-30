@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ce_purchase_order CASCADE;
 
 CREATE TABLE ce_purchase_order (
-  order_id UUID NOT NULL,
+  order_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   customerid int DEFAULT NULL,
   quotationid int DEFAULT NULL,
@@ -32,7 +32,7 @@ COMMENT ON COLUMN ce_purchase_order.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_quoations CASCADE;
 
 CREATE TABLE ce_quoations (
-  quoations_id UUID NOT NULL,
+  quoations_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   customerid int DEFAULT NULL,
   quotation_name varchar(100) DEFAULT NULL,
@@ -60,7 +60,7 @@ COMMENT ON COLUMN ce_quoations.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_quoations_movement CASCADE;
 
 CREATE TABLE ce_quoations_movement (
-  movement_id UUID NOT NULL,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   quoationid int DEFAULT NULL,
   approve_status int DEFAULT NULL,
@@ -81,7 +81,7 @@ COMMENT ON COLUMN ce_quoations_movement.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_quoations_revision CASCADE;
 
 CREATE TABLE ce_quoations_revision (
-  revision_id UUID NOT NULL,
+  revision_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   proposalid int DEFAULT NULL,
   remarks text DEFAULT NULL,
@@ -104,7 +104,7 @@ COMMENT ON COLUMN ce_quoations_revision.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_renewal_details CASCADE;
 
 CREATE TABLE ce_renewal_details (
-  details_id UUID NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   locid int DEFAULT NULL,
   subscriberid int DEFAULT NULL,
@@ -130,7 +130,7 @@ COMMENT ON COLUMN ce_renewal_details.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_revision_connection_breakup CASCADE;
 
 CREATE TABLE ce_revision_connection_breakup (
-  breakup_id UUID NOT NULL,
+  breakup_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   serviceid int DEFAULT NULL,
   revi_quoationid int DEFAULT NULL,
@@ -153,7 +153,7 @@ COMMENT ON COLUMN ce_revision_connection_breakup.is_active IS '0=In Active,1=Act
 DROP TABLE IF EXISTS ce_service_list CASCADE;
 
 CREATE TABLE ce_service_list (
-  list_id UUID NOT NULL,
+  list_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   serviceid int DEFAULT NULL,
   servicename varchar(50) DEFAULT NULL,
@@ -170,7 +170,7 @@ COMMENT ON COLUMN ce_service_list.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS ce_sub_customers CASCADE;
 
 CREATE TABLE ce_sub_customers (
-  customers_id UUID NOT NULL,
+  customers_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   customerid varchar(100) DEFAULT NULL,
   company_name varchar(200) DEFAULT NULL,

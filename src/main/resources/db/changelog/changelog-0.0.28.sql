@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS appliedonline_darkfibre CASCADE;
 
 CREATE TABLE appliedonline_darkfibre (
-  darkfibre_id UUID NOT NULL,
+  darkfibre_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   firm_name varchar(256) DEFAULT NULL,
   address text DEFAULT NULL,
@@ -43,7 +43,7 @@ CREATE UNIQUE INDEX contact_email_unique ON appliedonline_darkfibre (contact_ema
 DROP TABLE IF EXISTS appliedonline_eo CASCADE;
 
 CREATE TABLE appliedonline_eo (
-  eo_id UUID NOT NULL,
+  eo_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id BIGSERIAL,
   prefix varchar(10) DEFAULT NULL,
   cus_name varchar(200) DEFAULT NULL,
