@@ -1,7 +1,7 @@
 -- Drop table if exists
 DROP TABLE IF EXISTS track_email_mobile;
 CREATE TABLE track_email_mobile (
-    track_id UUID NOT NULL PRIMARY KEY,
+    track_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     subid VARCHAR(20),
     old_changes VARCHAR(50),
@@ -14,7 +14,7 @@ CREATE TABLE track_email_mobile (
 
 DROP TABLE IF EXISTS trai_closedtickets;
 CREATE TABLE trai_closedtickets (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     April NUMERIC(23,0),
     may NUMERIC(23,0),
     June NUMERIC(23,0)
@@ -24,7 +24,7 @@ CREATE TABLE trai_closedtickets (
 
 DROP TABLE IF EXISTS trai_opentickets;
 CREATE TABLE trai_opentickets (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     April NUMERIC(23,0),
     may NUMERIC(23,0),
     June NUMERIC(23,0)
@@ -34,7 +34,7 @@ CREATE TABLE trai_opentickets (
 
 DROP TABLE IF EXISTS trai_tickets;
 CREATE TABLE trai_tickets (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     closed NUMERIC(23,0),
     total BIGINT NOT NULL DEFAULT 0
 );
@@ -43,7 +43,7 @@ CREATE TABLE trai_tickets (
 
 DROP TABLE IF EXISTS traiupdatedetail;
 CREATE TABLE traiupdatedetail (
-    update_id UUID NOT NULL PRIMARY KEY,
+    update_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id BIGSERIAL,
     packagenum VARCHAR(64),
     packageid BIGINT,
@@ -54,7 +54,7 @@ CREATE TABLE traiupdatedetail (
 -- Drop table if exists
 DROP TABLE IF EXISTS tickets;
 CREATE TABLE tickets (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     ticketid BIGSERIAL,
     submit_date TIMESTAMP,
     due_date TIMESTAMP,
@@ -122,7 +122,7 @@ CREATE TABLE tickets_backup AS TABLE tickets WITH NO DATA;
 
 DROP TABLE IF EXISTS top_menus;
 CREATE TABLE top_menus (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     menuid SERIAL,
     parent_menuid INT DEFAULT 0 NOT NULL,
     icon VARCHAR(100) NOT NULL,

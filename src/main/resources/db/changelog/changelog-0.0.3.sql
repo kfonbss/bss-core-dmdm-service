@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS vas_subscription CASCADE;
 
 -- Table: vas_subscription
 CREATE TABLE vas_subscription (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   subscriberid BIGINT,
   pb_expiry TIMESTAMP NULL,
   packageid INT DEFAULT 1,
@@ -18,7 +18,7 @@ CREATE TABLE vas_subscription (
 DROP TABLE IF EXISTS village_types CASCADE;
 
 CREATE TABLE village_types (
-  village_id UUID NOT NULL PRIMARY KEY,
+  village_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id BIGSERIAL,
   village_type_id INT,
   village_type VARCHAR(50),
@@ -32,7 +32,7 @@ CREATE TABLE village_types (
 DROP TABLE IF EXISTS vlanrequest_movement CASCADE;
 
 CREATE TABLE vlanrequest_movement (
-  movement_id UUID NOT NULL PRIMARY KEY,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id BIGSERIAL,
   reqid INT,
   partnerid BIGINT,
@@ -47,7 +47,7 @@ CREATE TABLE vlanrequest_movement (
 DROP TABLE IF EXISTS vlanrequests CASCADE;
 
 CREATE TABLE vlanrequests (
-  request_id UUID NOT NULL PRIMARY KEY,
+  request_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id BIGSERIAL,
   partnerid BIGINT NOT NULL,
   pop_name VARCHAR(50),

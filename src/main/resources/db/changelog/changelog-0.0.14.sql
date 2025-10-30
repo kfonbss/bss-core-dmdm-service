@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS special_plans CASCADE;
 
 -- Table: sop_doc_details_movement
 CREATE TABLE sop_doc_details_movement (
-  movement_id UUID NOT NULL PRIMARY KEY,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   sop_doc_id INT NOT NULL,
   status VARCHAR(100) DEFAULT 'Open',
@@ -20,7 +20,7 @@ CREATE TABLE sop_doc_details_movement (
 
 -- Table: sop_sub_category
 CREATE TABLE sop_sub_category (
-  category_id UUID NOT NULL PRIMARY KEY,
+  category_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   deptid INT NOT NULL,
   catid INT NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE sop_sub_category (
 
 -- Table: sourcemaster
 CREATE TABLE sourcemaster (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno INTEGER NOT NULL DEFAULT 0,
   source VARCHAR(40),
   statuscode VARCHAR(10)
@@ -41,7 +41,7 @@ CREATE TABLE sourcemaster (
 
 -- Table: sp_profile
 CREATE TABLE sp_profile (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   speedinkbps VARCHAR(25),
   m_profile VARCHAR(45),
   j_profile VARCHAR(45)
@@ -49,7 +49,7 @@ CREATE TABLE sp_profile (
 
 -- Table: special_incentive
 CREATE TABLE special_incentive (
-  incentive_id UUID NOT NULL PRIMARY KEY,
+  incentive_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   scheme VARCHAR(20),
   plantype VARCHAR(10),
@@ -72,7 +72,7 @@ CREATE TABLE special_incentive (
 
 -- Table: special_plans
 CREATE TABLE special_plans (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   packageid SERIAL,
   packagename VARCHAR(64),
   renewperiod INT,

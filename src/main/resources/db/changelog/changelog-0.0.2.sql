@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS wofinance CASCADE;
 -- Table: vlantable
 -- ========================================
 CREATE TABLE vlantable (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   vlantableid SERIAL,
   partnerid VARCHAR(45),
   vlanname VARCHAR(128),
@@ -27,7 +27,7 @@ CREATE TABLE vlantable (
 -- Table: vrfattri_ptnrdemousers
 -- ========================================
 CREATE TABLE vrfattri_ptnrdemousers (
-  demo_user_id UUID NOT NULL PRIMARY KEY,
+  demo_user_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   username VARCHAR(64),
   partnerid BIGINT,
@@ -41,7 +41,7 @@ CREATE TABLE vrfattri_ptnrdemousers (
 -- Table: vrfattri_users
 -- ========================================
 CREATE TABLE vrfattri_users (
-  user_id UUID NOT NULL PRIMARY KEY,
+  user_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id BIGSERIAL,
   subscriberid BIGINT,
   username VARCHAR(256),
@@ -57,7 +57,7 @@ CREATE TABLE vrfattri_users (
 -- Table: wofinance
 -- ========================================
 CREATE TABLE wofinance (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   wofinanceid BIGSERIAL,
   workorderid VARCHAR(45),
   amount NUMERIC(10,2),

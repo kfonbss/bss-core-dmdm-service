@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS GST CASCADE;
 
 CREATE TABLE GST (
-  gst_id UUID NOT NULL,
+  gst_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   STCode char(3) DEFAULT NULL,
   Taxtype varchar(15) DEFAULT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE GST (
 DROP TABLE IF EXISTS NMS_response CASCADE;
 
 CREATE TABLE NMS_response (
-  response_id UUID NOT NULL,
+  response_id UUID DEFAULT gen_random_uuid() NOT NULL,
   json_response text DEFAULT NULL,
   call_type text DEFAULT NULL,
   update_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -25,7 +25,7 @@ CREATE TABLE NMS_response (
 DROP TABLE IF EXISTS STATE_DIST_SUBDIST_BLOCK CASCADE;
 
 CREATE TABLE STATE_DIST_SUBDIST_BLOCK (
-  block_id UUID NOT NULL,
+  block_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id BIGSERIAL,
   StateName varchar(64) DEFAULT NULL,
   STCode char(3) DEFAULT NULL,

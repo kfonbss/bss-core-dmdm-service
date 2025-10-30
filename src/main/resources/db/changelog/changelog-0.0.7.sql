@@ -1,7 +1,7 @@
 -- Table structure for talukdetail
 DROP TABLE IF EXISTS talukdetail;
 CREATE TABLE talukdetail (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL,
     oltabid VARCHAR(50),
     region VARCHAR(100),
@@ -13,7 +13,7 @@ CREATE TABLE talukdetail (
 -- Table structure for talukdetail1
 DROP TABLE IF EXISTS talukdetail1;
 CREATE TABLE talukdetail1 (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     subscriberid VARCHAR(50),
     oltabid VARCHAR(50),
     officename VARCHAR(100),
@@ -26,7 +26,7 @@ CREATE TABLE talukdetail1 (
 -- Table structure for talukdetail_allcircle
 DROP TABLE IF EXISTS talukdetail_allcircle;
 CREATE TABLE talukdetail_allcircle (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     officename VARCHAR(255),
     region VARCHAR(255),
     taluk VARCHAR(255),
@@ -38,7 +38,7 @@ CREATE TABLE talukdetail_allcircle (
 -- Table structure for taxcollection
 DROP TABLE IF EXISTS taxcollection;
 CREATE TABLE taxcollection (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     code VARCHAR(45),
     name VARCHAR(255),
     name_in_local VARCHAR(255),
@@ -74,7 +74,7 @@ INSERT INTO taxcollection (
 -- Table structure for taxdetail
 DROP TABLE IF EXISTS taxdetail;
 CREATE TABLE taxdetail (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     code VARCHAR(45),
     name VARCHAR(255),
     name_in_local VARCHAR(255),
@@ -119,7 +119,7 @@ VALUES (
 -- Table structure for taxdisbursement
 DROP TABLE IF EXISTS taxdisbursement;
 CREATE TABLE taxdisbursement (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     code VARCHAR(45),
     name VARCHAR(255),
     name_in_local VARCHAR(255),
@@ -141,7 +141,7 @@ CREATE TABLE taxdisbursement (
 -- Table structure for taxdistribution
 DROP TABLE IF EXISTS taxdistribution;
 CREATE TABLE taxdistribution (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     code VARCHAR(45),
     name VARCHAR(255),
     name_in_local VARCHAR(255),

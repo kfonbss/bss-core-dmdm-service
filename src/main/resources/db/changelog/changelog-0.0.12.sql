@@ -1,7 +1,7 @@
 -- Table: streetbox_location
 DROP TABLE IF EXISTS streetbox_location;
 CREATE TABLE streetbox_location (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     Equipment_Name VARCHAR(100),
     POP_Name VARCHAR(100),
     District VARCHAR(25),
@@ -16,7 +16,7 @@ CREATE TABLE streetbox_location (
 -- Table: sub_cause_details
 DROP TABLE IF EXISTS sub_cause_details;
 CREATE TABLE sub_cause_details (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     cause_id SERIAL,
     sfin_outflow VARCHAR(50),
     disb_inflow VARCHAR(50),
@@ -42,7 +42,7 @@ CREATE TABLE sub_cause_details (
 -- Table: sub_invoice
 DROP TABLE IF EXISTS sub_invoice;
 CREATE TABLE sub_invoice (
-    invoice_id UUID NOT NULL PRIMARY KEY,
+    invoice_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     subscriberid BIGINT,
     cause VARCHAR(100),
@@ -77,7 +77,7 @@ CREATE TABLE sub_invoice (
 -- Table: sub_mbalance
 DROP TABLE IF EXISTS sub_mbalance;
 CREATE TABLE sub_mbalance (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     subscriberid INT,
     amount NUMERIC(10,2)
 );
@@ -85,7 +85,7 @@ CREATE TABLE sub_mbalance (
 -- Table: sub_package
 DROP TABLE IF EXISTS sub_package;
 CREATE TABLE sub_package (
-   sub_package_id UUID NOT NULL PRIMARY KEY,
+   sub_package_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     comp_packageid INT DEFAULT 0,
     packagevalue NUMERIC(10,2) DEFAULT 0.00,
@@ -103,7 +103,7 @@ CREATE TABLE sub_package (
 -- Table: sub_package_servicetype
 DROP TABLE IF EXISTS sub_package_servicetype;
 CREATE TABLE sub_package_servicetype (
-    service_type_id UUID NOT NULL PRIMARY KEY,
+    service_type_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     service_type INT,
     description VARCHAR(100),

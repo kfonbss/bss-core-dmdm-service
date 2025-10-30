@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS access CASCADE;
 
 CREATE TABLE access (
-  access_id UUID NOT NULL,
+  access_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   apikey varchar(40) NOT NULL DEFAULT '',
   all_access boolean NOT NULL DEFAULT false,
@@ -15,7 +15,7 @@ CREATE TABLE access (
 DROP TABLE IF EXISTS accessgroup CASCADE;
 
 CREATE TABLE accessgroup (
-  group_id UUID NOT NULL,
+  group_id UUID DEFAULT gen_random_uuid() NOT NULL,
   accessgroupid SERIAL,
   accessname varchar(45) NOT NULL,
   accesstypeid int NOT NULL,
@@ -30,7 +30,7 @@ CREATE INDEX idx_accessgroup_accesstypeid  ON accessgroup (accesstypeid);
 DROP TABLE IF EXISTS accesstype CASCADE;
 
 CREATE TABLE accesstype (
-  type_id UUID NOT NULL,
+  type_id UUID DEFAULT gen_random_uuid() NOT NULL,
   accesstypeid SERIAL,
   accesstype varchar(45) NOT NULL,
   lastupdate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

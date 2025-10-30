@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS actonrecharge CASCADE;
 
 CREATE TABLE actonrecharge (
-  recharge_id UUID NOT NULL,
+  recharge_id UUID DEFAULT gen_random_uuid() NOT NULL,
   rechargeid BIGSERIAL,
   subscriberid int NOT NULL,
   recieptdate timestamp NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE actonrecharge (
 DROP TABLE IF EXISTS addl_data_plans CASCADE;
 
 CREATE TABLE addl_data_plans (
-  plans_id UUID NOT NULL,
+  plans_id UUID DEFAULT gen_random_uuid() NOT NULL,
   planid SERIAL,
   plan varchar(64) DEFAULT NULL,
   planfee decimal(10,2) DEFAULT NULL,

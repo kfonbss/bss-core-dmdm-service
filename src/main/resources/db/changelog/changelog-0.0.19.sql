@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS acs_config CASCADE;
 
 CREATE TABLE acs_config (
-  config_id UUID NOT NULL,
+  config_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   default_username varchar(100) DEFAULT NULL,
   api_end_point varchar(100) DEFAULT NULL,
@@ -17,7 +17,7 @@ COMMENT ON COLUMN acs_config.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS acs_device_provisioning CASCADE;
 
 CREATE TABLE acs_device_provisioning (
-  provisioning_id UUID NOT NULL,
+  provisioning_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   username varchar(64) DEFAULT NULL,
   password varchar(45) DEFAULT NULL,
