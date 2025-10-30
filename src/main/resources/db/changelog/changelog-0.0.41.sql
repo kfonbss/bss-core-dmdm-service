@@ -38,22 +38,32 @@ INSERT INTO ce_package (
 DROP TABLE IF EXISTS ce_parent_customers CASCADE;
 
 CREATE TABLE ce_parent_customers (
-  customers_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  customer_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
   id SERIAL,
   department_name varchar(250) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
-  CONSTRAINT pk_ce_parent_customers PRIMARY KEY (customers_id)
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+  CONSTRAINT pk_ce_parent_customers PRIMARY KEY (customer_id)
 );
-
-COMMENT ON COLUMN ce_parent_customers.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_parent_customers (
+    customer_id, code, name, name_in_local, department_name, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'CUST001', 'Kerala Education Department', 'കേരള വിദ്യാഭ്യാസ വകുപ്പ്', 'Education Department', gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS ce_payment_history CASCADE;
 
 CREATE TABLE ce_payment_history (
   history_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
   id SERIAL,
   invoiceid varchar(15) DEFAULT NULL,
   utr_number varchar(25) DEFAULT NULL,
@@ -61,13 +71,19 @@ CREATE TABLE ce_payment_history (
   it_tdsamount decimal(10,2) DEFAULT 0.00,
   gst_tdsamount decimal(10,2) DEFAULT 0.00,
   payment_recipt varchar(150) DEFAULT NULL,
-  created_by varchar(150) DEFAULT NULL,
-  created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  updated_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  is_active  int DEFAULT 1,
+  created_by_platform varchar(150) DEFAULT NULL,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_payment_history PRIMARY KEY (history_id)
 );
 
+INSERT INTO ce_payment_history (
+    history_id, code, name, name_in_local, invoiceid, utr_number, amount, it_tdsamount, gst_tdsamount, payment_recipt, created_by_platform, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'PAY001', 'First Payment - Renewal', 'ആദ്യ പേയ്മെന്റ് - പുതുക്കൽ', 'INV2025-001', 'UTR9876543210', '1500', 50.00, 25.00, 'receipt_2025.pdf', 'WebPortal', gen_random_uuid(), gen_random_uuid()
+);
 
 DROP TABLE IF EXISTS ce_payment_kyc_details CASCADE;
 

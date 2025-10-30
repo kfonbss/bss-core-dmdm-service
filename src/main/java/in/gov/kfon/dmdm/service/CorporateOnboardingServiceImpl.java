@@ -40,6 +40,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CeOnlineApplicationRepository onlineApplicationRepository;
   private final CeOtcInvoiceRepository invoiceRepository;
   private final CePackageRepository packageRepository;
+  private final CeParentCustomersRepository parentCustomersRepository;
+  private final CePaymentHistoryRepository paymentHistoryRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -71,6 +73,14 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
     // forOnlineApplication
     modelMapper.addMappings(
         new PropertyMap<CeOnlineApplication, CommonLookUp>() {
+          @Override
+          protected void configure() {
+            skip(destination.getId());
+          }
+        });
+    // For Payment History
+    modelMapper.addMappings(
+        new PropertyMap<CePaymentHistory, CommonLookUp>() {
           @Override
           protected void configure() {
             skip(destination.getId());
@@ -476,5 +486,50 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> parentCustomersFetchAll() {
+    return parentCustomersRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp parentCustomersFetchById(UUID id) {
+    CeParentCustomers entity =
+        parentCustomersRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> paymentHistoryFetchAll() {
+    return paymentHistoryRepository.findAll().stream()
+        .map(
+            paymentHistory -> {
+              CommonLookUp lookup = modelMapper.map(paymentHistory, CommonLookUp.class);
+              lookup.setId(paymentHistory.getHistoryId());
+              return lookup;
+            })
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp paymentHistoryFetchById(UUID id) {
+    CePaymentHistory paymentHistory =
+        paymentHistoryRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+
+    CommonLookUp lookup = modelMapper.map(paymentHistory, CommonLookUp.class);
+    lookup.setId(paymentHistory.getHistoryId());
+
+    return lookup;
   }
 }

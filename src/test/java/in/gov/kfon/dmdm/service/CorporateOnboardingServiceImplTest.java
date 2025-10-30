@@ -38,6 +38,8 @@ class CorporateOnboardingServiceImplTest {
   private CeOnlineApplicationRepository onlineApplicationRepository;
   private CeOtcInvoiceRepository invoiceRepository;
   private CePackageRepository packageRepository;
+  private CeParentCustomersRepository parentCustomersRepository;
+  private CePaymentHistoryRepository paymentHistoryRepository;
 
   @BeforeEach
   void setUp() {
@@ -62,7 +64,8 @@ class CorporateOnboardingServiceImplTest {
     onlineApplicationRepository = mock(CeOnlineApplicationRepository.class);
     invoiceRepository = mock(CeOtcInvoiceRepository.class);
     packageRepository = mock(CePackageRepository.class);
-
+    parentCustomersRepository = mock(CeParentCustomersRepository.class);
+    paymentHistoryRepository = mock(CePaymentHistoryRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -85,7 +88,9 @@ class CorporateOnboardingServiceImplTest {
             locationsRepository,
             onlineApplicationRepository,
             invoiceRepository,
-            packageRepository);
+            packageRepository,
+            parentCustomersRepository,
+            paymentHistoryRepository);
 
     service.setupMapper();
   }
@@ -800,5 +805,75 @@ class CorporateOnboardingServiceImplTest {
     when(packageRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.packageFetchById(id));
+  }
+
+  @Test
+  void testParentCustomersFetchAll_ShouldReturnMappedList() {
+    CeParentCustomers parentCustomers = new CeParentCustomers();
+    parentCustomers.setCustomerId(UUID.randomUUID());
+
+    when(parentCustomersRepository.findAll()).thenReturn(List.of(parentCustomers));
+
+    List<CommonLookUp> result = service.parentCustomersFetchAll();
+
+    assertEquals(1, result.size());
+    verify(parentCustomersRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testParentCustomersFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeParentCustomers parentCustomers = new CeParentCustomers();
+    parentCustomers.setCustomerId(id);
+
+    when(parentCustomersRepository.findById(id)).thenReturn(Optional.of(parentCustomers));
+
+    CommonLookUp result = service.parentCustomersFetchById(id);
+
+    assertNotNull(result);
+    verify(parentCustomersRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testParentCustomersFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(parentCustomersRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.paymentHistoryFetchById(id));
+  }
+
+  @Test
+  void testPaymentHistoryFetchAll_ShouldReturnMappedList() {
+    CePaymentHistory paymentHistory = new CePaymentHistory();
+    paymentHistory.setHistoryId(UUID.randomUUID());
+
+    when(paymentHistoryRepository.findAll()).thenReturn(List.of(paymentHistory));
+
+    List<CommonLookUp> result = service.paymentHistoryFetchAll();
+
+    assertEquals(1, result.size());
+    verify(paymentHistoryRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testPaymentHistoryFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CePaymentHistory paymentHistory = new CePaymentHistory();
+    paymentHistory.setHistoryId(id);
+
+    when(paymentHistoryRepository.findById(id)).thenReturn(Optional.of(paymentHistory));
+
+    CommonLookUp result = service.paymentHistoryFetchById(id);
+
+    assertNotNull(result);
+    verify(paymentHistoryRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testPaymentHistoryFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(paymentHistoryRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.paymentHistoryFetchById(id));
   }
 }
