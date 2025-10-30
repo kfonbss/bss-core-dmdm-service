@@ -159,3 +159,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.21.0] - 2025-10-30
 ### Added
 -  Get partner finance and taxpayer log details
+
+## [0.22.0] - 2025-10-30
+### Added
+-  Dmdm - altering table UUID
