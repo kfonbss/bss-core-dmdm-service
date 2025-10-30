@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS field_eng CASCADE;
 
 CREATE TABLE field_eng (
-  field_eng_id UUID NOT NULL,
+  field_eng_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   emp_name varchar(30) DEFAULT NULL,
   user_name varchar(30) DEFAULT NULL,
@@ -22,7 +22,7 @@ CONSTRAINT pk_field_eng PRIMARY KEY (field_eng_id)
 DROP TABLE IF EXISTS field_eng_district CASCADE;
 
 CREATE TABLE field_eng_district (
-  field_eng_district_id UUID NOT NULL,
+  field_eng_district_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   district varchar(30) DEFAULT NULL,
   code varchar(30) DEFAULT NULL,
@@ -38,7 +38,7 @@ CONSTRAINT pk_field_eng_district PRIMARY KEY (field_eng_district_id)
 DROP TABLE IF EXISTS fileupload CASCADE;
 
 CREATE TABLE fileupload (
-  fileupload_id UUID NOT NULL,
+  fileupload_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   time_date timestamp DEFAULT NULL,
   fileupload varchar(255) DEFAULT NULL,
@@ -62,7 +62,7 @@ CONSTRAINT pk_fileupload PRIMARY KEY (fileupload_id)
 DROP TABLE IF EXISTS fileupload_bank CASCADE;
 
 CREATE TABLE fileupload_bank (
-  fileupload_bank_id UUID NOT NULL,
+  fileupload_bank_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   time_date timestamp DEFAULT NULL,
   fileupload varchar(255) DEFAULT NULL,
@@ -82,7 +82,7 @@ CONSTRAINT pk_fileupload_bank PRIMARY KEY (fileupload_bank_id)
 DROP TABLE IF EXISTS fileuploads CASCADE;
 
 CREATE TABLE fileuploads (
-  fileuploads_id UUID NOT NULL,
+  fileuploads_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   time_date timestamp DEFAULT NULL,
   uploadedby varchar(100) DEFAULT NULL,
@@ -100,7 +100,7 @@ CONSTRAINT pk_fileuploads PRIMARY KEY (fileuploads_id)
 DROP TABLE IF EXISTS fin_agpinvoicing CASCADE;
 
 CREATE TABLE fin_agpinvoicing (
-  fin_agpinvoicing_id UUID NOT NULL,
+  fin_agpinvoicing_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   invoicemonth varchar(20) DEFAULT NULL,
   status INT DEFAULT NULL,

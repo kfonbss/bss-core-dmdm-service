@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS e_invoice_details CASCADE;
 
 CREATE TABLE e_invoice_details (
-  e_invoice_details_id UUID NOT NULL,
+  e_invoice_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   invoiceno varchar(20) DEFAULT NULL,
   invid int DEFAULT NULL,
@@ -29,7 +29,7 @@ CONSTRAINT pk_e_invoice_details PRIMARY KEY (e_invoice_details_id)
 DROP TABLE IF EXISTS einvoice_config CASCADE;
 
 CREATE TABLE einvoice_config (
-  einvoice_config_id UUID NOT NULL,
+  einvoice_config_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   username varchar(100) DEFAULT NULL,
   password varchar(100) DEFAULT NULL,
@@ -53,7 +53,7 @@ CONSTRAINT pk_einvoice_config PRIMARY KEY (einvoice_config_id)
 DROP TABLE IF EXISTS ekyc CASCADE;
 
 CREATE TABLE ekyc (
-  ekyc_id UUID NOT NULL,
+  ekyc_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   olid int  DEFAULT NULL,
   ce_kycid int DEFAULT NULL,
@@ -92,7 +92,7 @@ CONSTRAINT pk_ekyc PRIMARY KEY (ekyc_id)
 DROP TABLE IF EXISTS ekyc_auth_details CASCADE;
 
 CREATE TABLE ekyc_auth_details (
-  ekyc_auth_details_id UUID NOT NULL,
+  ekyc_auth_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   Id SERIAL,
   url varchar(100) DEFAULT NULL,
   submit_url varchar(100) DEFAULT NULL,
@@ -110,7 +110,7 @@ CONSTRAINT pk_ekyc_auth_details PRIMARY KEY (ekyc_auth_details_id)
 DROP TABLE IF EXISTS emp_plan CASCADE;
 
 CREATE TABLE emp_plan (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   emp_id SERIAL,
   emp_speed varchar(100) DEFAULT NULL,
   emp_rental varchar(100) DEFAULT NULL,
@@ -126,7 +126,7 @@ CONSTRAINT pk_emp_plan PRIMARY KEY (id)
 DROP TABLE IF EXISTS endoffice_master CASCADE;
 
 CREATE TABLE endoffice_master (
-  endoffice_master_id UUID NOT NULL,
+  endoffice_master_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   eo varchar(256) DEFAULT NULL,
   district char(50) DEFAULT NULL,

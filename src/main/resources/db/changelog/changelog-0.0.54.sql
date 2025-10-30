@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cor_fin_mspinvoicing_BKP CASCADE;
 
 CREATE TABLE cor_fin_mspinvoicing_BKP (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   invoicemonth varchar(20) DEFAULT NULL,
   status varchar(30) DEFAULT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE cor_fin_mspinvoicing_BKP (
 DROP TABLE IF EXISTS cor_fin_mspinvoicing_breakup CASCADE;
 
 CREATE TABLE cor_fin_mspinvoicing_breakup (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno int NOT NULL DEFAULT 0,
   invoicemonth varchar(20) DEFAULT NULL,
   status varchar(30) DEFAULT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE cor_fin_mspinvoicing_breakup (
 DROP TABLE IF EXISTS cor_lco_agp_approve CASCADE;
 
 CREATE TABLE cor_lco_agp_approve (
-  approve_id UUID NOT NULL,
+  approve_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno int NOT NULL DEFAULT 0,
   imonth varchar(10) DEFAULT NULL,
   approvedby varchar(100) DEFAULT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE cor_lco_agp_approve (
 DROP TABLE IF EXISTS cor_lco_agp_list CASCADE;
 
 CREATE TABLE cor_lco_agp_list (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   imonth varchar(10) DEFAULT NULL,
   partnerid varchar(25) DEFAULT NULL,
@@ -149,7 +149,7 @@ CREATE TABLE cor_lco_agp_list (
 DROP TABLE IF EXISTS cor_monthlyinvoice CASCADE;
 
 CREATE TABLE cor_monthlyinvoice (
-  invoice_id UUID NOT NULL,
+  invoice_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subgroup boolean DEFAULT NULL,
   type boolean DEFAULT true,

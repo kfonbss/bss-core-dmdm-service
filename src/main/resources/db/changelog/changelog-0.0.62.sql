@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS df_pop_list CASCADE;
 
 CREATE TABLE df_pop_list (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   df_pop_list_id SERIAL,
   pop_name VARCHAR(255),
   name VARCHAR(256),
@@ -32,7 +32,7 @@ INSERT INTO df_pop_list (
 DROP TABLE IF EXISTS df_power_rating CASCADE;
 
 CREATE TABLE df_power_rating (
-  df_power_rating_id UUID NOT NULL,
+  df_power_rating_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   amount int NOT NULL,
   power_rating varchar(255) DEFAULT NULL,
@@ -49,7 +49,7 @@ CONSTRAINT pk_df_power_rating PRIMARY KEY (df_power_rating_id)
 DROP TABLE IF EXISTS df_purchase_order CASCADE;
 
 CREATE TABLE df_purchase_order (
-  df_purchase_order_id UUID NOT NULL,
+  df_purchase_order_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   po_no varchar(30) DEFAULT NULL,
   po_no_cus varchar(30) DEFAULT NULL,
@@ -73,7 +73,7 @@ CONSTRAINT pk_df_purchase_order PRIMARY KEY (df_purchase_order_id)
 DROP TABLE IF EXISTS df_renewal_details CASCADE;
 
 CREATE TABLE df_renewal_details (
-  df_renewal_details_id UUID NOT NULL,
+  df_renewal_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   groupid int DEFAULT NULL,
   subscriberid int DEFAULT NULL,
@@ -97,7 +97,7 @@ CONSTRAINT pk_df_renewal_details PRIMARY KEY (df_renewal_details_id)
 DROP TABLE IF EXISTS df_subfinance CASCADE;
 
 CREATE TABLE df_subfinance (
-  df_subfinance_id UUID NOT NULL,
+  df_subfinance_id UUID DEFAULT gen_random_uuid() NOT NULL,
   subfinanceid SERIAL,
   subscriberid int NOT NULL,
   amount decimal(10,2) NOT NULL,
@@ -118,7 +118,7 @@ CONSTRAINT pk_df_subfinance PRIMARY KEY (df_subfinance_id)
 DROP TABLE IF EXISTS df_subscribers CASCADE;
 
 CREATE TABLE df_subscribers (
-  df_subscribers_id UUID NOT NULL,
+  df_subscribers_id UUID DEFAULT gen_random_uuid() NOT NULL,
   subscriberid SERIAL,
   username varchar(64) DEFAULT NULL,
   password varchar(50) DEFAULT NULL,
@@ -143,7 +143,7 @@ CONSTRAINT pk_df_subscribers PRIMARY KEY (df_subscribers_id)
 DROP TABLE IF EXISTS df_trans_renewal_details CASCADE;
 
 CREATE TABLE df_trans_renewal_details (
-  df_trans_renewal_details_id UUID NOT NULL,
+  df_trans_renewal_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   mg_invoiceid int DEFAULT NULL,
   lrhid int DEFAULT NULL,
@@ -168,7 +168,7 @@ CONSTRAINT pk_df_trans_renewal_details PRIMARY KEY (df_trans_renewal_details_id)
 DROP TABLE IF EXISTS df_transdetails CASCADE;
 
 CREATE TABLE df_transdetails (
-  df_transdetails_id UUID NOT NULL,
+  df_transdetails_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   groupid int DEFAULT NULL,
   grouplinkid int DEFAULT NULL,
@@ -192,7 +192,7 @@ CONSTRAINT pk_df_transdetails PRIMARY KEY (df_transdetails_id)
 DROP TABLE IF EXISTS df_transdetails_movement CASCADE;
 
 CREATE TABLE df_transdetails_movement (
-  df_transdetails_movement_id UUID NOT NULL,
+  df_transdetails_movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   trandsid int DEFAULT NULL,
   trands_status int DEFAULT NULL,
@@ -221,7 +221,7 @@ CONSTRAINT pk_df_transdetails_movement PRIMARY KEY (df_transdetails_movement_id)
 DROP TABLE IF EXISTS df_workorder CASCADE;
 
 CREATE TABLE df_workorder (
-  df_workorder_id UUID NOT NULL,
+  df_workorder_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   po_id int DEFAULT NULL,
   wo_no varchar(25) DEFAULT NULL,
@@ -238,7 +238,7 @@ CONSTRAINT pk_df_workorder PRIMARY KEY (df_workorder_id)
 DROP TABLE IF EXISTS disbursement CASCADE;
 
 CREATE TABLE disbursement (
-  disbursement_id UUID NOT NULL,
+  disbursement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   partnerid bigint DEFAULT NULL,
   partnername varchar(150) DEFAULT NULL,
@@ -257,7 +257,7 @@ CONSTRAINT pk_disbursement PRIMARY KEY (disbursement_id)
 DROP TABLE IF EXISTS disbursestatus CASCADE;
 
 CREATE TABLE disbursestatus (
-  disbursestatus_id UUID NOT NULL,
+  disbursestatus_id UUID DEFAULT gen_random_uuid() NOT NULL,
   disbursestatusid SERIAL,
   taskstatus varchar(45) NOT NULL,
   taskowner varchar(45) NOT NULL,

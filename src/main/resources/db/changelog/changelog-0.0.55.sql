@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS revenueshare CASCADE;
 
 -- Table: retail_workorder
 CREATE TABLE retail_workorder (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   wid SERIAL ,
   wono VARCHAR(50),
   cus_count INTEGER DEFAULT 0,
@@ -29,7 +29,7 @@ CREATE TABLE retail_workorder (
 
 -- Table: retail_workorderfinance
 CREATE TABLE retail_workorderfinance (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   wfinid SERIAL ,
   wono VARCHAR(50),
   partnerid BIGINT,
@@ -42,7 +42,7 @@ CREATE TABLE retail_workorderfinance (
 
 -- Table: rev_sub
 CREATE TABLE rev_sub (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL ,
   s_cl_bal NUMERIC(10,2) DEFAULT 0.00,
   s_op_bal NUMERIC(10,2) DEFAULT 0.00,
@@ -66,7 +66,7 @@ CREATE TABLE rev_sub (
 
 -- Table: rev_sub_prev
 CREATE TABLE rev_sub_prev (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL ,
   subscriberid INTEGER,
   s_cl_bal NUMERIC(10,2) DEFAULT 0.00,
@@ -78,7 +78,7 @@ CREATE TABLE rev_sub_prev (
 
 -- Table: rev_sub_temp
 CREATE TABLE rev_sub_temp (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL ,
   monthpart VARCHAR(15),
   subscriberid INTEGER,
@@ -103,7 +103,7 @@ CREATE INDEX idx_rev_sub_temp_subscriberid ON rev_sub_temp(subscriberid);
 
 -- Table: revenue_check
 CREATE TABLE revenue_check (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   monthpart VARCHAR(10),
   revenue NUMERIC(15,2) DEFAULT 0.00,
   invoice_amt NUMERIC(15,2) DEFAULT 0.00,
@@ -124,7 +124,7 @@ CREATE TABLE revenue_check (
 
 -- Table: revenue_control
 CREATE TABLE revenue_control (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL ,
   partnerid VARCHAR(20) NOT NULL,
   p_op_balance NUMERIC(10,2) NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE revenue_control (
 
 -- Table: revenue_control_partner
 CREATE TABLE revenue_control_partner (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL ,
   partnerid VARCHAR(20) NOT NULL,
   p_op_balance NUMERIC(10,2) NOT NULL,
@@ -157,7 +157,7 @@ CREATE TABLE revenue_control_partner (
 
 -- Table: revenueshare
 CREATE TABLE revenueshare (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   revenueshareid SERIAL ,
   sharename VARCHAR(1000),
   subgroup INT DEFAULT 0,

@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS po_renewal_file CASCADE;
 
 -- Table: po_location_tmp
 CREATE TABLE po_location_tmp (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     loc_code VARCHAR(15),
     circle VARCHAR(50),
@@ -41,14 +41,14 @@ CREATE TABLE po_location_tmp (
 
 -- Table: po_locstatus
 CREATE TABLE po_locstatus (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     statusid SERIAL ,
     status VARCHAR(50)
 );
 
 -- Table: po_packages
 CREATE TABLE po_packages (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     po_no VARCHAR(30),
     speed VARCHAR(50),
@@ -66,14 +66,14 @@ CREATE TABLE po_packages (
 
 -- Table: po_packagetype
 CREATE TABLE po_packagetype (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     type VARCHAR(10)
 );
 
 -- Table: po_purchase_order
 CREATE TABLE po_purchase_order (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL ,
     po_no VARCHAR(30),
     customer VARCHAR(50),
@@ -108,7 +108,7 @@ CREATE TABLE po_purchase_order (
 
 -- Table: po_renew_package
 CREATE TABLE po_renew_package (
-    package_id UUID NOT NULL PRIMARY KEY,
+    package_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     username VARCHAR(255),
     date TIMESTAMP,
@@ -133,7 +133,7 @@ CREATE TABLE po_renew_package (
 
 -- Table: po_renewal_clarify
 CREATE TABLE po_renewal_clarify (
-    clarify_id UUID NOT NULL PRIMARY KEY,
+    clarify_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id INT DEFAULT 0,
     remarks VARCHAR(250),
     version INT,
@@ -145,7 +145,7 @@ CREATE TABLE po_renewal_clarify (
 
 -- Table: po_renewal_file
 CREATE TABLE po_renewal_file (
-    file_id UUID NOT NULL PRIMARY KEY,
+    file_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     ID SERIAL ,
     filepath VARCHAR(255) NOT NULL,
     pono VARCHAR(255),

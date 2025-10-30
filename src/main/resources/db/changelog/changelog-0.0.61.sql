@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS priority CASCADE;
 
 -- Table: ponport_mapping_subscriber
 CREATE TABLE ponport_mapping_subscriber (
-    mapping_id UUID NOT NULL PRIMARY KEY,
+    mapping_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     partnerid BIGINT,
     ponport_device_id INT,
@@ -25,7 +25,7 @@ CREATE TABLE ponport_mapping_subscriber (
 
 -- Table: pop_master
 CREATE TABLE pop_master (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     master_id SERIAL,
     popname VARCHAR(256),
     district VARCHAR(100),
@@ -53,7 +53,7 @@ INSERT INTO pop_master (
 
 -- Table: pop_master_backup2june
 CREATE TABLE pop_master_backup2june (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     master_id INT DEFAULT 0,
     popname VARCHAR(256),
     code VARCHAR(50),
@@ -78,7 +78,7 @@ INSERT INTO pop_master_backup2june (
 
 -- Table: portspeed
 CREATE TABLE portspeed (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     portspeedid SERIAL,
     speedinkbps INT,
     baseportrental DOUBLE PRECISION,
@@ -91,7 +91,7 @@ CREATE TABLE portspeed (
 
 -- Table: premisedetail
 CREATE TABLE premisedetail (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     premiseid SERIAL,
     partnergroupid INT,
     vlantableid INT,
@@ -105,7 +105,7 @@ CREATE TABLE premisedetail (
 
 -- Table: premisetype
 CREATE TABLE premisetype (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     premisetypeid SERIAL,
     premisetype VARCHAR(45) NOT NULL UNIQUE,
     lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -113,7 +113,7 @@ CREATE TABLE premisetype (
 
 -- Table: priority
 CREATE TABLE priority (
-    priority_id UUID NOT NULL PRIMARY KEY,
+    priority_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id INT,
     priority VARCHAR(25),
     status VARCHAR(15)

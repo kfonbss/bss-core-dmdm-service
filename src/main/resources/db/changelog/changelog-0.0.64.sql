@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cordeletedipusers CASCADE;
 
 CREATE TABLE cordeletedipusers (
-  users_id UUID NOT NULL,
+  users_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   framedip VARCHAR(18) DEFAULT NULL,
   subscriberid INTEGER DEFAULT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE cordeletedipusers (
 DROP TABLE IF EXISTS corframedipusers CASCADE;
 
 CREATE TABLE corframedipusers (
-  users_id UUID NOT NULL,
+  users_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   customerid INTEGER DEFAULT NULL,
   subscriberid INTEGER DEFAULT NULL,
@@ -42,7 +42,7 @@ COMMENT ON COLUMN corframedipusers.is_active IS '0=In Active,1=Active';
 DROP TABLE IF EXISTS corp_ekyc CASCADE;
 
 CREATE TABLE corp_ekyc (
-  ekyc_id UUID NOT NULL,
+  ekyc_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   olid INTEGER DEFAULT NULL,
   name VARCHAR(150) DEFAULT NULL,
@@ -116,7 +116,7 @@ CREATE TABLE corp_ekyc (
 DROP TABLE IF EXISTS corp_location_list CASCADE;
 
 CREATE TABLE corp_location_list (
-  list_id UUID NOT NULL,
+  list_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   code VARCHAR(45),
   name VARCHAR(255),
@@ -211,7 +211,7 @@ VALUES (
 DROP TABLE IF EXISTS corpenaltyemail CASCADE;
 
 CREATE TABLE corpenaltyemail (
-  email_id UUID NOT NULL,
+  email_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   partnerid BIGINT DEFAULT NULL,
   subscriberid INTEGER DEFAULT NULL,
@@ -226,7 +226,7 @@ CREATE TABLE corpenaltyemail (
 DROP TABLE IF EXISTS corporate_enquiries CASCADE;
 
 CREATE TABLE corporate_enquiries (
-  enquiries_id UUID NOT NULL,
+  enquiries_id UUID DEFAULT gen_random_uuid() NOT NULL,
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
@@ -329,7 +329,7 @@ VALUES (
 DROP TABLE IF EXISTS corporate_enquiries_movement CASCADE;
 
 CREATE TABLE corporate_enquiries_movement (
-  movement_id UUID NOT NULL,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   corp_enq_id INTEGER DEFAULT NULL,
   fesible_status VARCHAR(100) DEFAULT NULL,
@@ -343,7 +343,7 @@ CREATE TABLE corporate_enquiries_movement (
 DROP TABLE IF EXISTS corporate_service CASCADE;
 
 CREATE TABLE corporate_service (
-  service_id UUID NOT NULL,
+  service_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   service_name VARCHAR(100) NOT NULL,
   is_active SMALLINT NOT NULL DEFAULT 1,

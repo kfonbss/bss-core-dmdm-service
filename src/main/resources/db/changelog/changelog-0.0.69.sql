@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ctr CASCADE;
 
 CREATE TABLE ctr (
-  ctr_id UUID NOT NULL,
+  ctr_id UUID DEFAULT gen_random_uuid() NOT NULL,
   sname VARCHAR(200) DEFAULT NULL,
   sid BIGINT DEFAULT NULL,
   pid BIGINT DEFAULT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE ctr (
 DROP TABLE IF EXISTS curmonth_usage CASCADE;
 
 CREATE TABLE curmonth_usage (
-  curmonth_id UUID NOT NULL,
+  curmonth_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   username VARCHAR(64) DEFAULT NULL,
   session VARCHAR(45) DEFAULT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE curmonth_usage (
 DROP TABLE IF EXISTS daily_partner_report CASCADE;
 
 CREATE TABLE daily_partner_report (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   report_id SERIAL,
   report_date DATE DEFAULT NULL,
   anp DECIMAL(10,2) DEFAULT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE daily_partner_report (
 DROP TABLE IF EXISTS daily_status_report CASCADE;
 
 CREATE TABLE daily_status_report (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   report_id SERIAL,
   report_date DATE DEFAULT NULL,
   subscriberid BIGINT DEFAULT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE daily_status_report (
 DROP TABLE IF EXISTS dailyactive CASCADE;
 
 CREATE TABLE dailyactive (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   partnerid BIGINT NOT NULL,
   active INTEGER DEFAULT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE dailyactive (
 DROP TABLE IF EXISTS dailyexpired CASCADE;
 
 CREATE TABLE dailyexpired (
-  expired_id UUID NOT NULL,
+  expired_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   partnerid BIGINT NOT NULL,
   expired INTEGER DEFAULT NULL,
@@ -97,7 +97,7 @@ CREATE TABLE dailyexpired (
 DROP TABLE IF EXISTS dailynew CASCADE;
 
 CREATE TABLE dailynew (
-  dailynew_id UUID NOT NULL,
+  dailynew_id UUID DEFAULT gen_random_uuid() NOT NULL,
   partnerid BIGINT NOT NULL,
   active INTEGER DEFAULT NULL,
   curdate TIMESTAMP NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE dailynew (
 DROP TABLE IF EXISTS dailyreport CASCADE;
 
 CREATE TABLE dailyreport (
-  report_id UUID NOT NULL,
+  report_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   reportdate DATE DEFAULT NULL,
   active INTEGER DEFAULT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE dailyreport (
 DROP TABLE IF EXISTS darkfiber_movement CASCADE;
 
 CREATE TABLE darkfiber_movement (
-  movement_id UUID NOT NULL,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   enq_ref INTEGER DEFAULT NULL,
   approve_status INTEGER DEFAULT NULL,

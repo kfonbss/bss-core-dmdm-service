@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS circle CASCADE;
 
 CREATE TABLE circle (
-  circle_id UUID NOT NULL,
+  circle_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   circlecode varchar(50) DEFAULT NULL,
   circlename varchar(50) DEFAULT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE circle (
 DROP TABLE IF EXISTS city CASCADE;
 
 CREATE TABLE city (
-  city_id UUID NOT NULL,
+  city_id UUID DEFAULT gen_random_uuid() NOT NULL,
   cityid SERIAL,
   cityname varchar(250) DEFAULT NULL,
   stateid int DEFAULT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE city (
 DROP TABLE IF EXISTS closeddisbursement CASCADE;
 
 CREATE TABLE closeddisbursement (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   closeddisbursementid SERIAL,
   partnergroupid int NOT NULL,
   sumrevenue decimal(10,2) NOT NULL,
@@ -42,7 +42,7 @@ CREATE INDEX Index_2_closeddisb ON closeddisbursement (partnergroupid);
 DROP TABLE IF EXISTS companydetail CASCADE;
 
 CREATE TABLE companydetail (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   companyid bigint NOT NULL,
   partnercompanyname varchar(150) DEFAULT NULL,
   status boolean NOT NULL DEFAULT false,

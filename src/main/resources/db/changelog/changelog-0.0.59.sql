@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS reciepttype CASCADE;
 
 -- Table: ptnrgstinupdates
 CREATE TABLE ptnrgstinupdates (
-    update_id UUID NOT NULL PRIMARY KEY,
+    update_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     partnerid BIGINT,
     gstin VARCHAR(15) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE ptnrgstinupdates (
 
 -- Table: radacct_logs
 CREATE TABLE radacct_logs (
-    logs_id UUID NOT NULL PRIMARY KEY,
+    logs_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     acctsessionid VARCHAR(64),
     acctuniqueid VARCHAR(32),
     username VARCHAR(64),
@@ -41,7 +41,7 @@ CREATE TABLE radacct_logs (
 
 -- Table: radacct_logs2
 CREATE TABLE radacct_logs2 (
-    logs_id UUID NOT NULL PRIMARY KEY,
+    logs_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     acctsessionid VARCHAR(64),
     acctuniqueid VARCHAR(32),
     username VARCHAR(64),
@@ -60,7 +60,7 @@ CREATE TABLE radacct_logs2 (
 
 -- Table: rail_territory_name
 CREATE TABLE rail_territory_name (
-    rail_id UUID NOT NULL PRIMARY KEY,
+    rail_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     territory_name VARCHAR(100),
     stcode INT,
@@ -70,7 +70,7 @@ CREATE TABLE rail_territory_name (
 
 -- Table: railregionaloffice
 CREATE TABLE railregionaloffice (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     idrailregionaloffice INT ,
     "to" VARCHAR(100),
     addressline1 VARCHAR(200),
@@ -81,7 +81,7 @@ CREATE TABLE railregionaloffice (
 
 -- Table: railtel_payment
 CREATE TABLE railtel_payment (
-    payment_id UUID NOT NULL PRIMARY KEY,
+    payment_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL ,
     billtype INT DEFAULT 1,
     invoice_no VARCHAR(200) NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE railtel_payment (
 
 -- Table: reachus_table
 CREATE TABLE reachus_table (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     supp_id SERIAL ,
     tec_phone VARCHAR(100) NOT NULL,
     tec_email VARCHAR(100) NOT NULL,
@@ -113,7 +113,7 @@ CREATE TABLE reachus_table (
 
 -- Table: realms
 CREATE TABLE realms (
-    realms_id UUID NOT NULL PRIMARY KEY,
+    realms_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id BIGSERIAL ,
     realmname VARCHAR(128),
     type VARCHAR(32),
@@ -132,7 +132,7 @@ CREATE TABLE realms (
 
 -- Table: recieptstatus
 CREATE TABLE recieptstatus (
-    status_id UUID NOT NULL PRIMARY KEY,
+    status_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     recieptstatusid SERIAL ,
     recieptstatus VARCHAR(45) NOT NULL UNIQUE,
     lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -140,7 +140,7 @@ CREATE TABLE recieptstatus (
 
 -- Table: reciepttype
 CREATE TABLE reciepttype (
-    type_id UUID NOT NULL PRIMARY KEY,
+    type_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     reciepttypeid SERIAL ,
     reciepttype VARCHAR(45) NOT NULL UNIQUE,
     defaultstatus VARCHAR(45) NOT NULL,

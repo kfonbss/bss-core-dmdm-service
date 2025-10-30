@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS cor_partnerfinance CASCADE;
 
 CREATE TABLE cor_partnerfinance (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   financeid SERIAL,
   invoiceid INTEGER DEFAULT NULL,
   ptype VARCHAR(10) DEFAULT 'ANP',
@@ -24,7 +24,7 @@ COMMENT ON COLUMN cor_partnerfinance.invtype IS '1=Invoice,2=Credit Note, etc.';
 DROP TABLE IF EXISTS cor_partnertransfer CASCADE;
 
 CREATE TABLE cor_partnertransfer (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   partnerid BIGINT DEFAULT NULL,
   invoiceid INTEGER DEFAULT NULL,
@@ -46,7 +46,7 @@ COMMENT ON COLUMN cor_partnertransfer.invtype IS '1=Invoice,2=Credit Note, etc.'
 DROP TABLE IF EXISTS cor_penalty CASCADE;
 
 CREATE TABLE cor_penalty (
-  penalty_id UUID NOT NULL,
+  penalty_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   subid BIGINT DEFAULT NULL,
   pid BIGINT DEFAULT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE cor_penalty (
 DROP TABLE IF EXISTS cor_pmonthlyinvoice CASCADE;
 
 CREATE TABLE cor_pmonthlyinvoice (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   Partnerid BIGINT DEFAULT NULL,
   monthpart VARCHAR(20) DEFAULT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE cor_pmonthlyinvoice (
 DROP TABLE IF EXISTS cor_pmonthlyinvoice_BKP CASCADE;
 
 CREATE TABLE cor_pmonthlyinvoice_BKP (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   Partnerid BIGINT DEFAULT NULL,
   monthpart VARCHAR(20) DEFAULT NULL,
@@ -94,7 +94,7 @@ CREATE TABLE cor_pmonthlyinvoice_BKP (
 DROP TABLE IF EXISTS cor_pnew CASCADE;
 
 CREATE TABLE cor_pnew (
-  pnew_id UUID NOT NULL,
+  pnew_id UUID DEFAULT gen_random_uuid() NOT NULL,
   slno SERIAL,
   pgid INTEGER DEFAULT NULL,
   statecode VARCHAR(10) DEFAULT NULL,

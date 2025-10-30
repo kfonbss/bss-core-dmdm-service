@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS corporatecrmsla CASCADE;
 
 CREATE TABLE corporatecrmsla (
-  corporate_id UUID NOT NULL,
+  corporate_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   pono VARCHAR(20) DEFAULT NULL,
   uptimefrom VARCHAR(10) DEFAULT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE corporatecrmsla (
 DROP TABLE IF EXISTS corporatecustomer CASCADE;
 
 CREATE TABLE corporatecustomer (
-  customer_id UUID NOT NULL,
+  customer_id UUID DEFAULT gen_random_uuid() NOT NULL,
   corporateid SERIAL,
   customer VARCHAR(128) DEFAULT NULL,
   description VARCHAR(256) DEFAULT NULL,
@@ -46,7 +46,7 @@ COMMENT ON COLUMN corporatecustomer.cus_type IS '1=BPL,2=End Office';
 DROP TABLE IF EXISTS corporatedisbursement CASCADE;
 
 CREATE TABLE corporatedisbursement (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   disburseid SERIAL,
   partnergroupid INTEGER NOT NULL,
   revenue DECIMAL(10,2) NOT NULL,
@@ -69,7 +69,7 @@ COMMENT ON COLUMN corporatedisbursement.t_status IS '0=Pending,1=Approved';
 DROP TABLE IF EXISTS corporatedisbursementclosed CASCADE;
 
 CREATE TABLE corporatedisbursementclosed (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   closeddisbursementid SERIAL,
   partnergroupid INTEGER NOT NULL,
   sumrevenue DECIMAL(10,2) NOT NULL,
@@ -85,7 +85,7 @@ COMMENT ON COLUMN corporatedisbursementclosed.done IS '0=Pending,1=Completed';
 DROP TABLE IF EXISTS corporatesubfinance CASCADE;
 
 CREATE TABLE corporatesubfinance (
-  finance_id UUID NOT NULL,
+  finance_id UUID DEFAULT gen_random_uuid() NOT NULL,
   subfinanceid SERIAL,
   subscriberid INTEGER NOT NULL,
   amount DECIMAL(10,2) NOT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE corporatesubfinance (
 DROP TABLE IF EXISTS corporatesubscriber_ex_rew CASCADE;
 
 CREATE TABLE corporatesubscriber_ex_rew (
-  id UUID NOT NULL,
+  id UUID DEFAULT gen_random_uuid() NOT NULL,
   corid SERIAL,
   subscriberid INTEGER NOT NULL,
   workorderid VARCHAR(128) NOT NULL,
@@ -118,7 +118,7 @@ CREATE TABLE corporatesubscriber_ex_rew (
 DROP TABLE IF EXISTS corporatesubscribers CASCADE;
 
 CREATE TABLE corporatesubscribers (
-  subscribers_id UUID NOT NULL,
+  subscribers_id UUID DEFAULT gen_random_uuid() NOT NULL,
   cosubid SERIAL,
   username VARCHAR(64) DEFAULT NULL,
   password VARCHAR(50) DEFAULT NULL,
@@ -175,7 +175,7 @@ COMMENT ON COLUMN corporatesubscribers.cus_type IS '1=BPL,2=End Office';
 DROP TABLE IF EXISTS corporatesubscribers_temp CASCADE;
 
 CREATE TABLE corporatesubscribers_temp (
-  temp_id UUID NOT NULL,
+  temp_id UUID DEFAULT gen_random_uuid() NOT NULL,
   cosubid BIGINT NOT NULL DEFAULT 0,
   username VARCHAR(64) DEFAULT NULL,
   subscriber VARCHAR(256) DEFAULT NULL,
@@ -201,7 +201,7 @@ CREATE TABLE corporatesubscribers_temp (
 DROP TABLE IF EXISTS cp_cannel_partner_registration CASCADE;
 
 CREATE TABLE cp_cannel_partner_registration (
-  registration_id UUID NOT NULL,
+  registration_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
   applicant_name VARCHAR(200) DEFAULT NULL,
   organization_name VARCHAR(200) DEFAULT NULL,

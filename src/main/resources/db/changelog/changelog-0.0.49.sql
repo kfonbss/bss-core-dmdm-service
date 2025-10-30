@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS se_po_movement CASCADE;
 
 -- Table: se_location_movement
 CREATE TABLE se_location_movement (
-  movement_id UUID NOT NULL PRIMARY KEY,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   locid INTEGER,
   approve_status INTEGER,
@@ -21,7 +21,7 @@ CREATE TABLE se_location_movement (
 
 -- Table: se_locations
 CREATE TABLE se_locations (
-  location_id UUID NOT NULL PRIMARY KEY,
+  location_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno SERIAL,
   proid INTEGER,
   custid INTEGER,
@@ -52,7 +52,7 @@ CREATE TABLE se_locations (
 
 -- Table: se_locfinance
 CREATE TABLE se_locfinance (
-  finance_id UUID NOT NULL PRIMARY KEY,
+  finance_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   finid SERIAL,
   locid INTEGER,
   amount NUMERIC(10,2) NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE se_locfinance (
 
 -- Table: se_payment_details
 CREATE TABLE se_payment_details (
-  details_id UUID NOT NULL PRIMARY KEY,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   poid INTEGER,
   utr_number VARCHAR(50),
@@ -79,7 +79,7 @@ CREATE TABLE se_payment_details (
 
 -- Table: se_payment_history
 CREATE TABLE se_payment_history (
-  history_id UUID NOT NULL PRIMARY KEY,
+  history_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   invoiceid VARCHAR(15),
   utr_number VARCHAR(25),
@@ -95,7 +95,7 @@ CREATE TABLE se_payment_history (
 
 -- Table: se_po_movement
 CREATE TABLE se_po_movement (
-  movement_id UUID NOT NULL PRIMARY KEY,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   poid INTEGER,
   approve_status INTEGER,

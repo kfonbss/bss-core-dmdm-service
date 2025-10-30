@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS se_kyc_details CASCADE;
 
 -- Table: school_project
 CREATE TABLE school_project (
-  project_id UUID NOT NULL PRIMARY KEY,
+  project_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL ,
   username VARCHAR(60),
   workorderid VARCHAR(60)
@@ -16,7 +16,7 @@ CREATE TABLE school_project (
 
 -- Table: se_customers
 CREATE TABLE se_customers (
-  customer_id UUID NOT NULL PRIMARY KEY,
+  customer_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL ,
   company_name VARCHAR(100),
   short_name VARCHAR(50),
@@ -34,7 +34,7 @@ CREATE TABLE se_customers (
 
 -- Table: se_disbursement
 CREATE TABLE se_disbursement (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   disburseid SERIAL ,
   locid INTEGER,
   cause VARCHAR(100),
@@ -48,7 +48,7 @@ CREATE TABLE se_disbursement (
 
 -- Table: se_inovoice
 CREATE TABLE se_inovoice (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno BIGSERIAL ,
   locid INTEGER,
   custid INTEGER,
@@ -78,7 +78,7 @@ CREATE TABLE se_inovoice (
 
 -- Table: se_inovoice_master
 CREATE TABLE se_inovoice_master (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno BIGSERIAL ,
   locid INTEGER,
   custid INTEGER,
@@ -112,7 +112,7 @@ CREATE TABLE se_inovoice_master (
 
 -- Table: se_kyc_details
 CREATE TABLE se_kyc_details (
-  details_id UUID NOT NULL PRIMARY KEY,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL ,
   customerid INTEGER,
   pan_numer VARCHAR(10),
