@@ -47,4 +47,32 @@ public class PartnerController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched partner taxpayer log"));
   }
+
+  @GetMapping("/groups")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerGroups() {
+    var data = service.fetchAllPartnerGroups();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all partner groups"));
+  }
+
+  @GetMapping("/group/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPartnerGroupById(@PathVariable UUID id) {
+    var data = service.fetchPartnerGroupById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched partner group by id"));
+  }
+
+  @GetMapping("/gst-details")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerGstDetails() {
+    var data = service.fetchAllPartnerGstDetails();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all partner GST details"));
+  }
+
+  @GetMapping("/gst-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPartnerGstDetailById(@PathVariable UUID id) {
+    var data = service.fetchPartnerGstDetailById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched partner GST detail by id"));
+  }
 }

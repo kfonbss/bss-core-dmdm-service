@@ -88,4 +88,48 @@ public class PartnerControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched partner taxpayer log"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
+
+  @Test
+  void testFetchAllPartnerGroups() throws Exception {
+    when(service.fetchAllPartnerGroups()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/partner/groups"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all partner groups"))
+        .andExpect(jsonPath("$.data.length()").value(1));
+  }
+
+  @Test
+  void testFetchPartnerGroupById() throws Exception {
+    when(service.fetchPartnerGroupById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/partner/group/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched partner group by id"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchAllPartnerGstDetails() throws Exception {
+    when(service.fetchAllPartnerGstDetails()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/partner/gst-details"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all partner GST details"))
+        .andExpect(jsonPath("$.data.length()").value(1));
+  }
+
+  @Test
+  void testFetchPartnerGstDetailById() throws Exception {
+    when(service.fetchPartnerGstDetailById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/partner/gst-detail/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched partner GST detail by id"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
 }

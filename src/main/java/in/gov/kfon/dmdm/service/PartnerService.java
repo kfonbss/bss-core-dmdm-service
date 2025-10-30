@@ -13,4 +13,12 @@ public interface PartnerService {
   List<CommonLookUp> fetchAllTaxpayerLogs();
 
   CommonLookUp fetchTaxpayerLogById(UUID id);
+
+  List<CommonLookUp> fetchAllPartnerGroups();
+
+  CommonLookUp fetchPartnerGroupById(UUID id);
+
+  List<CommonLookUp> fetchAllPartnerGstDetails();
+
+  CommonLookUp fetchPartnerGstDetailById(UUID id);
 }

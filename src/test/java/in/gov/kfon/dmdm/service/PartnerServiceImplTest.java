@@ -5,8 +5,12 @@ import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.PartnerFinance2;
+import in.gov.kfon.dmdm.model.PartnerGroup;
+import in.gov.kfon.dmdm.model.PartnerGstDetail;
 import in.gov.kfon.dmdm.model.PartnerTaxpayerLogs;
 import in.gov.kfon.dmdm.repository.PartnerFinance2Repository;
+import in.gov.kfon.dmdm.repository.PartnerGroupRepository;
+import in.gov.kfon.dmdm.repository.PartnerGstDetailRepository;
 import in.gov.kfon.dmdm.repository.PartnerTaxpayerLogsRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
@@ -23,6 +27,8 @@ public class PartnerServiceImplTest {
 
   @Mock private PartnerFinance2Repository partnerFinanceRepository;
   @Mock private PartnerTaxpayerLogsRepository partnerTaxpayerLogsRepository;
+  @Mock private PartnerGroupRepository partnerGroupRepository;
+  @Mock private PartnerGstDetailRepository partnerGstDetailRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private PartnerServiceImpl service;
@@ -31,6 +37,8 @@ public class PartnerServiceImplTest {
   private PartnerFinance2 finance;
   private PartnerTaxpayerLogs taxLog;
   private CommonLookUp lookup;
+  private PartnerGroup group;
+  private PartnerGstDetail gstDetail;
 
   @BeforeEach
   void setUp() {
@@ -42,6 +50,12 @@ public class PartnerServiceImplTest {
 
     taxLog = new PartnerTaxpayerLogs();
     taxLog.setId(id);
+
+    group = new PartnerGroup();
+    group.setId(id);
+
+    gstDetail = new PartnerGstDetail();
+    gstDetail.setId(id);
 
     lookup = new CommonLookUp();
     lookup.setId(id);
@@ -102,5 +116,61 @@ public class PartnerServiceImplTest {
     when(partnerTaxpayerLogsRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.fetchTaxpayerLogById(id));
+  }
+
+  @Test
+  void testFetchAllPartnerGroups() {
+    when(partnerGroupRepository.findAll()).thenReturn(List.of(group));
+    when(modelMapper.map(group, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAllPartnerGroups();
+
+    assertEquals(1, result.size());
+    verify(partnerGroupRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testFetchPartnerGroupById_Success() {
+    when(partnerGroupRepository.findById(id)).thenReturn(Optional.of(group));
+    when(modelMapper.map(group, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchPartnerGroupById(id);
+
+    assertEquals(id, result.getId());
+  }
+
+  @Test
+  void testFetchPartnerGroupById_NotFound() {
+    when(partnerGroupRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.fetchPartnerGroupById(id));
+  }
+
+  @Test
+  void testFetchAllPartnerGstDetails() {
+    when(partnerGstDetailRepository.findAll()).thenReturn(List.of(gstDetail));
+    when(modelMapper.map(gstDetail, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAllPartnerGstDetails();
+
+    assertEquals(1, result.size());
+    verify(partnerGstDetailRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testFetchPartnerGstDetailById_Success() {
+    when(partnerGstDetailRepository.findById(id)).thenReturn(Optional.of(gstDetail));
+    when(modelMapper.map(gstDetail, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchPartnerGstDetailById(id);
+
+    assertEquals(id, result.getId());
+  }
+
+  @Test
+  void testFetchPartnerGstDetailById_NotFound() {
+    when(partnerGstDetailRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.fetchPartnerGstDetailById(id));
   }
 }
