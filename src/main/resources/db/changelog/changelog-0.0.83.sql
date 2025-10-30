@@ -13,7 +13,28 @@ CREATE TABLE partneraccount_balance_report (
   received_share NUMERIC(10,2) DEFAULT NULL,
   sub_transfer NUMERIC(10,2) DEFAULT NULL,
   closebalance NUMERIC(10,2) DEFAULT NULL,
-  rmonth VARCHAR(15) DEFAULT NULL
+  rmonth VARCHAR(15) DEFAULT NULL,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+
+INSERT INTO partneraccount_balance_report (
+    id, rptid, state, partnerid, companyname, ptype,
+    openbalance, partnertopup, received_share, sub_transfer,
+    closebalance, rmonth, code, name, name_in_local,
+    is_active, created_date, modified_date, created_by, modified_by
+) VALUES
+(
+    gen_random_uuid(), DEFAULT, 'Kerala', 'P001', 'TechNet Solutions', 'A',
+    10000.00, 2000.00, 1500.00, 500.00,
+    12000.00, '2025-10', 'RPT01', 'Account Balance Report', 'അക്കൗണ്ട് ബാലൻസ് റിപ്പോർട്ട്',
+    TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: partneragreementdetail
