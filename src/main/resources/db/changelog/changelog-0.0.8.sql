@@ -1,7 +1,7 @@
 -- Table structure for subshifdetails
 DROP TABLE IF EXISTS subshifdetails;
 CREATE TABLE subshifdetails (
-    details_id UUID NOT NULL PRIMARY KEY,
+    details_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     typeofrecharge VARCHAR(50),
     category VARCHAR(30),
@@ -30,7 +30,7 @@ CREATE TABLE subshifdetails (
 -- Table structure for superagnpdetail
 DROP TABLE IF EXISTS superagnpdetail;
 CREATE TABLE superagnpdetail (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     partnerid BIGINT,
     partnercompanyname VARCHAR(150),
     status BOOLEAN DEFAULT FALSE,
@@ -109,7 +109,7 @@ CREATE INDEX idx_superagnpdetail_statecode ON superagnpdetail(statecode);
 -- Table structure for superagp_invoice
 DROP TABLE IF EXISTS superagp_invoice;
 CREATE TABLE superagp_invoice (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL,
     partnerid BIGINT,
     invoicemonth VARCHAR(12),
@@ -142,7 +142,7 @@ CREATE TABLE superagp_invoice (
 -- Table structure for superagpgroup
 DROP TABLE IF EXISTS superagpgroup;
 CREATE TABLE superagpgroup (
-    group_id UUID NOT NULL PRIMARY KEY,
+    group_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     suagpid BIGINT,
     agpid BIGINT,
@@ -153,7 +153,7 @@ CREATE TABLE superagpgroup (
 -- Table structure for support_user_details
 DROP TABLE IF EXISTS support_user_details;
 CREATE TABLE support_user_details (
-    user_id UUID NOT NULL PRIMARY KEY,
+    user_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id BIGSERIAL,
     users_id INT,
     role VARCHAR(10) NOT NULL,
@@ -174,7 +174,7 @@ CREATE INDEX idx_support_firstname ON support_user_details(firstname);
 -- Table structure for sys_config
 DROP TABLE IF EXISTS sys_config;
 CREATE TABLE sys_config (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     configid SERIAL,
     MSP VARCHAR(45) NOT NULL,
     ISP VARCHAR(45) NOT NULL,

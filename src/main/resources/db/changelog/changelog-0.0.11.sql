@@ -1,7 +1,7 @@
 -- Table: subdata
 DROP TABLE IF EXISTS subdata;
 CREATE TABLE subdata (
-    data_id UUID NOT NULL PRIMARY KEY,
+    data_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     username VARCHAR(64) NOT NULL,
     fullname VARCHAR(128),
@@ -36,7 +36,7 @@ CREATE TABLE subdata (
 -- Table: subgstinupdates
 DROP TABLE IF EXISTS subgstinupdates;
 CREATE TABLE subgstinupdates (
-    updates_id UUID NOT NULL PRIMARY KEY,
+    updates_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     subscriberid INT,
     gstin VARCHAR(20),
@@ -47,7 +47,7 @@ CREATE TABLE subgstinupdates (
 -- Table: subiprequest
 DROP TABLE IF EXISTS subiprequest;
 CREATE TABLE subiprequest (
-    request_id UUID NOT NULL PRIMARY KEY,
+    request_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     staticpackageid INT,
     subscriberid BIGINT,
@@ -61,7 +61,7 @@ CREATE TABLE subiprequest (
 -- Table: subonlinerecharge
 DROP TABLE IF EXISTS subonlinerecharge;
 CREATE TABLE subonlinerecharge (
-    recharge_id UUID NOT NULL PRIMARY KEY,
+    recharge_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id BIGSERIAL,
     ordernumber VARCHAR(64),
     status CHAR(18),
@@ -98,7 +98,7 @@ CREATE TABLE subonlinerecharge (
 -- Table: subonlinerechargeatom
 DROP TABLE IF EXISTS subonlinerechargeatom;
 CREATE TABLE subonlinerechargeatom (
-    line_id UUID NOT NULL PRIMARY KEY,
+    line_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id BIGSERIAL,
     ordernumber VARCHAR(64) UNIQUE,
     status CHAR(18),
@@ -133,7 +133,7 @@ CREATE TABLE subonlinerechargeatom (
 -- Table: subonlinetransaction
 DROP TABLE IF EXISTS subonlinetransaction;
 CREATE TABLE subonlinetransaction (
-    transaction_id UUID NOT NULL PRIMARY KEY,
+    transaction_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id BIGSERIAL,
     ordernumber VARCHAR(64),
     status CHAR(18),
@@ -157,7 +157,7 @@ CREATE TABLE subonlinetransaction (
 -- Table: subscriber_contact_information
 DROP TABLE IF EXISTS subscriber_contact_information;
 CREATE TABLE subscriber_contact_information (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     information_id SERIAL,
     name VARCHAR(30),
     mobile VARCHAR(12),

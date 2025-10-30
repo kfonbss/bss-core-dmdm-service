@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS subscriber_feedback;
 
 CREATE TABLE subscriber_feedback (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     feedback_id SERIAL,
     subscriberid BIGINT,
     username VARCHAR(256),
@@ -31,7 +31,7 @@ VALUES (gen_random_uuid(), 1, 1234567890, 'john_doe', 1001, 'Partner Inc', 98765
 DROP TABLE IF EXISTS subscriber_offers;
 
 CREATE TABLE subscriber_offers (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL,
     subscriberid INTEGER,
     applied_date TIMESTAMP,
@@ -54,7 +54,7 @@ VALUES
 DROP TABLE IF EXISTS subscriber_status_type;
 
 CREATE TABLE subscriber_status_type (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     status_id SERIAL,
     description VARCHAR(100),
     code VARCHAR(50),
@@ -82,7 +82,7 @@ INSERT INTO subscriber_status_type (
 DROP TABLE IF EXISTS subscriberaccount;
 
 CREATE TABLE subscriberaccount (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     subscriberid INTEGER,
     balance NUMERIC(13,2),
     code VARCHAR(50),
@@ -107,7 +107,7 @@ INSERT INTO subscriberaccount (
 DROP TABLE IF EXISTS subscriberaccountstaticip;
 
 CREATE TABLE subscriberaccountstaticip (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     subscriberid INTEGER,
     balance NUMERIC(10,2) DEFAULT 0.00,
     code VARCHAR(50),
@@ -130,7 +130,7 @@ VALUES
 DROP TABLE IF EXISTS subscriberdatausege;
 
 CREATE TABLE subscriberdatausege (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     data_usage_id BIGSERIAL,
     subscriberid INTEGER,
     username VARCHAR(64),
@@ -161,7 +161,7 @@ VALUES
 DROP TABLE IF EXISTS subscriberdetail;
 
 CREATE TABLE subscriberdetail (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     subscriberid SERIAL,
     username VARCHAR(64) UNIQUE,
     partnerid VARCHAR(45),
@@ -225,7 +225,7 @@ VALUES (gen_random_uuid(), DEFAULT, 'john_doe', 'P12345', 'John', 'M', 'Doe', 10
 DROP TABLE IF EXISTS subscriberemail;
 
 CREATE TABLE subscriberemail (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     email_id SERIAL,
     subscriberid INTEGER,
     username VARCHAR(250),

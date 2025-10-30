@@ -1,7 +1,7 @@
 -- Drop table if exists
 DROP TABLE IF EXISTS users_districts;
 CREATE TABLE users_districts (
-    user_district_id UUID NOT NULL PRIMARY KEY,
+    user_district_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     user_id INTEGER,
     district_id INTEGER,
@@ -12,7 +12,7 @@ CREATE TABLE users_districts (
 
 DROP TABLE IF EXISTS vas_config;
 CREATE TABLE vas_config (
-    config_id UUID NOT NULL PRIMARY KEY,
+    config_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     authorizations VARCHAR(300),
     api_end_point VARCHAR(250),
@@ -28,7 +28,7 @@ CREATE TABLE vas_config (
 
 DROP TABLE IF EXISTS vas_packages;
 CREATE TABLE vas_packages (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     vas_packid SERIAL,
     comp_packageid INTEGER,
     sub_packageid INTEGER,
@@ -44,7 +44,7 @@ CREATE TABLE vas_packages (
 
 DROP TABLE IF EXISTS vas_recharge_list;
 CREATE TABLE vas_recharge_list (
-    recharge_list_id UUID NOT NULL PRIMARY KEY,
+    recharge_list_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     subscriberid BIGINT,
     packageid INTEGER,
@@ -65,7 +65,7 @@ CREATE TABLE vas_recharge_list (
 -- Drop existing tables if they exist
 DROP TABLE IF EXISTS trouble_ticket;
 CREATE TABLE trouble_ticket (
-    trouble_ticket_id UUID NOT NULL PRIMARY KEY,
+    trouble_ticket_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     severity VARCHAR(45),
     ticketId VARCHAR(75) UNIQUE,
@@ -94,7 +94,7 @@ CREATE TABLE trouble_ticket (
 
 DROP TABLE IF EXISTS tspoc_users;
 CREATE TABLE tspoc_users (
-    users_id UUID NOT NULL PRIMARY KEY,
+    users_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     username VARCHAR(120) NOT NULL,
     empname VARCHAR(120) NOT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE tspoc_users (
 
 DROP TABLE IF EXISTS txtnadhaar;
 CREATE TABLE txtnadhaar (
-    aadhaar_id UUID NOT NULL PRIMARY KEY,
+    aadhaar_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     ordernumber VARCHAR(64),
     adhaarno BIGINT,
@@ -123,7 +123,7 @@ CREATE TABLE txtnadhaar (
 
 DROP TABLE IF EXISTS uploads;
 CREATE TABLE uploads (
-    uploads_id UUID NOT NULL PRIMARY KEY,
+    uploads_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     mobile_no BIGINT,
     upload_path VARCHAR(300),
@@ -136,7 +136,7 @@ CREATE TABLE uploads (
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
-    users_id UUID NOT NULL PRIMARY KEY,
+    users_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id BIGSERIAL,
     username VARCHAR(128) NOT NULL UNIQUE,
     empname VARCHAR(128) NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE users (
 
 DROP TABLE IF EXISTS users_bunits;
 CREATE TABLE users_bunits (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     user_id INTEGER,
     bu_id INTEGER
 );

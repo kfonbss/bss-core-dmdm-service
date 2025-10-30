@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS tempdashboard;
 
 CREATE TABLE tempdashboard (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     hp VARCHAR(2) NOT NULL DEFAULT '',
     subscriberid INT NOT NULL,
     partnergroupid INT,
@@ -21,7 +21,7 @@ CREATE TABLE tempdashboard (
 DROP TABLE IF EXISTS ticket_movement;
 
 CREATE TABLE ticket_movement (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     noteid BIGSERIAL,
     ticketid BIGINT,
     note VARCHAR(600),
@@ -44,7 +44,7 @@ CREATE TABLE ticket_movement (
 DROP TABLE IF EXISTS ticket_status;
 
 CREATE TABLE ticket_status (
-    status_id UUID NOT NULL PRIMARY KEY,
+    status_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id INTEGER NOT NULL DEFAULT 0,
     status VARCHAR(50)
 );
@@ -54,7 +54,7 @@ CREATE TABLE ticket_status (
 DROP TABLE IF EXISTS ticket_type;
 
 CREATE TABLE ticket_type (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     typeid BIGSERIAL,
     name VARCHAR(50)
 );
@@ -62,7 +62,7 @@ CREATE TABLE ticket_type (
 DROP TABLE IF EXISTS taxpayertype;
 
 CREATE TABLE taxpayertype (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     code VARCHAR(45),
     name VARCHAR(255),
     name_in_local VARCHAR(255),
@@ -95,7 +95,7 @@ INSERT INTO taxpayertype (
 DROP TABLE IF EXISTS taxtype;
 
 CREATE TABLE taxtype (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     code VARCHAR(45),
     name VARCHAR(255),
     name_in_local VARCHAR(255),
@@ -119,7 +119,7 @@ INSERT INTO taxtype (
 DROP TABLE IF EXISTS tds;
 
 CREATE TABLE tds (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     sno BIGSERIAL,
     partnerid BIGINT NOT NULL,
     amount DOUBLE PRECISION NOT NULL,
@@ -132,7 +132,7 @@ CREATE TABLE tds (
 DROP TABLE IF EXISTS tds_pan;
 
 CREATE TABLE tds_pan (
-    plan_id UUID NOT NULL PRIMARY KEY,
+    plan_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     id SERIAL,
     pan NUMERIC(10,2) NOT NULL,
     nopan NUMERIC(10,2) NOT NULL
@@ -143,7 +143,7 @@ CREATE TABLE tds_pan (
 DROP TABLE IF EXISTS temp_sub_new;
 
 CREATE TABLE temp_sub_new (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno SERIAL,
     subscriberid INT,
     s_op_bal NUMERIC(10,2),

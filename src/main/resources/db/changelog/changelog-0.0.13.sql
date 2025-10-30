@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS statusmaster CASCADE;
 
 -- Table: state
 CREATE TABLE state (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   stateid SERIAL ,
   code VARCHAR(250),
   name VARCHAR(45),
@@ -28,7 +28,7 @@ VALUES (
 
 -- Table: state_district
 CREATE TABLE state_district (
-  district_id UUID NOT NULL PRIMARY KEY,
+  district_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id BIGSERIAL ,
   statename VARCHAR(64),
   stcode CHAR(5),
@@ -41,7 +41,7 @@ CREATE INDEX idx_state_district_stcode ON state_district (stcode);
 
 -- Table: state_map
 CREATE TABLE state_map (
-  state_id UUID NOT NULL PRIMARY KEY,
+  state_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   stcode VARCHAR(10),
   mstcode VARCHAR(10)
@@ -49,7 +49,7 @@ CREATE TABLE state_map (
 
 -- Table: statewise_railtel
 CREATE TABLE statewise_railtel (
-  state_wise_id UUID NOT NULL PRIMARY KEY,
+  state_wise_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   stcode CHAR(3),
   pan VARCHAR(15),
@@ -70,7 +70,7 @@ CREATE INDEX idx_statewise_railtel_stcode ON statewise_railtel (stcode);
 
 -- Table: staticippackage
 CREATE TABLE staticippackage (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   staticpackid SERIAL,
   staticpackagename VARCHAR(100),
   price NUMERIC(12,2),
@@ -79,14 +79,14 @@ CREATE TABLE staticippackage (
 
 -- Table: status
 CREATE TABLE status (
-  status_id UUID NOT NULL PRIMARY KEY,
+  status_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   id SERIAL,
   statusname VARCHAR(50)
 );
 
 -- Table: statusmaster
 CREATE TABLE statusmaster (
-  id UUID NOT NULL PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   slno INTEGER,
   status VARCHAR(50),
   statuscode VARCHAR(10)

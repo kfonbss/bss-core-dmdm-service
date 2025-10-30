@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS subscriberfinance;
 
 CREATE TABLE subscriberfinance (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     finid BIGSERIAL,
     subscriberid INTEGER,
     amount NUMERIC(13,2),
@@ -35,7 +35,7 @@ VALUES
 DROP TABLE IF EXISTS subscribergstdetail;
 
 CREATE TABLE subscribergstdetail (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     subscriberid SERIAL,
     gstin VARCHAR(20),
     sac VARCHAR(20),
@@ -79,7 +79,7 @@ VALUES (
 DROP TABLE IF EXISTS subscriberinovoice;
 
 CREATE TABLE subscriberinovoice (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     slno BIGSERIAL,
     subscriberid BIGINT,
     invoiceno VARCHAR(64),
@@ -167,7 +167,7 @@ VALUES (
 DROP TABLE IF EXISTS subscriberprofile;
 
 CREATE TABLE subscriberprofile (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     profileid INT,
     name VARCHAR(100) NOT NULL,
     discount NUMERIC(10,2) NOT NULL,
@@ -190,7 +190,7 @@ VALUES (gen_random_uuid(), 1, 'Standard Plan', 5.00, 'SP001', 'സ്റ്റ�
 DROP TABLE IF EXISTS subscriberusernames;
 
 CREATE TABLE subscriberusernames (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     subscriberid SERIAL,
     username VARCHAR(50),
     code VARCHAR(50),
@@ -216,7 +216,7 @@ INSERT INTO subscriberusernames (
 DROP TABLE IF EXISTS subscription;
 
 CREATE TABLE subscription (
-    id UUID NOT NULL PRIMARY KEY,
+    id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
     subscriberid BIGINT,
     status INT DEFAULT 0,
     expiry TIMESTAMP,
