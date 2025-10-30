@@ -187,3 +187,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.28.0] - 2025-10-30
 ### Added
 -  Get Corporate otc invoice and Package Details
+
+## [0.29.0] - 2025-10-30
+### Added
+Get partner receipt and account balance report

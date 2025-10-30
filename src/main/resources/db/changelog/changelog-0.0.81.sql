@@ -220,7 +220,6 @@ CREATE TABLE partnerreciept (
   reciepttypeid int NOT NULL,
   recieptstatusid int NOT NULL,
   recieptdate timestamp NOT NULL,
-  lastupdate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   reference varchar(64) NOT NULL,
   Amtreceived float DEFAULT NULL,
   status varchar(25) DEFAULT NULL,
@@ -230,5 +229,27 @@ CREATE TABLE partnerreciept (
   pchqdate date DEFAULT NULL,
   pchqbank varchar(100) DEFAULT NULL,
   attachment varchar(120) DEFAULT NULL,
-  remarks varchar(255) DEFAULT NULL
+  remarks varchar(255) DEFAULT NULL,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+
+INSERT INTO partnerreciept (
+    id, recieptid, partnerid, amount, reciepttypeid, recieptstatusid,
+    recieptdate, reference, amtreceived, status, receiveddate,
+    chqno, pchqno, pchqdate, pchqbank, attachment, remarks,
+    code, name, name_in_local, is_active, created_date, modified_date,
+    created_by, modified_by
+) VALUES
+(
+    gen_random_uuid(), DEFAULT, 1001, 5000.00, 1, 1,
+    NOW(), 'REF12345', 5000.00, 'Received', CURRENT_DATE,
+    'CHQ001', 'PCHQ001', CURRENT_DATE, 'SBI Bank', 'receipt_doc.pdf', 'Initial payment received',
+    'RCPT01', 'Partner Receipt', 'പാർട്നർ റസീറ്റ്', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
 );
