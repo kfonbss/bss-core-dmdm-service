@@ -211,3 +211,7 @@ Get partner receipt and account balance report
 # [0.34.0] - 2025-10-31
 ### Added
 - Get partner gst valet and revenue details
+
+# [0.35.0] - 2025-10-31
+### Added
+- Get corporate purchase order and quotations Details
