@@ -264,4 +264,48 @@ public class PartnerControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched partner finance record by id"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
+
+  @Test
+  void testFetchAllPartnerConfirmations() throws Exception {
+    when(service.fetchAllPartnerConfirmationsFromAgnp()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/partner/confirmations"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all partner confirmations from AGNP"))
+        .andExpect(jsonPath("$.data.length()").value(1));
+  }
+
+  @Test
+  void testFetchPartnerConfirmationById() throws Exception {
+    when(service.fetchPartnerConfirmationFromAgnpById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/partner/confirmation/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched partner confirmation from AGNP by id"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchAllPartnerConfirmationMovements() throws Exception {
+    when(service.fetchAllPartnerConfirmationMovements()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/partner/confirmation-movements"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all partner confirmation movements"))
+        .andExpect(jsonPath("$.data.length()").value(1));
+  }
+
+  @Test
+  void testFetchPartnerConfirmationMovementById() throws Exception {
+    when(service.fetchPartnerConfirmationMovementById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/partner/confirmation-movement/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched partner confirmation movement by id"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
 }

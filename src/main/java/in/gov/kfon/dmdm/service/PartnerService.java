@@ -45,4 +45,12 @@ public interface PartnerService {
   List<CommonLookUp> fetchAllPartnerFinances();
 
   CommonLookUp fetchPartnerFinanceById(UUID id);
+
+  List<CommonLookUp> fetchAllPartnerConfirmationsFromAgnp();
+
+  CommonLookUp fetchPartnerConfirmationFromAgnpById(UUID id);
+
+  List<CommonLookUp> fetchAllPartnerConfirmationMovements();
+
+  CommonLookUp fetchPartnerConfirmationMovementById(UUID id);
 }

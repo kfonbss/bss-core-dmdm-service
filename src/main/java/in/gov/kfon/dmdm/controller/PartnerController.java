@@ -162,4 +162,34 @@ public class PartnerController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched partner finance record by id"));
   }
+
+  @GetMapping("/confirmations")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerConfirmations() {
+    var data = service.fetchAllPartnerConfirmationsFromAgnp();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all partner confirmations from AGNP"));
+  }
+
+  @GetMapping("/confirmation/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPartnerConfirmationById(
+      @PathVariable UUID id) {
+    var data = service.fetchPartnerConfirmationFromAgnpById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched partner confirmation from AGNP by id"));
+  }
+
+  @GetMapping("/confirmation-movements")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerConfirmationMovements() {
+    var data = service.fetchAllPartnerConfirmationMovements();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all partner confirmation movements"));
+  }
+
+  @GetMapping("/confirmation-movement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPartnerConfirmationMovementById(
+      @PathVariable UUID id) {
+    var data = service.fetchPartnerConfirmationMovementById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched partner confirmation movement by id"));
+  }
 }

@@ -29,6 +29,8 @@ public class PartnerServiceImplTest {
   @Mock private PartnerAccountBalanceReportRepository partnerAccountBalanceReportRepository;
   @Mock private PartnerDisbursementRepository partnerDisbursementRepository;
   @Mock private PartnerFinanceRepository financeRepository;
+  @Mock private PartnerConfirmationFromAgnpRepository partnerConfirmationRepository;
+  @Mock private PartnerConfirmationFromAgnpMovementRepository partnerConfirmationMovementRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private PartnerServiceImpl service;
@@ -45,6 +47,8 @@ public class PartnerServiceImplTest {
   private PartnerAccountBalanceReport accountReport;
   private PartnerDisbursement disbursement;
   private PartnerFinance financeEntity;
+  private PartnerConfirmationFromAgnp confirmation;
+  private PartnerConfirmationFromAgnpMovement confirmationMovement;
 
   @BeforeEach
   void setUp() {
@@ -80,6 +84,12 @@ public class PartnerServiceImplTest {
 
     financeEntity = new PartnerFinance();
     financeEntity.setId(id);
+
+    confirmation = new PartnerConfirmationFromAgnp();
+    confirmation.setAgnpId(id);
+
+    confirmationMovement = new PartnerConfirmationFromAgnpMovement();
+    confirmationMovement.setMovementId(id);
 
     lookup = new CommonLookUp();
     lookup.setId(id);
@@ -223,7 +233,6 @@ public class PartnerServiceImplTest {
     assertThrows(EntityNotFoundException.class, () -> service.fetchGstInvoiceById(id));
   }
 
-  // --- Partner Online Recharges ---
   @Test
   void testFetchAllOnlineRecharges() {
     when(partnerOnlineRechargeRepository.findAll()).thenReturn(List.of(onlineRecharge));
@@ -370,5 +379,70 @@ public class PartnerServiceImplTest {
 
     assertThrows(EntityNotFoundException.class, () -> service.fetchPartnerFinanceById(id));
     verify(financeRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchAllPartnerConfirmations() {
+    when(partnerConfirmationRepository.findAll()).thenReturn(List.of(confirmation));
+    when(modelMapper.map(confirmation, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAllPartnerConfirmationsFromAgnp();
+
+    assertEquals(1, result.size());
+    verify(partnerConfirmationRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testFetchPartnerConfirmationById_Success() {
+    when(partnerConfirmationRepository.findById(id)).thenReturn(Optional.of(confirmation));
+    when(modelMapper.map(confirmation, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchPartnerConfirmationFromAgnpById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(partnerConfirmationRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchPartnerConfirmationById_NotFound() {
+    when(partnerConfirmationRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(
+        EntityNotFoundException.class, () -> service.fetchPartnerConfirmationFromAgnpById(id));
+    verify(partnerConfirmationRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchAllPartnerConfirmationMovements() {
+    when(partnerConfirmationMovementRepository.findAll()).thenReturn(List.of(confirmationMovement));
+    when(modelMapper.map(confirmationMovement, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAllPartnerConfirmationMovements();
+
+    assertEquals(1, result.size());
+    verify(partnerConfirmationMovementRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testFetchPartnerConfirmationMovementById_Success() {
+    when(partnerConfirmationMovementRepository.findById(id))
+        .thenReturn(Optional.of(confirmationMovement));
+    when(modelMapper.map(confirmationMovement, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchPartnerConfirmationMovementById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(partnerConfirmationMovementRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchPartnerConfirmationMovementById_NotFound() {
+    when(partnerConfirmationMovementRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(
+        EntityNotFoundException.class, () -> service.fetchPartnerConfirmationMovementById(id));
+    verify(partnerConfirmationMovementRepository, times(1)).findById(id);
   }
 }
