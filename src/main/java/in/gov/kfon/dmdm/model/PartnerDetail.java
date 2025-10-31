@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "partnerdetail")
 @Data
 @NoArgsConstructor
-public class PartnerDetail extends Auditor{
+public class PartnerDetail extends Auditor {
 
   @Id
   @Column(name = "id")
