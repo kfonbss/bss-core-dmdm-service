@@ -196,6 +196,10 @@ Get partner receipt and account balance report
 ### Added
 - Get corporate parent customers and payment history Details
 
+# [0.31.0] - 2025-10-31
+### Added
+- Get partner disbursements and finance Details
+
 # [0.32.0] - 2025-10-31
 ### Added
 - Get corporate payment kyc and po movement details
