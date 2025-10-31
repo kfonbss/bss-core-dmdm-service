@@ -48,6 +48,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CePurchaseOrderRepository purchaseOrderRepository;
   private final CeQuotationsMovementRepository quotationsMovementRepository;
   private final CeQuotationsRevisionRepository quotationsRevisionRepository;
+  private final CeRenewalDetailsRepository renewalDetailsRepository;
+  private final CeRevisionConnectionBreakupRepository revisionConnectionBreakupRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -642,6 +644,42 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   public CommonLookUp quotationsRevisionFetchById(UUID id) {
     CeQuotationsRevision entity =
         quotationsRevisionRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> renewalDetailsFetchAll() {
+    return renewalDetailsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp renewalDetailsFetchById(UUID id) {
+    CeRenewalDetails entity =
+        renewalDetailsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> revisionConnectionBreakupFetchAll() {
+    return revisionConnectionBreakupRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp revisionConnectionBreakupFetchById(UUID id) {
+    CeRevisionConnectionBreakup entity =
+        revisionConnectionBreakupRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);

@@ -356,4 +356,29 @@ public class CorporateOnboardingController {
     var data = service.quotationsRevisionFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("renewal-details/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> renewalDetailsFetchAll() {
+    var data = service.renewalDetailsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("renewal-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> renewalDetailsFetchById(@PathVariable UUID id) {
+    var data = service.renewalDetailsFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("revision/connection-breakups/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> revisionConnectionBreakupFetchAll() {
+    var data = service.revisionConnectionBreakupFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("revision/connection-breakup/{id}")
+  public ResponseEntity<Response<CommonLookUp>> revisionConnectionBreakupFetchById(
+      @PathVariable UUID id) {
+    var data = service.revisionConnectionBreakupFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }
