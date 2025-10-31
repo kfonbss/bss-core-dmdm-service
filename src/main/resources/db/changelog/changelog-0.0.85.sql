@@ -131,10 +131,20 @@ CREATE TABLE partner_confirmation_from_agnp (
     document VARCHAR(4200),
     status VARCHAR(45),
     note TEXT,
-    created_by VARCHAR(64),
-    create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    code VARCHAR(50),
+    name VARCHAR(255),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO partner_confirmation_from_agnp
+(agnp_id, id, partnerid, document, status, note, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 1001, 'Document_Approval_Form.pdf', 'APPROVED', 'All details verified successfully.', 'AGN001', 'Partner Document Confirmation', 'പാർട്ണർ രേഖ സ്ഥിരീകരണം', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 -- partner_confirmation_from_agnp_movement
 DROP TABLE IF EXISTS partner_confirmation_from_agnp_movement CASCADE;
@@ -145,9 +155,20 @@ CREATE TABLE partner_confirmation_from_agnp_movement (
     pcf_id BIGINT,
     note TEXT,
     status VARCHAR(45),
-    created_by VARCHAR(64),
-    create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    code VARCHAR(50),
+    name VARCHAR(256),
+    name_in_local VARCHAR(256),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO partner_confirmation_from_agnp_movement
+(movement_id, id, pcf_id, note, status, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 1, 'Initial verification completed.', 'VERIFIED', 'MOV001', 'Verification Completed', 'പരിശോധന പൂർത്തിയായി', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 -- partner_gstvalet
 DROP TABLE IF EXISTS partner_gstvalet CASCADE;

@@ -203,3 +203,7 @@ Get partner receipt and account balance report
 # [0.32.0] - 2025-10-31
 ### Added
 - Get corporate payment kyc and po movement details
+
+# [0.33.0] - 2025-10-31
+### Added
+- Get partner confirmation from agnp and confirmation movement details
