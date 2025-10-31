@@ -178,7 +178,6 @@ CREATE TABLE partner_gstvalet (
     slno SERIAL ,
     partnerid BIGINT,
     partnername VARCHAR(200),
-    created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     description VARCHAR(200),
     BSS_invoiceno VARCHAR(20),
     gst_amt NUMERIC(10,2),
@@ -195,8 +194,20 @@ CREATE TABLE partner_gstvalet (
     irn_no VARCHAR(150),
     gst_invoicedate DATE,
     gstin_proof VARCHAR(250),
-    updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    code VARCHAR(50),
+    name VARCHAR(255),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO partner_gstvalet
+(id, slno, partnerid, partnername, description, BSS_invoiceno, gst_amt, approved_amt, balance_amt, submit_status, approve_status, submit_date, approve_date, ptype, billtype, remarks, gst_invoiceno, irn_no, gst_invoicedate, gstin_proof, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 1001, 'Test Partner', 'Test GST valet description', 'BSS12345', 5000.00, 4500.00, 500.00, 'SUBMITTED', 'APPROVED', NOW(), NOW(), 'PT01', 'BT01', 'No remarks', 'GSTINV123', 'IRN1234567890', '2025-10-31', '/path/to/gstin_proof.pdf', 'CODE01', 'Test Partner Name', 'ടെസ്റ്റ് പാർട്ണർ നെയിം', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 -- partner_revenue
 DROP TABLE IF EXISTS partner_revenue CASCADE;
@@ -209,8 +220,22 @@ CREATE TABLE partner_revenue (
     state VARCHAR(30) NOT NULL,
     revenue VARCHAR(30) NOT NULL,
     billtype VARCHAR(30) NOT NULL,
-    reportdate VARCHAR(30)
+    reportdate VARCHAR(30),
+    code VARCHAR(50),
+    name VARCHAR(255),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO partner_revenue
+(revenue_id, id, partnerid, partnername, state, revenue, billtype, reportdate, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 1001, 'Test Partner', 'Kerala', '5000.00', 'BT01', '2025-10-31', 'REV001', 'Partner Revenue Name', 'പാർട്ണർ റവന്യൂ നെയിം', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
+
 
 -- partneraccount
 DROP TABLE IF EXISTS partneraccount CASCADE;

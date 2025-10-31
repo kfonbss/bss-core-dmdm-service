@@ -207,3 +207,7 @@ Get partner receipt and account balance report
 # [0.33.0] - 2025-10-31
 ### Added
 - Get partner confirmation from agnp and confirmation movement details
+
+# [0.34.0] - 2025-10-31
+### Added
+- Get partner gst valet and revenue details

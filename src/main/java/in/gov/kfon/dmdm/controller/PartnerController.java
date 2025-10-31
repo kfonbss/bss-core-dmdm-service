@@ -192,4 +192,32 @@ public class PartnerController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched partner confirmation movement by id"));
   }
+
+  @GetMapping("/gst-valets")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllGstValets() {
+    var data = service.fetchAllGstValets();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all partner GST valets"));
+  }
+
+  @GetMapping("/gst-valet/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchGstValetById(@PathVariable UUID id) {
+    var data = service.fetchGstValetById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched partner GST valet by id"));
+  }
+
+  @GetMapping("/revenues")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllRevenues() {
+    var data = service.fetchAllRevenues();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all partner revenues"));
+  }
+
+  @GetMapping("/revenue/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchRevenueById(@PathVariable UUID id) {
+    var data = service.fetchRevenueById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched partner revenue by id"));
+  }
 }
