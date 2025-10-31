@@ -227,3 +227,7 @@ Get partner receipt and account balance report
 # [0.38.0] - 2025-10-31
 ### Added
 - Get renewal revision connection breakup details
+
+# [0.39.0] - 2025-10-31
+### Added
+Get partner demo users and agreement details

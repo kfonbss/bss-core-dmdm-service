@@ -248,4 +248,30 @@ public class PartnerController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched partner detail by id"));
   }
+
+  @GetMapping("/demo-users")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDemoUsers() {
+    var data = service.fetchAllDemoUsers();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all demo users"));
+  }
+
+  @GetMapping("/demo-user/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchDemoUserById(@PathVariable UUID id) {
+    var data = service.fetchDemoUserById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched demo user by id"));
+  }
+
+  @GetMapping("/agreement-details")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllAgreementDetails() {
+    var data = service.fetchAllAgreementDetails();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all partner agreement details"));
+  }
+
+  @GetMapping("/agreement-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchAgreementDetailById(@PathVariable UUID id) {
+    var data = service.fetchAgreementDetailById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched partner agreement detail by id"));
+  }
 }
