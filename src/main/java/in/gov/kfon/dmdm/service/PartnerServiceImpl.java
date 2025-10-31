@@ -1,6 +1,8 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.model.PartnerAccount;
+import in.gov.kfon.dmdm.model.PartnerDetail;
 import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
@@ -28,6 +30,8 @@ public class PartnerServiceImpl implements PartnerService {
       partnerConfirmationFromAgnpMovementRepository;
   private final PartnerGstValetRepository partnerGstValetRepository;
   private final PartnerRevenueRepository partnerRevenueRepository;
+  private final PartnerAccountRepository partnerAccountRepository;
+  private final PartnerDetailRepository partnerDetailRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -261,5 +265,37 @@ public class PartnerServiceImpl implements PartnerService {
             .orElseThrow(
                 () -> new EntityNotFoundException("PartnerRevenue not found with id: " + id));
     return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllAccounts() {
+    return partnerAccountRepository.findAll().stream()
+        .map(account -> modelMapper.map(account, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchAccountById(UUID id) {
+    PartnerAccount account =
+        partnerAccountRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("PartnerAccount not found: " + id));
+    return modelMapper.map(account, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllPartnerDetails() {
+    return partnerDetailRepository.findAll().stream()
+        .map(detail -> modelMapper.map(detail, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchPartnerDetailById(UUID id) {
+    PartnerDetail detail =
+        partnerDetailRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("PartnerDetail not found: " + id));
+    return modelMapper.map(detail, CommonLookUp.class);
   }
 }
