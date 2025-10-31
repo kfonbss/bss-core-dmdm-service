@@ -23,6 +23,9 @@ public class PartnerServiceImpl implements PartnerService {
   private final PartnerAccountBalanceReportRepository partnerAccountBalanceReportRepository;
   private final PartnerDisbursementRepository partnerDisbursementRepository;
   private final PartnerFinanceRepository partnerFinanceRepository;
+  private final PartnerConfirmationFromAgnpRepository partnerConfirmationFromAgnpRepository;
+  private final PartnerConfirmationFromAgnpMovementRepository
+      partnerConfirmationFromAgnpMovementRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -185,6 +188,42 @@ public class PartnerServiceImpl implements PartnerService {
         partnerFinanceRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Partner Finance not found"));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllPartnerConfirmationsFromAgnp() {
+    return partnerConfirmationFromAgnpRepository.findAll().stream()
+        .map(
+            partnerConfirmationFromAgnp ->
+                modelMapper.map(partnerConfirmationFromAgnp, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchPartnerConfirmationFromAgnpById(UUID id) {
+    var entity =
+        partnerConfirmationFromAgnpRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("PartnerConfirmationFromAgnp not found: " + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllPartnerConfirmationMovements() {
+    return partnerConfirmationFromAgnpMovementRepository.findAll().stream()
+        .map(agnpMovement -> modelMapper.map(agnpMovement, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchPartnerConfirmationMovementById(UUID id) {
+    var entity =
+        partnerConfirmationFromAgnpMovementRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("PartnerConfirmationMovement not found: " + id));
     return modelMapper.map(entity, CommonLookUp.class);
   }
 }
