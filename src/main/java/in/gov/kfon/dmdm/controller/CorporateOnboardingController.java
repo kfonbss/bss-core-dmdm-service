@@ -284,4 +284,28 @@ public class CorporateOnboardingController {
     var data = service.paymentHistoryFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("payment/kyc-details/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> paymentKycDetailsFetchAll() {
+    var data = service.paymentKycDetailsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("payment/kyc-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> paymentKycDetailsFetchById(@PathVariable UUID id) {
+    var data = service.paymentKycDetailsFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("po-movements/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> poMovementFetchAll() {
+    var data = service.poMovementFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("po-movement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> poMovementFetchById(@PathVariable UUID id) {
+    var data = service.poMovementFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }

@@ -42,6 +42,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CePackageRepository packageRepository;
   private final CeParentCustomersRepository parentCustomersRepository;
   private final CePaymentHistoryRepository paymentHistoryRepository;
+  private final CePaymentKycDetailsRepository paymentKycDetailsRepository;
+  private final CePoMovementRepository poMovementRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -531,5 +533,41 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
     lookup.setId(paymentHistory.getHistoryId());
 
     return lookup;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> paymentKycDetailsFetchAll() {
+    return paymentKycDetailsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp paymentKycDetailsFetchById(UUID id) {
+    CePaymentKycDetails entity =
+        paymentKycDetailsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> poMovementFetchAll() {
+    return poMovementRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp poMovementFetchById(UUID id) {
+    CePoMovement entity =
+        poMovementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
   }
 }

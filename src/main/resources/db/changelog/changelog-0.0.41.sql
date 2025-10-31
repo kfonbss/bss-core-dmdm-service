@@ -89,6 +89,9 @@ DROP TABLE IF EXISTS ce_payment_kyc_details CASCADE;
 
 CREATE TABLE ce_payment_kyc_details (
   details_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
   id SERIAL,
   subid int DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -100,9 +103,16 @@ CREATE TABLE ce_payment_kyc_details (
   wo_date timestamp DEFAULT NULL,
   kyc_doc varchar(50) DEFAULT NULL,
   kyc_date timestamp DEFAULT NULL,
-  created_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  updated_date timestamp DEFAULT CURRENT_TIMESTAMP,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_payment_kyc_details PRIMARY KEY (details_id)
+);
+INSERT INTO ce_payment_kyc_details (
+    details_id, code, name, name_in_local, subid, locid, cheque_doc, cheque_date, paymentreciept_doc, paymentreciept_date, wo_doc, wo_date, kyc_doc, kyc_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'KYC001', 'KYC Payment Verification', 'കെവൈസി പേയ്‌മെന്റ് സ്ഥിരീകരണം', 2001, 3001, 'cheque_2001.pdf', CURRENT_TIMESTAMP, 'receipt_2001.pdf', CURRENT_TIMESTAMP, 'wo_2001.pdf', CURRENT_TIMESTAMP, 'kyc_2001.pdf', CURRENT_TIMESTAMP, gen_random_uuid(), gen_random_uuid()
 );
 
 
@@ -110,17 +120,28 @@ DROP TABLE IF EXISTS ce_po_movement CASCADE;
 
 CREATE TABLE ce_po_movement (
   movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
   id SERIAL,
   poid int DEFAULT NULL,
   approve_status int DEFAULT NULL,
   remarks varchar(255) DEFAULT NULL,
-  created_by varchar(128) DEFAULT NULL,
+  created_by_platform varchar(128) DEFAULT NULL,
   create_date timestamp DEFAULT CURRENT_TIMESTAMP,
   update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_po_movement PRIMARY KEY (movement_id)
 );
+INSERT INTO ce_po_movement (
+    movement_id, code, name, name_in_local, poid, approve_status, remarks, created_by_platform, create_date, update_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'PO001', 'Purchase Order Movement', 'വാങ്ങൽ ഓർഡർ നീക്കം', 1001, 1, 'PO approved successfully', 'system_admin', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, gen_random_uuid(), gen_random_uuid()
+);
 
-COMMENT ON COLUMN ce_po_movement.is_active IS '0=In Active,1=Active';
+
 
 
