@@ -26,6 +26,8 @@ public class PartnerServiceImpl implements PartnerService {
   private final PartnerConfirmationFromAgnpRepository partnerConfirmationFromAgnpRepository;
   private final PartnerConfirmationFromAgnpMovementRepository
       partnerConfirmationFromAgnpMovementRepository;
+  private final PartnerGstValetRepository partnerGstValetRepository;
+  private final PartnerRevenueRepository partnerRevenueRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -224,6 +226,40 @@ public class PartnerServiceImpl implements PartnerService {
             .findById(id)
             .orElseThrow(
                 () -> new EntityNotFoundException("PartnerConfirmationMovement not found: " + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllGstValets() {
+    return partnerGstValetRepository.findAll().stream()
+        .map(gstValet -> modelMapper.map(gstValet, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchGstValetById(UUID id) {
+    var entity =
+        partnerGstValetRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("PartnerGstValet not found with id: " + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllRevenues() {
+    return partnerRevenueRepository.findAll().stream()
+        .map(revenue -> modelMapper.map(revenue, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchRevenueById(UUID id) {
+    var entity =
+        partnerRevenueRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("PartnerRevenue not found with id: " + id));
     return modelMapper.map(entity, CommonLookUp.class);
   }
 }
