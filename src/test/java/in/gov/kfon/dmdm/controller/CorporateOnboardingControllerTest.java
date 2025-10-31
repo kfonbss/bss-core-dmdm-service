@@ -517,7 +517,7 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/corporate/otc-invoice/fetch-all").contentType(MediaType.APPLICATION_JSON))
+            get("/api/corporate/otc-invoices/fetch-all").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data[0].code").value("CORP001"));
@@ -539,7 +539,7 @@ class CorporateOnboardingControllerTest {
     when(service.packageFetchAll()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/corporate/package/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .perform(get("/api/corporate/packages/fetch-all").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data[0].code").value("CORP001"));
@@ -551,6 +551,55 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(get("/api/corporate/package/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"));
+  }
+
+  @Test
+  void testParentCustomersFetchAll() throws Exception {
+    when(service.parentCustomersFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/parent-customer/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"));
+  }
+
+  @Test
+  void testParentCustomerById() throws Exception {
+    when(service.parentCustomersFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/parent-customer/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"));
+  }
+
+  @Test
+  void testPaymentHistoryFetchAll() throws Exception {
+    when(service.paymentHistoryFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/payment-histories/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"));
+  }
+
+  @Test
+  void testPaymentHistoryById() throws Exception {
+    when(service.paymentHistoryFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/payment-history/{id}", id).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("CORP001"));

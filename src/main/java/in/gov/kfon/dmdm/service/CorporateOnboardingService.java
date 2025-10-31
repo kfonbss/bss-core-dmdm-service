@@ -84,4 +84,12 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> packageFetchAll();
 
   CommonLookUp packageFetchById(UUID id);
+
+  List<CommonLookUp> parentCustomersFetchAll();
+
+  CommonLookUp parentCustomersFetchById(UUID id);
+
+  List<CommonLookUp> paymentHistoryFetchAll();
+
+  CommonLookUp paymentHistoryFetchById(UUID id);
 }

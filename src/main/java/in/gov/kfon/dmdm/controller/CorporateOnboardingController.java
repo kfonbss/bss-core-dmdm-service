@@ -237,7 +237,7 @@ public class CorporateOnboardingController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("otc-invoice/fetch-all")
+  @GetMapping("otc-invoices/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> otcInvoiceFetchAll() {
     var data = service.otcInvoiceFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
@@ -249,7 +249,7 @@ public class CorporateOnboardingController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("package/fetch-all")
+  @GetMapping("packages/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> packageFetchAll() {
     var data = service.packageFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
@@ -258,6 +258,30 @@ public class CorporateOnboardingController {
   @GetMapping("package/{id}")
   public ResponseEntity<Response<CommonLookUp>> packageFetchById(@PathVariable UUID id) {
     var data = service.packageFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("parent-customers/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> parentCustomersFetchAll() {
+    var data = service.parentCustomersFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("parent-customer/{id}")
+  public ResponseEntity<Response<CommonLookUp>> parentCustomersFetchById(@PathVariable UUID id) {
+    var data = service.parentCustomersFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("payment-histories/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> paymentHistoryFetchAll() {
+    var data = service.paymentHistoryFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("payment-history/{id}")
+  public ResponseEntity<Response<CommonLookUp>> paymentHistoryFetchById(@PathVariable UUID id) {
+    var data = service.paymentHistoryFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 }
