@@ -27,6 +27,8 @@ public class PartnerServiceImplTest {
   @Mock private PartnerOnlineRechargeRepository partnerOnlineRechargeRepository;
   @Mock private PartnerReceiptRepository partnerReceiptRepository;
   @Mock private PartnerAccountBalanceReportRepository partnerAccountBalanceReportRepository;
+  @Mock private PartnerDisbursementRepository partnerDisbursementRepository;
+  @Mock private PartnerFinanceRepository financeRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private PartnerServiceImpl service;
@@ -41,6 +43,8 @@ public class PartnerServiceImplTest {
   private PartnerOnlineRecharge onlineRecharge;
   private PartnerReceipt receipt;
   private PartnerAccountBalanceReport accountReport;
+  private PartnerDisbursement disbursement;
+  private PartnerFinance financeEntity;
 
   @BeforeEach
   void setUp() {
@@ -71,6 +75,12 @@ public class PartnerServiceImplTest {
     accountReport = new PartnerAccountBalanceReport();
     accountReport.setId(id);
 
+    disbursement = new PartnerDisbursement();
+    disbursement.setId(id);
+
+    financeEntity = new PartnerFinance();
+    financeEntity.setId(id);
+
     lookup = new CommonLookUp();
     lookup.setId(id);
   }
@@ -87,7 +97,7 @@ public class PartnerServiceImplTest {
   }
 
   @Test
-  void testFetchPartnerFinanceById_Success() {
+  void testFetchPartnerFinanceById2_Success() {
     when(partnerFinanceRepository.findById(id)).thenReturn(Optional.of(finance));
     when(modelMapper.map(finance, CommonLookUp.class)).thenReturn(lookup);
 
@@ -98,7 +108,7 @@ public class PartnerServiceImplTest {
   }
 
   @Test
-  void testFetchPartnerFinanceById_NotFound() {
+  void testFetchPartnerFinance2ById_NotFound() {
     when(partnerFinanceRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.fetchFinanceDetailsById(id));
@@ -299,5 +309,66 @@ public class PartnerServiceImplTest {
 
     assertThrows(EntityNotFoundException.class, () -> service.fetchPartnerAccountReportById(id));
     verify(partnerAccountBalanceReportRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchAllPartnerDisbursements() {
+    when(partnerDisbursementRepository.findAll()).thenReturn(List.of(disbursement));
+    when(modelMapper.map(disbursement, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAllPartnerDisbursements();
+
+    assertEquals(1, result.size());
+    verify(partnerDisbursementRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testFetchPartnerDisbursementById_Success() {
+    when(partnerDisbursementRepository.findById(id)).thenReturn(Optional.of(disbursement));
+    when(modelMapper.map(disbursement, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchPartnerDisbursementById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(partnerDisbursementRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchPartnerDisbursementById_NotFound() {
+    when(partnerDisbursementRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.fetchPartnerDisbursementById(id));
+    verify(partnerDisbursementRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchAllPartnerFinances() {
+    when(financeRepository.findAll()).thenReturn(List.of(financeEntity));
+    when(modelMapper.map(financeEntity, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAllPartnerFinances();
+
+    assertEquals(1, result.size());
+    verify(financeRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testFetchPartnerFinanceById_Success() {
+    when(financeRepository.findById(id)).thenReturn(Optional.of(financeEntity));
+    when(modelMapper.map(financeEntity, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchPartnerFinanceById(id);
+
+    assertEquals(id, result.getId());
+    verify(financeRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchPartnerFinanceById_NotFound() {
+    when(partnerFinanceRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.fetchPartnerFinanceById(id));
+    verify(financeRepository, times(1)).findById(id);
   }
 }

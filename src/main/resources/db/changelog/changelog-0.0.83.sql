@@ -212,8 +212,6 @@ CREATE TABLE partnerdisbursement (
   disbursestatusid INT DEFAULT 3,
   subscriberid BIGINT DEFAULT NULL,
   cause VARCHAR(100) DEFAULT NULL,
-  lastupdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  create_date TIMESTAMP DEFAULT NULL,
   subfinanceid BIGINT DEFAULT NULL,
   onsubbssref VARCHAR(64) DEFAULT NULL,
   lowestrevenue NUMERIC(10,2) DEFAULT NULL,
@@ -225,10 +223,32 @@ CREATE TABLE partnerdisbursement (
   packageid INT DEFAULT NULL,
   sub_packageid INT DEFAULT NULL,
   diburse_mode INT DEFAULT 0,
-  cause_detail_id INT DEFAULT 0
+  cause_detail_id INT DEFAULT 0,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
 );
 
-CREATE INDEX index2_partnerdisbursement ON partnerdisbursement (partnergroupid, lastupdate, disbursestatusid);
+CREATE INDEX index2_partnerdisbursement ON partnerdisbursement (partnergroupid, modified_date, disbursestatusid);
+
+INSERT INTO partnerdisbursement (
+    id, partnerdisbursementid, partnergroupid, revenue, disbursestatusid, subscriberid,
+    cause, subfinanceid, onsubbssref, lowestrevenue, agramount, oldsubfinanceid,
+    rechargemode, plantype, revenueshareid, packageid, sub_packageid,
+    diburse_mode, cause_detail_id, code, name, name_in_local, is_active,
+    created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), DEFAULT, 101, 15000.00, 3, 50001,
+    'Monthly Partner Revenue', 2001, 'ONSBSS-REF-001', 12000.00, 15000.00, NULL,
+    1, 2, 301, 401, 501,
+    0, 10, 'PD001', 'Partner Disbursement Sample', 'പാർട്നർ വിതരണം സാമ്പിൾ',
+    TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 -- Table: partnerfinance
 DROP TABLE IF EXISTS partnerfinance;
@@ -238,11 +258,28 @@ CREATE TABLE partnerfinance (
   partnerfinanceid SERIAL ,
   partnerid BIGINT DEFAULT NULL,
   cause VARCHAR(100) DEFAULT NULL,
-  lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   amount NUMERIC(10,2) DEFAULT NULL,
   subscriberid INT DEFAULT NULL,
   subonlineref BIGINT DEFAULT NULL,
-  subfinanceid BIGINT DEFAULT NULL
+  subfinanceid BIGINT DEFAULT NULL,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
 );
 
-CREATE INDEX partnerfinance_index ON partnerfinance (partnerid, cause, lastupdate);
+CREATE INDEX partnerfinance_index ON partnerfinance (partnerid, cause, modified_date);
+
+INSERT INTO partnerfinance (
+    id, partnerfinanceid, partnerid, cause,amount,
+    subscriberid, subonlineref, subfinanceid, code, name, name_in_local,
+    is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), DEFAULT, 20001, 'Revenue Share Settlement', 25000.00,
+    60001, 9876543210, 3001, 'PF001', 'Partner Finance Sample', 'പാർട്നർ ഫിനാൻസ് സാമ്പിൾ',
+    TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
