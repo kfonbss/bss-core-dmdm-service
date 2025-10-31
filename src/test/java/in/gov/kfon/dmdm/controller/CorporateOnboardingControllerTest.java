@@ -654,4 +654,50 @@ class CorporateOnboardingControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("CORP001"));
   }
+
+  @Test
+  void testQuotationsFetchAll() throws Exception {
+    when(service.quotationsFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/corporate/quotations/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"));
+  }
+
+  @Test
+  void testQuotationById() throws Exception {
+    when(service.quotationsFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/corporate/quotation/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"));
+  }
+
+  @Test
+  void testPurchaseOrderFetchAll() throws Exception {
+    when(service.purchaseOrderFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/purchase-orders/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"));
+  }
+
+  @Test
+  void testPurchaseOrderById() throws Exception {
+    when(service.purchaseOrderFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/purchase-order/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"));
+  }
 }

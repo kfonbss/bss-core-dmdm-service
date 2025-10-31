@@ -100,4 +100,12 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> poMovementFetchAll();
 
   CommonLookUp poMovementFetchById(UUID id);
+
+  List<CommonLookUp> quotationsFetchAll();
+
+  CommonLookUp quotationsFetchById(UUID id);
+
+  List<CommonLookUp> purchaseOrderFetchAll();
+
+  CommonLookUp purchaseOrderFetchById(UUID id);
 }

@@ -42,6 +42,8 @@ class CorporateOnboardingServiceImplTest {
   private CePaymentHistoryRepository paymentHistoryRepository;
   private CePaymentKycDetailsRepository paymentKycDetailsRepository;
   private CePoMovementRepository poMovementRepository;
+  private CeQuotationsRepository quotationsRepository;
+  private CePurchaseOrderRepository purchaseOrderRepository;
 
   @BeforeEach
   void setUp() {
@@ -70,6 +72,8 @@ class CorporateOnboardingServiceImplTest {
     paymentHistoryRepository = mock(CePaymentHistoryRepository.class);
     paymentKycDetailsRepository = mock(CePaymentKycDetailsRepository.class);
     poMovementRepository = mock(CePoMovementRepository.class);
+    quotationsRepository = mock(CeQuotationsRepository.class);
+    purchaseOrderRepository = mock(CePurchaseOrderRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -96,7 +100,9 @@ class CorporateOnboardingServiceImplTest {
             parentCustomersRepository,
             paymentHistoryRepository,
             paymentKycDetailsRepository,
-            poMovementRepository);
+            poMovementRepository,
+            quotationsRepository,
+            purchaseOrderRepository);
 
     service.setupMapper();
   }
@@ -951,5 +957,75 @@ class CorporateOnboardingServiceImplTest {
     when(poMovementRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.poMovementFetchById(id));
+  }
+
+  @Test
+  void testQuotationsFetchAll_ShouldReturnMappedList() {
+    CeQuotations quotations = new CeQuotations();
+    quotations.setQuoationsId(UUID.randomUUID());
+
+    when(quotationsRepository.findAll()).thenReturn(List.of(quotations));
+
+    List<CommonLookUp> result = service.quotationsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(quotationsRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testQuotationsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeQuotations quotations = new CeQuotations();
+    quotations.setQuoationsId(id);
+
+    when(quotationsRepository.findById(id)).thenReturn(Optional.of(quotations));
+
+    CommonLookUp result = service.quotationsFetchById(id);
+
+    assertNotNull(result);
+    verify(quotationsRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testQuotationsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(quotationsRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.quotationsFetchById(id));
+  }
+
+  @Test
+  void testPurchaseOrderFetchAll_ShouldReturnMappedList() {
+    CePurchaseOrder purchaseOrder = new CePurchaseOrder();
+    purchaseOrder.setOrderId(UUID.randomUUID());
+
+    when(purchaseOrderRepository.findAll()).thenReturn(List.of(purchaseOrder));
+
+    List<CommonLookUp> result = service.purchaseOrderFetchAll();
+
+    assertEquals(1, result.size());
+    verify(purchaseOrderRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testPurchaseOrderFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CePurchaseOrder purchaseOrder = new CePurchaseOrder();
+    purchaseOrder.setOrderId(id);
+
+    when(purchaseOrderRepository.findById(id)).thenReturn(Optional.of(purchaseOrder));
+
+    CommonLookUp result = service.purchaseOrderFetchById(id);
+
+    assertNotNull(result);
+    verify(purchaseOrderRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testPurchaseOrderFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(purchaseOrderRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.purchaseOrderFetchById(id));
   }
 }
