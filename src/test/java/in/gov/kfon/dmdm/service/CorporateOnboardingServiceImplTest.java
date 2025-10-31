@@ -46,6 +46,8 @@ class CorporateOnboardingServiceImplTest {
   private CePurchaseOrderRepository purchaseOrderRepository;
   private CeQuotationsMovementRepository quotationsMovementRepository;
   private CeQuotationsRevisionRepository quotationsRevisionRepository;
+  private CeRenewalDetailsRepository renewalDetailsRepository;
+  private CeRevisionConnectionBreakupRepository revisionConnectionBreakupRepository;
 
   @BeforeEach
   void setUp() {
@@ -78,6 +80,8 @@ class CorporateOnboardingServiceImplTest {
     purchaseOrderRepository = mock(CePurchaseOrderRepository.class);
     quotationsMovementRepository = mock(CeQuotationsMovementRepository.class);
     quotationsRevisionRepository = mock(CeQuotationsRevisionRepository.class);
+    renewalDetailsRepository = mock(CeRenewalDetailsRepository.class);
+    revisionConnectionBreakupRepository = mock(CeRevisionConnectionBreakupRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -108,7 +112,9 @@ class CorporateOnboardingServiceImplTest {
             quotationsRepository,
             purchaseOrderRepository,
             quotationsMovementRepository,
-            quotationsRevisionRepository);
+            quotationsRevisionRepository,
+            renewalDetailsRepository,
+            revisionConnectionBreakupRepository);
 
     service.setupMapper();
   }
@@ -1103,5 +1109,78 @@ class CorporateOnboardingServiceImplTest {
     when(quotationsRevisionRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.quotationsRevisionFetchById(id));
+  }
+
+  @Test
+  void testRenewalDetailsFetchAll_ShouldReturnMappedList() {
+    CeRenewalDetails renewalDetails = new CeRenewalDetails();
+    renewalDetails.setDetailsId(UUID.randomUUID());
+
+    when(renewalDetailsRepository.findAll()).thenReturn(List.of(renewalDetails));
+
+    List<CommonLookUp> result = service.renewalDetailsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(renewalDetailsRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testRenewalDetailsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeRenewalDetails renewalDetails = new CeRenewalDetails();
+    renewalDetails.setDetailsId(id);
+
+    when(renewalDetailsRepository.findById(id)).thenReturn(Optional.of(renewalDetails));
+
+    CommonLookUp result = service.renewalDetailsFetchById(id);
+
+    assertNotNull(result);
+    verify(renewalDetailsRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testRenewalDetailsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(renewalDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.renewalDetailsFetchById(id));
+  }
+
+  @Test
+  void testRevisionConnectionBreakupFetchAll_ShouldReturnMappedList() {
+    CeRevisionConnectionBreakup revisionConnectionBreakup = new CeRevisionConnectionBreakup();
+    revisionConnectionBreakup.setBreakupId(UUID.randomUUID());
+
+    when(revisionConnectionBreakupRepository.findAll())
+        .thenReturn(List.of(revisionConnectionBreakup));
+
+    List<CommonLookUp> result = service.revisionConnectionBreakupFetchAll();
+
+    assertEquals(1, result.size());
+    verify(revisionConnectionBreakupRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testRevisionConnectionBreakupFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeRevisionConnectionBreakup revisionConnectionBreakup = new CeRevisionConnectionBreakup();
+    revisionConnectionBreakup.setBreakupId(id);
+
+    when(revisionConnectionBreakupRepository.findById(id))
+        .thenReturn(Optional.of(revisionConnectionBreakup));
+
+    CommonLookUp result = service.revisionConnectionBreakupFetchById(id);
+
+    assertNotNull(result);
+    verify(revisionConnectionBreakupRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testRevisionConnectionBreakupFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(revisionConnectionBreakupRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(
+        EntityNotFoundException.class, () -> service.revisionConnectionBreakupFetchById(id));
   }
 }

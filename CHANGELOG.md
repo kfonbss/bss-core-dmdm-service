@@ -223,3 +223,7 @@ Get partner receipt and account balance report
 # [0.37.0] - 2025-10-31
 ### Added
 - Get quotations movement quotations revision details
+
+# [0.38.0] - 2025-10-31
+### Added
+- Get renewal revision connection breakup details

@@ -154,6 +154,9 @@ DROP TABLE IF EXISTS ce_renewal_details CASCADE;
 
 CREATE TABLE ce_renewal_details (
   details_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
   id SERIAL,
   locid int DEFAULT NULL,
   subscriberid int DEFAULT NULL,
@@ -167,19 +170,33 @@ CREATE TABLE ce_renewal_details (
   original_renewalfee double precision DEFAULT 0,
   renewalfee_after_disount double precision DEFAULT 0,
   cost_per_day double precision DEFAULT 0,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_renewal_details PRIMARY KEY (details_id)
 );
+INSERT INTO ce_renewal_details (
+    details_id, code, name, name_in_local, id, locid, subscriberid, cause,
+    service_sdate, service_edate, subfinanceid, total_sdays, amount,
+    discount_percent, original_renewalfee, renewalfee_after_disount,
+    cost_per_day, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'RND001', 'Annual Renewal - Subscriber 1001', 'വാർഷിക പുതുക്കൽ - ഉപഭോക്താവ് 1001',
+    1, 200, 1001, 'Subscription renewal for 1 year',
+    '2025-01-01', '2025-12-31', 501, 365, 1200.00,
+    10, 1200.00, 1080.00, 2.96, CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
+);
 
-COMMENT ON COLUMN ce_renewal_details.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS ce_revision_connection_breakup CASCADE;
 
 CREATE TABLE ce_revision_connection_breakup (
   breakup_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
   id SERIAL,
   serviceid int DEFAULT NULL,
   revi_quoationid int DEFAULT NULL,
@@ -189,14 +206,23 @@ CREATE TABLE ce_revision_connection_breakup (
   discount int DEFAULT 0,
   description varchar(250) DEFAULT NULL,
   version int DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
   migrated int DEFAULT NULL,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_revision_connection_breakup PRIMARY KEY (breakup_id)
 );
-
-COMMENT ON COLUMN ce_revision_connection_breakup.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_revision_connection_breakup (
+    breakup_id, code, name, name_in_local, id, serviceid, revi_quoationid,
+    packageid, otc_cost, noof_connections, discount, description, version,
+    migrated, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'RCB001', 'Revision Connection Breakup - Service 301',
+    'റിവിഷൻ കണക്ഷൻ ബ്രേക്ക്അപ്പ് - സർവീസ് 301', 1, 301, 1001, 501,
+    2500.00, 10, 5, 'Connection breakup for revised quotation', 2, 0,
+    CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS ce_service_list CASCADE;
