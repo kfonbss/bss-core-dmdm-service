@@ -46,6 +46,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CePoMovementRepository poMovementRepository;
   private final CeQuotationsRepository quotationsRepository;
   private final CePurchaseOrderRepository purchaseOrderRepository;
+  private final CeQuotationsMovementRepository quotationsMovementRepository;
+  private final CeQuotationsRevisionRepository quotationsRevisionRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -604,6 +606,42 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   public CommonLookUp purchaseOrderFetchById(UUID id) {
     CePurchaseOrder entity =
         purchaseOrderRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> quotationsMovementFetchAll() {
+    return quotationsMovementRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp quotationsMovementFetchById(UUID id) {
+    CeQuotationsMovement entity =
+        quotationsMovementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> quotationsRevisionFetchAll() {
+    return quotationsRevisionRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp quotationsRevisionFetchById(UUID id) {
+    CeQuotationsRevision entity =
+        quotationsRevisionRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);

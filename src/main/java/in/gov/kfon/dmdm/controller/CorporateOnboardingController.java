@@ -332,4 +332,28 @@ public class CorporateOnboardingController {
     var data = service.purchaseOrderFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("quotations-movements/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> quotationsMovementFetchAll() {
+    var data = service.quotationsMovementFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("quotations-movement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> quotationsMovementFetchById(@PathVariable UUID id) {
+    var data = service.quotationsMovementFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("quotations-revisions/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> quotationsRevisionFetchAll() {
+    var data = service.quotationsRevisionFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("quotations-revision/{id}")
+  public ResponseEntity<Response<CommonLookUp>> quotationsRevisionFetchById(@PathVariable UUID id) {
+    var data = service.quotationsRevisionFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }

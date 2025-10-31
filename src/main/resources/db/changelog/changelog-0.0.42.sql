@@ -86,6 +86,9 @@ DROP TABLE IF EXISTS ce_quoations_movement CASCADE;
 
 CREATE TABLE ce_quoations_movement (
   movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
   id SERIAL,
   quoationid int DEFAULT NULL,
   approve_status int DEFAULT NULL,
@@ -93,20 +96,32 @@ CREATE TABLE ce_quoations_movement (
   discount_percent int DEFAULT NULL,
   version int DEFAULT NULL,
   proposal_doc varchar(100) DEFAULT NULL,
-  created_by varchar(128) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_by_name varchar(128) DEFAULT NULL,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_quoations_movement PRIMARY KEY (movement_id)
 );
 
-COMMENT ON COLUMN ce_quoations_movement.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_quoations_movement (
+    movement_id, code, name, name_in_local, id, quoationid, approve_status, remarks,
+    discount_percent, version, proposal_doc, created_by_name, created_date, modified_date,
+    created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'QM001', 'Quotation Movement - Initial Approval', 'ക്വട്ടേഷൻ മൂവ്‌മെന്റ് - പ്രാഥമിക അംഗീകാരം', 1, 501, 1,
+    'Quotation reviewed and approved by management', 10, 1, 'proposal_v1.pdf', 'John Mathew',
+    CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS ce_quoations_revision CASCADE;
 
 CREATE TABLE ce_quoations_revision (
   revision_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
   id SERIAL,
   proposalid int DEFAULT NULL,
   remarks text DEFAULT NULL,
@@ -115,15 +130,24 @@ CREATE TABLE ce_quoations_revision (
   proposal_doc varchar(100) DEFAULT NULL,
   version int DEFAULT NULL,
   approve_status int DEFAULT 1,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  --1=Quotation created,2=Discount Approved,3=Discount Rejected
   migrated int DEFAULT NULL,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_quoations_revision PRIMARY KEY (revision_id)
 );
-
-COMMENT ON COLUMN ce_quoations_revision.approve_status IS '1=Quotation created,2=Discount Approved,3=Discount Rejected';
-COMMENT ON COLUMN ce_quoations_revision.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_quoations_revision (
+    revision_id, code, name, name_in_local, id, proposalid, remarks, discount_apply,
+    discount_percent, proposal_doc, version, approve_status, migrated,
+    created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'QR001', 'Quotation Revision - Discount Review', 'ക്വട്ടേഷൻ റിവിഷൻ - ഡിസ്‌കൗണ്ട് റിവ്യൂ',
+    1, 301, 'Revision made to include 10% discount as per customer request.',
+    1, 10, 'proposal_rev_v2.pdf', 2, 2, 0,
+    CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS ce_renewal_details CASCADE;

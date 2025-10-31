@@ -44,6 +44,8 @@ class CorporateOnboardingServiceImplTest {
   private CePoMovementRepository poMovementRepository;
   private CeQuotationsRepository quotationsRepository;
   private CePurchaseOrderRepository purchaseOrderRepository;
+  private CeQuotationsMovementRepository quotationsMovementRepository;
+  private CeQuotationsRevisionRepository quotationsRevisionRepository;
 
   @BeforeEach
   void setUp() {
@@ -74,6 +76,8 @@ class CorporateOnboardingServiceImplTest {
     poMovementRepository = mock(CePoMovementRepository.class);
     quotationsRepository = mock(CeQuotationsRepository.class);
     purchaseOrderRepository = mock(CePurchaseOrderRepository.class);
+    quotationsMovementRepository = mock(CeQuotationsMovementRepository.class);
+    quotationsRevisionRepository = mock(CeQuotationsRevisionRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -102,7 +106,9 @@ class CorporateOnboardingServiceImplTest {
             paymentKycDetailsRepository,
             poMovementRepository,
             quotationsRepository,
-            purchaseOrderRepository);
+            purchaseOrderRepository,
+            quotationsMovementRepository,
+            quotationsRevisionRepository);
 
     service.setupMapper();
   }
@@ -1027,5 +1033,75 @@ class CorporateOnboardingServiceImplTest {
     when(purchaseOrderRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.purchaseOrderFetchById(id));
+  }
+
+  @Test
+  void testQuotationsMovementFetchAll_ShouldReturnMappedList() {
+    CeQuotationsMovement quotationsMovement = new CeQuotationsMovement();
+    quotationsMovement.setMovementId(UUID.randomUUID());
+
+    when(quotationsMovementRepository.findAll()).thenReturn(List.of(quotationsMovement));
+
+    List<CommonLookUp> result = service.quotationsMovementFetchAll();
+
+    assertEquals(1, result.size());
+    verify(quotationsMovementRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testQuotationsMovementFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeQuotationsMovement quotationsMovement = new CeQuotationsMovement();
+    quotationsMovement.setMovementId(id);
+
+    when(quotationsMovementRepository.findById(id)).thenReturn(Optional.of(quotationsMovement));
+
+    CommonLookUp result = service.quotationsMovementFetchById(id);
+
+    assertNotNull(result);
+    verify(quotationsMovementRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testQuotationsMovementFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(quotationsMovementRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.quotationsMovementFetchById(id));
+  }
+
+  @Test
+  void testQuotationsRevisionFetchAll_ShouldReturnMappedList() {
+    CeQuotationsRevision quotationsRevision = new CeQuotationsRevision();
+    quotationsRevision.setRevisionId(UUID.randomUUID());
+
+    when(quotationsRevisionRepository.findAll()).thenReturn(List.of(quotationsRevision));
+
+    List<CommonLookUp> result = service.quotationsRevisionFetchAll();
+
+    assertEquals(1, result.size());
+    verify(quotationsRevisionRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testQuotationsRevisionFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeQuotationsRevision quotationsRevision = new CeQuotationsRevision();
+    quotationsRevision.setRevisionId(id);
+
+    when(quotationsRevisionRepository.findById(id)).thenReturn(Optional.of(quotationsRevision));
+
+    CommonLookUp result = service.quotationsRevisionFetchById(id);
+
+    assertNotNull(result);
+    verify(quotationsRevisionRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testQuotationsRevisionFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(quotationsRevisionRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.quotationsRevisionFetchById(id));
   }
 }
