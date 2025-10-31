@@ -215,3 +215,7 @@ Get partner receipt and account balance report
 # [0.35.0] - 2025-10-31
 ### Added
 - Get corporate purchase order and quotations Details
+
+# [0.36.0] - 2025-10-31
+### Added
+- Get partner account and details
