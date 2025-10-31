@@ -21,6 +21,8 @@ public class PartnerServiceImpl implements PartnerService {
   private final PartnerOnlineRechargeRepository partnerOnlineRechargeRepository;
   private final PartnerReceiptRepository partnerReceiptRepository;
   private final PartnerAccountBalanceReportRepository partnerAccountBalanceReportRepository;
+  private final PartnerDisbursementRepository partnerDisbursementRepository;
+  private final PartnerFinanceRepository partnerFinanceRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -151,6 +153,38 @@ public class PartnerServiceImpl implements PartnerService {
             .findById(id)
             .orElseThrow(
                 () -> new EntityNotFoundException("PartnerAccountBalanceReport not found: " + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllPartnerDisbursements() {
+    return partnerDisbursementRepository.findAll().stream()
+        .map(d -> modelMapper.map(d, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchPartnerDisbursementById(UUID id) {
+    var entity =
+        partnerDisbursementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Partner Disbursement not found"));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllPartnerFinances() {
+    return partnerFinanceRepository.findAll().stream()
+        .map(f -> modelMapper.map(f, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchPartnerFinanceById(UUID id) {
+    var entity =
+        partnerFinanceRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Partner Finance not found"));
     return modelMapper.map(entity, CommonLookUp.class);
   }
 }

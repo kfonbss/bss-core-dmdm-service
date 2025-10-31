@@ -37,4 +37,12 @@ public interface PartnerService {
   List<CommonLookUp> fetchAllPartnerAccountReports();
 
   CommonLookUp fetchPartnerAccountReportById(UUID id);
+
+  List<CommonLookUp> fetchAllPartnerDisbursements();
+
+  CommonLookUp fetchPartnerDisbursementById(UUID id);
+
+  List<CommonLookUp> fetchAllPartnerFinances();
+
+  CommonLookUp fetchPartnerFinanceById(UUID id);
 }
