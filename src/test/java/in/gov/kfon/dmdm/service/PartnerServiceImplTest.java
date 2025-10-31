@@ -33,6 +33,8 @@ public class PartnerServiceImplTest {
   @Mock private PartnerConfirmationFromAgnpMovementRepository partnerConfirmationMovementRepository;
   @Mock private PartnerGstValetRepository partnerGstValetRepository;
   @Mock private PartnerRevenueRepository partnerRevenueRepository;
+  @Mock private PartnerDetailRepository partnerDetailRepository;
+  @Mock private PartnerAccountRepository partnerAccountRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private PartnerServiceImpl service;
@@ -53,6 +55,8 @@ public class PartnerServiceImplTest {
   private PartnerConfirmationFromAgnpMovement confirmationMovement;
   private PartnerGstValet gstValet;
   private PartnerRevenue revenue;
+  private PartnerDetail partnerDetail;
+  private PartnerAccount partnerAccount;
 
   @BeforeEach
   void setUp() {
@@ -100,6 +104,12 @@ public class PartnerServiceImplTest {
 
     revenue = new PartnerRevenue();
     revenue.setRevenueId(id);
+
+    partnerDetail = new PartnerDetail();
+    partnerDetail.setId(id);
+
+    partnerAccount = new PartnerAccount();
+    partnerAccount.setId(id);
 
     lookup = new CommonLookUp();
     lookup.setId(id);
@@ -516,5 +526,67 @@ public class PartnerServiceImplTest {
 
     assertThrows(EntityNotFoundException.class, () -> service.fetchRevenueById(id));
     verify(partnerRevenueRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchAllPartnerDetails() {
+    when(partnerDetailRepository.findAll()).thenReturn(List.of(partnerDetail));
+    when(modelMapper.map(partnerDetail, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAllPartnerDetails();
+
+    assertEquals(1, result.size());
+    verify(partnerDetailRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testFetchPartnerDetailById_Success() {
+    when(partnerDetailRepository.findById(id)).thenReturn(Optional.of(partnerDetail));
+    when(modelMapper.map(partnerDetail, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchPartnerDetailById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(partnerDetailRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchPartnerDetailById_NotFound() {
+    when(partnerDetailRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.fetchPartnerDetailById(id));
+    verify(partnerDetailRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchAllPartnerAccounts() {
+    when(partnerAccountRepository.findAll()).thenReturn(List.of(partnerAccount));
+    when(modelMapper.map(partnerAccount, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAllAccounts();
+
+    assertEquals(1, result.size());
+    verify(partnerAccountRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testFetchPartnerAccountById_Success() {
+    when(partnerAccountRepository.findById(id)).thenReturn(Optional.of(partnerAccount));
+    when(modelMapper.map(partnerAccount, CommonLookUp.class)).thenReturn(lookup);
+
+    var result = service.fetchAccountById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(partnerAccountRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testFetchPartnerAccountById_NotFound() {
+    when(partnerAccountRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.fetchAccountById(id));
+    verify(partnerAccountRepository, times(1)).findById(id);
   }
 }

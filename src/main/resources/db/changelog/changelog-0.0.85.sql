@@ -245,5 +245,18 @@ CREATE TABLE partneraccount (
     partneraccountid SERIAL ,
     partnerid BIGINT NOT NULL UNIQUE,
     balance DOUBLE PRECISION,
-    lastupdate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    code VARCHAR(50),
+    name VARCHAR(255),
+    name_in_local VARCHAR(100),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_date TIMESTAMP DEFAULT NOW(),
+    modified_date TIMESTAMP,
+    created_by UUID,
+    modified_by UUID
 );
+
+INSERT INTO partneraccount
+(id, partneraccountid, partnerid, balance, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 1001, 50000.75, 'PA001', 'Partner Account', 'പാർട്ണർ അക്കൗണ്ട്', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
+

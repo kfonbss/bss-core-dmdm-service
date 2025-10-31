@@ -101,7 +101,6 @@ CREATE TABLE partnerdetail (
   managercontactname VARCHAR(45) DEFAULT NULL,
   managercontactno BIGINT DEFAULT NULL,
   managercontactemail VARCHAR(128) DEFAULT NULL,
-  isactive INT NOT NULL DEFAULT 1,
   allocated_bw VARCHAR(45) DEFAULT NULL,
   consumed_bw VARCHAR(45) DEFAULT NULL,
   pgiopt INT NOT NULL DEFAULT 0,
@@ -152,7 +151,6 @@ CREATE TABLE partnerdetail (
   mspverfieddate TIMESTAMP DEFAULT NULL,
   bankverfieddate TIMESTAMP DEFAULT NULL,
   lastrenewed_agreementdate DATE DEFAULT NULL,
-  updated_by VARCHAR(20) DEFAULT NULL,
   lastrenewed_agreementcopy VARCHAR(256) DEFAULT NULL,
   loc_type INT DEFAULT NULL,
   gst_status INT DEFAULT NULL,
@@ -178,8 +176,6 @@ CREATE TABLE partnerdetail (
   port_speed VARCHAR(15) DEFAULT NULL,
   subonlinerechargeikon INT DEFAULT 1,
   subonlinerechargehdfc INT DEFAULT 1,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_service_area INT DEFAULT 0,
   lnk_es_status VARCHAR(20) DEFAULT 'Not_Delivered',
   lnk_es_lnktype VARCHAR(20) DEFAULT NULL,
@@ -188,7 +184,6 @@ CREATE TABLE partnerdetail (
   frc_paymt_date DATE DEFAULT NULL,
   reasfor_nlink_delivery VARCHAR(200) DEFAULT NULL,
   brief_remarks VARCHAR(200) DEFAULT NULL,
-  is_active INT DEFAULT 1,
   allowfreecon INT DEFAULT 0,
   enable_acs INT DEFAULT NULL,
   aadhaar_number VARCHAR(15) DEFAULT NULL,
@@ -196,10 +191,24 @@ CREATE TABLE partnerdetail (
   olt_provider VARCHAR(20) DEFAULT NULL,
   alternate_phone BIGINT DEFAULT NULL,
   enable_ews_service INT DEFAULT 0,
-  enableplaybox INT DEFAULT 1
+  enableplaybox INT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(255),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
 );
 
 CREATE INDEX index2_partnerdetail ON partnerdetail (statecode);
+
+INSERT INTO partnerdetail
+(id, partnerid, partnercompanyname, status, companyregistrationno, servicetaxno, incometaxno, vatno, state, pin, registrationdate, agreementno, agreementdate, keycontactname, keycontactnumber, keycontactemail, lastupdate, supportcontactname, supportcontactno, supportcontactemail, managercontactname, managercontactno, managercontactemail, allocated_bw, consumed_bw, pgiopt, statecode, acholdername, actype, bankname, branchname, acnumber, "IFSC", ptype, address, approval_date, approval_cl, approval_response, agreementcopy, bankpasscopy, incometaxproof, servicetaxproof, bank_acholder, bank_actype, bank_name, bank_branch, bank_acno, bank_ifsc, companynature, STCode, address_line1, address_line2, city, PinCode, StateName, District, gstin, service_description, SAC, gstindoc, gst_verfied, taxpayertype, gstdeclartionstatus, subonrecharge, onlinepaymode, mspverified, otp, otp_time, remarks, paymodedate, mspverfieddate, bankverfieddate, lastrenewed_agreementdate, lastrenewed_agreementcopy, loc_type, gst_status, catagory, vas_enabled, cbldoc, railtelflag, territory_name, ptnrattid, ptnrlang, bu_id, subonrechargeatom, gway_available, ring, brasip, switchip_anp, dropping, interface, port_number, pop_name, pop_pincode, vlan, port_speed, subonlinerechargeikon, subonlinerechargehdfc, updated_service_area, lnk_es_status, lnk_es_lnktype, lnk_es_date, frc_recieved, frc_paymt_date, reasfor_nlink_delivery, brief_remarks, allowfreecon, enable_acs, aadhaar_number, aadhaarcopy, olt_provider, alternate_phone, enable_ews_service, enableplaybox, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1001, 'Test Partner Company', TRUE, 'REG12345', 'ST12345', 'IT12345', 'VAT12345', 'Kerala', 682001, '2025-01-01', 'AG123', '2025-01-10', 'John Doe', 9876543210, 'john.doe@example.com', NOW(), 'Support Team', '9876543211', 'support@example.com', 'Manager Name', 9876543212, 'manager@example.com', '100Mbps', '50Mbps', 1, 'KL', 'Alice', 'SB', 'Test Bank', 'Main Branch', '1234567890', 'SBIN0001234', 'PT', '123 Main Street', NOW(), 'Approved', 'Response OK', 'agreement.pdf', 'bankpass.pdf', 'incometax.pdf', 'servicetax.pdf', 'Alice', 'SB', 'Test Bank', 'Main Branch', '1234567890', 'SBIN0001234', 'IT Company', 'KL', 'Address Line1', 'Address Line2', 'Kochi', '682001', 'Kerala', 'Ernakulam', '29ABCDE1234F2Z5', 'Internet Service', 'SAC123', 'gstdoc.pdf', 1, 1, 1, 1, 'Online', 1, 'OTP123', NOW(), 'No remarks', NOW(), NOW(), NOW(), '2025-01-15', 'agreement_copy.pdf', 1, 1, 'Category1', 'VAS', 'cbldoc.pdf', 1, 'Territory1', 'PT001', 'EN', 1, 1, 1, 'Ring1', 'BR001', '192.168.1.1', '192.168.1.2', 'IF1', '8080', 'POP1', '682001', 'VLAN1', '1Gbps', 1, 1, 1, 'Not_Delivered', 'LinkType1', '2025-01-05', 'No', '2025-01-06', 'Reason text', 'Brief remarks', 0, 1, '123456789012', 'aadhaar.pdf', 'OLT1', 9876543213, 0, 1, 'PD001', 'Partner Detail Name', 'പാർട്ണർ ഡീറ്റെയിൽ', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
+
 
 -- Table: partnerdisbursement
 DROP TABLE IF EXISTS partnerdisbursement;
