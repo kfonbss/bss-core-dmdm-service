@@ -1,7 +1,6 @@
 package in.gov.kfon.dmdm.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.*;
 
@@ -13,8 +12,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class CePoMovement {
-
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "movement_id")
   private UUID movementId;
 
@@ -41,22 +40,4 @@ public class CePoMovement {
 
   @Column(name = "created_by_platform")
   private String createdByPlatform;
-
-  @Column(name = "create_date")
-  private LocalDateTime createDate;
-
-  @Column(name = "update_date")
-  private LocalDateTime updateDate;
-
-  @Column(name = "created_date")
-  private LocalDateTime createdDate;
-
-  @Column(name = "modified_date")
-  private LocalDateTime modifiedDate;
-
-  @Column(name = "created_by")
-  private UUID createdBy;
-
-  @Column(name = "modified_by")
-  private UUID modifiedBy;
 }

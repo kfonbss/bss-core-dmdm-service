@@ -12,9 +12,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CePaymentKycDetails {
-
+public class CePaymentKycDetails extends Auditor {
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "details_id")
   private UUID detailsId;
 
@@ -59,16 +59,4 @@ public class CePaymentKycDetails {
 
   @Column(name = "kyc_date")
   private LocalDateTime kycDate;
-
-  @Column(name = "created_date")
-  private LocalDateTime createdDate;
-
-  @Column(name = "modified_date")
-  private LocalDateTime modifiedDate;
-
-  @Column(name = "created_by")
-  private UUID createdBy;
-
-  @Column(name = "modified_by")
-  private UUID modifiedBy;
 }
