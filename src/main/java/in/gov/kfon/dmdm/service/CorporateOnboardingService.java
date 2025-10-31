@@ -92,4 +92,12 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> paymentHistoryFetchAll();
 
   CommonLookUp paymentHistoryFetchById(UUID id);
+
+  List<CommonLookUp> paymentKycDetailsFetchAll();
+
+  CommonLookUp paymentKycDetailsFetchById(UUID id);
+
+  List<CommonLookUp> poMovementFetchAll();
+
+  CommonLookUp poMovementFetchById(UUID id);
 }

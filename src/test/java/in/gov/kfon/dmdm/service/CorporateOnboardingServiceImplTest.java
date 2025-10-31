@@ -40,6 +40,8 @@ class CorporateOnboardingServiceImplTest {
   private CePackageRepository packageRepository;
   private CeParentCustomersRepository parentCustomersRepository;
   private CePaymentHistoryRepository paymentHistoryRepository;
+  private CePaymentKycDetailsRepository paymentKycDetailsRepository;
+  private CePoMovementRepository poMovementRepository;
 
   @BeforeEach
   void setUp() {
@@ -66,6 +68,8 @@ class CorporateOnboardingServiceImplTest {
     packageRepository = mock(CePackageRepository.class);
     parentCustomersRepository = mock(CeParentCustomersRepository.class);
     paymentHistoryRepository = mock(CePaymentHistoryRepository.class);
+    paymentKycDetailsRepository = mock(CePaymentKycDetailsRepository.class);
+    poMovementRepository = mock(CePoMovementRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -90,7 +94,9 @@ class CorporateOnboardingServiceImplTest {
             invoiceRepository,
             packageRepository,
             parentCustomersRepository,
-            paymentHistoryRepository);
+            paymentHistoryRepository,
+            paymentKycDetailsRepository,
+            poMovementRepository);
 
     service.setupMapper();
   }
@@ -875,5 +881,75 @@ class CorporateOnboardingServiceImplTest {
     when(paymentHistoryRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.paymentHistoryFetchById(id));
+  }
+
+  @Test
+  void testPaymentKycDetailsFetchAll_ShouldReturnMappedList() {
+    CePaymentKycDetails PaymentKycDetails = new CePaymentKycDetails();
+    PaymentKycDetails.setDetailsId(UUID.randomUUID());
+
+    when(paymentKycDetailsRepository.findAll()).thenReturn(List.of(PaymentKycDetails));
+
+    List<CommonLookUp> result = service.paymentKycDetailsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(paymentKycDetailsRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testPaymentKycDetailsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CePaymentKycDetails paymentKycDetails = new CePaymentKycDetails();
+    paymentKycDetails.setDetailsId(id);
+
+    when(paymentKycDetailsRepository.findById(id)).thenReturn(Optional.of(paymentKycDetails));
+
+    CommonLookUp result = service.paymentKycDetailsFetchById(id);
+
+    assertNotNull(result);
+    verify(paymentKycDetailsRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testPaymentKycDetailsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(paymentKycDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.paymentKycDetailsFetchById(id));
+  }
+
+  @Test
+  void testPoMovementFetchAll_ShouldReturnMappedList() {
+    CePoMovement poMovement = new CePoMovement();
+    poMovement.setMovementId(UUID.randomUUID());
+
+    when(poMovementRepository.findAll()).thenReturn(List.of(poMovement));
+
+    List<CommonLookUp> result = service.poMovementFetchAll();
+
+    assertEquals(1, result.size());
+    verify(poMovementRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testPoMovementFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CePoMovement poMovement = new CePoMovement();
+    poMovement.setMovementId(id);
+
+    when(poMovementRepository.findById(id)).thenReturn(Optional.of(poMovement));
+
+    CommonLookUp result = service.poMovementFetchById(id);
+
+    assertNotNull(result);
+    verify(poMovementRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testPoMovementFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(poMovementRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.poMovementFetchById(id));
   }
 }
