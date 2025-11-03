@@ -47,9 +47,20 @@ CREATE TABLE partneragreementdetail (
   version INT DEFAULT NULL,
   renewed_agreementdate DATE DEFAULT NULL,
   renewed_agreementcopy VARCHAR(256) DEFAULT NULL,
-  updated_by VARCHAR(20) DEFAULT NULL,
-  updated_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
 );
+
+INSERT INTO partneragreementdetail
+(details_id, id, partnerid, version, renewed_agreementdate, renewed_agreementcopy, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 1001, 2, '2024-05-01', 'Agreement_Copy_v2.pdf', 'AGR001', 'Partner Agreement Renewal', 'പാർട്ണർ കരാർ പുതുക്കൽ', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 -- Table: partnerdemousers
 DROP TABLE IF EXISTS partnerdemousers;
@@ -57,22 +68,33 @@ DROP TABLE IF EXISTS partnerdemousers;
 CREATE TABLE partnerdemousers (
   user_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
   demoid BIGSERIAL ,
+  id UUID,
   partnerid VARCHAR(45) DEFAULT NULL,
   username VARCHAR(64) DEFAULT NULL,
   password VARCHAR(64) DEFAULT NULL,
   status INT DEFAULT NULL,
   speed CHAR(15) DEFAULT NULL,
   expirydate DATE DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT NULL,
-  lastupdate TIMESTAMP DEFAULT NULL,
   startdate DATE DEFAULT NULL,
   packageid INT DEFAULT NULL,
   alloted_vol BIGINT DEFAULT NULL,
   consumed_vol BIGINT DEFAULT NULL,
-  created_by VARCHAR(30) DEFAULT NULL
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
 );
 
 CREATE INDEX index2_partnerdemousers ON partnerdemousers (partnerid, username);
+
+INSERT INTO partnerdemousers
+(user_id, id,demoid, partnerid, username, password, status, speed, expirydate, startdate, packageid, alloted_vol, consumed_vol, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), gen_random_uuid(),1, 'P1001', 'demo_user_1', 'pass123', 1, '50Mbps', '2025-12-31', '2025-01-01', 101, 50000, 10000, 'DEM001', 'Demo User One', 'ഡെമോ ഉപയോക്താവ് ഒന്ന്', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 -- Table: partnerdetail
 DROP TABLE IF EXISTS partnerdetail;

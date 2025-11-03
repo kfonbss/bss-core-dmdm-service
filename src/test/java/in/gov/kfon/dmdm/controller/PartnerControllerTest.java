@@ -396,4 +396,48 @@ public class PartnerControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched partner account by id"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
+
+  @Test
+  void testFetchAllPartnerAgreementDetails() throws Exception {
+    when(service.fetchAllAgreementDetails()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/partner/agreement-details"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all partner agreement details"))
+        .andExpect(jsonPath("$.data.length()").value(1));
+  }
+
+  @Test
+  void testFetchPartnerAgreementDetailById() throws Exception {
+    when(service.fetchAgreementDetailById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/partner/agreement-detail/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched partner agreement detail by id"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchAllDemoUsers() throws Exception {
+    when(service.fetchAllDemoUsers()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/partner/demo-users"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all demo users"))
+        .andExpect(jsonPath("$.data.length()").value(1));
+  }
+
+  @Test
+  void testFetchDemoUserById() throws Exception {
+    when(service.fetchDemoUserById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/partner/demo-user/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched demo user by id"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
 }

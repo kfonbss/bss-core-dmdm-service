@@ -2,6 +2,8 @@ package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.PartnerAccount;
+import in.gov.kfon.dmdm.model.PartnerAgreementDetail;
+import in.gov.kfon.dmdm.model.PartnerDemoUsers;
 import in.gov.kfon.dmdm.model.PartnerDetail;
 import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -32,6 +34,8 @@ public class PartnerServiceImpl implements PartnerService {
   private final PartnerRevenueRepository partnerRevenueRepository;
   private final PartnerAccountRepository partnerAccountRepository;
   private final PartnerDetailRepository partnerDetailRepository;
+  private final PartnerDemoUsersRepository partnerDemoUsersRepository;
+  private final PartnerAgreementDetailRepository partnerAgreementDetailRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -296,6 +300,47 @@ public class PartnerServiceImpl implements PartnerService {
         partnerDetailRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("PartnerDetail not found: " + id));
+    return modelMapper.map(detail, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllDemoUsers() {
+    return partnerDemoUsersRepository.findAll().stream()
+        .map(
+            user -> {
+              CommonLookUp lookUp = modelMapper.map(user, CommonLookUp.class);
+              lookUp.setId(user.getUserId());
+              return lookUp;
+            })
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchDemoUserById(UUID userId) {
+    PartnerDemoUsers user =
+        partnerDemoUsersRepository
+            .findByUserId(userId)
+            .orElseThrow(() -> new EntityNotFoundException("DemoUser not found: " + userId));
+    CommonLookUp lookUp = modelMapper.map(user, CommonLookUp.class);
+    lookUp.setId(user.getUserId());
+
+    return lookUp;
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllAgreementDetails() {
+    return partnerAgreementDetailRepository.findAll().stream()
+        .map(agreementDetail -> modelMapper.map(agreementDetail, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchAgreementDetailById(UUID detailsId) {
+    PartnerAgreementDetail detail =
+        partnerAgreementDetailRepository
+            .findByDetailsId(detailsId)
+            .orElseThrow(
+                () -> new EntityNotFoundException("AgreementDetail not found: " + detailsId));
     return modelMapper.map(detail, CommonLookUp.class);
   }
 }
