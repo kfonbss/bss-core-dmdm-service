@@ -18,9 +18,14 @@ CREATE TABLE df_group_details (
   d_status_date DATE DEFAULT NULL,
   rechargecount INTEGER DEFAULT 0,
   group_type INTEGER DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_group_details PRIMARY KEY (details_id)
 );
 
@@ -28,6 +33,17 @@ COMMENT ON COLUMN df_group_details.d_status IS '1=Commissioned,0=Not Commissione
 COMMENT ON COLUMN df_group_details.is_active IS '0=In Active,1=Active';
 COMMENT ON COLUMN df_group_details.group_type IS '1=Inter-City, 2=Intra-City, 3=Co-location';
 
+INSERT INTO df_group_details (
+  id, group_name, woid, subscriberid, balance, start_pop, end_pop,
+  ss_date, expiry_date, last_recharge_date, commission_doc, approve_status,
+  d_status, d_status_date, rechargecount, code, name, name_in_local,
+  is_active, created_by, modified_by
+)
+VALUES
+(1, 'Trivandrum North Group', 1001, 2001, 1250.75, 'POP-A', 'POP-B',
+ '2025-01-10', '2026-01-10', '2025-10-25 10:30:00', 'doc_001.pdf', 1,
+ 1, '2025-01-15', 3, 'TRV001', 'Trivandrum North', 'തിരുവനന്തപുരം നോർത്ത്',
+ TRUE, gen_random_uuid(), gen_random_uuid());
 
 DROP TABLE IF EXISTS df_group_details_movent CASCADE;
 
@@ -36,16 +52,27 @@ CREATE TABLE df_group_details_movent (
   id SERIAL,
   groupid INTEGER DEFAULT NULL,
   approve_status INTEGER DEFAULT 0,
-  created_by VARCHAR(128) DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_group_details_movent PRIMARY KEY (movent_id)
 );
 
 COMMENT ON COLUMN df_group_details_movent.approve_status IS '1=Group Created,2=Group Approved';
 COMMENT ON COLUMN df_group_details_movent.is_active IS '0=In Active,1=Active';
 
+INSERT INTO df_group_details_movent (
+  id, groupid, approve_status, code, name, name_in_local,
+  is_active, created_by, modified_by
+)
+VALUES
+(1, 1, 1, 'MOV001', 'Trivandrum Movement', 'തിരുവനന്തപുരം മൂവ്മെന്റ്',
+ TRUE, gen_random_uuid(), gen_random_uuid());
 
 DROP TABLE IF EXISTS df_groupinovoice CASCADE;
 
