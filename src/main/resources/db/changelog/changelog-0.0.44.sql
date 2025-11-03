@@ -142,6 +142,10 @@ DROP TABLE IF EXISTS ce_subonlinerecharge CASCADE;
 
 CREATE TABLE ce_subonlinerecharge (
   recharge_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id BIGSERIAL,
   ordernumber varchar(64) DEFAULT NULL,
   status char(18) DEFAULT NULL,
@@ -167,22 +171,41 @@ CREATE TABLE ce_subonlinerecharge (
   packageid int DEFAULT NULL,
   partnerid bigint DEFAULT NULL,
   rechargesite smallint DEFAULT 1,
+  --1=BSS,2=Others
   paymnetgateway int DEFAULT 1,
+  --1=IKM,2=HDFC,3=Others
   invoiceid int DEFAULT NULL,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_subonlinerecharge PRIMARY KEY (recharge_id)
+);
+INSERT INTO ce_subonlinerecharge (
+    recharge_id, code, name, name_in_local, is_active, id, ordernumber, status, amount, order_time,
+    subscriberid, txnid, banktxnid, txnamout, txndate, currency, respcode, respmsg, gatewayname,
+    bankname, paymentmode, ErrorStatus, ErrorDescription, lnpshare, kfonshare, flag, partially_paid,
+    packageid, partnerid, rechargesite, paymnetgateway, invoiceid, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'ONR001', 'Online Recharge - October', 'ഓൺലൈൻ റീചാർജ് - ഒക്ടോബർ', true, 1,
+    'ORD123456', 'SUCCESS', 499.99, CURRENT_TIMESTAMP, 1001, 'TXN98765', 'BKT54321', 499.99,
+    CURRENT_TIMESTAMP, 'INR', '00', 'Transaction Successful', 'HDFC Gateway', 'HDFC Bank',
+    'UPI', 'NONE', 'No error', 50.00, 449.99, false, false, 201, 30101, 1, 2, 401,
+    CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
 );
 
 CREATE UNIQUE INDEX ordernumber_unique ON ce_subonlinerecharge (ordernumber);
 CREATE INDEX idx_ce_recharge_subid ON ce_subonlinerecharge (subscriberid);
-
-COMMENT ON COLUMN ce_subonlinerecharge.rechargesite IS '1=BSS,2=Others';
-COMMENT ON COLUMN ce_subonlinerecharge.paymnetgateway IS '1=IKM,2=HDFC,3=Others';
 
 
 DROP TABLE IF EXISTS ce_subscriberdetails CASCADE;
 
 CREATE TABLE ce_subscriberdetails (
   details_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   locid int DEFAULT NULL,
   username varchar(64) DEFAULT NULL,
@@ -193,6 +216,7 @@ CREATE TABLE ce_subscriberdetails (
   packageid int DEFAULT NULL,
   service_provider int DEFAULT NULL,
   loc_type smallint DEFAULT NULL,
+  -- 1-Urban,2-Rural
   partnerid bigint DEFAULT NULL,
   partnergroupid int DEFAULT NULL,
   status decimal(10,2) DEFAULT NULL,
@@ -211,11 +235,23 @@ CREATE TABLE ce_subscriberdetails (
   is_eo_discoverd boolean DEFAULT NULL,
   eo_upstatus boolean DEFAULT NULL,
   reason_for_down varchar(250) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_subscriberdetails PRIMARY KEY (details_id)
 );
+INSERT INTO ce_subscriberdetails (
+    details_id, code, name, name_in_local, is_active, id, locid, username, password, balance,
+    expirydate, commission_date, packageid, service_provider, loc_type, partnerid, partnergroupid,
+    status, d_status, d_status_date, cur_speed, rccount, last_recharge_date, revenueshareid,
+    service_oneyear_completed, dnote_expirydate, dnote_validity_date, gen_invoice, partially_paid,
+    pppoe_enabled, is_eo_discoverd, eo_upstatus, reason_for_down, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'SUB001', 'John Doe Subscriber', 'ജോൺ ഡോ സബ്‌സ്‌ക്രൈബർ', true, 1, 1001, 'john.doe', 'password123', 250.75,
+    (CURRENT_DATE + INTERVAL '30 days')::date, CURRENT_DATE, 501, 201, 1, 10001, 2001,
+    1.00, 1, CURRENT_DATE, '100 Mbps', 2, CURRENT_TIMESTAMP, 301, true,
+    (CURRENT_DATE + INTERVAL '60 days')::date, (CURRENT_DATE + INTERVAL '30 days')::date, 1, false,
+    true, false, true, 'Routine maintenance', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
+);
 
-COMMENT ON COLUMN ce_subscriberdetails.loc_type IS '1-Urban,2-Rural';
-COMMENT ON COLUMN ce_subscriberdetails.is_active IS '0=In Active,1=Active';

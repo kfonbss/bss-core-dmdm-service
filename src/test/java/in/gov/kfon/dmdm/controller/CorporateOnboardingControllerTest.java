@@ -947,4 +947,56 @@ class CorporateOnboardingControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("CORP001"));
   }
+
+  @Test
+  void testSubscriberDetailsFetchAll() throws Exception {
+    when(service.subscriberDetailsFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/subscriber-Details/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"));
+  }
+
+  @Test
+  void testSubscriberDetailById() throws Exception {
+    when(service.subscriberDetailsFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/subscriber-Detail/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"));
+  }
+
+  @Test
+  void testSubOnlineRechargesFetchAll() throws Exception {
+    when(service.subOnlineRechargesFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/sub-online/recharges/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"));
+  }
+
+  @Test
+  void testRechargeById() throws Exception {
+    when(service.subOnlineRechargesFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/sub-online/recharge/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"));
+  }
 }
