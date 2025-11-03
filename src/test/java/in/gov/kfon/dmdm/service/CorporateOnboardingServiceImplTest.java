@@ -50,6 +50,8 @@ class CorporateOnboardingServiceImplTest {
   private CeRevisionConnectionBreakupRepository revisionConnectionBreakupRepository;
   private CeServiceListRepository serviceListRepository;
   private CeSubCustomersRepository subCustomersRepository;
+  private CeSubPackageRepository subPackageRepository;
+  private CeSubPackageRenewalHistoryRepository subPackageRenewalHistoryRepository;
 
   @BeforeEach
   void setUp() {
@@ -86,6 +88,8 @@ class CorporateOnboardingServiceImplTest {
     revisionConnectionBreakupRepository = mock(CeRevisionConnectionBreakupRepository.class);
     serviceListRepository = mock(CeServiceListRepository.class);
     subCustomersRepository = mock(CeSubCustomersRepository.class);
+    subPackageRepository = mock(CeSubPackageRepository.class);
+    subPackageRenewalHistoryRepository = mock(CeSubPackageRenewalHistoryRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -120,7 +124,9 @@ class CorporateOnboardingServiceImplTest {
             renewalDetailsRepository,
             revisionConnectionBreakupRepository,
             serviceListRepository,
-            subCustomersRepository);
+            subCustomersRepository,
+            subPackageRepository,
+            subPackageRenewalHistoryRepository);
 
     service.setupMapper();
   }
@@ -1261,5 +1267,78 @@ class CorporateOnboardingServiceImplTest {
     when(subCustomersRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.servicesListFetchById(id));
+  }
+
+  @Test
+  void testSubPackageFetchAll_ShouldReturnMappedList() {
+    CeSubPackage subPackage = new CeSubPackage();
+    subPackage.setPackageId(UUID.randomUUID());
+
+    when(subPackageRepository.findAll()).thenReturn(List.of(subPackage));
+
+    List<CommonLookUp> result = service.subPackageFetchAll();
+
+    assertEquals(1, result.size());
+    verify(subPackageRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testSubPackageFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeSubPackage subPackage = new CeSubPackage();
+    subPackage.setPackageId(id);
+
+    when(subPackageRepository.findById(id)).thenReturn(Optional.of(subPackage));
+
+    CommonLookUp result = service.subPackageFetchById(id);
+
+    assertNotNull(result);
+    verify(subPackageRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testSubPackageFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(subPackageRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.subPackageFetchById(id));
+  }
+
+  @Test
+  void testSubPackageRenewalHistoryFetchAll_ShouldReturnMappedList() {
+    CeSubPackageRenewalHistory subPackageRenewalHistory = new CeSubPackageRenewalHistory();
+    subPackageRenewalHistory.setHistoryId(UUID.randomUUID());
+
+    when(subPackageRenewalHistoryRepository.findAll())
+        .thenReturn(List.of(subPackageRenewalHistory));
+
+    List<CommonLookUp> result = service.subPackageRenewalHistoryFetchAll();
+
+    assertEquals(1, result.size());
+    verify(subPackageRenewalHistoryRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testSubPackageRenewalHistoryFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeSubPackageRenewalHistory subPackageRenewalHistory = new CeSubPackageRenewalHistory();
+    subPackageRenewalHistory.setHistoryId(id);
+
+    when(subPackageRenewalHistoryRepository.findById(id))
+        .thenReturn(Optional.of(subPackageRenewalHistory));
+
+    CommonLookUp result = service.subPackageRenewalHistoryFetchById(id);
+
+    assertNotNull(result);
+    verify(subPackageRenewalHistoryRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testSubPackageRenewalHistoryFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(subPackageRenewalHistoryRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(
+        EntityNotFoundException.class, () -> service.subPackageRenewalHistoryFetchById(id));
   }
 }

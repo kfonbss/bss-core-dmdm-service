@@ -405,4 +405,29 @@ public class CorporateOnboardingController {
     var data = service.subCustomersFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("sub-packages/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> subPackageFetchAll() {
+    var data = service.subPackageFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("sub-package/{id}")
+  public ResponseEntity<Response<CommonLookUp>> subPackageFetchById(@PathVariable UUID id) {
+    var data = service.subPackageFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("sub-package/renewal-histories/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> subPackageRenewalHistoryFetchAll() {
+    var data = service.subPackageRenewalHistoryFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("sub-package/renewal-history/{id}")
+  public ResponseEntity<Response<CommonLookUp>> subPackageRenewalHistoryFetchById(
+      @PathVariable UUID id) {
+    var data = service.subPackageRenewalHistoryFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }
