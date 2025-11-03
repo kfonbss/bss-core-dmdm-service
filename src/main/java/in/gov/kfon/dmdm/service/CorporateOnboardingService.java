@@ -140,4 +140,12 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> subPackageRenewalHistoryFetchAll();
 
   CommonLookUp subPackageRenewalHistoryFetchById(UUID id);
+
+  List<CommonLookUp> subServiceListsFetchAll();
+
+  CommonLookUp subServiceListsFetchById(UUID id);
+
+  List<CommonLookUp> subFinancesFetchAll();
+
+  CommonLookUp subFinancesFetchById(UUID id);
 }

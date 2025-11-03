@@ -54,6 +54,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CeSubCustomersRepository subCustomersRepository;
   private final CeSubPackageRepository subPackageRepository;
   private final CeSubPackageRenewalHistoryRepository subPackageRenewalHistoryRepository;
+  private final CeSubFinanceRepository subFinanceRepository;
+  private final CeSubServiceListRepository subServiceListRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -773,6 +775,42 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   public CommonLookUp subPackageRenewalHistoryFetchById(UUID id) {
     CeSubPackageRenewalHistory entity =
         subPackageRenewalHistoryRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> subFinancesFetchAll() {
+    return subFinanceRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp subFinancesFetchById(UUID id) {
+    CeSubFinance entity =
+        subFinanceRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> subServiceListsFetchAll() {
+    return subServiceListRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp subServiceListsFetchById(UUID id) {
+    CeSubServiceList entity =
+        subServiceListRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);

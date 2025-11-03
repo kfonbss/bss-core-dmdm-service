@@ -78,24 +78,39 @@ DROP TABLE IF EXISTS ce_sub_service_list CASCADE;
 
 CREATE TABLE ce_sub_service_list (
   list_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   slno SERIAL,
   ce_service_id int DEFAULT NULL,
   serviceid int DEFAULT NULL,
   servicename varchar(50) DEFAULT NULL,
   sname_short varchar(50) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_sub_service_list PRIMARY KEY (list_id)
 );
+INSERT INTO ce_sub_service_list (
+    list_id, code, name, name_in_local, is_active, slno, ce_service_id, serviceid,
+    servicename, sname_short, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'SSL001', 'Sub Service - Internet', 'സബ് സർവീസ് - ഇന്റർനെറ്റ്', true, 1, 1001, 501,
+    'Broadband Internet', 'BB-INT', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
+);
 
-COMMENT ON COLUMN ce_sub_service_list.is_active IS '0=In Active,1=Active';
 
 
 DROP TABLE IF EXISTS ce_subfinance CASCADE;
 
 CREATE TABLE ce_subfinance (
   id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   subfinanceid SERIAL,
   subscriberid int NOT NULL,
   amount decimal(10,2) NOT NULL,
@@ -106,13 +121,21 @@ CREATE TABLE ce_subfinance (
   subid bigint DEFAULT NULL,
   packageid int DEFAULT NULL,
   finrefid int DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_subfinance PRIMARY KEY (id)
 );
 
-COMMENT ON COLUMN ce_subfinance.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_subfinance (
+    id, code, name, name_in_local, is_active, subfinanceid, subscriberid, amount, cause, locid,
+    rstatus, subonlineref, subid, packageid, finrefid, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'SF001', 'Subscription Payment - User 101', 'സബ്സ്ക്രിപ്ഷൻ പേയ്മെന്റ് - ഉപയോക്താവ് 101', true,
+    1, 101, 2500.00, 'Monthly Subscription', 2001, false, 9876543210, 5001, 301, 401,
+    CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS ce_subonlinerecharge CASCADE;
