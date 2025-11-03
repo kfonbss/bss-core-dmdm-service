@@ -45,4 +45,31 @@ public class DarkFiberController {
     var data = darkFiberService.fetchGroupMovementById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched group movement"));
   }
+
+  @GetMapping("/group-invoices")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllGroupInvoices() {
+    var data = darkFiberService.fetchAllGroupInvoices();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all group invoices"));
+  }
+
+  @GetMapping("/group-invoice/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchGroupInvoiceById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchGroupInvoiceById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched invoice by ID"));
+  }
+
+  @GetMapping("/group-invoice-masters")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllGroupInvoiceMasters() {
+    var data = darkFiberService.fetchAllGroupInvoiceMasters();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all invoice masters"));
+  }
+
+  @GetMapping("/group-invoice-master/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchGroupInvoiceMasterById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchGroupInvoiceMasterById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched invoice master by ID"));
+  }
 }

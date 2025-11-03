@@ -85,4 +85,48 @@ public class DarkFiberControllerTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched group movement"));
   }
+
+  @Test
+  void testFetchAllGroupInvoices() throws Exception {
+    when(service.fetchAllGroupInvoices()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/darkfiber/group-invoices"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all group invoices"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchGroupInvoiceById() throws Exception {
+    when(service.fetchGroupInvoiceById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/darkfiber/group-invoice/" + id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched invoice by ID"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchAllGroupInvoiceMasters() throws Exception {
+    when(service.fetchAllGroupInvoiceMasters()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/darkfiber/group-invoice-masters"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all invoice masters"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchGroupInvoiceMasterById() throws Exception {
+    when(service.fetchGroupInvoiceMasterById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/darkfiber/group-invoice-master/" + id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched invoice master by ID"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
 }
