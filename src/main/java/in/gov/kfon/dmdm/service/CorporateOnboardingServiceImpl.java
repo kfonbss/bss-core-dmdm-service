@@ -52,6 +52,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CeRevisionConnectionBreakupRepository revisionConnectionBreakupRepository;
   private final CeServiceListRepository serviceListRepository;
   private final CeSubCustomersRepository subCustomersRepository;
+  private final CeSubPackageRepository subPackageRepository;
+  private final CeSubPackageRenewalHistoryRepository subPackageRenewalHistoryRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -738,5 +740,41 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
     lookup.setId(customers.getCustomersId());
 
     return lookup;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> subPackageFetchAll() {
+    return subPackageRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp subPackageFetchById(UUID id) {
+    CeSubPackage entity =
+        subPackageRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> subPackageRenewalHistoryFetchAll() {
+    return subPackageRenewalHistoryRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp subPackageRenewalHistoryFetchById(UUID id) {
+    CeSubPackageRenewalHistory entity =
+        subPackageRenewalHistoryRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
   }
 }

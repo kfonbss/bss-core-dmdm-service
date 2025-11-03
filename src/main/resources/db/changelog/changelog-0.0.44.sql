@@ -2,25 +2,42 @@ DROP TABLE IF EXISTS ce_sub_package CASCADE;
 
 CREATE TABLE ce_sub_package (
   package_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+    name VARCHAR(255),
+    name_in_local VARCHAR(255),
+    is_active boolean,
   sub_packageid SERIAL,
   packageid int NOT NULL,
   sub_renewperiod int DEFAULT 0,
   sub_renewalfee double precision DEFAULT 0,
   service_cat int DEFAULT 0,
   description varchar(250) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_sub_package PRIMARY KEY (package_id)
 );
 
-COMMENT ON COLUMN ce_sub_package.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_sub_package (
+    package_id, code, name, name_in_local, is_active, sub_packageid, packageid,
+    sub_renewperiod, sub_renewalfee, service_cat, description, created_date, modified_date,
+    created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'PKG001', 'Internet Sub Package', 'ഇന്റർനെറ്റ് സബ് പാക്കേജ്',
+    true, 1, 101, 12, 1500.00, 2, 'Monthly renewal for broadband service',
+    CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS ce_sub_package_renewal_history CASCADE;
 
 CREATE TABLE ce_sub_package_renewal_history (
   history_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+    name VARCHAR(255),
+    name_in_local VARCHAR(255),
+    is_active boolean,
   id SERIAL,
   locid int DEFAULT NULL,
   sub_packageid int DEFAULT NULL,
@@ -38,13 +55,24 @@ CREATE TABLE ce_sub_package_renewal_history (
   loc_grand_amount decimal(26,10) DEFAULT NULL,
   description varchar(250) DEFAULT NULL,
   service_cat int DEFAULT 0,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_sub_package_renewal_history PRIMARY KEY (history_id)
 );
+INSERT INTO ce_sub_package_renewal_history (
+    history_id, code, name, name_in_local, is_active, id, locid, sub_packageid, mg_invoiceid, subfinanceid,
+    total_sdays, lrhid, discount_percent, disount_amount, original_renewalfee, renewalfee_after_disount,
+    cost_per_day, loc_amount, loc_gst_amount, loc_grand_amount, description, service_cat, created_date,
+    modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'HIS001', 'Sub Package Renewal', 'സബ് പാക്കേജ് പുതുക്കൽ', true, 1, 1001, 501, 7001, 8001,
+    30, 9001, 10.0, 500.0000000000, 5000.0000000000, 4500.0000000000, 166.6666666667,
+    4500.0000000000, 810.0000000000, 5310.0000000000, 'Renewed for next billing cycle',
+    2, CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
+);
 
-COMMENT ON COLUMN ce_sub_package_renewal_history.is_active IS '0=In Active,1=Active';
 
 DROP TABLE IF EXISTS ce_sub_service_list CASCADE;
 
