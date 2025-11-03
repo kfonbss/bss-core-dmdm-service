@@ -29,6 +29,9 @@ public class CeQuotations extends Auditor {
   @Column(name = "name_in_local")
   private String nameInLocal;
 
+  @Column(name = "is_active")
+  private Boolean isActive;
+
   @Column(name = "customerid")
   private Integer customerId;
 
