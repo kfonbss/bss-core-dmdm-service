@@ -27,6 +27,8 @@ public class DarkFiberServiceImplTest {
   @Mock private DfLinkRenewalHistoryRepository dfLinkRenewalHistoryRepository;
   @Mock private DfPowerRatingRepository dfPowerRatingRepository;
   @Mock private DfPurchaseOrderRepository dfPurchaseOrderRepository;
+  @Mock private DfSubFinanceRepository dfSubFinanceRepository;
+  @Mock private DfRenewalDetailsRepository dfRenewalDetailsRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private DarkFiberServiceImpl service;
@@ -40,6 +42,8 @@ public class DarkFiberServiceImplTest {
   private DfLinkRenewalHistory renewalHistory;
   private DfPowerRating powerRating;
   private DfPurchaseOrder purchaseOrder;
+  private DfSubFinance subFinance;
+  private DfRenewalDetails renewalDetails;
   private CommonLookUp commonLookUp;
 
   @BeforeEach
@@ -82,6 +86,16 @@ public class DarkFiberServiceImplTest {
     purchaseOrder = new DfPurchaseOrder();
     purchaseOrder.setDfPurchaseOrderId(id);
     purchaseOrder.setName("PO - 001");
+
+    subFinance = new DfSubFinance();
+    subFinance.setDfSubFinanceId(id);
+    subFinance.setName("Finance Record");
+    subFinance.setIsActive(true);
+
+    renewalDetails = new DfRenewalDetails();
+    renewalDetails.setDfRenewalDetailsId(id);
+    renewalDetails.setName("Renewal Record");
+    renewalDetails.setIsActive(true);
 
     commonLookUp = new CommonLookUp();
     commonLookUp.setId(id);
@@ -418,6 +432,89 @@ public class DarkFiberServiceImplTest {
 
     assertEquals("Purchase Order not found with id: " + id, exception.getMessage());
     verify(dfPurchaseOrderRepository, times(1)).findByDfPurchaseOrderId(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllRenewalDetails() {
+    when(dfRenewalDetailsRepository.findAll()).thenReturn(List.of(renewalDetails));
+    when(modelMapper.map(renewalDetails, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllRenewalDetails();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfRenewalDetailsRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(renewalDetails, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchRenewalDetailById_Success() {
+    when(dfRenewalDetailsRepository.findByDfRenewalDetailsId(id))
+        .thenReturn(Optional.of(renewalDetails));
+    when(modelMapper.map(renewalDetails, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchRenewalDetailsById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfRenewalDetailsRepository, times(1)).findByDfRenewalDetailsId(id);
+    verify(modelMapper, times(1)).map(renewalDetails, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchRenewalDetailById_NotFound() {
+    when(dfRenewalDetailsRepository.findByDfRenewalDetailsId(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchRenewalDetailsById(id));
+
+    assertEquals("Renewal Detail not found with id: " + id, exception.getMessage());
+    verify(dfRenewalDetailsRepository, times(1)).findByDfRenewalDetailsId(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllSubFinances() {
+    when(dfSubFinanceRepository.findAll()).thenReturn(List.of(subFinance));
+    when(modelMapper.map(subFinance, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllSubFinance();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfSubFinanceRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(subFinance, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchSubFinanceById_Success() {
+    when(dfSubFinanceRepository.findByDfSubFinanceId(id)).thenReturn(Optional.of(subFinance));
+    when(modelMapper.map(subFinance, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchSubFinanceById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfSubFinanceRepository, times(1)).findByDfSubFinanceId(id);
+    verify(modelMapper, times(1)).map(subFinance, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchSubFinanceById_NotFound() {
+    when(dfSubFinanceRepository.findByDfSubFinanceId(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchSubFinanceById(id));
+
+    assertEquals("SubFinance not found with id: " + id, exception.getMessage());
+    verify(dfSubFinanceRepository, times(1)).findByDfSubFinanceId(id);
     verifyNoInteractions(modelMapper);
   }
 }
