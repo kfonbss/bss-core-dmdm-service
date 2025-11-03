@@ -230,4 +230,8 @@ Get partner receipt and account balance report
 
 # [0.39.0] - 2025-10-31
 ### Added
-Get partner demo users and agreement details
+- Get partner demo users and agreement details
+
+# [0.40.0] - 2025-11-03
+### Added
+- Missing field adding

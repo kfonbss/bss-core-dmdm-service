@@ -26,6 +26,9 @@ public class CePaymentHistory extends Auditor {
   @Column(name = "name_in_local")
   private String nameInLocal;
 
+  @Column(name = "is_active")
+  private Boolean isActive;
+
   @Column(name = "id")
   private Integer id;
 

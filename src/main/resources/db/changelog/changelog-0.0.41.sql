@@ -42,6 +42,7 @@ CREATE TABLE ce_parent_customers (
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   department_name varchar(250) DEFAULT NULL,
   created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -51,10 +52,12 @@ CREATE TABLE ce_parent_customers (
   CONSTRAINT pk_ce_parent_customers PRIMARY KEY (customer_id)
 );
 INSERT INTO ce_parent_customers (
-    customer_id, code, name, name_in_local, department_name, created_by, modified_by
+    customer_id, code, name, name_in_local, is_active, department_name, created_by, modified_by
 ) VALUES (
-    gen_random_uuid(), 'CUST001', 'Kerala Education Department', 'കേരള വിദ്യാഭ്യാസ വകുപ്പ്', 'Education Department', gen_random_uuid(), gen_random_uuid()
+    gen_random_uuid(), 'CUST001', 'Kerala Education Department', 'കേരള വിദ്യാഭ്യാസ വകുപ്പ്',
+    true, 'Education Department', gen_random_uuid(), gen_random_uuid()
 );
+
 
 
 DROP TABLE IF EXISTS ce_payment_history CASCADE;
@@ -64,6 +67,7 @@ CREATE TABLE ce_payment_history (
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   invoiceid varchar(15) DEFAULT NULL,
   utr_number varchar(25) DEFAULT NULL,
@@ -80,9 +84,9 @@ CREATE TABLE ce_payment_history (
 );
 
 INSERT INTO ce_payment_history (
-    history_id, code, name, name_in_local, invoiceid, utr_number, amount, it_tdsamount, gst_tdsamount, payment_recipt, created_by_platform, created_by, modified_by
+    history_id, code, name, name_in_local, is_active, invoiceid, utr_number, amount, it_tdsamount, gst_tdsamount, payment_recipt, created_by_platform, created_by, modified_by
 ) VALUES (
-    gen_random_uuid(), 'PAY001', 'First Payment - Renewal', 'ആദ്യ പേയ്മെന്റ് - പുതുക്കൽ', 'INV2025-001', 'UTR9876543210', '1500', 50.00, 25.00, 'receipt_2025.pdf', 'WebPortal', gen_random_uuid(), gen_random_uuid()
+    gen_random_uuid(), 'PAY001', 'First Payment - Renewal', 'ആദ്യ പേയ്മെന്റ് - പുതുക്കൽ', true,'INV2025-001', 'UTR9876543210', '1500', 50.00, 25.00, 'receipt_2025.pdf', 'WebPortal', gen_random_uuid(), gen_random_uuid()
 );
 
 DROP TABLE IF EXISTS ce_payment_kyc_details CASCADE;
@@ -92,6 +96,7 @@ CREATE TABLE ce_payment_kyc_details (
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   subid int DEFAULT NULL,
   locid int DEFAULT NULL,
@@ -110,9 +115,9 @@ CREATE TABLE ce_payment_kyc_details (
   CONSTRAINT pk_ce_payment_kyc_details PRIMARY KEY (details_id)
 );
 INSERT INTO ce_payment_kyc_details (
-    details_id, code, name, name_in_local, subid, locid, cheque_doc, cheque_date, paymentreciept_doc, paymentreciept_date, wo_doc, wo_date, kyc_doc, kyc_date, created_by, modified_by
+    details_id, code, name, name_in_local, is_active, subid, locid, cheque_doc, cheque_date, paymentreciept_doc, paymentreciept_date, wo_doc, wo_date, kyc_doc, kyc_date, created_by, modified_by
 ) VALUES (
-    gen_random_uuid(), 'KYC001', 'KYC Payment Verification', 'കെവൈസി പേയ്‌മെന്റ് സ്ഥിരീകരണം', 2001, 3001, 'cheque_2001.pdf', CURRENT_TIMESTAMP, 'receipt_2001.pdf', CURRENT_TIMESTAMP, 'wo_2001.pdf', CURRENT_TIMESTAMP, 'kyc_2001.pdf', CURRENT_TIMESTAMP, gen_random_uuid(), gen_random_uuid()
+    gen_random_uuid(), 'KYC001', 'KYC Payment Verification', 'കെവൈസി പേയ്‌മെന്റ് സ്ഥിരീകരണം',true, 2001, 3001, 'cheque_2001.pdf', CURRENT_TIMESTAMP, 'receipt_2001.pdf', CURRENT_TIMESTAMP, 'wo_2001.pdf', CURRENT_TIMESTAMP, 'kyc_2001.pdf', CURRENT_TIMESTAMP, gen_random_uuid(), gen_random_uuid()
 );
 
 
@@ -123,6 +128,7 @@ CREATE TABLE ce_po_movement (
   code VARCHAR(45),
   name VARCHAR(255),
   name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   poid int DEFAULT NULL,
   approve_status int DEFAULT NULL,
@@ -135,9 +141,9 @@ CREATE TABLE ce_po_movement (
   CONSTRAINT pk_ce_po_movement PRIMARY KEY (movement_id)
 );
 INSERT INTO ce_po_movement (
-    movement_id, code, name, name_in_local, poid, approve_status, remarks, created_by_platform, created_date, modified_date, created_by, modified_by
+    movement_id, code, name, name_in_local, is_active, poid, approve_status, remarks, created_by_platform, created_date, modified_date, created_by, modified_by
 ) VALUES (
-    gen_random_uuid(), 'PO001', 'Purchase Order Movement', 'വാങ്ങൽ ഓർഡർ നീക്കം', 1001, 1, 'PO approved successfully', 'system_admin', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, gen_random_uuid(), gen_random_uuid()
+    gen_random_uuid(), 'PO001', 'Purchase Order Movement', 'വാങ്ങൽ ഓർഡർ നീക്കം', true, 1001, 1, 'PO approved successfully', 'system_admin', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, gen_random_uuid(), gen_random_uuid()
 );
 
 
