@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DfSubFinance extends Auditor{
+public class DfSubFinance extends Auditor {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

@@ -52,6 +52,8 @@ class CorporateOnboardingServiceImplTest {
   private CeSubCustomersRepository subCustomersRepository;
   private CeSubPackageRepository subPackageRepository;
   private CeSubPackageRenewalHistoryRepository subPackageRenewalHistoryRepository;
+  private CeSubFinanceRepository subFinanceRepository;
+  private CeSubServiceListRepository subServiceListRepository;
 
   @BeforeEach
   void setUp() {
@@ -90,6 +92,8 @@ class CorporateOnboardingServiceImplTest {
     subCustomersRepository = mock(CeSubCustomersRepository.class);
     subPackageRepository = mock(CeSubPackageRepository.class);
     subPackageRenewalHistoryRepository = mock(CeSubPackageRenewalHistoryRepository.class);
+    subFinanceRepository = mock(CeSubFinanceRepository.class);
+    subServiceListRepository = mock(CeSubServiceListRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -126,7 +130,9 @@ class CorporateOnboardingServiceImplTest {
             serviceListRepository,
             subCustomersRepository,
             subPackageRepository,
-            subPackageRenewalHistoryRepository);
+            subPackageRenewalHistoryRepository,
+            subFinanceRepository,
+            subServiceListRepository);
 
     service.setupMapper();
   }
@@ -1340,5 +1346,75 @@ class CorporateOnboardingServiceImplTest {
 
     assertThrows(
         EntityNotFoundException.class, () -> service.subPackageRenewalHistoryFetchById(id));
+  }
+
+  @Test
+  void testSubFinancesFetchAll_ShouldReturnMappedList() {
+    CeSubFinance finance = new CeSubFinance();
+    finance.setId(UUID.randomUUID());
+
+    when(subFinanceRepository.findAll()).thenReturn(List.of(finance));
+
+    List<CommonLookUp> result = service.subFinancesFetchAll();
+
+    assertEquals(1, result.size());
+    verify(subFinanceRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testSubFinancesFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeSubFinance finance = new CeSubFinance();
+    finance.setId(id);
+
+    when(subFinanceRepository.findById(id)).thenReturn(Optional.of(finance));
+
+    CommonLookUp result = service.subFinancesFetchById(id);
+
+    assertNotNull(result);
+    verify(subFinanceRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testSubFinancesFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(subFinanceRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.subFinancesFetchById(id));
+  }
+
+  @Test
+  void testSubServiceListsFetchAll_ShouldReturnMappedList() {
+    CeSubServiceList subServiceList = new CeSubServiceList();
+    subServiceList.setListId(UUID.randomUUID());
+
+    when(subServiceListRepository.findAll()).thenReturn(List.of(subServiceList));
+
+    List<CommonLookUp> result = service.subServiceListsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(subServiceListRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testSubServiceListsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeSubServiceList subServiceList = new CeSubServiceList();
+    subServiceList.setListId(id);
+
+    when(subServiceListRepository.findById(id)).thenReturn(Optional.of(subServiceList));
+
+    CommonLookUp result = service.subServiceListsFetchById(id);
+
+    assertNotNull(result);
+    verify(subServiceListRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testSubServiceListsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(subServiceListRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.subServiceListsFetchById(id));
   }
 }

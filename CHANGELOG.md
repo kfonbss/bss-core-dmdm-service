@@ -262,4 +262,8 @@ Get partner receipt and account balance report
 
 # [0.47.0] - 2025-11-03
 ### Added
--Get dark fiber - renewal and purchase order details
+- Get dark fiber - renewal and purchase order details
+
+# [0.48.0] - 2025-11-03
+### Added
+- Get Corporate sub service list and sub finance details

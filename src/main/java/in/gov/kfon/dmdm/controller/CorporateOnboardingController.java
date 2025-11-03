@@ -430,4 +430,28 @@ public class CorporateOnboardingController {
     var data = service.subPackageRenewalHistoryFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("sub-service/lists/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> subServiceListsFetchAll() {
+    var data = service.subServiceListsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("sub-service/list/{id}")
+  public ResponseEntity<Response<CommonLookUp>> subServiceListsFetchById(@PathVariable UUID id) {
+    var data = service.subServiceListsFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("sub-finances/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> subFinancesFetchAll() {
+    var data = service.subFinancesFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("sub-finance/{id}")
+  public ResponseEntity<Response<CommonLookUp>> subFinancesFetchById(@PathVariable UUID id) {
+    var data = service.subFinancesFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }
