@@ -29,4 +29,12 @@ public interface DarkFiberService {
   List<CommonLookUp> fetchAllLinkRenewalHistories();
 
   CommonLookUp fetchLinkRenewalHistoryById(UUID id);
+
+  List<CommonLookUp> fetchAllPowerRatings();
+
+  CommonLookUp fetchPowerRatingById(UUID id);
+
+  List<CommonLookUp> fetchAllPurchaseOrders();
+
+  CommonLookUp fetchPurchaseOrderById(UUID id);
 }

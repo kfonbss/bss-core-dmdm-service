@@ -25,6 +25,8 @@ public class DarkFiberServiceImplTest {
   @Mock private DfGroupInvoiceMasterRepository dfGroupInvoiceMasterRepository;
   @Mock private DfLinkDetailsRepository dfLinkDetailsRepository;
   @Mock private DfLinkRenewalHistoryRepository dfLinkRenewalHistoryRepository;
+  @Mock private DfPowerRatingRepository dfPowerRatingRepository;
+  @Mock private DfPurchaseOrderRepository dfPurchaseOrderRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private DarkFiberServiceImpl service;
@@ -36,6 +38,8 @@ public class DarkFiberServiceImplTest {
   private DfGroupInvoiceMaster master;
   private DfLinkDetails linkDetails;
   private DfLinkRenewalHistory renewalHistory;
+  private DfPowerRating powerRating;
+  private DfPurchaseOrder purchaseOrder;
   private CommonLookUp commonLookUp;
 
   @BeforeEach
@@ -70,6 +74,14 @@ public class DarkFiberServiceImplTest {
     renewalHistory.setHistoryId(id);
     renewalHistory.setName("Test Link Renewal");
     renewalHistory.setIsActive(true);
+
+    powerRating = new DfPowerRating();
+    powerRating.setDfPowerRatingId(id);
+    powerRating.setName("Power Rating 10KW");
+
+    purchaseOrder = new DfPurchaseOrder();
+    purchaseOrder.setDfPurchaseOrderId(id);
+    purchaseOrder.setName("PO - 001");
 
     commonLookUp = new CommonLookUp();
     commonLookUp.setId(id);
@@ -323,6 +335,89 @@ public class DarkFiberServiceImplTest {
 
     assertEquals("Link Renewal History not found with id: " + id, exception.getMessage());
     verify(dfLinkRenewalHistoryRepository, times(1)).findByHistoryId(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllPowerRatings() {
+    when(dfPowerRatingRepository.findAll()).thenReturn(List.of(powerRating));
+    when(modelMapper.map(powerRating, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllPowerRatings();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfPowerRatingRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(powerRating, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchPowerRatingById_Success() {
+    when(dfPowerRatingRepository.findByDfPowerRatingId(id)).thenReturn(Optional.of(powerRating));
+    when(modelMapper.map(powerRating, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchPowerRatingById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfPowerRatingRepository, times(1)).findByDfPowerRatingId(id);
+    verify(modelMapper, times(1)).map(powerRating, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchPowerRatingById_NotFound() {
+    when(dfPowerRatingRepository.findByDfPowerRatingId(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchPowerRatingById(id));
+
+    assertEquals("Power Rating not found with id: " + id, exception.getMessage());
+    verify(dfPowerRatingRepository, times(1)).findByDfPowerRatingId(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllPurchaseOrders() {
+    when(dfPurchaseOrderRepository.findAll()).thenReturn(List.of(purchaseOrder));
+    when(modelMapper.map(purchaseOrder, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllPurchaseOrders();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfPurchaseOrderRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(purchaseOrder, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchPurchaseOrderById_Success() {
+    when(dfPurchaseOrderRepository.findByDfPurchaseOrderId(id))
+        .thenReturn(Optional.of(purchaseOrder));
+    when(modelMapper.map(purchaseOrder, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchPurchaseOrderById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfPurchaseOrderRepository, times(1)).findByDfPurchaseOrderId(id);
+    verify(modelMapper, times(1)).map(purchaseOrder, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchPurchaseOrderById_NotFound() {
+    when(dfPurchaseOrderRepository.findByDfPurchaseOrderId(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchPurchaseOrderById(id));
+
+    assertEquals("Purchase Order not found with id: " + id, exception.getMessage());
+    verify(dfPurchaseOrderRepository, times(1)).findByDfPurchaseOrderId(id);
     verifyNoInteractions(modelMapper);
   }
 }

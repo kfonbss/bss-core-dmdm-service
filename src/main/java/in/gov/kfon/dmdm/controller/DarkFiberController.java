@@ -99,4 +99,32 @@ public class DarkFiberController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched link renewal history by ID"));
   }
+
+  @GetMapping("/power-ratings")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPowerRatings() {
+    var data = darkFiberService.fetchAllPowerRatings();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all power ratings"));
+  }
+
+  @GetMapping("/power-rating/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPowerRatingById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchPowerRatingById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched power rating by ID"));
+  }
+
+  @GetMapping("/purchase-orders")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPurchaseOrders() {
+    var data = darkFiberService.fetchAllPurchaseOrders();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all purchase orders"));
+  }
+
+  @GetMapping("/purchase-order/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPurchaseOrderById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchPurchaseOrderById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched purchase order by ID"));
+  }
 }
