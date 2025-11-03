@@ -1,14 +1,8 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-import in.gov.kfon.dmdm.model.DfGroupDetails;
-import in.gov.kfon.dmdm.model.DfGroupDetailsMovent;
-import in.gov.kfon.dmdm.model.DfGroupInvoice;
-import in.gov.kfon.dmdm.model.DfGroupInvoiceMaster;
-import in.gov.kfon.dmdm.repository.DfGroupDetailsMoventRepository;
-import in.gov.kfon.dmdm.repository.DfGroupDetailsRepository;
-import in.gov.kfon.dmdm.repository.DfGroupInvoiceMasterRepository;
-import in.gov.kfon.dmdm.repository.DfGroupInvoiceRepository;
+import in.gov.kfon.dmdm.model.*;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +20,8 @@ public class DarkFiberServiceImpl implements DarkFiberService {
   private final DfGroupDetailsMoventRepository dfGroupDetailsMoventRepository;
   private final DfGroupInvoiceRepository dfGroupInvoiceRepository;
   private final DfGroupInvoiceMasterRepository dfGroupInvoiceMasterRepository;
+  private final DfLinkDetailsRepository dfLinkDetailsRepository;
+  private final DfLinkRenewalHistoryRepository dfLinkRenewalHistoryRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -102,5 +98,39 @@ public class DarkFiberServiceImpl implements DarkFiberService {
             .orElseThrow(
                 () -> new EntityNotFoundException("Group Invoice Master not found with id: " + id));
     return modelMapper.map(master, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllLinkDetails() {
+    return dfLinkDetailsRepository.findAll().stream()
+        .map(link -> modelMapper.map(link, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchLinkDetailsById(UUID id) {
+    DfLinkDetails linkDetails =
+        dfLinkDetailsRepository
+            .findByDetailsId(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Link Details not found with id: " + id));
+    return modelMapper.map(linkDetails, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllLinkRenewalHistories() {
+    return dfLinkRenewalHistoryRepository.findAll().stream()
+        .map(history -> modelMapper.map(history, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchLinkRenewalHistoryById(UUID id) {
+    DfLinkRenewalHistory history =
+        dfLinkRenewalHistoryRepository
+            .findByHistoryId(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Link Renewal History not found with id: " + id));
+    return modelMapper.map(history, CommonLookUp.class);
   }
 }

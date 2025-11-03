@@ -221,14 +221,31 @@ CREATE TABLE df_link_details (
   approve_status INTEGER DEFAULT 0,
   link_d_status SMALLINT DEFAULT 1,
   link_d_status_date DATE DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_link_details PRIMARY KEY (details_id)
 );
 
 COMMENT ON COLUMN df_link_details.link_d_status IS '1=Commissioned,2=DeCommissioned';
 COMMENT ON COLUMN df_link_details.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_link_details (
+  woid, groupid, linkid, strands_count, fiber_type, unit_price, fiber_lenght,
+  pop_id, feeder_id, link_type, no_of_rack_units, power_rating_id, power_rating_cost,
+  approve_status, link_d_status, link_d_status_date, code, name, name_in_local,
+  is_active, created_by, modified_by
+) VALUES (
+  101, 201, 301, 12, 'Single Mode', 1500.50, 250.75,
+  1001, 2001, 1, 10, 501, 500.00,
+  1, 1, '2025-10-01', 'LINK-001', 'Trivandrum Link', 'ട്രിവാൻഡ്രം ലിങ്ക്',
+  TRUE, gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS df_link_renewal_history CASCADE;
@@ -260,12 +277,33 @@ CREATE TABLE df_link_renewal_history (
   total_power_rating_cost DECIMAL(25,10) NOT NULL DEFAULT 0.0000000000,
   group_type INTEGER DEFAULT NULL,
   subfinanceid INTEGER DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_link_renewal_history PRIMARY KEY (history_id)
 );
 
 COMMENT ON COLUMN df_link_renewal_history.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_link_renewal_history (
+  mg_invoiceid, linkid, grouplinkid, groupid, ss_date, se_date, total_sdays,
+  unit_price, link_gst, link_amount, link_grand_amount, fiber_lenght, trands_count,
+  link_type, feeder_id, pop_id, no_of_rack_units, power_rating_id, rating_cost_per_30_days,
+  total_rating_cost, total_rating_gstcost, total_power_rating_cost, group_type, subfinanceid,
+  code, name, name_in_local, is_active, created_by, modified_by
+) VALUES (
+  501, 301, 401, 201, '2025-10-01', '2025-10-31', 30,
+  1500.5000000000, 180.5000000000, 46815.0000000000, 46995.5000000000, 250.750, 12,
+  1, 2001, 1001, 10, 501, 15000.0000000000,
+  15000.0000000000, 1800.0000000000, 16800.0000000000, 1, 301,
+  'RL-001', 'Trivandrum Link Renewal', 'ട്രിവാൻഡ്രം ലിങ്ക് റീന്യൂൽ',
+  TRUE, gen_random_uuid(), gen_random_uuid()
+);
+
 
 
