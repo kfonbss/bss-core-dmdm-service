@@ -802,4 +802,52 @@ class CorporateOnboardingControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("CORP001"));
   }
+
+  @Test
+  void testServicesListFetchAll() throws Exception {
+    when(service.servicesListFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/services-list/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"));
+  }
+
+  @Test
+  void testServicesListById() throws Exception {
+    when(service.servicesListFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/service-list/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"));
+  }
+
+  @Test
+  void testSubCustomersFetchAll() throws Exception {
+    when(service.subCustomersFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/corporate/sub-customers/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("CORP001"));
+  }
+
+  @Test
+  void testSubCustomerById() throws Exception {
+    when(service.subCustomersFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/corporate/sub-customer/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("CORP001"));
+  }
 }

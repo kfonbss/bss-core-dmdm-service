@@ -381,4 +381,28 @@ public class CorporateOnboardingController {
     var data = service.revisionConnectionBreakupFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("services-list/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> servicesListFetchAll() {
+    var data = service.servicesListFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("service-list/{id}")
+  public ResponseEntity<Response<CommonLookUp>> servicesListFetchById(@PathVariable UUID id) {
+    var data = service.servicesListFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("sub-customers/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> subCustomersFetchAll() {
+    var data = service.subCustomersFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("sub-customer/{id}")
+  public ResponseEntity<Response<CommonLookUp>> subCustomersFetchById(@PathVariable UUID id) {
+    var data = service.subCustomersFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }

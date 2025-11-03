@@ -239,3 +239,7 @@ Get partner receipt and account balance report
 # [0.41.0] - 2025-11-03
 ### Added
 - Get dark fiber - group and group movement details
+
+# [0.42.0] - 2025-11-03
+### Added
+-  Get Corporate service list and sub customers Details

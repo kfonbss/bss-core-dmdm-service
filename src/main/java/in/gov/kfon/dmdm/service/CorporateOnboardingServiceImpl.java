@@ -50,6 +50,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CeQuotationsRevisionRepository quotationsRevisionRepository;
   private final CeRenewalDetailsRepository renewalDetailsRepository;
   private final CeRevisionConnectionBreakupRepository revisionConnectionBreakupRepository;
+  private final CeServiceListRepository serviceListRepository;
+  private final CeSubCustomersRepository subCustomersRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -89,6 +91,14 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
     // For Payment History
     modelMapper.addMappings(
         new PropertyMap<CePaymentHistory, CommonLookUp>() {
+          @Override
+          protected void configure() {
+            skip(destination.getId());
+          }
+        });
+    // For Sub Customer
+    modelMapper.addMappings(
+        new PropertyMap<CeSubCustomers, CommonLookUp>() {
           @Override
           protected void configure() {
             skip(destination.getId());
@@ -683,5 +693,50 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> servicesListFetchAll() {
+    return serviceListRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp servicesListFetchById(UUID id) {
+    CeServiceList entity =
+        serviceListRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> subCustomersFetchAll() {
+    return subCustomersRepository.findAll().stream()
+        .map(
+            customers -> {
+              CommonLookUp lookup = modelMapper.map(customers, CommonLookUp.class);
+              lookup.setId(customers.getCustomersId());
+              return lookup;
+            })
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp subCustomersFetchById(UUID id) {
+    CeSubCustomers customers =
+        subCustomersRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+
+    CommonLookUp lookup = modelMapper.map(customers, CommonLookUp.class);
+    lookup.setId(customers.getCustomersId());
+
+    return lookup;
   }
 }

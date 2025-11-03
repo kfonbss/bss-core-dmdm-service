@@ -124,4 +124,12 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> revisionConnectionBreakupFetchAll();
 
   CommonLookUp revisionConnectionBreakupFetchById(UUID id);
+
+  List<CommonLookUp> servicesListFetchAll();
+
+  CommonLookUp servicesListFetchById(UUID id);
+
+  List<CommonLookUp> subCustomersFetchAll();
+
+  CommonLookUp subCustomersFetchById(UUID id);
 }

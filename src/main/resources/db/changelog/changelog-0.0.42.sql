@@ -235,32 +235,57 @@ DROP TABLE IF EXISTS ce_service_list CASCADE;
 
 CREATE TABLE ce_service_list (
   list_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   slno SERIAL,
   serviceid int DEFAULT NULL,
   servicename varchar(50) DEFAULT NULL,
   sname_short varchar(50) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_service_list PRIMARY KEY (list_id)
 );
 
-COMMENT ON COLUMN ce_service_list.is_active IS '0=In Active,1=Active';
+INSERT INTO ce_service_list (
+    list_id, code, name, name_in_local, is_active, slno, serviceid, servicename,
+    sname_short, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'CSL001', 'Broadband Service', 'ബ്രോഡ്ബാൻഡ് സർവീസ്',
+    true, 1, 501, 'Internet Service', 'BB', CURRENT_TIMESTAMP, NULL,
+    gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS ce_sub_customers CASCADE;
 
 CREATE TABLE ce_sub_customers (
   customers_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   customerid varchar(100) DEFAULT NULL,
   company_name varchar(200) DEFAULT NULL,
   department_name varchar(50) DEFAULT NULL,
   billing_category varchar(50) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_ce_sub_customers PRIMARY KEY (customers_id)
 );
+INSERT INTO ce_sub_customers (
+    customers_id, code, name, name_in_local, is_active, id, customerid,
+    company_name, department_name, billing_category, created_date,
+    modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'CUS001', 'ABC Communications', 'എബിസി കമ്മ്യൂണിക്കേഷൻസ്',
+    true, 1, 'C1001', 'ABC Pvt Ltd', 'IT Department', 'Corporate',
+    CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
+);
 
-COMMENT ON COLUMN ce_sub_customers.is_active IS '0=In Active,1=Active';
