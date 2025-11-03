@@ -4,14 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-import in.gov.kfon.dmdm.model.DfGroupDetails;
-import in.gov.kfon.dmdm.model.DfGroupDetailsMovent;
-import in.gov.kfon.dmdm.model.DfGroupInvoice;
-import in.gov.kfon.dmdm.model.DfGroupInvoiceMaster;
-import in.gov.kfon.dmdm.repository.DfGroupDetailsMoventRepository;
-import in.gov.kfon.dmdm.repository.DfGroupDetailsRepository;
-import in.gov.kfon.dmdm.repository.DfGroupInvoiceMasterRepository;
-import in.gov.kfon.dmdm.repository.DfGroupInvoiceRepository;
+import in.gov.kfon.dmdm.model.*;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +23,8 @@ public class DarkFiberServiceImplTest {
   @Mock private DfGroupDetailsMoventRepository dfGroupDetailsMoventRepository;
   @Mock private DfGroupInvoiceRepository dfGroupInvoiceRepository;
   @Mock private DfGroupInvoiceMasterRepository dfGroupInvoiceMasterRepository;
+  @Mock private DfLinkDetailsRepository dfLinkDetailsRepository;
+  @Mock private DfLinkRenewalHistoryRepository dfLinkRenewalHistoryRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private DarkFiberServiceImpl service;
@@ -38,6 +34,8 @@ public class DarkFiberServiceImplTest {
   private DfGroupDetailsMovent groupMovement;
   private DfGroupInvoice invoice;
   private DfGroupInvoiceMaster master;
+  private DfLinkDetails linkDetails;
+  private DfLinkRenewalHistory renewalHistory;
   private CommonLookUp commonLookUp;
 
   @BeforeEach
@@ -62,6 +60,16 @@ public class DarkFiberServiceImplTest {
     master.setMasterId(id);
     master.setSubscriberId(10001L);
     master.setGroupId(201);
+
+    linkDetails = new DfLinkDetails();
+    linkDetails.setDetailsId(id);
+    linkDetails.setName("Test Link");
+    linkDetails.setIsActive(true);
+
+    renewalHistory = new DfLinkRenewalHistory();
+    renewalHistory.setHistoryId(id);
+    renewalHistory.setName("Test Link Renewal");
+    renewalHistory.setIsActive(true);
 
     commonLookUp = new CommonLookUp();
     commonLookUp.setId(id);
@@ -231,6 +239,90 @@ public class DarkFiberServiceImplTest {
 
     assertEquals("Group Invoice Master not found with id: " + id, exception.getMessage());
     verify(dfGroupInvoiceMasterRepository, times(1)).findByMasterId(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllLinkDetails() {
+    when(dfLinkDetailsRepository.findAll()).thenReturn(List.of(linkDetails));
+    when(modelMapper.map(linkDetails, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllLinkDetails();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfLinkDetailsRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(linkDetails, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchLinkDetailsById_Success() {
+    when(dfLinkDetailsRepository.findByDetailsId(id)).thenReturn(Optional.of(linkDetails));
+    when(modelMapper.map(linkDetails, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchLinkDetailsById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfLinkDetailsRepository, times(1)).findByDetailsId(id);
+    verify(modelMapper, times(1)).map(linkDetails, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchLinkDetailsById_NotFound() {
+    when(dfLinkDetailsRepository.findByDetailsId(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchLinkDetailsById(id));
+
+    assertEquals("Link Details not found with id: " + id, exception.getMessage());
+
+    verify(dfLinkDetailsRepository, times(1)).findByDetailsId(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllLinkRenewalHistories() {
+    when(dfLinkRenewalHistoryRepository.findAll()).thenReturn(List.of(renewalHistory));
+    when(modelMapper.map(renewalHistory, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllLinkRenewalHistories();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfLinkRenewalHistoryRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(renewalHistory, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchLinkRenewalHistoryById_Success() {
+    when(dfLinkRenewalHistoryRepository.findByHistoryId(id))
+        .thenReturn(Optional.of(renewalHistory));
+    when(modelMapper.map(renewalHistory, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchLinkRenewalHistoryById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfLinkRenewalHistoryRepository, times(1)).findByHistoryId(id);
+    verify(modelMapper, times(1)).map(renewalHistory, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchLinkRenewalHistoryById_NotFound() {
+    when(dfLinkRenewalHistoryRepository.findByHistoryId(id)).thenReturn(Optional.empty());
+
+    RuntimeException exception =
+        assertThrows(RuntimeException.class, () -> service.fetchLinkRenewalHistoryById(id));
+
+    assertEquals("Link Renewal History not found with id: " + id, exception.getMessage());
+    verify(dfLinkRenewalHistoryRepository, times(1)).findByHistoryId(id);
     verifyNoInteractions(modelMapper);
   }
 }

@@ -72,4 +72,31 @@ public class DarkFiberController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched invoice master by ID"));
   }
+
+  @GetMapping("/link-details")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllLinkDetails() {
+    var data = darkFiberService.fetchAllLinkDetails();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all link details"));
+  }
+
+  @GetMapping("/link-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchLinkDetailById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchLinkDetailsById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched link detail by ID"));
+  }
+
+  @GetMapping("/link-renewal-histories")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllLinkRenewalHistories() {
+    var data = darkFiberService.fetchAllLinkRenewalHistories();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all link renewal histories"));
+  }
+
+  @GetMapping("/link-renewal-history/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchLinkRenewalHistoryById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchLinkRenewalHistoryById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched link renewal history by ID"));
+  }
 }
