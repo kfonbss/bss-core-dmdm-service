@@ -26,6 +26,8 @@ public class DarkFiberServiceImpl implements DarkFiberService {
   private final DfPurchaseOrderRepository dfPurchaseOrderRepository;
   private final DfRenewalDetailsRepository dfRenewalDetailsRepository;
   private final DfSubFinanceRepository dfSubFinanceRepository;
+  private final DfSubscribersRepository subscribersRepository;
+  private final DfTransRenewalDetailsRepository transRenewalRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -207,5 +209,38 @@ public class DarkFiberServiceImpl implements DarkFiberService {
             .findByDfSubFinanceId(id)
             .orElseThrow(() -> new EntityNotFoundException("SubFinance not found with id: " + id));
     return modelMapper.map(subFinance, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllSubscribers() {
+    return subscribersRepository.findAll().stream()
+        .map(subscribers -> modelMapper.map(subscribers, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchSubscriberById(UUID id) {
+    DfSubscribers dfSubscribers =
+        subscribersRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Subscriber not found with id: " + id));
+    return modelMapper.map(dfSubscribers, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllTransRenewalDetails() {
+    return transRenewalRepository.findAll().stream()
+        .map(transRenewalDetails -> modelMapper.map(transRenewalDetails, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchTransRenewalDetailById(UUID id) {
+    DfTransRenewalDetails renewalDetails =
+        transRenewalRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Trans Renewal Detail not found with id: " + id));
+    return modelMapper.map(renewalDetails, CommonLookUp.class);
   }
 }

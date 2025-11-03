@@ -267,3 +267,7 @@ Get partner receipt and account balance report
 # [0.48.0] - 2025-11-03
 ### Added
 - Get Corporate sub service list and sub finance details
+
+# [0.49.0] - 2025-11-03
+### Added
+- Get dark fiber - subscribers and trans renewal details

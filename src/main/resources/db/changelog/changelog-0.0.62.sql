@@ -182,12 +182,28 @@ CREATE TABLE df_subscribers (
   activation_date timestamp DEFAULT NULL,
   d_status int DEFAULT 0,
   d_status_date date DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_df_subscribers PRIMARY KEY (df_subscribers_id)
+);
+
+INSERT INTO df_subscribers (
+    df_subscribers_id, subscriberid, username, password, balance, woid, enq_ref,
+    expirydate, comm_date, activation_date, d_status, d_status_date,
+    code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES
+(
+    gen_random_uuid(), 1, 'john_doe', 'pass123', 5000.00, 101, 1001,
+    '2025-12-31', '2025-11-01', CURRENT_TIMESTAMP, 0, '2025-11-01',
+    'SUB001', 'John Doe', 'ജോൺ ഡോ', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, gen_random_uuid(), gen_random_uuid()
 );
 
 
@@ -207,12 +223,28 @@ CREATE TABLE df_trans_renewal_details (
   gst_cost_per_trand decimal(25,10) NOT NULL DEFAULT 0.0000000000,
   trand_service_days int DEFAULT 0,
   trands_send_date date DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_df_trans_renewal_details PRIMARY KEY (df_trans_renewal_details_id)
+);
+
+INSERT INTO df_trans_renewal_details (
+    df_trans_renewal_details_id, id, mg_invoiceid, lrhid, transmv_id, groupid, grouplinkid, linkid,
+    cost_per_trand, gst_cost_per_trand, trand_service_days, trands_send_date,
+    code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES
+(
+    gen_random_uuid(), 1, 5001, 3001, 7001, 201, 301, 401,
+    1000.0000000000, 180.0000000000, 30, '2025-11-01',
+    'TR001', 'Renewal 1', 'റിന്യൂവൽ 1', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, gen_random_uuid(), gen_random_uuid()
 );
 
 
