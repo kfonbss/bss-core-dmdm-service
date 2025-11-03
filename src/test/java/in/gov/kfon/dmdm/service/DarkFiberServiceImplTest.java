@@ -29,6 +29,8 @@ public class DarkFiberServiceImplTest {
   @Mock private DfPurchaseOrderRepository dfPurchaseOrderRepository;
   @Mock private DfSubFinanceRepository dfSubFinanceRepository;
   @Mock private DfRenewalDetailsRepository dfRenewalDetailsRepository;
+  @Mock private DfSubscribersRepository dfSubscribersRepository;
+  @Mock private DfTransRenewalDetailsRepository dfTransRenewalDetailsRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private DarkFiberServiceImpl service;
@@ -44,6 +46,8 @@ public class DarkFiberServiceImplTest {
   private DfPurchaseOrder purchaseOrder;
   private DfSubFinance subFinance;
   private DfRenewalDetails renewalDetails;
+  private DfSubscribers subscriber;
+  private DfTransRenewalDetails transRenewalDetail;
   private CommonLookUp commonLookUp;
 
   @BeforeEach
@@ -96,6 +100,20 @@ public class DarkFiberServiceImplTest {
     renewalDetails.setDfRenewalDetailsId(id);
     renewalDetails.setName("Renewal Record");
     renewalDetails.setIsActive(true);
+
+    subscriber = new DfSubscribers();
+    subscriber.setDfSubscribersId(id);
+    subscriber.setIsActive(true);
+    subscriber.setCode("S001");
+    subscriber.setName("Test Subscriber");
+    subscriber.setNameInLocal("ടെസ്റ്റ് സബ്സ്ക്രൈബർ");
+
+    transRenewalDetail = new DfTransRenewalDetails();
+    transRenewalDetail.setDfTransRenewalDetailsId(id);
+    transRenewalDetail.setIsActive(true);
+    transRenewalDetail.setCode("TR001");
+    transRenewalDetail.setName("Test Renewal");
+    transRenewalDetail.setNameInLocal("ടെസ്റ്റ് റീന്യുവൽ");
 
     commonLookUp = new CommonLookUp();
     commonLookUp.setId(id);
@@ -515,6 +533,88 @@ public class DarkFiberServiceImplTest {
 
     assertEquals("SubFinance not found with id: " + id, exception.getMessage());
     verify(dfSubFinanceRepository, times(1)).findByDfSubFinanceId(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllSubscribers() {
+    when(dfSubscribersRepository.findAll()).thenReturn(List.of(subscriber));
+    when(modelMapper.map(subscriber, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllSubscribers();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfSubscribersRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(subscriber, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchSubscriberById_Success() {
+    when(dfSubscribersRepository.findById(id)).thenReturn(Optional.of(subscriber));
+    when(modelMapper.map(subscriber, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchSubscriberById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfSubscribersRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(subscriber, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchSubscriberById_NotFound() {
+    when(dfSubscribersRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchSubscriberById(id));
+
+    assertEquals("Subscriber not found with id: " + id, exception.getMessage());
+    verify(dfSubscribersRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllTransRenewalDetails() {
+    when(dfTransRenewalDetailsRepository.findAll()).thenReturn(List.of(transRenewalDetail));
+    when(modelMapper.map(transRenewalDetail, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllTransRenewalDetails();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfTransRenewalDetailsRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(transRenewalDetail, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchTransRenewalDetailById_Success() {
+    when(dfTransRenewalDetailsRepository.findById(id)).thenReturn(Optional.of(transRenewalDetail));
+    when(modelMapper.map(transRenewalDetail, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchTransRenewalDetailById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfTransRenewalDetailsRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(transRenewalDetail, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchTransRenewalDetailById_NotFound() {
+    when(dfTransRenewalDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchTransRenewalDetailById(id));
+
+    assertEquals("Trans Renewal Detail not found with id: " + id, exception.getMessage());
+    verify(dfTransRenewalDetailsRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
 }
