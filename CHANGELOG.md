@@ -235,3 +235,7 @@ Get partner receipt and account balance report
 # [0.40.0] - 2025-11-03
 ### Added
 - Missing field adding
+
+# [0.41.0] - 2025-11-03
+### Added
+- Get dark fiber - group and group movement details
