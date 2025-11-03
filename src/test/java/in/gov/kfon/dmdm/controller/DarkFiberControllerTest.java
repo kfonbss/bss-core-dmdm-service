@@ -217,4 +217,48 @@ public class DarkFiberControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched purchase order by ID"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
+
+  @Test
+  void testFetchAllRenewalDetails() throws Exception {
+    when(service.fetchAllRenewalDetails()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/darkfiber/renewal-details"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all renewal details"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchRenewalDetailById() throws Exception {
+    when(service.fetchRenewalDetailsById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/darkfiber/renewal-detail/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched renewal detail by ID"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchAllSubFinances() throws Exception {
+    when(service.fetchAllSubFinance()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/darkfiber/subfinances"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all sub finances"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchSubFinanceById() throws Exception {
+    when(service.fetchSubFinanceById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/darkfiber/subfinance/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched sub finance by ID"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
 }

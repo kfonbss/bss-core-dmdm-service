@@ -108,13 +108,28 @@ CREATE TABLE df_renewal_details (
   subfinanceid int DEFAULT NULL,
   total_sdays int DEFAULT 0,
   amount decimal(26,10) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_df_renewal_details PRIMARY KEY (df_renewal_details_id)
 );
+
+INSERT INTO df_renewal_details (
+  df_renewal_details_id, groupid, subscriberid, woid, cause,
+  service_sdate, service_edate, subfinanceid, total_sdays, amount,
+  code, name, name_in_local, is_active, created_by, modified_by
+)
+VALUES
+  (gen_random_uuid(), 101, 5001, 10001, 'Service Renewal - Routine Maintenance',
+   '2025-01-01', '2025-12-31', 301, 365, 12500.5000000000,
+   'REN001', 'Fiber Renewal 2025', 'ഫൈബർ പുതുക്കൽ 2025', TRUE, gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : df_subfinance
@@ -129,13 +144,26 @@ CREATE TABLE df_subfinance (
   woid int DEFAULT NULL,
   groupid int DEFAULT NULL,
   finrefid int DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active INT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_df_subfinance PRIMARY KEY (df_subfinance_id)
 );
+
+INSERT INTO df_subfinance (
+  df_subfinance_id, subscriberid, amount, cause, woid, groupid, finrefid,
+  code, name, name_in_local, is_active, created_by, modified_by
+)
+VALUES
+  (gen_random_uuid(), 5001, 12500.50, 'Renewal Payment', 10001, 101, 9001,
+   'SUBFIN001', 'Renewal Finance - Group 101', 'ഫിനാൻസ് - ഗ്രൂപ്പ് 101', TRUE, gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : df_subscribers
