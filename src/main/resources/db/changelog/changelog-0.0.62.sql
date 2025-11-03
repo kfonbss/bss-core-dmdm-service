@@ -36,13 +36,22 @@ CREATE TABLE df_power_rating (
   id SERIAL,
   amount int NOT NULL,
   power_rating varchar(255) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_df_power_rating PRIMARY KEY (df_power_rating_id)
 );
+
+INSERT INTO df_power_rating (amount, power_rating, code, name, name_in_local, created_by, modified_by)
+VALUES
+(5000, '10 kW', 'PR001', 'Low Voltage Supply', 'താഴ്ന്ന വോൾട്ടേജ് വിതരണo', gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : df_purchase_order
@@ -60,13 +69,28 @@ CREATE TABLE df_purchase_order (
   customerid int DEFAULT NULL,
   approve_status int DEFAULT 0,
   remarks varchar(255) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_df_purchase_order PRIMARY KEY (df_purchase_order_id)
 );
+
+INSERT INTO df_purchase_order (
+  po_no, po_no_cus, po_doc, tfd_ref_num, tfd_ref_doc,
+  enq_ref, customerid, approve_status, remarks,
+  code, name, name_in_local, created_by, modified_by
+)
+VALUES
+('PO-001', 'CUS-PO-001', 'po_doc_001.pdf', 'TFD-REF-001', 'tfd_doc_001.pdf',
+ 101, 1001, 1, 'Approved and verified',
+ 'POC001', 'First Purchase Order', 'ആദ്യ പർച്ചേസ് ഓർഡർ', gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : df_renewal_details

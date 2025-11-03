@@ -22,6 +22,8 @@ public class DarkFiberServiceImpl implements DarkFiberService {
   private final DfGroupInvoiceMasterRepository dfGroupInvoiceMasterRepository;
   private final DfLinkDetailsRepository dfLinkDetailsRepository;
   private final DfLinkRenewalHistoryRepository dfLinkRenewalHistoryRepository;
+  private final DfPowerRatingRepository dfPowerRatingRepository;
+  private final DfPurchaseOrderRepository dfPurchaseOrderRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -132,5 +134,43 @@ public class DarkFiberServiceImpl implements DarkFiberService {
             .orElseThrow(
                 () -> new EntityNotFoundException("Link Renewal History not found with id: " + id));
     return modelMapper.map(history, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllPowerRatings() {
+    return dfPowerRatingRepository.findAll().stream()
+        .map(dfPowerRating -> modelMapper.map(dfPowerRating, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchPowerRatingById(UUID id) {
+    DfPowerRating rating =
+        dfPowerRatingRepository
+            .findByDfPowerRatingId(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Power Rating not found with id: " + id));
+    return modelMapper.map(rating, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllPurchaseOrders() {
+    return dfPurchaseOrderRepository.findAll().stream()
+        .map(dfPurchaseOrder -> modelMapper.map(dfPurchaseOrder, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchPurchaseOrderById(UUID id) {
+    DfPurchaseOrder order =
+        dfPurchaseOrderRepository
+            .findByDfPurchaseOrderId(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Purchase Order not found with id: " + id));
+    return modelMapper.map(order, CommonLookUp.class);
   }
 }
