@@ -13,4 +13,20 @@ public interface DarkFiberService {
   List<CommonLookUp> fetchAllGroupMovements();
 
   CommonLookUp fetchGroupMovementById(UUID id);
+
+  List<CommonLookUp> fetchAllGroupInvoices();
+
+  CommonLookUp fetchGroupInvoiceById(UUID id);
+
+  List<CommonLookUp> fetchAllGroupInvoiceMasters();
+
+  CommonLookUp fetchGroupInvoiceMasterById(UUID id);
+
+  List<CommonLookUp> fetchAllLinkDetails();
+
+  CommonLookUp fetchLinkDetailsById(UUID id);
+
+  List<CommonLookUp> fetchAllLinkRenewalHistories();
+
+  CommonLookUp fetchLinkRenewalHistoryById(UUID id);
 }

@@ -88,8 +88,8 @@ CREATE TABLE df_groupinovoice (
   invoicedate DATE DEFAULT NULL,
   grossamount DECIMAL(26,10) DEFAULT NULL,
   groupmount DECIMAL(26,10) DEFAULT NULL,
-  servicetax DECIMAL(10,10) DEFAULT NULL,
-  servicetaxrate DECIMAL(10,10) DEFAULT NULL,
+  servicetax DECIMAL(15,10) DEFAULT NULL,
+  servicetaxrate DECIMAL(15,10) DEFAULT NULL,
   servicestartdate DATE DEFAULT NULL,
   serviceenddate DATE DEFAULT NULL,
   quarter_start_date DATE DEFAULT NULL,
@@ -103,13 +103,34 @@ CREATE TABLE df_groupinovoice (
   igst_rate DECIMAL(26,2) DEFAULT NULL,
   gstin VARCHAR(18) DEFAULT NULL,
   particulars VARCHAR(180) DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_groupinovoice PRIMARY KEY (id)
 );
 
 COMMENT ON COLUMN df_groupinovoice.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_groupinovoice (
+  id, slno, subscriberid, groupid, mg_invoiceid, subfinanceid, billing_type,
+  invoiceno, invoicedate, grossamount, groupmount, servicetax, servicetaxrate,
+  servicestartdate, serviceenddate, quarter_start_date, quarter_end_date,
+  gst_value, cgst_value, sgst_value, igst_value, cgst_rate, sgst_rate, igst_rate,
+  gstin, particulars, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 10001, 201, 501, 301, 1,
+  'INV-2025-001', '2025-10-01', 12500.5000000000, 12000.0000000000, 500.0000000000, 5.0000000000,
+  '2025-07-01', '2025-09-30', '2025-07-01', '2025-09-30',
+  625.0000000000, 312.5000000000, 312.5000000000, 0.0000000000, 2.50, 2.50, 0.00,
+  '29ABCDE1234F2Z5', 'Dark Fiber quarterly billing for Q3 2025',
+  'DF-001', 'K-FON Dark Fiber', 'കെ-ഫോൺ ഡാർക്ക് ഫൈബർ',
+  TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS df_groupinovoice_master CASCADE;
@@ -125,8 +146,8 @@ CREATE TABLE df_groupinovoice_master (
   invoicedate DATE DEFAULT NULL,
   grossamount DECIMAL(26,10) DEFAULT NULL,
   groupmount DECIMAL(26,10) DEFAULT NULL,
-  servicetax DECIMAL(10,10) DEFAULT NULL,
-  servicetaxrate DECIMAL(10,2) DEFAULT NULL,
+  servicetax DECIMAL(15,10) DEFAULT NULL,
+  servicetaxrate DECIMAL(15,2) DEFAULT NULL,
   servicestartdate DATE DEFAULT NULL,
   serviceenddate DATE DEFAULT NULL,
   quarter_start_date DATE DEFAULT NULL,
@@ -146,13 +167,37 @@ CREATE TABLE df_groupinovoice_master (
   crnote_gst DECIMAL(26,10) DEFAULT 0.0000000000,
   crnote_total DECIMAL(26,10) DEFAULT 0.0000000000,
   paid_amount VARCHAR(10) DEFAULT '0',
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_groupinovoice_master PRIMARY KEY (master_id)
 );
 
 COMMENT ON COLUMN df_groupinovoice_master.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_groupinovoice_master (
+  master_id, slno, subscriberid, groupid, subfinanceid, billing_type,
+  invoiceno, invoicedate, grossamount, groupmount, servicetax, servicetaxrate,
+  servicestartdate, serviceenddate, quarter_start_date, quarter_end_date,
+  gst_value, cgst_value, sgst_value, igst_value, cgst_rate, sgst_rate, igst_rate,
+  gstin, taxpayertype, particulars, einvoice_generated, crnote_amount, crnote_gst,
+  crnote_total, paid_amount, code, name, name_in_local, is_active, created_date,
+  modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 10001, 201, 301, 1,
+  'MST-2025-001', '2025-10-01', 50000.0000000000, 48000.0000000000, 2000.0000000000, 5.00,
+  '2025-07-01', '2025-09-30', '2025-07-01', '2025-09-30',
+  2500.0000000000, 1250.0000000000, 1250.0000000000, 0.0000000000, 2.50, 2.50, 0.00,
+  '29ABCDE1234F2Z5', 1, 'Group invoice master for Q3 2025',
+  0, 0.0000000000, 0.0000000000, 0.0000000000, '0',
+  'DFM-001', 'K-FON Dark Fiber Master', 'കെ-ഫോൺ ഡാർക്ക് ഫൈബർ മാസ്റ്റർ',
+  TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS df_link_details CASCADE;
@@ -176,14 +221,31 @@ CREATE TABLE df_link_details (
   approve_status INTEGER DEFAULT 0,
   link_d_status SMALLINT DEFAULT 1,
   link_d_status_date DATE DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_link_details PRIMARY KEY (details_id)
 );
 
 COMMENT ON COLUMN df_link_details.link_d_status IS '1=Commissioned,2=DeCommissioned';
 COMMENT ON COLUMN df_link_details.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_link_details (
+  woid, groupid, linkid, strands_count, fiber_type, unit_price, fiber_lenght,
+  pop_id, feeder_id, link_type, no_of_rack_units, power_rating_id, power_rating_cost,
+  approve_status, link_d_status, link_d_status_date, code, name, name_in_local,
+  is_active, created_by, modified_by
+) VALUES (
+  101, 201, 301, 12, 'Single Mode', 1500.50, 250.75,
+  1001, 2001, 1, 10, 501, 500.00,
+  1, 1, '2025-10-01', 'LINK-001', 'Trivandrum Link', 'ട്രിവാൻഡ്രം ലിങ്ക്',
+  TRUE, gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS df_link_renewal_history CASCADE;
@@ -215,12 +277,33 @@ CREATE TABLE df_link_renewal_history (
   total_power_rating_cost DECIMAL(25,10) NOT NULL DEFAULT 0.0000000000,
   group_type INTEGER DEFAULT NULL,
   subfinanceid INTEGER DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_link_renewal_history PRIMARY KEY (history_id)
 );
 
 COMMENT ON COLUMN df_link_renewal_history.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_link_renewal_history (
+  mg_invoiceid, linkid, grouplinkid, groupid, ss_date, se_date, total_sdays,
+  unit_price, link_gst, link_amount, link_grand_amount, fiber_lenght, trands_count,
+  link_type, feeder_id, pop_id, no_of_rack_units, power_rating_id, rating_cost_per_30_days,
+  total_rating_cost, total_rating_gstcost, total_power_rating_cost, group_type, subfinanceid,
+  code, name, name_in_local, is_active, created_by, modified_by
+) VALUES (
+  501, 301, 401, 201, '2025-10-01', '2025-10-31', 30,
+  1500.5000000000, 180.5000000000, 46815.0000000000, 46995.5000000000, 250.750, 12,
+  1, 2001, 1001, 10, 501, 15000.0000000000,
+  15000.0000000000, 1800.0000000000, 16800.0000000000, 1, 301,
+  'RL-001', 'Trivandrum Link Renewal', 'ട്രിവാൻഡ്രം ലിങ്ക് റീന്യൂൽ',
+  TRUE, gen_random_uuid(), gen_random_uuid()
+);
+
 
 

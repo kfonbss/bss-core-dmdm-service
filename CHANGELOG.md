@@ -243,3 +243,11 @@ Get partner receipt and account balance report
 # [0.42.0] - 2025-11-03
 ### Added
 -  Get Corporate service list and sub customers Details
+
+# [0.43.0] - 2025-11-03
+### Added
+-Get dark fiber group invoice and invoice master details
+
+# [0.44.0] - 2025-11-03
+### Added
+-Get dark fiber - link details and link renewal history details 
