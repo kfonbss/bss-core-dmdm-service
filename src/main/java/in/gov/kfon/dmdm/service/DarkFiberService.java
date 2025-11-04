@@ -53,4 +53,12 @@ public interface DarkFiberService {
   List<CommonLookUp> fetchAllTransRenewalDetails();
 
   CommonLookUp fetchTransRenewalDetailById(UUID id);
+
+  List<CommonLookUp> fetchAllTransDetails();
+
+  CommonLookUp fetchTransDetailsById(UUID id);
+
+  List<CommonLookUp> fetchAllTransDetailsMovements();
+
+  CommonLookUp fetchTransDetailsMovementById(UUID id);
 }

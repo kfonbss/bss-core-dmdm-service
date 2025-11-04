@@ -31,6 +31,8 @@ public class DarkFiberServiceImplTest {
   @Mock private DfRenewalDetailsRepository dfRenewalDetailsRepository;
   @Mock private DfSubscribersRepository dfSubscribersRepository;
   @Mock private DfTransRenewalDetailsRepository dfTransRenewalDetailsRepository;
+  @Mock private DfTransDetailsRepository dfTransDetailsRepository;
+  @Mock private DfTransDetailsMovementRepository dfTransDetailsMovementRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private DarkFiberServiceImpl service;
@@ -48,6 +50,8 @@ public class DarkFiberServiceImplTest {
   private DfRenewalDetails renewalDetails;
   private DfSubscribers subscriber;
   private DfTransRenewalDetails transRenewalDetail;
+  private DfTransDetails transDetails;
+  private DfTransDetailsMovement transDetailsMovement;
   private CommonLookUp commonLookUp;
 
   @BeforeEach
@@ -114,6 +118,20 @@ public class DarkFiberServiceImplTest {
     transRenewalDetail.setCode("TR001");
     transRenewalDetail.setName("Test Renewal");
     transRenewalDetail.setNameInLocal("ടെസ്റ്റ് റീന്യുവൽ");
+
+    transDetails = new DfTransDetails();
+    transDetails.setDfTransdetailsId(id);
+    transDetails.setCode("TR001");
+    transDetails.setName("Trans Detail");
+    transDetails.setNameInLocal("ട്രാൻസ് ഡീറ്റയിൽ");
+    transDetails.setIsActive(true);
+
+    transDetailsMovement = new DfTransDetailsMovement();
+    transDetailsMovement.setDfTransdetailsMovementId(id);
+    transDetailsMovement.setCode("MOV001");
+    transDetailsMovement.setName("Trans Movement");
+    transDetailsMovement.setNameInLocal("ട്രാൻസ് മൂവ്‌മെന്റ്");
+    transDetailsMovement.setIsActive(true);
 
     commonLookUp = new CommonLookUp();
     commonLookUp.setId(id);
@@ -615,6 +633,90 @@ public class DarkFiberServiceImplTest {
 
     assertEquals("Trans Renewal Detail not found with id: " + id, exception.getMessage());
     verify(dfTransRenewalDetailsRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllTransDetails() {
+    when(dfTransDetailsRepository.findAll()).thenReturn(List.of(transDetails));
+    when(modelMapper.map(transDetails, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllTransDetails();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfTransDetailsRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(transDetails, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchTransDetailById_Success() {
+    when(dfTransDetailsRepository.findById(id)).thenReturn(Optional.of(transDetails));
+    when(modelMapper.map(transDetails, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchTransDetailsById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfTransDetailsRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(transDetails, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchTransDetailById_NotFound() {
+    when(dfTransDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchTransDetailsById(id));
+
+    assertEquals("Trans Detail not found with id: " + id, exception.getMessage());
+    verify(dfTransDetailsRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllTransMovements() {
+    when(dfTransDetailsMovementRepository.findAll()).thenReturn(List.of(transDetailsMovement));
+    when(modelMapper.map(transDetailsMovement, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllTransDetailsMovements();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfTransDetailsMovementRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(transDetailsMovement, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchTransMovementById_Success() {
+    when(dfTransDetailsMovementRepository.findById(id))
+        .thenReturn(Optional.of(transDetailsMovement));
+    when(modelMapper.map(transDetailsMovement, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchTransDetailsMovementById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfTransDetailsMovementRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(transDetailsMovement, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchTransMovementById_NotFound() {
+    when(dfTransDetailsMovementRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(
+            EntityNotFoundException.class, () -> service.fetchTransDetailsMovementById(id));
+
+    assertEquals("Trans Movement not found with id: " + id, exception.getMessage());
+    verify(dfTransDetailsMovementRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
 }
