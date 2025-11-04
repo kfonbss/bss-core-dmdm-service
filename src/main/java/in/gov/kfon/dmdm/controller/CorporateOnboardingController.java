@@ -478,4 +478,66 @@ public class CorporateOnboardingController {
     var data = service.subOnlineRechargesFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("subscribers-documents/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> subScribersDocumentFetchAll() {
+    var data = service.subScribersDocumentFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("subscribers-document/{id}")
+  public ResponseEntity<Response<CommonLookUp>> subScribersDocumentFetchById(
+      @PathVariable UUID id) {
+    var data = service.subScribersDocumentFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("subscribers/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> subscribersFetchAll() {
+    var data = service.subscribersFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("subscriber/{id}")
+  public ResponseEntity<Response<CommonLookUp>> subscribersFetchById(@PathVariable UUID id) {
+    var data = service.subscribersFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("subshift-Details/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> subShiftDetailsFetchAll() {
+    var data = service.subShiftDetailsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("subshift-Detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> subShiftDetailsFetchById(@PathVariable UUID id) {
+    var data = service.subShiftDetailsFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("support-sub/documents/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> supportSubdocumentsFetchAll() {
+    var data = service.supportSubdocumentsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("support-sub/document/{id}")
+  public ResponseEntity<Response<CommonLookUp>> supportSubdocumentsFetchById(
+      @PathVariable UUID id) {
+    var data = service.supportSubdocumentsFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("workOrders/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> workOrderFetchAll() {
+    var data = service.workOrderFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("workOrder/{id}")
+  public ResponseEntity<Response<CommonLookUp>> workOrderFetchById(@PathVariable UUID id) {
+    var data = service.workOrderFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }

@@ -58,6 +58,11 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CeSubServiceListRepository subServiceListRepository;
   private final CeSubscriberDetailsRepository subscriberDetailsRepository;
   private final CeSubOnlineRechargeRepository subOnlineRechargeRepository;
+  private final CeSubscribersDocumentRepository subscribersDocumentRepository;
+  private final CeSubscribersRepository subscribersRepository;
+  private final CeSubShifDetailsRepository subShifDetailsRepository;
+  private final CeSupportSubDocumentRepository supportSubDocumentRepository;
+  private final CeWorkOrderRepository workOrderRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -869,5 +874,94 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
     lookup.setId(entity.getRechargeId());
 
     return lookup;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> subScribersDocumentFetchAll() {
+    return subscribersDocumentRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp subScribersDocumentFetchById(UUID id) {
+    CeSubscribersDocument entity =
+        subscribersDocumentRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> subscribersFetchAll() {
+    return subscribersRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp subscribersFetchById(UUID id) {
+    CeSubscribers entity =
+        subscribersRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> subShiftDetailsFetchAll() {
+    return subShifDetailsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp subShiftDetailsFetchById(UUID id) {
+    CeSubShifDetails entity =
+        subShifDetailsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> supportSubdocumentsFetchAll() {
+    return supportSubDocumentRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp supportSubdocumentsFetchById(UUID id) {
+    CeSupportSubDocument entity =
+        supportSubDocumentRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> workOrderFetchAll() {
+    return workOrderRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp workOrderFetchById(UUID id) {
+    CeWorkOrder entity =
+        workOrderRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
   }
 }
