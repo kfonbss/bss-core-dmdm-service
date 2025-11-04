@@ -310,4 +310,4 @@ Get partner receipt and account balance report
 
 # [0.59.0] - 2025-11-04
 ### Added
-- Get dark fiber - demand note master and disbursement details
+- Get special event invoices and invoice master details
