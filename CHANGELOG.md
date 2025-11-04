@@ -275,3 +275,7 @@ Get partner receipt and account balance report
 # [0.50.0] - 2025-11-03
 ### Added
 - Get Corporate sub online recharge and subscriber details
+
+# [0.51.0] - 2025-11-04
+### Added
+- Get dark fiber - trans and trans movement details
