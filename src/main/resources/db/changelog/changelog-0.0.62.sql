@@ -263,12 +263,26 @@ CREATE TABLE df_transdetails (
   -- '0=Transavailable,1=Transaallocated',
   strand_type INT DEFAULT 1,
   -- '1=Intecrcity,2=intracity',
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active INT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_df_transdetails PRIMARY KEY (df_transdetails_id)
+);
+
+INSERT INTO df_transdetails (
+    df_transdetails_id, id, groupid, grouplinkid, linkid, feeder_id, trandsid, trands_status,
+    strand_type, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES
+(
+    gen_random_uuid(), 1, 101, 201, 301, 401, 501, 0,
+    1, 'DF-T001', 'Trans Detail 1', 'ട്രാൻസ് വിശദാംശം 1', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, gen_random_uuid(), gen_random_uuid()
 );
 
 
@@ -291,13 +305,28 @@ CREATE TABLE df_transdetails_movement (
   bd_invoice_sdate date DEFAULT NULL,
   bd_invoice_edate date DEFAULT NULL,
   bd_unit_price decimal(13,2) DEFAULT 0.00,
-  created_by varchar(128) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_df_transdetails_movement PRIMARY KEY (df_transdetails_movement_id)
+);
+
+INSERT INTO df_transdetails_movement (
+    df_transdetails_movement_id, id, trandsid, trands_status, groupid, grouplinkid, linkid, feeder_id,
+    starnd_d_status, starnd_d_status_date, back_date_invoice, bd_invoice_sdate, bd_invoice_edate, bd_unit_price,
+    code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES
+(
+    gen_random_uuid(), 1, 501, 1, 101, 201, 301, 401,
+    1, '2025-01-10', 0, '2025-01-01', '2025-01-31', 12000.50,
+    'DF-M001', 'Movement 1', 'ചലനം 1', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, gen_random_uuid(), gen_random_uuid()
 );
 
 
@@ -309,12 +338,24 @@ CREATE TABLE df_workorder (
   slno SERIAL,
   po_id int DEFAULT NULL,
   wo_no varchar(25) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_df_workorder PRIMARY KEY (df_workorder_id)
+);
+
+INSERT INTO df_workorder (
+  df_workorder_id, slno, po_id, wo_no, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 101, 'WO-2025-001', 'WO-001', 'Install Dark Fiber', 'ഡാർക്ക് ഫൈബർ ഇൻസ്റ്റാൾ ചെയ്യുക',
+  TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
 );
 
 

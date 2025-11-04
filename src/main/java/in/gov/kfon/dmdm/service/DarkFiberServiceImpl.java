@@ -28,6 +28,10 @@ public class DarkFiberServiceImpl implements DarkFiberService {
   private final DfSubFinanceRepository dfSubFinanceRepository;
   private final DfSubscribersRepository subscribersRepository;
   private final DfTransRenewalDetailsRepository transRenewalRepository;
+  private final DfTransDetailsRepository dfTransDetailsRepository;
+  private final DfTransDetailsMovementRepository dfTransDetailsMovementRepository;
+  private final DfWorkorderRepository dfWorkorderRepository;
+  private final DfBankDetailsRepository dfBankDetailsRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -242,5 +246,71 @@ public class DarkFiberServiceImpl implements DarkFiberService {
             .orElseThrow(
                 () -> new EntityNotFoundException("Trans Renewal Detail not found with id: " + id));
     return modelMapper.map(renewalDetails, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllTransDetails() {
+    return dfTransDetailsRepository.findAll().stream()
+        .map(transDetails -> modelMapper.map(transDetails, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchTransDetailsById(UUID id) {
+    DfTransDetails transDetails =
+        dfTransDetailsRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Trans Detail not found with id: " + id));
+    return modelMapper.map(transDetails, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllTransDetailsMovements() {
+    return dfTransDetailsMovementRepository.findAll().stream()
+        .map(movement -> modelMapper.map(movement, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchTransDetailsMovementById(UUID id) {
+    DfTransDetailsMovement movement =
+        dfTransDetailsMovementRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Trans Movement not found with id: " + id));
+    return modelMapper.map(movement, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllWorkorders() {
+    return dfWorkorderRepository.findAll().stream()
+        .map(w -> modelMapper.map(w, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchWorkorderById(UUID id) {
+    DfWorkorder wo =
+        dfWorkorderRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Workorder not found with id: " + id));
+    return modelMapper.map(wo, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllBankDetails() {
+    return dfBankDetailsRepository.findAll().stream()
+        .map(b -> modelMapper.map(b, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchBankDetailById(UUID id) {
+    DfBankDetails bd =
+        dfBankDetailsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Bank Detail not found with id: " + id));
+    return modelMapper.map(bd, CommonLookUp.class);
   }
 }

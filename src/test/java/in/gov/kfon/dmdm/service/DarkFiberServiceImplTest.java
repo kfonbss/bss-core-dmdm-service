@@ -31,6 +31,10 @@ public class DarkFiberServiceImplTest {
   @Mock private DfRenewalDetailsRepository dfRenewalDetailsRepository;
   @Mock private DfSubscribersRepository dfSubscribersRepository;
   @Mock private DfTransRenewalDetailsRepository dfTransRenewalDetailsRepository;
+  @Mock private DfTransDetailsRepository dfTransDetailsRepository;
+  @Mock private DfTransDetailsMovementRepository dfTransDetailsMovementRepository;
+  @Mock private DfWorkorderRepository dfWorkorderRepository;
+  @Mock private DfBankDetailsRepository dfBankDetailsRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private DarkFiberServiceImpl service;
@@ -48,6 +52,10 @@ public class DarkFiberServiceImplTest {
   private DfRenewalDetails renewalDetails;
   private DfSubscribers subscriber;
   private DfTransRenewalDetails transRenewalDetail;
+  private DfTransDetails transDetails;
+  private DfTransDetailsMovement transDetailsMovement;
+  private DfWorkorder workorder;
+  private DfBankDetails bankDetails;
   private CommonLookUp commonLookUp;
 
   @BeforeEach
@@ -114,6 +122,32 @@ public class DarkFiberServiceImplTest {
     transRenewalDetail.setCode("TR001");
     transRenewalDetail.setName("Test Renewal");
     transRenewalDetail.setNameInLocal("ടെസ്റ്റ് റീന്യുവൽ");
+
+    transDetails = new DfTransDetails();
+    transDetails.setDfTransdetailsId(id);
+    transDetails.setCode("TR001");
+    transDetails.setName("Trans Detail");
+    transDetails.setNameInLocal("ട്രാൻസ് ഡീറ്റയിൽ");
+    transDetails.setIsActive(true);
+
+    transDetailsMovement = new DfTransDetailsMovement();
+    transDetailsMovement.setDfTransdetailsMovementId(id);
+    transDetailsMovement.setCode("MOV001");
+    transDetailsMovement.setName("Trans Movement");
+    transDetailsMovement.setNameInLocal("ട്രാൻസ് മൂവ്‌മെന്റ്");
+    transDetailsMovement.setIsActive(true);
+
+    workorder = new DfWorkorder();
+    workorder.setDfWorkorderId(id);
+    workorder.setWoNo("WO-001");
+    workorder.setIsActive(true);
+
+    bankDetails = new DfBankDetails();
+    bankDetails.setDetailsId(id);
+    bankDetails.setCode("BD001");
+    bankDetails.setName("Test Bank");
+    bankDetails.setNameInLocal("ടെസ്റ്റ് ബാങ്ക്");
+    bankDetails.setIsActive(true);
 
     commonLookUp = new CommonLookUp();
     commonLookUp.setId(id);
@@ -615,6 +649,172 @@ public class DarkFiberServiceImplTest {
 
     assertEquals("Trans Renewal Detail not found with id: " + id, exception.getMessage());
     verify(dfTransRenewalDetailsRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllTransDetails() {
+    when(dfTransDetailsRepository.findAll()).thenReturn(List.of(transDetails));
+    when(modelMapper.map(transDetails, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllTransDetails();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfTransDetailsRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(transDetails, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchTransDetailById_Success() {
+    when(dfTransDetailsRepository.findById(id)).thenReturn(Optional.of(transDetails));
+    when(modelMapper.map(transDetails, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchTransDetailsById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfTransDetailsRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(transDetails, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchTransDetailById_NotFound() {
+    when(dfTransDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchTransDetailsById(id));
+
+    assertEquals("Trans Detail not found with id: " + id, exception.getMessage());
+    verify(dfTransDetailsRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllTransMovements() {
+    when(dfTransDetailsMovementRepository.findAll()).thenReturn(List.of(transDetailsMovement));
+    when(modelMapper.map(transDetailsMovement, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllTransDetailsMovements();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfTransDetailsMovementRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(transDetailsMovement, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchTransMovementById_Success() {
+    when(dfTransDetailsMovementRepository.findById(id))
+        .thenReturn(Optional.of(transDetailsMovement));
+    when(modelMapper.map(transDetailsMovement, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchTransDetailsMovementById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfTransDetailsMovementRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(transDetailsMovement, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchTransMovementById_NotFound() {
+    when(dfTransDetailsMovementRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(
+            EntityNotFoundException.class, () -> service.fetchTransDetailsMovementById(id));
+
+    assertEquals("Trans Movement not found with id: " + id, exception.getMessage());
+    verify(dfTransDetailsMovementRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllWorkorders() {
+    when(dfWorkorderRepository.findAll()).thenReturn(List.of(workorder));
+    when(modelMapper.map(workorder, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllWorkorders();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfWorkorderRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(workorder, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchWorkorderById_Success() {
+    when(dfWorkorderRepository.findById(id)).thenReturn(Optional.of(workorder));
+    when(modelMapper.map(workorder, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchWorkorderById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfWorkorderRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(workorder, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchWorkorderById_NotFound() {
+    when(dfWorkorderRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchWorkorderById(id));
+
+    assertEquals("Workorder not found with id: " + id, exception.getMessage());
+    verify(dfWorkorderRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllBankDetails() {
+    when(dfBankDetailsRepository.findAll()).thenReturn(List.of(bankDetails));
+    when(modelMapper.map(bankDetails, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllBankDetails();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfBankDetailsRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(bankDetails, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchBankDetailById_Success() {
+    when(dfBankDetailsRepository.findById(id)).thenReturn(Optional.of(bankDetails));
+    when(modelMapper.map(bankDetails, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchBankDetailById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfBankDetailsRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(bankDetails, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchBankDetailById_NotFound() {
+    when(dfBankDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchBankDetailById(id));
+
+    assertEquals("Bank Detail not found with id: " + id, exception.getMessage());
+    verify(dfBankDetailsRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
 }

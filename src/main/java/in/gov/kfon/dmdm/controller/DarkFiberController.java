@@ -178,4 +178,58 @@ public class DarkFiberController {
     var data = darkFiberService.fetchTransRenewalDetailById(id);
     return ResponseEntity.ok(Response.ok(data, "Fetched trans renewal detail by ID"));
   }
+
+  @GetMapping("/trans-details")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllTransDetails() {
+    var data = darkFiberService.fetchAllTransDetails();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all trans details"));
+  }
+
+  @GetMapping("/trans-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchTransDetailsById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchTransDetailsById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched trans detail by ID"));
+  }
+
+  @GetMapping("/trans-movements")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllTransDetailsMovements() {
+    var data = darkFiberService.fetchAllTransDetailsMovements();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all trans movements"));
+  }
+
+  @GetMapping("/trans-movement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchTransDetailsMovementById(
+      @PathVariable UUID id) {
+    var data = darkFiberService.fetchTransDetailsMovementById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched trans movement by ID"));
+  }
+
+  @GetMapping("/workorders")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllWorkorders() {
+    var data = darkFiberService.fetchAllWorkorders();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all workorders"));
+  }
+
+  @GetMapping("/workorder/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchWorkorderById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchWorkorderById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched workorder by ID"));
+  }
+
+  @GetMapping("/bank-details")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllBankDetails() {
+    var data = darkFiberService.fetchAllBankDetails();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all bank details"));
+  }
+
+  @GetMapping("/bank-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchBankDetailById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchBankDetailById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched bank detail by ID"));
+  }
 }
