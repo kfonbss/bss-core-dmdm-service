@@ -6,8 +6,12 @@ import static org.mockito.Mockito.*;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.SeCustomers;
 import in.gov.kfon.dmdm.model.SeDisbursement;
+import in.gov.kfon.dmdm.model.SeInvoice;
+import in.gov.kfon.dmdm.model.SeInvoiceMaster;
 import in.gov.kfon.dmdm.repository.SeCustomersRepository;
 import in.gov.kfon.dmdm.repository.SeDisbursementRepository;
+import in.gov.kfon.dmdm.repository.SeInvoiceMasterRepository;
+import in.gov.kfon.dmdm.repository.SeInvoiceRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -21,14 +25,23 @@ class SpecialEventsServiceImplTest {
   private SpecialEventsServiceImpl service;
   private SeDisbursementRepository disbursementRepository;
   private SeCustomersRepository customersRepository;
+  private SeInvoiceMasterRepository invoiceMasterRepository;
+  private SeInvoiceRepository invoiceRepository;
 
   @BeforeEach
   void setUp() {
     modelMapper = spy(new ModelMapper());
     disbursementRepository = mock(SeDisbursementRepository.class);
     customersRepository = mock(SeCustomersRepository.class);
+    invoiceMasterRepository = mock(SeInvoiceMasterRepository.class);
+    invoiceRepository = mock(SeInvoiceRepository.class);
     service =
-        new SpecialEventsServiceImpl(customersRepository, disbursementRepository, modelMapper);
+        new SpecialEventsServiceImpl(
+            customersRepository,
+            disbursementRepository,
+            modelMapper,
+            invoiceMasterRepository,
+            invoiceRepository);
   }
 
   @Test
@@ -99,5 +112,75 @@ class SpecialEventsServiceImplTest {
     when(disbursementRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.disbursementFetchById(id));
+  }
+
+  @Test
+  void testInvoiceMasterFetchAll_ShouldReturnMappedList() {
+    SeInvoiceMaster invoiceMaster = new SeInvoiceMaster();
+    invoiceMaster.setId(UUID.randomUUID());
+
+    when(invoiceMasterRepository.findAll()).thenReturn(List.of(invoiceMaster));
+
+    List<CommonLookUp> result = service.invoiceMasterFetchAll();
+
+    assertEquals(1, result.size());
+    verify(invoiceMasterRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testInvoiceMasterFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    SeInvoiceMaster invoiceMaster = new SeInvoiceMaster();
+    invoiceMaster.setId(id);
+
+    when(invoiceMasterRepository.findById(id)).thenReturn(Optional.of(invoiceMaster));
+
+    CommonLookUp result = service.invoiceMasterFetchById(id);
+
+    assertNotNull(result);
+    verify(invoiceMasterRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testInvoiceMasterFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(invoiceMasterRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.invoiceMasterFetchById(id));
+  }
+
+  @Test
+  void testInvoiceFetchAll_ShouldReturnMappedList() {
+    SeInvoice invoice = new SeInvoice();
+    invoice.setId(UUID.randomUUID());
+
+    when(invoiceRepository.findAll()).thenReturn(List.of(invoice));
+
+    List<CommonLookUp> result = service.invoiceFetchAll();
+
+    assertEquals(1, result.size());
+    verify(invoiceRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testInvoiceFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    SeInvoice invoice = new SeInvoice();
+    invoice.setId(id);
+
+    when(invoiceRepository.findById(id)).thenReturn(Optional.of(invoice));
+
+    CommonLookUp result = service.invoiceFetchById(id);
+
+    assertNotNull(result);
+    verify(invoiceRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testInvoiceFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(invoiceRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.invoiceFetchById(id));
   }
 }

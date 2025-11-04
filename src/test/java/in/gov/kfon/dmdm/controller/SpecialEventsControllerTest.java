@@ -95,4 +95,54 @@ class SpecialEventsControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("SE123"));
   }
+
+  @Test
+  void testInvoiceFetchAll() throws Exception {
+    when(service.invoiceFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/special-events/invoices/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("SE123"));
+  }
+
+  @Test
+  void testInvoiceById() throws Exception {
+    when(service.invoiceFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/special-events/invoice/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("SE123"));
+  }
+
+  @Test
+  void testInvoiceMasterFetchAll() throws Exception {
+    when(service.invoiceMasterFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/special-events/invoice-masters/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("SE123"));
+  }
+
+  @Test
+  void testInvoiceMasterById() throws Exception {
+    when(service.invoiceMasterFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/special-events/invoice-master/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("SE123"));
+  }
 }

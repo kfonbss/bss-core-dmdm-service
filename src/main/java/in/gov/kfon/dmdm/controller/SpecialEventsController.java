@@ -44,4 +44,28 @@ public class SpecialEventsController {
     var data = service.disbursementFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("invoices/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> invoiceFetchAll() {
+    var data = service.invoiceFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("invoice/{id}")
+  public ResponseEntity<Response<CommonLookUp>> invoiceFetchById(@PathVariable UUID id) {
+    var data = service.invoiceFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("invoice-masters/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> invoiceMasterFetchAll() {
+    var data = service.invoiceMasterFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("invoice-master/{id}")
+  public ResponseEntity<Response<CommonLookUp>> invoiceMasterFetchById(@PathVariable UUID id) {
+    var data = service.invoiceMasterFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }

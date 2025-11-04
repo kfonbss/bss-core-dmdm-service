@@ -78,6 +78,10 @@ INSERT INTO se_disbursement (
 -- Table: se_inovoice
 CREATE TABLE se_inovoice (
   id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   slno BIGSERIAL ,
   locid INTEGER,
   custid INTEGER,
@@ -86,7 +90,7 @@ CREATE TABLE se_inovoice (
   invoicedate DATE,
   grossamount NUMERIC(26,10),
   locamount NUMERIC(26,10),
-  servicetax NUMERIC(10,10),
+  servicetax NUMERIC(26,10),
   servicestartdate DATE,
   serviceenddate DATE,
   gst_value NUMERIC(26,10),
@@ -100,14 +104,33 @@ CREATE TABLE se_inovoice (
   particulars VARCHAR(180),
   mg_invoiceid INTEGER,
   inv_type INt DEFAULT 1,  -- 1=Normal Invoice, 2=OTC Invoice
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INt DEFAULT 1  -- 0=Inactive, 1=Active
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_inovoice (
+    id, code, name, name_in_local, is_active, slno, locid, custid, finrefid,
+    invoiceno, invoicedate, grossamount, locamount, servicetax,
+    servicestartdate, serviceenddate, gst_value, cgst_value, sgst_value,
+    igst_value, cgst_rate, sgst_rate, igst_rate, gstin, particulars,
+    mg_invoiceid, inv_type, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'INV001', 'Service Invoice Q1', 'സർവീസ് ഇൻവോയ്സ് Q1', true, 1, 1001, 5001, 3001,
+    'INV-2025-001', CURRENT_DATE, 150000.0000000000, 145000.0000000000, 5000.0000000000,
+    '2025-01-01', '2025-03-31', 27000.0000000000, 13500.0000000000, 13500.0000000000,
+    0.0000000000, 9.0000000000, 9.0000000000, 0.0000000000, '32ABCDE1234F1Z5',
+    'Quarterly service billing for Jan–Mar 2025', 8001, 1, CURRENT_TIMESTAMP, NULL,
+    gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: se_inovoice_master
 CREATE TABLE se_inovoice_master (
   id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   slno BIGSERIAL ,
   locid INTEGER,
   custid INTEGER,
@@ -116,7 +139,7 @@ CREATE TABLE se_inovoice_master (
   invoicedate DATE,
   grossamount NUMERIC(26,10),
   locamount NUMERIC(26,10),
-  servicetax NUMERIC(10,10),
+  servicetax NUMERIC(26,10),
   servicestartdate DATE,
   serviceenddate DATE,
   gst_value NUMERIC(26,10),
@@ -134,9 +157,24 @@ CREATE TABLE se_inovoice_master (
   crnote_gst NUMERIC(26,10) DEFAULT 0.0000000000,
   crnote_total NUMERIC(26,10) DEFAULT 0.0000000000,
   particulars VARCHAR(180),
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INt DEFAULT 1  -- 0=Inactive, 1=Active
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_inovoice_master (
+    id, code, name, name_in_local, is_active, slno, locid, custid, finrefid,
+    invoiceno, invoicedate, grossamount, locamount, servicetax, servicestartdate, serviceenddate,
+    gst_value, cgst_value, sgst_value, igst_value, cgst_rate, sgst_rate, igst_rate,
+    paid_amount, gstin, taxpayertype, einvoice_generated, crnote_amount, crnote_gst, crnote_total,
+    particulars, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'INV-M001', 'Invoice Master April', 'ഇൻവോയ്സ് മാസ്റ്റർ ഏപ്രിൽ', true, 1, 101, 501, 301,
+    'INV-M-2025-001', '2025-04-10', 250000.0000000000, 245000.0000000000, 5000.0000000000,
+    '2025-04-01', '2025-04-30', 45000.0000000000, 22500.0000000000, 22500.0000000000, 0.0000000000,
+    9.0000000000, 9.0000000000, 0.0000000000, 100000.0000000000, '32ABCDE1234F1Z5', 1, 0,
+    2000.0000000000, 360.0000000000, 2360.0000000000, 'Monthly invoice for April 2025',
+    CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: se_kyc_details
