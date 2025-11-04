@@ -215,13 +215,23 @@ CREATE TABLE df_demandnote_master (
   gstin VARCHAR(18) DEFAULT NULL,
   pan VARCHAR(10) DEFAULT NULL,
   taxpayertype SMALLINT DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_demandnote_master PRIMARY KEY (master_id)
 );
 
 COMMENT ON COLUMN df_demandnote_master.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_demandnote_master
+(master_id, slno, subscriberid, groupid, dnno, dndate, dngrossamount, dnamount, servicetax, servicetaxrate, servicestartdate, serviceenddate, quarter_start_date, quarter_end_date, gst_value, cgst_value, sgst_value, igst_value, cgst_rate, sgst_rate, igst_rate, gstin, pan, taxpayertype, code, name, name_in_local, is_active, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 10001, 10, 'DN001', '2025-11-04', 100000.1234567890, 95000.1234567890, 0.1234567890, 5.00, '2025-11-01', '2025-11-30', '2025-10-01', '2025-12-31', 1800.1234567890, 900.1234567890, 900.1234567890, 0.00, 9.00, 9.00, 0.00, '27AAAAA0000A1Z5', 'ABCDE1234F', 1, 'DN001', 'Demand Note 1', 'ഡിമാൻഡ് നോട്ട് 1', TRUE, gen_random_uuid(), gen_random_uuid());
 
 
 DROP TABLE IF EXISTS df_disbursement CASCADE;
@@ -237,14 +247,23 @@ CREATE TABLE df_disbursement (
   revenue DECIMAL(26,10) DEFAULT NULL,
   disbursestatusid INTEGER DEFAULT 0,
   subfinanceid INTEGER DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_disbursement PRIMARY KEY (id)
 );
 
 COMMENT ON COLUMN df_disbursement.is_active IS '0=In Active,1=Active';
 
+INSERT INTO df_disbursement
+(id, disburseid, partnergroupid, groupid, subscriberid, cause, woid, revenue, disbursestatusid, subfinanceid, code, name, name_in_local, is_active, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 1, 101, 10, 10001, 'Initial disbursement', 5001, 75000.50, 0, 2001, 'DISB001', 'Disbursement 1', 'ഡിസ്ബേഴ്സ്മെന്റ് 1', TRUE, gen_random_uuid(), gen_random_uuid());
 
 DROP TABLE IF EXISTS df_feeder_list CASCADE;
 

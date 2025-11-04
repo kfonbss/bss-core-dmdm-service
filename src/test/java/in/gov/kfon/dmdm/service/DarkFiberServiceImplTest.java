@@ -37,6 +37,8 @@ public class DarkFiberServiceImplTest {
   @Mock private DfBankDetailsRepository dfBankDetailsRepository;
   @Mock private DfCustomerDetailsRepository dfCustomerDetailsRepository;
   @Mock private DfDemandNoteHistoryRepository dfDemandNoteHistoryRepository;
+  @Mock private DfDemandNoteMasterRepository demandNoteMasterRepository;
+  @Mock private DfDisbursementRepository disbursementRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private DarkFiberServiceImpl service;
@@ -60,6 +62,8 @@ public class DarkFiberServiceImplTest {
   private DfBankDetails bankDetails;
   private DfCustomerDetails customerDetails;
   private DfDemandNoteHistory demandNoteHistory;
+  private DfDemandNoteMaster demandNoteMaster;
+  private DfDisbursement disbursement;
   private CommonLookUp commonLookUp;
 
   @BeforeEach
@@ -166,6 +170,18 @@ public class DarkFiberServiceImplTest {
     demandNoteHistory.setName("Demand Note History");
     demandNoteHistory.setNameInLocal("ഡിമാൻഡ് നോട്ട് ചരിത്രം");
     demandNoteHistory.setIsActive(true);
+
+    demandNoteMaster = new DfDemandNoteMaster();
+    demandNoteMaster.setMasterId(id);
+    demandNoteMaster.setCode("DNM-001");
+    demandNoteMaster.setName("Demand Note Master Test");
+    demandNoteMaster.setIsActive(true);
+
+    disbursement = new DfDisbursement();
+    disbursement.setId(id);
+    disbursement.setCode("DISB-001");
+    disbursement.setName("Disbursement Test");
+    disbursement.setIsActive(true);
 
     commonLookUp = new CommonLookUp();
     commonLookUp.setId(id);
@@ -917,6 +933,90 @@ public class DarkFiberServiceImplTest {
     assertEquals("Demand Note not found with id: " + id, exception.getMessage());
 
     verify(dfDemandNoteHistoryRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllDemandNoteMasters() {
+    when(demandNoteMasterRepository.findAll()).thenReturn(List.of(demandNoteMaster));
+    when(modelMapper.map(demandNoteMaster, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllDemandNotes();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(demandNoteMasterRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(demandNoteMaster, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDemandNoteMasterById_Success() {
+    when(demandNoteMasterRepository.findById(id)).thenReturn(Optional.of(demandNoteMaster));
+    when(modelMapper.map(demandNoteMaster, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchDemandNoteById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(demandNoteMasterRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(demandNoteMaster, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDemandNoteMasterById_NotFound() {
+    when(demandNoteMasterRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchDemandNoteById(id));
+
+    assertEquals("Demand Note Master not found with id: " + id, exception.getMessage());
+
+    verify(demandNoteMasterRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllDisbursements() {
+    when(disbursementRepository.findAll()).thenReturn(List.of(disbursement));
+    when(modelMapper.map(disbursement, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllDisbursements();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(disbursementRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(disbursement, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDisbursementById_Success() {
+    when(disbursementRepository.findById(id)).thenReturn(Optional.of(disbursement));
+    when(modelMapper.map(disbursement, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchDisbursementById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(disbursementRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(disbursement, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDisbursementById_NotFound() {
+    when(disbursementRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchDisbursementById(id));
+
+    assertEquals("Disbursement not found with id: " + id, exception.getMessage());
+
+    verify(disbursementRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
 }
