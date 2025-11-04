@@ -338,12 +338,24 @@ CREATE TABLE df_workorder (
   slno SERIAL,
   po_id int DEFAULT NULL,
   wo_no varchar(25) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_df_workorder PRIMARY KEY (df_workorder_id)
+);
+
+INSERT INTO df_workorder (
+  df_workorder_id, slno, po_id, wo_no, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 101, 'WO-2025-001', 'WO-001', 'Install Dark Fiber', 'ഡാർക്ക് ഫൈബർ ഇൻസ്റ്റാൾ ചെയ്യുക',
+  TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
 );
 
 

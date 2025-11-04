@@ -207,4 +207,29 @@ public class DarkFiberController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched trans movement by ID"));
   }
+
+  @GetMapping("/workorders")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllWorkorders() {
+    var data = darkFiberService.fetchAllWorkorders();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all workorders"));
+  }
+
+  @GetMapping("/workorder/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchWorkorderById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchWorkorderById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched workorder by ID"));
+  }
+
+  @GetMapping("/bank-details")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllBankDetails() {
+    var data = darkFiberService.fetchAllBankDetails();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all bank details"));
+  }
+
+  @GetMapping("/bank-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchBankDetailById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchBankDetailById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched bank detail by ID"));
+  }
 }
