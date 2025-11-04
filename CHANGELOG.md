@@ -287,3 +287,7 @@ Get partner receipt and account balance report
 # [0.53.0] - 2025-11-04
 ### Added
 -  Get corporate subscribers and subscribers document details
+
+# [0.54.0] - 2025-11-04
+### Added
+-  Get Corporate sub shift and support sub document details
