@@ -351,7 +351,7 @@ public class DarkFiberControllerTest {
   }
 
   @Test
-  void testFetchAllWorkorders() throws Exception {
+  void testFetchAllWorkOrders() throws Exception {
     when(service.fetchAllWorkorders()).thenReturn(List.of(lookup));
 
     mockMvc
@@ -362,7 +362,7 @@ public class DarkFiberControllerTest {
   }
 
   @Test
-  void testFetchWorkorderById() throws Exception {
+  void testFetchWorkOrderById() throws Exception {
     when(service.fetchWorkorderById(id)).thenReturn(lookup);
 
     mockMvc
@@ -435,6 +435,50 @@ public class DarkFiberControllerTest {
         .perform(get("/api/darkfiber/demand-note/{id}", id))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched demand note history by ID"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchAllDemandNoteMasters() throws Exception {
+    when(service.fetchAllDemandNotes()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/darkfiber/demand-note-masters"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all demand notes"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchDemandNoteMasterById() throws Exception {
+    when(service.fetchDemandNoteById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/darkfiber/demand-note-master/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched demand note by ID"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchAllDisbursements() throws Exception {
+    when(service.fetchAllDisbursements()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/darkfiber/disbursements"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all disbursements"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchDisbursementById() throws Exception {
+    when(service.fetchDisbursementById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/darkfiber/disbursement/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched disbursement by ID"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
 }
