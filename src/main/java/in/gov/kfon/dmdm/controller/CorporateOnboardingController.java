@@ -504,13 +504,13 @@ public class CorporateOnboardingController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("subshift-Details/fetch-all")
+  @GetMapping("subshift-details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> subShiftDetailsFetchAll() {
     var data = service.subShiftDetailsFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("subshift-Detail/{id}")
+  @GetMapping("subshift-detail/{id}")
   public ResponseEntity<Response<CommonLookUp>> subShiftDetailsFetchById(@PathVariable UUID id) {
     var data = service.subShiftDetailsFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
@@ -529,13 +529,13 @@ public class CorporateOnboardingController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("workOrders/fetch-all")
+  @GetMapping("work-orders/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> workOrderFetchAll() {
     var data = service.workOrderFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("workOrder/{id}")
+  @GetMapping("work-order/{id}")
   public ResponseEntity<Response<CommonLookUp>> workOrderFetchById(@PathVariable UUID id) {
     var data = service.workOrderFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));

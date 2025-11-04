@@ -1055,7 +1055,7 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/corporate/subshift-Details/fetch-all")
+            get("/api/corporate/subshift-details/fetch-all")
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
@@ -1068,7 +1068,7 @@ class CorporateOnboardingControllerTest {
 
     mockMvc
         .perform(
-            get("/api/corporate/subshift-Detail/{id}", id).contentType(MediaType.APPLICATION_JSON))
+            get("/api/corporate/subshift-detail/{id}", id).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("CORP001"));
@@ -1105,7 +1105,8 @@ class CorporateOnboardingControllerTest {
     when(service.workOrderFetchAll()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/corporate/workOrders/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .perform(
+            get("/api/corporate/work-orders/fetch-all").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data[0].code").value("CORP001"));
@@ -1116,7 +1117,7 @@ class CorporateOnboardingControllerTest {
     when(service.workOrderFetchById(any(UUID.class))).thenReturn(lookup);
 
     mockMvc
-        .perform(get("/api/corporate/workOrder/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .perform(get("/api/corporate/work-order/{id}", id).contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("CORP001"));
