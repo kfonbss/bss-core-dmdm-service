@@ -307,3 +307,7 @@ Get partner receipt and account balance report
 # [0.58.0] - 2025-11-04
 ### Added
 - Get dark fiber - demand note master and disbursement details
+
+# [0.59.0] - 2025-11-04
+### Added
+- Get dark fiber - demand note master and disbursement details
