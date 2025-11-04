@@ -69,13 +69,27 @@ CREATE TABLE df_bank_details (
   ifsc_code VARCHAR(100) DEFAULT NULL,
   bank VARCHAR(200) DEFAULT NULL,
   branch VARCHAR(100) DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_bank_details PRIMARY KEY (details_id)
 );
 
 COMMENT ON COLUMN df_bank_details.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_bank_details (
+  details_id, id, beneficiary_name, account_number, ifsc_code, bank, branch,
+  code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 'John Doe', '123456789012', 'SBIN0001234', 'State Bank of India', 'MG Road',
+  'BD-001', 'Primary Bank Account', 'പ്രൈമറി ബാങ്ക് അക്കൗണ്ട്',
+  TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS df_customer_details CASCADE;

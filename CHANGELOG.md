@@ -279,3 +279,7 @@ Get partner receipt and account balance report
 # [0.51.0] - 2025-11-04
 ### Added
 - Get dark fiber - trans and trans movement details
+
+# [0.52.0] - 2025-11-04
+### Added
+- Get dark fiber - work order and bank details 
