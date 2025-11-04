@@ -294,4 +294,4 @@ Get partner receipt and account balance report
 
 # [0.55.0] - 2025-11-04
 ### Added
--  Get Corporate sub shift and support sub document details
+-  Get Corporate work order
