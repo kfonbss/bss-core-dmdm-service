@@ -156,4 +156,24 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> subOnlineRechargesFetchAll();
 
   CommonLookUp subOnlineRechargesFetchById(UUID id);
+
+  List<CommonLookUp> subScribersDocumentFetchAll();
+
+  CommonLookUp subScribersDocumentFetchById(UUID id);
+
+  List<CommonLookUp> subscribersFetchAll();
+
+  CommonLookUp subscribersFetchById(UUID id);
+
+  List<CommonLookUp> subShiftDetailsFetchAll();
+
+  CommonLookUp subShiftDetailsFetchById(UUID id);
+
+  List<CommonLookUp> supportSubdocumentsFetchAll();
+
+  CommonLookUp supportSubdocumentsFetchById(UUID id);
+
+  List<CommonLookUp> workOrderFetchAll();
+
+  CommonLookUp workOrderFetchById(UUID id);
 }
