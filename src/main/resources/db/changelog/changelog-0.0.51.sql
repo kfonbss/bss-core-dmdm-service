@@ -17,6 +17,10 @@ CREATE TABLE school_project (
 -- Table: se_customers
 CREATE TABLE se_customers (
   customer_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL ,
   company_name VARCHAR(100),
   short_name VARCHAR(50),
@@ -27,23 +31,48 @@ CREATE TABLE se_customers (
   pincode VARCHAR(6),
   description VARCHAR(250),
   kyc_added INt DEFAULT 0,  -- 0=Not Added, 1=Added
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INt DEFAULT 1   -- 0=Inactive, 1=Active
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_customers (
+    customer_id, code, name, name_in_local, is_active, id, company_name, short_name, contact_person,
+    mobile, email, address, pincode, description, kyc_added, created_date, modified_date, created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'CUST001', 'ABC Technologies Pvt Ltd', 'എബി‌സി ടെക്നോളജീസ് പ്രൈവറ്റ് ലിമിറ്റഡ്', true, 1,
+    'ABC Technologies Pvt Ltd', 'ABC Tech', 'John Mathew', '9876543210', 'info@abctech.com',
+    '123, Tech Park, Kochi, Kerala', '682030', 'Leading IT service provider', 1,
+    CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: se_disbursement
 CREATE TABLE se_disbursement (
   id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   disburseid SERIAL ,
   locid INTEGER,
   cause VARCHAR(100),
   revenue NUMERIC(26,10),
   disbursestatusid INTEGER DEFAULT 1,
   finrefid INTEGER,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1    -- 0=Inactive, 1=Active
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_disbursement (
+    id, code, name, name_in_local, is_active, disburseid, locid, cause,
+    revenue, disbursestatusid, finrefid, created_date, modified_date,
+    created_by, modified_by
+) VALUES (
+    gen_random_uuid(), 'DISB001', 'Revenue Disbursement Q1', 'വരുമാന വിതരണം Q1',
+    true, 1, 101, 'Quarterly partner revenue settlement',
+    150000.7500000000, 1, 501, CURRENT_TIMESTAMP, NULL,
+    gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: se_inovoice
