@@ -32,6 +32,8 @@ public class DarkFiberServiceImpl implements DarkFiberService {
   private final DfTransDetailsMovementRepository dfTransDetailsMovementRepository;
   private final DfWorkorderRepository dfWorkorderRepository;
   private final DfBankDetailsRepository dfBankDetailsRepository;
+  private final DfCustomerDetailsRepository dfCustomerDetailsRepository;
+  private final DfDemandNoteHistoryRepository dfDemandnoteHistoryRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -312,5 +314,42 @@ public class DarkFiberServiceImpl implements DarkFiberService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Bank Detail not found with id: " + id));
     return modelMapper.map(bd, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllCustomerDetails() {
+    return dfCustomerDetailsRepository.findAll().stream()
+        .map(customer -> modelMapper.map(customer, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchCustomerDetailsById(UUID id) {
+    DfCustomerDetails customer =
+        dfCustomerDetailsRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Customer Detail not found with id: " + id));
+    return modelMapper.map(customer, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllDemandNoteHistory() {
+    return dfDemandnoteHistoryRepository.findAll().stream()
+        .map(history -> modelMapper.map(history, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchDemandNoteHistoryById(UUID id) {
+    DfDemandNoteHistory history =
+        dfDemandnoteHistoryRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Demand Note not found with id: " + id));
+    return modelMapper.map(history, CommonLookUp.class);
   }
 }

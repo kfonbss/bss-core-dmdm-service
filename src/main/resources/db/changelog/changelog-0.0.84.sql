@@ -105,13 +105,29 @@ CREATE TABLE df_customer_details (
   cperson_contact VARCHAR(20) DEFAULT NULL,
   address VARCHAR(250) DEFAULT NULL,
   enq_ref INTEGER DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_customer_details PRIMARY KEY (details_id)
 );
 
 COMMENT ON COLUMN df_customer_details.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_customer_details (
+  details_id, id, customer_name, customer_email, customer_contact,
+  cperson_name, cperson_email, cperson_contact, address, enq_ref,
+  code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 'Acme Corp', 'contact@acme.com', '9876543210',
+  'Alice Smith', 'alice.smith@acme.com', '9123456780', '123, MG Road, City', 101,
+  'CUST-001', 'Acme Customer', 'ആക്‌മെ കസ്റ്റമർ',
+  TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS df_demandnote_history CASCADE;
@@ -142,13 +158,34 @@ CREATE TABLE df_demandnote_history (
   total_rating_gstcost DECIMAL(25,10) NOT NULL DEFAULT 0.0000000000,
   total_power_rating_cost DECIMAL(25,10) NOT NULL DEFAULT 0.0000000000,
   group_type INTEGER DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_demandnote_history PRIMARY KEY (history_id)
 );
 
 COMMENT ON COLUMN df_demandnote_history.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_demandnote_history (
+  history_id, id, cnid, linkid, grouplinkid, groupid, ss_date, se_date,
+  total_sdays, unit_price, link_gst, link_amount, link_grand_amount,
+  fiber_lenght, trands_count, link_type, feeder_id, pop_id, no_of_rack_units,
+  power_rating_id, rating_cost_per_30_days, total_rating_cost, total_rating_gstcost,
+  total_power_rating_cost, group_type,
+  code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 1001, 2001, 3001, 4001, '2025-01-01', '2025-01-31',
+  30, 5000.0000000000, 900.0000000000, 5000.0000000000, 5900.0000000000,
+  10.500, 2, 1, 101, 201, 5,
+  1, 1500.0000000000, 1500.0000000000, 270.0000000000, 1770.0000000000, 1,
+  'DNH-001', 'January Demand Note', 'ജനുവരി ഡിമാൻഡ് നോട്ട്',
+  TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS df_demandnote_master CASCADE;

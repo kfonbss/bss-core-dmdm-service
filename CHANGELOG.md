@@ -295,3 +295,7 @@ Get partner receipt and account balance report
 # [0.55.0] - 2025-11-04
 ### Added
 -  Get Corporate work order details
+
+# [0.56.0] - 2025-11-04
+### Added
+- Get dark fiber - customer and demand note history details

@@ -35,6 +35,8 @@ public class DarkFiberServiceImplTest {
   @Mock private DfTransDetailsMovementRepository dfTransDetailsMovementRepository;
   @Mock private DfWorkorderRepository dfWorkorderRepository;
   @Mock private DfBankDetailsRepository dfBankDetailsRepository;
+  @Mock private DfCustomerDetailsRepository dfCustomerDetailsRepository;
+  @Mock private DfDemandNoteHistoryRepository dfDemandNoteHistoryRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private DarkFiberServiceImpl service;
@@ -56,6 +58,8 @@ public class DarkFiberServiceImplTest {
   private DfTransDetailsMovement transDetailsMovement;
   private DfWorkorder workorder;
   private DfBankDetails bankDetails;
+  private DfCustomerDetails customerDetails;
+  private DfDemandNoteHistory demandNoteHistory;
   private CommonLookUp commonLookUp;
 
   @BeforeEach
@@ -148,6 +152,20 @@ public class DarkFiberServiceImplTest {
     bankDetails.setName("Test Bank");
     bankDetails.setNameInLocal("ടെസ്റ്റ് ബാങ്ക്");
     bankDetails.setIsActive(true);
+
+    customerDetails = new DfCustomerDetails();
+    customerDetails.setDetailsId(id);
+    customerDetails.setCode("CD-001");
+    customerDetails.setName("Customer Details");
+    customerDetails.setNameInLocal("കസ്റ്റമർ വിശദാംശങ്ങൾ");
+    customerDetails.setIsActive(true);
+
+    demandNoteHistory = new DfDemandNoteHistory();
+    demandNoteHistory.setHistoryId(id);
+    demandNoteHistory.setCode("DN-001");
+    demandNoteHistory.setName("Demand Note History");
+    demandNoteHistory.setNameInLocal("ഡിമാൻഡ് നോട്ട് ചരിത്രം");
+    demandNoteHistory.setIsActive(true);
 
     commonLookUp = new CommonLookUp();
     commonLookUp.setId(id);
@@ -815,6 +833,90 @@ public class DarkFiberServiceImplTest {
 
     assertEquals("Bank Detail not found with id: " + id, exception.getMessage());
     verify(dfBankDetailsRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllCustomerDetails() {
+    when(dfCustomerDetailsRepository.findAll()).thenReturn(List.of(customerDetails));
+    when(modelMapper.map(customerDetails, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllCustomerDetails();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfCustomerDetailsRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(customerDetails, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchCustomerDetailsById_Success() {
+    when(dfCustomerDetailsRepository.findById(id)).thenReturn(Optional.of(customerDetails));
+    when(modelMapper.map(customerDetails, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchCustomerDetailsById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfCustomerDetailsRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(customerDetails, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchCustomerDetailsById_NotFound() {
+    when(dfCustomerDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchCustomerDetailsById(id));
+
+    assertEquals("Customer Detail not found with id: " + id, exception.getMessage());
+
+    verify(dfCustomerDetailsRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllDemandNotes() {
+    when(dfDemandNoteHistoryRepository.findAll()).thenReturn(List.of(demandNoteHistory));
+    when(modelMapper.map(demandNoteHistory, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllDemandNoteHistory();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfDemandNoteHistoryRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(demandNoteHistory, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDemandNoteById_Success() {
+    when(dfDemandNoteHistoryRepository.findById(id)).thenReturn(Optional.of(demandNoteHistory));
+    when(modelMapper.map(demandNoteHistory, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchDemandNoteHistoryById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfDemandNoteHistoryRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(demandNoteHistory, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDemandNoteById_NotFound() {
+    when(dfDemandNoteHistoryRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchDemandNoteHistoryById(id));
+
+    assertEquals("Demand Note not found with id: " + id, exception.getMessage());
+
+    verify(dfDemandNoteHistoryRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
 }
