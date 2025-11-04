@@ -8,9 +8,8 @@ import lombok.Data;
 @Table(name = "se_customers")
 @Data
 public class SeCustomers extends Auditor {
-
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "customer_id")
   private UUID customerId;
 

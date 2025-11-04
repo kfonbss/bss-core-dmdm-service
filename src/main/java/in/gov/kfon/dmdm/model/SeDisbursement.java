@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class SeDisbursement extends Auditor {
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id")
   private UUID id;
 
