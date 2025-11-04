@@ -1,0 +1,47 @@
+package in.gov.kfon.dmdm.controller;
+
+import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.Response;
+import in.gov.kfon.dmdm.service.SpecialEventsServiceImpl;
+import java.util.List;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/special-events")
+@RequiredArgsConstructor
+public class SpecialEventsController {
+
+  private final SpecialEventsServiceImpl service;
+  private static final String FETCHED = "Fetched";
+
+  @GetMapping("customers/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> customersFetchAll() {
+    var data = service.customersFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("customer/{id}")
+  public ResponseEntity<Response<CommonLookUp>> customersFetchById(@PathVariable UUID id) {
+    var data = service.customersFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("disbursements/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> disbursementFetchAll() {
+    var data = service.disbursementFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("disbursement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> disbursementFetchById(@PathVariable UUID id) {
+    var data = service.disbursementFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+}
