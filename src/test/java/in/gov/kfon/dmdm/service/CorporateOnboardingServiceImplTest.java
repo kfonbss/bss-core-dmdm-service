@@ -56,6 +56,11 @@ class CorporateOnboardingServiceImplTest {
   private CeSubServiceListRepository subServiceListRepository;
   private CeSubscriberDetailsRepository subscriberDetailsRepository;
   private CeSubOnlineRechargeRepository subOnlineRechargeRepository;
+  private CeSubscribersDocumentRepository subscribersDocumentRepository;
+  private CeSubscribersRepository subscribersRepository;
+  private CeSubShifDetailsRepository subShifDetailsRepository;
+  private CeSupportSubDocumentRepository supportSubDocumentRepository;
+  private CeWorkOrderRepository workOrderRepository;
 
   @BeforeEach
   void setUp() {
@@ -98,6 +103,11 @@ class CorporateOnboardingServiceImplTest {
     subServiceListRepository = mock(CeSubServiceListRepository.class);
     subscriberDetailsRepository = mock(CeSubscriberDetailsRepository.class);
     subOnlineRechargeRepository = mock(CeSubOnlineRechargeRepository.class);
+    subscribersDocumentRepository = mock(CeSubscribersDocumentRepository.class);
+    subscribersRepository = mock(CeSubscribersRepository.class);
+    subShifDetailsRepository = mock(CeSubShifDetailsRepository.class);
+    supportSubDocumentRepository = mock(CeSupportSubDocumentRepository.class);
+    workOrderRepository = mock(CeWorkOrderRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -138,7 +148,12 @@ class CorporateOnboardingServiceImplTest {
             subFinanceRepository,
             subServiceListRepository,
             subscriberDetailsRepository,
-            subOnlineRechargeRepository);
+            subOnlineRechargeRepository,
+            subscribersDocumentRepository,
+            subscribersRepository,
+            subShifDetailsRepository,
+            supportSubDocumentRepository,
+            workOrderRepository);
 
     service.setupMapper();
   }
@@ -1492,5 +1507,180 @@ class CorporateOnboardingServiceImplTest {
     when(subOnlineRechargeRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.subOnlineRechargesFetchById(id));
+  }
+
+  @Test
+  void testSubScribersDocumentFetchAll_ShouldReturnMappedList() {
+    CeSubscribersDocument subScribersDocument = new CeSubscribersDocument();
+    subScribersDocument.setDocumentId(UUID.randomUUID());
+
+    when(subscribersDocumentRepository.findAll()).thenReturn(List.of(subScribersDocument));
+
+    List<CommonLookUp> result = service.subScribersDocumentFetchAll();
+
+    assertEquals(1, result.size());
+    verify(subscribersDocumentRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testSubScribersDocumentFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeSubscribersDocument subscribersDocument = new CeSubscribersDocument();
+    subscribersDocument.setDocumentId(id);
+
+    when(subscribersDocumentRepository.findById(id)).thenReturn(Optional.of(subscribersDocument));
+
+    CommonLookUp result = service.subScribersDocumentFetchById(id);
+
+    assertNotNull(result);
+    verify(subscribersDocumentRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testSubScribersDocumentFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(subscribersDocumentRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.subScribersDocumentFetchById(id));
+  }
+
+  @Test
+  void testSubscribersFetchAll_ShouldReturnMappedList() {
+    CeSubscribers subscribers = new CeSubscribers();
+    subscribers.setId(UUID.randomUUID());
+
+    when(subscribersRepository.findAll()).thenReturn(List.of(subscribers));
+
+    List<CommonLookUp> result = service.subscribersFetchAll();
+
+    assertEquals(1, result.size());
+    verify(subscribersRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testSubscribersFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeSubscribers subscribers = new CeSubscribers();
+    subscribers.setId(id);
+
+    when(subscribersRepository.findById(id)).thenReturn(Optional.of(subscribers));
+
+    CommonLookUp result = service.subscribersFetchById(id);
+
+    assertNotNull(result);
+    verify(subscribersRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testSubscribersFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(subscribersRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.subscribersFetchById(id));
+  }
+
+  @Test
+  void testSubShiftDetailsFetchAll_ShouldReturnMappedList() {
+    CeSubShifDetails subShifDetails = new CeSubShifDetails();
+    subShifDetails.setDetailsId(UUID.randomUUID());
+
+    when(subShifDetailsRepository.findAll()).thenReturn(List.of(subShifDetails));
+
+    List<CommonLookUp> result = service.subShiftDetailsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(subShifDetailsRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testSubShiftDetailsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeSubShifDetails subShiftDetails = new CeSubShifDetails();
+    subShiftDetails.setDetailsId(id);
+
+    when(subShifDetailsRepository.findById(id)).thenReturn(Optional.of(subShiftDetails));
+
+    CommonLookUp result = service.subShiftDetailsFetchById(id);
+
+    assertNotNull(result);
+    verify(subShifDetailsRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testSubShiftDetailsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(subShifDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.subFinancesFetchById(id));
+  }
+
+  @Test
+  void testSupportSubdocumentsFetchAll_ShouldReturnMappedList() {
+    CeSupportSubDocument supportSubdocuments = new CeSupportSubDocument();
+    supportSubdocuments.setDocumentId(UUID.randomUUID());
+
+    when(supportSubDocumentRepository.findAll()).thenReturn(List.of(supportSubdocuments));
+
+    List<CommonLookUp> result = service.supportSubdocumentsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(supportSubDocumentRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testSupportSubdocumentsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeSupportSubDocument supportSubdocuments = new CeSupportSubDocument();
+    supportSubdocuments.setDocumentId(id);
+
+    when(supportSubDocumentRepository.findById(id)).thenReturn(Optional.of(supportSubdocuments));
+
+    CommonLookUp result = service.supportSubdocumentsFetchById(id);
+
+    assertNotNull(result);
+    verify(supportSubDocumentRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testSupportSubdocumentsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(supportSubDocumentRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.supportSubdocumentsFetchById(id));
+  }
+
+  @Test
+  void testWorkOrderFetchAll_ShouldReturnMappedList() {
+    CeWorkOrder workOrder = new CeWorkOrder();
+    workOrder.setWorkOrderId(UUID.randomUUID());
+
+    when(workOrderRepository.findAll()).thenReturn(List.of(workOrder));
+
+    List<CommonLookUp> result = service.workOrderFetchAll();
+
+    assertEquals(1, result.size());
+    verify(workOrderRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testWorkOrderFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeWorkOrder workOrder = new CeWorkOrder();
+    workOrder.setWorkOrderId(id);
+
+    when(workOrderRepository.findById(id)).thenReturn(Optional.of(workOrder));
+
+    CommonLookUp result = service.workOrderFetchById(id);
+
+    assertNotNull(result);
+    verify(workOrderRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testWorkOrderFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(workOrderRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.workOrderFetchById(id));
   }
 }
