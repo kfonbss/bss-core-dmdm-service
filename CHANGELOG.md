@@ -283,3 +283,7 @@ Get partner receipt and account balance report
 # [0.52.0] - 2025-11-04
 ### Added
 - Get dark fiber - work order and bank details 
+
+# [0.53.0] - 2025-11-04
+### Added
+-  Get corporate subscribers and subscribers document details
