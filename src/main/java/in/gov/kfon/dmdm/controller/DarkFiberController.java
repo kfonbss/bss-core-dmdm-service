@@ -232,4 +232,32 @@ public class DarkFiberController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched bank detail by ID"));
   }
+
+  @GetMapping("/customer-details")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllCustomerDetails() {
+    var data = darkFiberService.fetchAllCustomerDetails();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all customer details"));
+  }
+
+  @GetMapping("/customer-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchCustomerDetailsById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchCustomerDetailsById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched customer detail by ID"));
+  }
+
+  @GetMapping("/demand-notes")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDemandNoteHistory() {
+    var data = darkFiberService.fetchAllDemandNoteHistory();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all demand note history"));
+  }
+
+  @GetMapping("/demand-note/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchDemandNoteHistoryById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchDemandNoteHistoryById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched demand note history by ID"));
+  }
 }
