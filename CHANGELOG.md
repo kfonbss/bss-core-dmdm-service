@@ -299,3 +299,7 @@ Get partner receipt and account balance report
 # [0.56.0] - 2025-11-04
 ### Added
 - Get dark fiber - customer and demand note history details
+
+# [0.57.0] - 2025-11-04
+### Added
+- Get special event customers and disbursement details
