@@ -54,6 +54,8 @@ class CorporateOnboardingServiceImplTest {
   private CeSubPackageRenewalHistoryRepository subPackageRenewalHistoryRepository;
   private CeSubFinanceRepository subFinanceRepository;
   private CeSubServiceListRepository subServiceListRepository;
+  private CeSubscriberDetailsRepository subscriberDetailsRepository;
+  private CeSubOnlineRechargeRepository subOnlineRechargeRepository;
 
   @BeforeEach
   void setUp() {
@@ -94,6 +96,8 @@ class CorporateOnboardingServiceImplTest {
     subPackageRenewalHistoryRepository = mock(CeSubPackageRenewalHistoryRepository.class);
     subFinanceRepository = mock(CeSubFinanceRepository.class);
     subServiceListRepository = mock(CeSubServiceListRepository.class);
+    subscriberDetailsRepository = mock(CeSubscriberDetailsRepository.class);
+    subOnlineRechargeRepository = mock(CeSubOnlineRechargeRepository.class);
     service =
         new CorporateOnboardingServiceImpl(
             modelMapper,
@@ -132,7 +136,9 @@ class CorporateOnboardingServiceImplTest {
             subPackageRepository,
             subPackageRenewalHistoryRepository,
             subFinanceRepository,
-            subServiceListRepository);
+            subServiceListRepository,
+            subscriberDetailsRepository,
+            subOnlineRechargeRepository);
 
     service.setupMapper();
   }
@@ -1416,5 +1422,75 @@ class CorporateOnboardingServiceImplTest {
     when(subServiceListRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.subServiceListsFetchById(id));
+  }
+
+  @Test
+  void testSubscriberDetailsFetchAll_ShouldReturnMappedList() {
+    CeSubscriberDetails subscriberDetails = new CeSubscriberDetails();
+    subscriberDetails.setDetailsId(UUID.randomUUID());
+
+    when(subscriberDetailsRepository.findAll()).thenReturn(List.of(subscriberDetails));
+
+    List<CommonLookUp> result = service.subscriberDetailsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(subscriberDetailsRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testSubscriberDetailsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeSubscriberDetails subscriberDetails = new CeSubscriberDetails();
+    subscriberDetails.setDetailsId(id);
+
+    when(subscriberDetailsRepository.findById(id)).thenReturn(Optional.of(subscriberDetails));
+
+    CommonLookUp result = service.subscriberDetailsFetchById(id);
+
+    assertNotNull(result);
+    verify(subscriberDetailsRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testSubscriberDetailsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(subscriberDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.subFinancesFetchById(id));
+  }
+
+  @Test
+  void testSubOnlineRechargesFetchAll_ShouldReturnMappedList() {
+    CeSubOnlineRecharge onlineRecharge = new CeSubOnlineRecharge();
+    onlineRecharge.setRechargeId(UUID.randomUUID());
+
+    when(subOnlineRechargeRepository.findAll()).thenReturn(List.of(onlineRecharge));
+
+    List<CommonLookUp> result = service.subOnlineRechargesFetchAll();
+
+    assertEquals(1, result.size());
+    verify(subOnlineRechargeRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testSubOnlineRechargesFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CeSubOnlineRecharge subOnlineRecharges = new CeSubOnlineRecharge();
+    subOnlineRecharges.setRechargeId(id);
+
+    when(subOnlineRechargeRepository.findById(id)).thenReturn(Optional.of(subOnlineRecharges));
+
+    CommonLookUp result = service.subOnlineRechargesFetchById(id);
+
+    assertNotNull(result);
+    verify(subOnlineRechargeRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testSubOnlineRechargesFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(subOnlineRechargeRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.subOnlineRechargesFetchById(id));
   }
 }

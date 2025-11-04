@@ -56,6 +56,8 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
   private final CeSubPackageRenewalHistoryRepository subPackageRenewalHistoryRepository;
   private final CeSubFinanceRepository subFinanceRepository;
   private final CeSubServiceListRepository subServiceListRepository;
+  private final CeSubscriberDetailsRepository subscriberDetailsRepository;
+  private final CeSubOnlineRechargeRepository subOnlineRechargeRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -103,6 +105,14 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
     // For Sub Customer
     modelMapper.addMappings(
         new PropertyMap<CeSubCustomers, CommonLookUp>() {
+          @Override
+          protected void configure() {
+            skip(destination.getId());
+          }
+        });
+    // For Sub Online Recharge
+    modelMapper.addMappings(
+        new PropertyMap<CeSubOnlineRecharge, CommonLookUp>() {
           @Override
           protected void configure() {
             skip(destination.getId());
@@ -814,5 +824,50 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> subscriberDetailsFetchAll() {
+    return subscriberDetailsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp subscriberDetailsFetchById(UUID id) {
+    CeSubscriberDetails entity =
+        subscriberDetailsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> subOnlineRechargesFetchAll() {
+    return subOnlineRechargeRepository.findAll().stream()
+        .map(
+            enquiry -> {
+              CommonLookUp lookup = modelMapper.map(enquiry, CommonLookUp.class);
+              lookup.setId(enquiry.getRechargeId());
+              return lookup;
+            })
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp subOnlineRechargesFetchById(UUID id) {
+    CeSubOnlineRecharge entity =
+        subOnlineRechargeRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+
+    CommonLookUp lookup = modelMapper.map(entity, CommonLookUp.class);
+    lookup.setId(entity.getRechargeId());
+
+    return lookup;
   }
 }

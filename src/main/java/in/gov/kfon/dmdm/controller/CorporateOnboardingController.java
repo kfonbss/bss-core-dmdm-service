@@ -454,4 +454,28 @@ public class CorporateOnboardingController {
     var data = service.subFinancesFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("subscriber-Details/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> subscriberDetailsFetchAll() {
+    var data = service.subscriberDetailsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("subscriber-Detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> subscriberDetailsFetchById(@PathVariable UUID id) {
+    var data = service.subscriberDetailsFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("sub-online/recharges/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> subOnlineRechargesFetchAll() {
+    var data = service.subOnlineRechargesFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("sub-online/recharge/{id}")
+  public ResponseEntity<Response<CommonLookUp>> subOnlineRechargesFetchById(@PathVariable UUID id) {
+    var data = service.subOnlineRechargesFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }

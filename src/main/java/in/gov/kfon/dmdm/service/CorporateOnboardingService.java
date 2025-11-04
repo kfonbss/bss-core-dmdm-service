@@ -148,4 +148,12 @@ public interface CorporateOnboardingService {
   List<CommonLookUp> subFinancesFetchAll();
 
   CommonLookUp subFinancesFetchById(UUID id);
+
+  List<CommonLookUp> subscriberDetailsFetchAll();
+
+  CommonLookUp subscriberDetailsFetchById(UUID id);
+
+  List<CommonLookUp> subOnlineRechargesFetchAll();
+
+  CommonLookUp subOnlineRechargesFetchById(UUID id);
 }
