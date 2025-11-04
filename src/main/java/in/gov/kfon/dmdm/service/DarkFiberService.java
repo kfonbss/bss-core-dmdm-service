@@ -77,4 +77,12 @@ public interface DarkFiberService {
   List<CommonLookUp> fetchAllDemandNoteHistory();
 
   CommonLookUp fetchDemandNoteHistoryById(UUID id);
+
+  List<CommonLookUp> fetchAllDemandNotes();
+
+  CommonLookUp fetchDemandNoteById(UUID id);
+
+  List<CommonLookUp> fetchAllDisbursements();
+
+  CommonLookUp fetchDisbursementById(UUID id);
 }
