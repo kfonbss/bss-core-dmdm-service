@@ -276,8 +276,7 @@ public class DarkFiberServiceImpl implements DarkFiberService {
         dfTransDetailsMovementRepository
             .findById(id)
             .orElseThrow(
-                () ->
-                    new EntityNotFoundException("Trans Movement not found with id: " + id));
+                () -> new EntityNotFoundException("Trans Movement not found with id: " + id));
     return modelMapper.map(movement, CommonLookUp.class);
   }
 }
