@@ -23,6 +23,8 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
   private final SeInvoiceRepository invoiceRepository;
   private final SeKycDetailsRepository kycDetailsRepository;
   private final SeLocationMovementRepository locationMovementRepository;
+  private final SeLocationsRepository locationsRepository;
+  private final SeLocFinanceRepository locFinanceRepository;
 
   @Override
   @Transactional(readOnly = true)
@@ -127,6 +129,42 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
   public CommonLookUp locationMovementsFetchById(UUID id) {
     SeLocationMovement entity =
         locationMovementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> locationsFetchAll() {
+    return locationsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp locationsFetchById(UUID id) {
+    SeLocations entity =
+        locationsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> locFinanceFetchAll() {
+    return locFinanceRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp locFinanceFetchById(UUID id) {
+    SeLocFinance entity =
+        locFinanceRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);

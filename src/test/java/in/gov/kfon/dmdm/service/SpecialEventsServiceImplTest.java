@@ -23,6 +23,8 @@ class SpecialEventsServiceImplTest {
   private SeInvoiceRepository invoiceRepository;
   private SeKycDetailsRepository kycDetailsRepository;
   private SeLocationMovementRepository locationMovementRepository;
+  private SeLocationsRepository locationsRepository;
+  private SeLocFinanceRepository locFinanceRepository;
 
   @BeforeEach
   void setUp() {
@@ -33,6 +35,8 @@ class SpecialEventsServiceImplTest {
     invoiceRepository = mock(SeInvoiceRepository.class);
     kycDetailsRepository = mock(SeKycDetailsRepository.class);
     locationMovementRepository = mock(SeLocationMovementRepository.class);
+    locationsRepository = mock(SeLocationsRepository.class);
+    locFinanceRepository = mock(SeLocFinanceRepository.class);
     service =
         new SpecialEventsServiceImpl(
             customersRepository,
@@ -41,7 +45,9 @@ class SpecialEventsServiceImplTest {
             invoiceMasterRepository,
             invoiceRepository,
             kycDetailsRepository,
-            locationMovementRepository);
+            locationMovementRepository,
+            locationsRepository,
+            locFinanceRepository);
   }
 
   @Test
@@ -252,5 +258,75 @@ class SpecialEventsServiceImplTest {
     when(locationMovementRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.locationMovementsFetchById(id));
+  }
+
+  @Test
+  void testLocationsFetchAll_ShouldReturnMappedList() {
+    SeLocations locations = new SeLocations();
+    locations.setLocationId(UUID.randomUUID());
+
+    when(locationsRepository.findAll()).thenReturn(List.of(locations));
+
+    List<CommonLookUp> result = service.locationsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(locationsRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testLocationsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    SeLocations locations = new SeLocations();
+    locations.setLocationId(id);
+
+    when(locationsRepository.findById(id)).thenReturn(Optional.of(locations));
+
+    CommonLookUp result = service.locationsFetchById(id);
+
+    assertNotNull(result);
+    verify(locationsRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testLocationsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(locationsRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.locationsFetchById(id));
+  }
+
+  @Test
+  void testLocFinanceFetchAll_ShouldReturnMappedList() {
+    SeLocFinance locFinance = new SeLocFinance();
+    locFinance.setFinanceId(UUID.randomUUID());
+
+    when(locFinanceRepository.findAll()).thenReturn(List.of(locFinance));
+
+    List<CommonLookUp> result = service.locFinanceFetchAll();
+
+    assertEquals(1, result.size());
+    verify(locFinanceRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testLocFinanceFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    SeLocFinance locFinance = new SeLocFinance();
+    locFinance.setFinanceId(id);
+
+    when(locFinanceRepository.findById(id)).thenReturn(Optional.of(locFinance));
+
+    CommonLookUp result = service.locFinanceFetchById(id);
+
+    assertNotNull(result);
+    verify(locFinanceRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testLocFinanceFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(locFinanceRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.locFinanceFetchById(id));
   }
 }

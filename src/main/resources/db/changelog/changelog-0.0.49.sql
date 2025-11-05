@@ -33,6 +33,10 @@ INSERT INTO se_location_movement (
 -- Table: se_locations
 CREATE TABLE se_locations (
   location_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   slno SERIAL,
   proid INTEGER,
   custid INTEGER,
@@ -56,22 +60,46 @@ CREATE TABLE se_locations (
   d_status_date DATE,
   rccount INTEGER DEFAULT 0,
   last_recharge_date TIMESTAMP,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1  -- 0=Inactive, 1=Active
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_locations (
+  location_id, code, name, name_in_local, is_active, slno, proid, custid, service_type, service_provider,
+  partnerid, loc_code, loc_address, bandwidth, bandwidth_cost, establishment_cost, otc_cost,
+  remarks, approve_status, expirydate, balance, commission_date, commission_doc, circuit_details,
+  d_status, d_status_date, rccount, last_recharge_date, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'LOC001', 'Head Office Location', 'ഹെഡ് ഓഫീസ് ലൊക്കേഷൻ', true, 1, 1001, 2001, 1, 101,
+  301, 'LOC-001', '123 Main Street, Kochi, Kerala', '1 Gbps', 5000.00, 20000.00, 1500.00,
+  'Initial location setup completed', 1, CURRENT_DATE + INTERVAL '365 days', 25000.00, CURRENT_DATE,
+  'commission_doc_001.pdf', 'Circuit-A1', 1, CURRENT_DATE, 5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: se_locfinance
 CREATE TABLE se_locfinance (
   finance_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   finid SERIAL,
   locid INTEGER,
   amount NUMERIC(10,2) NOT NULL,
   cause VARCHAR(45) NOT NULL,
   finrefid INTEGER,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1  -- 0=Inactive, 1=Active
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_locfinance (
+  finance_id, code, name, name_in_local, is_active, finid, locid, amount, cause, finrefid,
+  created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'FIN001', 'Local Finance Entry', 'ലോക്കൽ ഫിനാൻസ് എൻട്രി', true, 1, 101, 12500.50, 'Initial Setup Fee', 5001,
+  CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: se_payment_details
