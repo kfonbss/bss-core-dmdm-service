@@ -348,4 +348,46 @@ class SpecialEventsControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("SE123"));
   }
+    @Test
+    void testProposalsFetchAll() throws Exception {
+        when(service.proposalsFetchAll()).thenReturn(List.of(lookup));
+
+        mockMvc.perform(get("/api/special-events/proposals/fetch-all")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Fetched"))
+                .andExpect(jsonPath("$.data[0].code").value("SE123"));
+    }
+
+    @Test
+    void testProposalById() throws Exception {
+        when(service.proposalsFetchById(any(UUID.class))).thenReturn(lookup);
+
+        mockMvc.perform(get("/api/special-events/proposal/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Fetched"))
+                .andExpect(jsonPath("$.data.code").value("SE123"));
+    }
+    @Test
+    void testPurchaseOrderFetchAll() throws Exception {
+        when(service.purchaseOrderFetchAll()).thenReturn(List.of(lookup));
+
+        mockMvc.perform(get("/api/special-events/purchase-orders/fetch-all")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Fetched"))
+                .andExpect(jsonPath("$.data[0].code").value("SE123"));
+    }
+
+    @Test
+    void testPurchaseOrderById() throws Exception {
+        when(service.purchaseOrderFetchById(any(UUID.class))).thenReturn(lookup);
+
+        mockMvc.perform(get("/api/special-events/purchase-order/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Fetched"))
+                .andExpect(jsonPath("$.data.code").value("SE123"));
+    }
 }

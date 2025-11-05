@@ -52,4 +52,12 @@ public interface SpecialEventsService {
   List<CommonLookUp> proposalMovementFetchAll();
 
   CommonLookUp proposalMovementFetchById(UUID id);
+
+    List<CommonLookUp> proposalsFetchAll();
+
+    CommonLookUp proposalsFetchById(UUID id);
+
+    List<CommonLookUp> purchaseOrderFetchAll();
+
+    CommonLookUp purchaseOrderFetchById(UUID id);
 }

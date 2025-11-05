@@ -164,4 +164,26 @@ public class SpecialEventsController {
     var data = service.proposalMovementFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+    @GetMapping("proposals/fetch-all")
+    public ResponseEntity<Response<List<CommonLookUp>>> proposalsFetchAll() {
+        var data = service.proposalsFetchAll();
+        return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+    }
+
+    @GetMapping("proposal/{id}")
+    public ResponseEntity<Response<CommonLookUp>> proposalsFetchById(@PathVariable UUID id) {
+        var data = service.proposalsFetchById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+    }
+    @GetMapping("purchase-orders/fetch-all")
+    public ResponseEntity<Response<List<CommonLookUp>>> purchaseOrderFetchAll() {
+        var data = service.purchaseOrderFetchAll();
+        return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+    }
+
+    @GetMapping("purchase-order/{id}")
+    public ResponseEntity<Response<CommonLookUp>> purchaseOrderFetchById(@PathVariable UUID id) {
+        var data = service.purchaseOrderFetchById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+    }
 }
