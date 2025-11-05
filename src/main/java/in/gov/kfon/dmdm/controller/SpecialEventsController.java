@@ -140,4 +140,28 @@ public class SpecialEventsController {
     var data = service.paymentHistoryFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("po-movements/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> poMovementFetchAll() {
+    var data = service.poMovementFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("po-movement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> poMovementFetchById(@PathVariable UUID id) {
+    var data = service.poMovementFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("proposal-movements/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> proposalMovementFetchAll() {
+    var data = service.proposalMovementFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("proposal-movement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> proposalMovementFetchById(@PathVariable UUID id) {
+    var data = service.proposalMovementFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }

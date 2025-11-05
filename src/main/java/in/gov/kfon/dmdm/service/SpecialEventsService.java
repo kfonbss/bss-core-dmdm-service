@@ -44,4 +44,12 @@ public interface SpecialEventsService {
   List<CommonLookUp> paymentHistoryFetchAll();
 
   CommonLookUp paymentHistoryFetchById(UUID id);
+
+  List<CommonLookUp> poMovementFetchAll();
+
+  CommonLookUp poMovementFetchById(UUID id);
+
+  List<CommonLookUp> proposalMovementFetchAll();
+
+  CommonLookUp proposalMovementFetchById(UUID id);
 }

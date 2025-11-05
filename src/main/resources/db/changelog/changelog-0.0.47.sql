@@ -9,14 +9,26 @@ DROP TABLE IF EXISTS security CASCADE;
 -- Table: se_proposal_movement
 CREATE TABLE se_proposal_movement (
   movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   propid INTEGER,
   approve_status INTEGER,
   remarks VARCHAR(250),
-  created_by VARCHAR(128),
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1 -- 0=Inactive, 1=Active
+  created_by_name VARCHAR(150),
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_proposal_movement (
+  movement_id, code, name, name_in_local, is_active, id, propid, approve_status, remarks,
+  created_by_name, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'PROPMV001', 'Proposal Movement Entry', 'പ്രൊപ്പോസൽ മൂവ്മെന്റ് എൻട്രി', true, 1, 3001, 1, 'Proposal approved successfully',
+  'System Admin', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: se_proposals

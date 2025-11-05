@@ -27,6 +27,8 @@ class SpecialEventsServiceImplTest {
   private SeLocFinanceRepository locFinanceRepository;
   private SePaymentDetailsRepository paymentDetailsRepository;
   private SePaymentHistoryRepository paymentHistoryRepository;
+  private SePoMovementRepository poMovementRepository;
+  private SeProposalMovementRepository proposalMovementRepository;
 
   @BeforeEach
   void setUp() {
@@ -41,6 +43,9 @@ class SpecialEventsServiceImplTest {
     locFinanceRepository = mock(SeLocFinanceRepository.class);
     paymentDetailsRepository = mock(SePaymentDetailsRepository.class);
     paymentHistoryRepository = mock(SePaymentHistoryRepository.class);
+    poMovementRepository = mock(SePoMovementRepository.class);
+    proposalMovementRepository = mock(SeProposalMovementRepository.class);
+
     service =
         new SpecialEventsServiceImpl(
             customersRepository,
@@ -53,7 +58,9 @@ class SpecialEventsServiceImplTest {
             locationsRepository,
             locFinanceRepository,
             paymentDetailsRepository,
-            paymentHistoryRepository);
+            paymentHistoryRepository,
+            poMovementRepository,
+            proposalMovementRepository);
     service.setupMapper();
   }
 
@@ -405,5 +412,75 @@ class SpecialEventsServiceImplTest {
     when(paymentHistoryRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.paymentHistoryFetchById(id));
+  }
+
+  @Test
+  void testPoMovementFetchAll_ShouldReturnMappedList() {
+    SePoMovement poMovement = new SePoMovement();
+    poMovement.setMovementId(UUID.randomUUID());
+
+    when(poMovementRepository.findAll()).thenReturn(List.of(poMovement));
+
+    List<CommonLookUp> result = service.poMovementFetchAll();
+
+    assertEquals(1, result.size());
+    verify(poMovementRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testPoMovementFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    SePoMovement poMovement = new SePoMovement();
+    poMovement.setMovementId(id);
+
+    when(poMovementRepository.findById(id)).thenReturn(Optional.of(poMovement));
+
+    CommonLookUp result = service.poMovementFetchById(id);
+
+    assertNotNull(result);
+    verify(poMovementRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testPoMovementFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(poMovementRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.poMovementFetchById(id));
+  }
+
+  @Test
+  void testProposalMovementFetchAll_ShouldReturnMappedList() {
+    SeProposalMovement proposalMovement = new SeProposalMovement();
+    proposalMovement.setMovementId(UUID.randomUUID());
+
+    when(proposalMovementRepository.findAll()).thenReturn(List.of(proposalMovement));
+
+    List<CommonLookUp> result = service.proposalMovementFetchAll();
+
+    assertEquals(1, result.size());
+    verify(proposalMovementRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testProposalMovementFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    SeProposalMovement proposalMovement = new SeProposalMovement();
+    proposalMovement.setMovementId(id);
+
+    when(proposalMovementRepository.findById(id)).thenReturn(Optional.of(proposalMovement));
+
+    CommonLookUp result = service.proposalMovementFetchById(id);
+
+    assertNotNull(result);
+    verify(proposalMovementRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testProposalMovementFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(proposalMovementRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.proposalMovementFetchById(id));
   }
 }
