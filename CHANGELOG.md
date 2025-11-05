@@ -330,4 +330,4 @@ Get partner receipt and account balance report
 
 # [0.64.0] - 2025-11-05
 ### Added
-- Get dark fiber - otc charges and invoices
+- Get special event payment details and payment history
