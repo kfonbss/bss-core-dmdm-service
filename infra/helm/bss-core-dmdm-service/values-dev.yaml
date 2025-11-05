@@ -1,5 +1,5 @@
 image:
-  repository: "274024437453.dkr.ecr.ap-south-1.amazonaws.com/bss-core-dmdm-services"
+  repository: "274024437453.dkr.ecr.ap-south-1.amazonaws.com/bss-core-dmdm-service"
   tag: "dev"
   pullPolicy: IfNotPresent
   # Use your ECR pull secret if you created it:
@@ -23,14 +23,14 @@ spring:
 
 # Probes tuned to your app logs:
 # - Tomcat: 8080
-# - Context path: /bss-core-dmdm-services
+# - Context path: /bss-core-dmdm-service
 # - Actuator base path: '' (so health is directly under the context)
 probes:
   port: 8080
   # basePath is ignored by your template, so we give full paths below:
-  readinessPath: "/bss-core-dmdm-services/actuator/health"
-  livenessPath:  "/bss-core-dmdm-services/actuator/health"
-  fallbackHealth: "/bss-core-dmdm-services/actuator/health"
+  readinessPath: "/bss-core-dmdm-service/actuator/health"
+  livenessPath:  "/bss-core-dmdm-service/actuator/health"
+  fallbackHealth: "/bss-core-dmdm-service/actuator/health"
   initialDelaySeconds: 45
   periodSeconds: 10
   timeoutSeconds: 3
@@ -59,7 +59,7 @@ ingress:
     scheme: internet-facing
     targetType: ip
     # ALB target group health should hit your app health endpoint:
-    healthcheckPath: /bss-core-dmdm-services/actuator/health
+    healthcheckPath: /bss-core-dmdm-service/actuator/health
   annotations: {}
   hosts:
     - host: api.dev.kfonbss.co.in
