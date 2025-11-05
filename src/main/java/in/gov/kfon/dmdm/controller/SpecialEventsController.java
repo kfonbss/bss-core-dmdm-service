@@ -68,4 +68,28 @@ public class SpecialEventsController {
     var data = service.invoiceMasterFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("kyc-details/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> kycDetailsFetchAll() {
+    var data = service.kycDetailsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("kyc-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> kycDetailsFetchById(@PathVariable UUID id) {
+    var data = service.kycDetailsFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("location-movements/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> locationMovementsFetchAll() {
+    var data = service.locationMovementsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("location-movement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> locationMovementsFetchById(@PathVariable UUID id) {
+    var data = service.locationMovementsFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }

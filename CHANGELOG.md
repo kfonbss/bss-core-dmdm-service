@@ -311,3 +311,7 @@ Get partner receipt and account balance report
 # [0.59.0] - 2025-11-04
 ### Added
 - Get special event invoices and invoice master details
+
+# [0.60.0] - 2025-11-05
+### Added
+- Get special event kyc and location movement details

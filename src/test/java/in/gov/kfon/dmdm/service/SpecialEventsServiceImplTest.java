@@ -4,14 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-import in.gov.kfon.dmdm.model.SeCustomers;
-import in.gov.kfon.dmdm.model.SeDisbursement;
-import in.gov.kfon.dmdm.model.SeInvoice;
-import in.gov.kfon.dmdm.model.SeInvoiceMaster;
-import in.gov.kfon.dmdm.repository.SeCustomersRepository;
-import in.gov.kfon.dmdm.repository.SeDisbursementRepository;
-import in.gov.kfon.dmdm.repository.SeInvoiceMasterRepository;
-import in.gov.kfon.dmdm.repository.SeInvoiceRepository;
+import in.gov.kfon.dmdm.model.*;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +21,8 @@ class SpecialEventsServiceImplTest {
   private SeCustomersRepository customersRepository;
   private SeInvoiceMasterRepository invoiceMasterRepository;
   private SeInvoiceRepository invoiceRepository;
+  private SeKycDetailsRepository kycDetailsRepository;
+  private SeLocationMovementRepository locationMovementRepository;
 
   @BeforeEach
   void setUp() {
@@ -35,13 +31,17 @@ class SpecialEventsServiceImplTest {
     customersRepository = mock(SeCustomersRepository.class);
     invoiceMasterRepository = mock(SeInvoiceMasterRepository.class);
     invoiceRepository = mock(SeInvoiceRepository.class);
+    kycDetailsRepository = mock(SeKycDetailsRepository.class);
+    locationMovementRepository = mock(SeLocationMovementRepository.class);
     service =
         new SpecialEventsServiceImpl(
             customersRepository,
             disbursementRepository,
             modelMapper,
             invoiceMasterRepository,
-            invoiceRepository);
+            invoiceRepository,
+            kycDetailsRepository,
+            locationMovementRepository);
   }
 
   @Test
@@ -182,5 +182,75 @@ class SpecialEventsServiceImplTest {
     when(invoiceRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.invoiceFetchById(id));
+  }
+
+  @Test
+  void testKycDetailsFetchAll_ShouldReturnMappedList() {
+    SeKycDetails kycDetails = new SeKycDetails();
+    kycDetails.setDetailsId(UUID.randomUUID());
+
+    when(kycDetailsRepository.findAll()).thenReturn(List.of(kycDetails));
+
+    List<CommonLookUp> result = service.kycDetailsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(kycDetailsRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testKycDetailsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    SeKycDetails kycDetails = new SeKycDetails();
+    kycDetails.setDetailsId(id);
+
+    when(kycDetailsRepository.findById(id)).thenReturn(Optional.of(kycDetails));
+
+    CommonLookUp result = service.kycDetailsFetchById(id);
+
+    assertNotNull(result);
+    verify(kycDetailsRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testKycDetailsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(kycDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.kycDetailsFetchById(id));
+  }
+
+  @Test
+  void testLocationMovementsFetchAll_ShouldReturnMappedList() {
+    SeLocationMovement locationMovements = new SeLocationMovement();
+    locationMovements.setMovementId(UUID.randomUUID());
+
+    when(locationMovementRepository.findAll()).thenReturn(List.of(locationMovements));
+
+    List<CommonLookUp> result = service.locationMovementsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(locationMovementRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testLocationMovementsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    SeLocationMovement locationMovements = new SeLocationMovement();
+    locationMovements.setMovementId(id);
+
+    when(locationMovementRepository.findById(id)).thenReturn(Optional.of(locationMovements));
+
+    CommonLookUp result = service.locationMovementsFetchById(id);
+
+    assertNotNull(result);
+    verify(locationMovementRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testLocationMovementsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(locationMovementRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.locationMovementsFetchById(id));
   }
 }

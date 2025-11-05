@@ -9,14 +9,25 @@ DROP TABLE IF EXISTS se_po_movement CASCADE;
 -- Table: se_location_movement
 CREATE TABLE se_location_movement (
   movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   locid INTEGER,
   approve_status INTEGER,
   remarks VARCHAR(255),
-  created_by VARCHAR(128),
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1  -- 0=Inactive, 1=Active
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_location_movement (
+  movement_id, code, name, name_in_local, is_active, id, locid, approve_status, remarks,
+  created_by, created_date, modified_date, modified_by
+) VALUES (
+  gen_random_uuid(), 'MOV001', 'Location Movement 1', 'ലൊക്കേഷൻ മൂവ്‌മെന്റ് 1', true, 1, 501, 1,
+  'Initial approval for location change', gen_random_uuid(), CURRENT_TIMESTAMP, NULL, gen_random_uuid()
 );
 
 -- Table: se_locations
