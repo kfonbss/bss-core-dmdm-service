@@ -159,12 +159,24 @@ INSERT INTO se_payment_history (
 -- Table: se_po_movement
 CREATE TABLE se_po_movement (
   movement_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   poid INTEGER,
   approve_status INTEGER,
   remarks VARCHAR(255),
-  created_by VARCHAR(128),
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1  -- 0=Inactive, 1=Active
+  created_by_name VARCHAR(150),
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_po_movement (
+  movement_id, code, name, name_in_local, is_active, id, poid, approve_status, remarks,
+  created_by_name, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'POMV001', 'PO Movement Entry', 'പർച്ചേസ് ഓർഡർ മൂവ്മെന്റ്', true, 1, 2001, 1, 'Approved successfully',
+  'Admin User', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
 );

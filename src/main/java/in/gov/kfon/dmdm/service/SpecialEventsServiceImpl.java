@@ -29,6 +29,8 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
   private final SeLocFinanceRepository locFinanceRepository;
   private final SePaymentDetailsRepository paymentDetailsRepository;
   private final SePaymentHistoryRepository paymentHistoryRepository;
+  private final SePoMovementRepository poMovementRepository;
+  private final SeProposalMovementRepository proposalMovementRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -225,5 +227,41 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
     lookup.setId(entity.getHistoryId());
 
     return lookup;
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> poMovementFetchAll() {
+    return poMovementRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp poMovementFetchById(UUID id) {
+    SePoMovement entity =
+        poMovementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> proposalMovementFetchAll() {
+    return proposalMovementRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp proposalMovementFetchById(UUID id) {
+    SeProposalMovement entity =
+        proposalMovementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
   }
 }

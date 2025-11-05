@@ -297,4 +297,55 @@ class SpecialEventsControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("SE123"));
   }
+
+  @Test
+  void testPoMovementFetchAll() throws Exception {
+    when(service.poMovementFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/special-events/po-movements/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("SE123"));
+  }
+
+  @Test
+  void testPoMovementById() throws Exception {
+    when(service.poMovementFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/special-events/po-movement/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("SE123"));
+  }
+
+  @Test
+  void testProposalMovementFetchAll() throws Exception {
+    when(service.proposalMovementFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/special-events/proposal-movements/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("SE123"));
+  }
+
+  @Test
+  void testProposalMovementById() throws Exception {
+    when(service.proposalMovementFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/special-events/proposal-movement/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("SE123"));
+  }
 }
