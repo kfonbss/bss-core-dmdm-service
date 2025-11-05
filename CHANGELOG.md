@@ -327,3 +327,7 @@ Get partner receipt and account balance report
 # [0.63.0] - 2025-11-05
 ### Added
 - Get dark fiber - otc charges and invoices
+
+# [0.62.0] - 2025-11-05
+### Added
+- Get dark fiber - otc charges and invoices
