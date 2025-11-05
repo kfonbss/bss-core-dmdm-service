@@ -3,11 +3,13 @@ package in.gov.kfon.dmdm.service;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.*;
 import in.gov.kfon.dmdm.repository.*;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,20 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
   private final SeLocationMovementRepository locationMovementRepository;
   private final SeLocationsRepository locationsRepository;
   private final SeLocFinanceRepository locFinanceRepository;
+  private final SePaymentDetailsRepository paymentDetailsRepository;
+  private final SePaymentHistoryRepository paymentHistoryRepository;
+
+  @PostConstruct
+  public void setupMapper() {
+    // For Payment History
+    modelMapper.addMappings(
+        new PropertyMap<SePaymentHistory, CommonLookUp>() {
+          @Override
+          protected void configure() {
+            skip(destination.getId());
+          }
+        });
+  }
 
   @Override
   @Transactional(readOnly = true)
@@ -168,5 +184,46 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> paymentDetailsFetchAll() {
+    return paymentDetailsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp paymentDetailsFetchById(UUID id) {
+    SePaymentDetails entity =
+        paymentDetailsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> paymentHistoryFetchAll() {
+    return paymentHistoryRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp paymentHistoryFetchById(UUID id) {
+
+    SePaymentHistory entity =
+        paymentHistoryRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+
+    CommonLookUp lookup = modelMapper.map(entity, CommonLookUp.class);
+    lookup.setId(entity.getHistoryId());
+
+    return lookup;
   }
 }

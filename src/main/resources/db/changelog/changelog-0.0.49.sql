@@ -105,20 +105,36 @@ INSERT INTO se_locfinance (
 -- Table: se_payment_details
 CREATE TABLE se_payment_details (
   details_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   poid INTEGER,
   utr_number VARCHAR(50),
   paid_amount NUMERIC(26,10),
   paymnet_date DATE,
-  created_by VARCHAR(150),
+  created_by_name VARCHAR(150),
   created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1  -- 0=Inactive, 1=Active
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_payment_details (
+  details_id, code, name, name_in_local, is_active, id, poid, utr_number, paid_amount, paymnet_date,
+  created_by_name, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'PAY001', 'Advance Payment', 'അഡ്വാൻസ് പേയ്മെന്റ്', true, 1, 501, 'UTR123456789', 15000.5000000000, CURRENT_DATE,
+  'Admin User', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: se_payment_history
 CREATE TABLE se_payment_history (
   history_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   invoiceid VARCHAR(15),
   utr_number VARCHAR(25),
@@ -126,10 +142,18 @@ CREATE TABLE se_payment_history (
   it_tdsamount NUMERIC(10,2) DEFAULT 0.00,
   gst_tdsamount NUMERIC(10,2) DEFAULT 0.00,
   payment_recipt VARCHAR(150),
-  created_by VARCHAR(150),
+  created_by_name VARCHAR(150),
   created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1  -- 0=Inactive, 1=Active
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_payment_history (
+  history_id, code, name, name_in_local, is_active, id, invoiceid, utr_number, amount, it_tdsamount,
+  gst_tdsamount, payment_recipt, created_by_name, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'PAYH001', 'Invoice Payment History', 'ഇൻവോയ്സ് പേയ്മെന്റ് ചരിത്രം', true, 1, 'INV1001', 'UTR987654321', '25000', 1000.00,
+  450.00, 'receipt_2025.pdf', 'Admin User', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: se_po_movement
