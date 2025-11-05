@@ -315,3 +315,7 @@ Get partner receipt and account balance report
 # [0.60.0] - 2025-11-05
 ### Added
 - Get special event kyc and location movement details
+
+# [0.61.0] - 2025-11-05
+### Added
+- Get dark fiber - master data and feeder list 

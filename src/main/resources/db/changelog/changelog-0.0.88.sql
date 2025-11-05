@@ -11,13 +11,30 @@ CREATE TABLE df_masterdata (
   unit_price DECIMAL(13,2) DEFAULT 0.00,
   noof_strands INTEGER DEFAULT 0,
   noof_strands_consumed INTEGER DEFAULT 0,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_masterdata PRIMARY KEY (data_id)
 );
 
 COMMENT ON COLUMN df_masterdata.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_masterdata (
+  data_id, id, district, link_type, link_type_id, link,
+  fiber_type, unit_price, noof_strands, noof_strands_consumed,
+  code, name, name_in_local,
+  is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 'Thiruvananthapuram', 'Backbone', 'LT-001', 'Trivandrum-Kollam Link',
+  'Single Mode', 1200.50, 24, 6,
+  'MD-001', 'Main Backbone Link', 'പ്രധാന ബാക്ക്ബോൺ ലിങ്ക്',
+  TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 
 DROP TABLE IF EXISTS df_otccharges CASCADE;
