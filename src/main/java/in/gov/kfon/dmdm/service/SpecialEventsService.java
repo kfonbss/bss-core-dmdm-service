@@ -36,4 +36,12 @@ public interface SpecialEventsService {
   List<CommonLookUp> locFinanceFetchAll();
 
   CommonLookUp locFinanceFetchById(UUID id);
+
+  List<CommonLookUp> paymentDetailsFetchAll();
+
+  CommonLookUp paymentDetailsFetchById(UUID id);
+
+  List<CommonLookUp> paymentHistoryFetchAll();
+
+  CommonLookUp paymentHistoryFetchById(UUID id);
 }

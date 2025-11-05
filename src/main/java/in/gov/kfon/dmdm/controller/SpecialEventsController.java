@@ -116,4 +116,28 @@ public class SpecialEventsController {
     var data = service.locFinanceFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("payment-details/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> paymentDetailsFetchAll() {
+    var data = service.paymentDetailsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("payment-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> paymentDetailsFetchById(@PathVariable UUID id) {
+    var data = service.paymentDetailsFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("payment-histories/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> paymentHistoryFetchAll() {
+    var data = service.paymentHistoryFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("payment-history/{id}")
+  public ResponseEntity<Response<CommonLookUp>> paymentHistoryFetchById(@PathVariable UUID id) {
+    var data = service.paymentHistoryFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }

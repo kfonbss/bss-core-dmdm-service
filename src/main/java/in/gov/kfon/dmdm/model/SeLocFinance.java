@@ -8,7 +8,7 @@ import lombok.Data;
 @Entity
 @Table(name = "se_locfinance")
 @Data
-public class SeLocFinance {
+public class SeLocFinance extends Auditor {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "finance_id")
