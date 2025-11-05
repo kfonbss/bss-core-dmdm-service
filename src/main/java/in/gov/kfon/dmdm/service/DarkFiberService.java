@@ -85,4 +85,12 @@ public interface DarkFiberService {
   List<CommonLookUp> fetchAllDisbursements();
 
   CommonLookUp fetchDisbursementById(UUID id);
+
+  List<CommonLookUp> fetchAllFeeders();
+
+  CommonLookUp fetchFeederById(UUID id);
+
+  List<CommonLookUp> fetchAllMasterData();
+
+  CommonLookUp fetchMasterDataById(UUID id);
 }
