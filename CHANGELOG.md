@@ -319,3 +319,7 @@ Get partner receipt and account balance report
 # [0.61.0] - 2025-11-05
 ### Added
 - Get dark fiber - master data and feeder list 
+
+# [0.62.0] - 2025-11-05
+### Added
+- Get dark fiber - otc charges and invoices

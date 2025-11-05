@@ -93,4 +93,12 @@ public interface DarkFiberService {
   List<CommonLookUp> fetchAllMasterData();
 
   CommonLookUp fetchMasterDataById(UUID id);
+
+  List<CommonLookUp> fetchAllOtcCharges();
+
+  CommonLookUp fetchOtcChargeById(UUID id);
+
+  List<CommonLookUp> fetchAllOtcInvoices();
+
+  CommonLookUp fetchOtcInvoiceById(UUID id);
 }

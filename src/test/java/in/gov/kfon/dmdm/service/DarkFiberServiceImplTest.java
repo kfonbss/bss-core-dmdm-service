@@ -41,6 +41,8 @@ public class DarkFiberServiceImplTest {
   @Mock private DfDisbursementRepository disbursementRepository;
   @Mock private DfFeederListRepository dfFeederListRepository;
   @Mock private DfMasterDataRepository dfMasterDataRepository;
+  @Mock private DfOtcChargesRepository dfOtcChargesRepository;
+  @Mock private DfOtcInvoiceRepository dfOtcInvoiceRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private DarkFiberServiceImpl service;
@@ -68,6 +70,8 @@ public class DarkFiberServiceImplTest {
   private DfDisbursement disbursement;
   private DfFeederList feederList;
   private DfMasterData masterData;
+  private DfOtcCharges otcCharges;
+  private DfOtcInvoice otcInvoice;
   private CommonLookUp commonLookUp;
 
   @BeforeEach
@@ -200,6 +204,20 @@ public class DarkFiberServiceImplTest {
     masterData.setName("Master Data 1");
     masterData.setNameInLocal("മാസ്റ്റർ ഡാറ്റ 1");
     masterData.setIsActive(true);
+
+    otcCharges = new DfOtcCharges();
+    otcCharges.setChargesId(id);
+    otcCharges.setCode("OTC001");
+    otcCharges.setName("OTC Charges 1");
+    otcCharges.setNameInLocal("ഒടിസി ചാർജ്");
+    otcCharges.setIsActive(true);
+
+    otcInvoice = new DfOtcInvoice();
+    otcInvoice.setId(id);
+    otcInvoice.setCode("OTINV001");
+    otcInvoice.setName("OTC Invoice 1");
+    otcInvoice.setNameInLocal("ഒടിസി ഇൻവോയ്സ്");
+    otcInvoice.setIsActive(true);
 
     commonLookUp = new CommonLookUp();
     commonLookUp.setId(id);
@@ -1117,6 +1135,88 @@ public class DarkFiberServiceImplTest {
 
     assertEquals("Master Data not found with id: " + id, exception.getMessage());
     verify(dfMasterDataRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllOtcCharges() {
+    when(dfOtcChargesRepository.findAll()).thenReturn(List.of(otcCharges));
+    when(modelMapper.map(otcCharges, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllOtcCharges();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfOtcChargesRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(otcCharges, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchOtcChargesById_Success() {
+    when(dfOtcChargesRepository.findById(id)).thenReturn(Optional.of(otcCharges));
+    when(modelMapper.map(otcCharges, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchOtcChargeById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfOtcChargesRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(otcCharges, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchOtcChargesById_NotFound() {
+    when(dfOtcChargesRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchOtcChargeById(id));
+
+    assertEquals("OTC Charges not found with id: " + id, exception.getMessage());
+    verify(dfOtcChargesRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllOtcInvoices() {
+    when(dfOtcInvoiceRepository.findAll()).thenReturn(List.of(otcInvoice));
+    when(modelMapper.map(otcInvoice, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllOtcInvoices();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfOtcInvoiceRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(otcInvoice, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchOtcInvoiceById_Success() {
+    when(dfOtcInvoiceRepository.findById(id)).thenReturn(Optional.of(otcInvoice));
+    when(modelMapper.map(otcInvoice, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchOtcInvoiceById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfOtcInvoiceRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(otcInvoice, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchOtcInvoiceById_NotFound() {
+    when(dfOtcInvoiceRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchOtcInvoiceById(id));
+
+    assertEquals("OTC Invoice not found with id: " + id, exception.getMessage());
+    verify(dfOtcInvoiceRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
 }

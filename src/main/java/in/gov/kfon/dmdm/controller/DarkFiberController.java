@@ -313,4 +313,29 @@ public class DarkFiberController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched master data by ID"));
   }
+
+  @GetMapping("/charges")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllOtcCharges() {
+    var data = darkFiberService.fetchAllOtcCharges();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all OTC charges"));
+  }
+
+  @GetMapping("/charge/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchOtcChargeById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchOtcChargeById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched OTC charge by ID"));
+  }
+
+  @GetMapping("/invoices")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllOtcInvoices() {
+    var data = darkFiberService.fetchAllOtcInvoices();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all OTC invoices"));
+  }
+
+  @GetMapping("/invoice/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchOtcInvoiceById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchOtcInvoiceById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched OTC invoice by ID"));
+  }
 }
