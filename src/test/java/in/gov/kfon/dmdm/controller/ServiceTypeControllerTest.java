@@ -49,7 +49,7 @@ public class ServiceTypeControllerTest {
     when(service.fetchAllServiceTypes()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/service-types"))
+        .perform(get("/api/service-types/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all service types"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -79,7 +79,7 @@ public class ServiceTypeControllerTest {
     when(service.fetchAllServices()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/services"))
+        .perform(get("/api/services/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all services"))
         .andExpect(jsonPath("$.data.length()").value(1));

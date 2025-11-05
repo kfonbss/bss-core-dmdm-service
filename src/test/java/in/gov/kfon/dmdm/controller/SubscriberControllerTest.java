@@ -202,7 +202,7 @@ public class SubscriberControllerTest {
     when(service.fetchAllFeedbacks()).thenReturn(List.of(lookupFeedback));
 
     mockMvc
-        .perform(get("/api/subscriber/feedbacks"))
+        .perform(get("/api/subscriber/feedbacks/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all subscriber feedbacks"))
         .andExpect(jsonPath("$.data").isArray())
@@ -227,7 +227,7 @@ public class SubscriberControllerTest {
     when(service.fetchAllOffers()).thenReturn(List.of(lookupOffer));
 
     mockMvc
-        .perform(get("/api/subscriber/offers"))
+        .perform(get("/api/subscriber/offers/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all subscriber offers"))
         .andExpect(jsonPath("$.data").isArray())
@@ -252,7 +252,7 @@ public class SubscriberControllerTest {
     when(service.fetchAllSubscriberStatusTypes()).thenReturn(List.of(lookupStatusType));
 
     mockMvc
-        .perform(get("/api/subscriber/status-types"))
+        .perform(get("/api/subscriber/status-types/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all subscriber status types"))
         .andExpect(jsonPath("$.data").isArray())
@@ -277,7 +277,7 @@ public class SubscriberControllerTest {
     when(service.fetchAllSubscriberAccounts()).thenReturn(List.of(lookupSubscriberAccount));
 
     mockMvc
-        .perform(get("/api/subscriber/accounts"))
+        .perform(get("/api/subscriber/accounts/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all subscriber accounts"))
         .andExpect(jsonPath("$.data").isArray())
@@ -303,7 +303,7 @@ public class SubscriberControllerTest {
     when(service.fetchAllSubscriberAccountStaticIps()).thenReturn(List.of(lookupStaticIp));
 
     mockMvc
-        .perform(get("/api/subscriber/account-static-ips"))
+        .perform(get("/api/subscriber/account-static-ips/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all subscriber account static IPs"))
         .andExpect(jsonPath("$.data.length()").value(1))
@@ -326,7 +326,7 @@ public class SubscriberControllerTest {
     when(service.fetchAllSubscriberDataUsages()).thenReturn(List.of(lookupDataUsage));
 
     mockMvc
-        .perform(get("/api/subscriber/data-usages"))
+        .perform(get("/api/subscriber/data-usages/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all subscriber data usages"))
         .andExpect(jsonPath("$.data.length()").value(1))
@@ -348,7 +348,7 @@ public class SubscriberControllerTest {
   void testFetchAllSubscriberDetails() throws Exception {
     when(service.fetchAllSubscriberDetails()).thenReturn(List.of(lookupSubscriberDetail));
     mockMvc
-        .perform(get("/api/subscriber/details"))
+        .perform(get("/api/subscriber/details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all subscriber details"))
         .andExpect(jsonPath("$.data").isArray())
@@ -373,7 +373,7 @@ public class SubscriberControllerTest {
     when(service.fetchAllSubscriberEmails()).thenReturn(List.of(lookupSubscriberEmail));
 
     mockMvc
-        .perform(get("/api/subscriber/emails"))
+        .perform(get("/api/subscriber/emails/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all subscriber emails"))
         .andExpect(jsonPath("$.data").isArray())
@@ -423,7 +423,7 @@ public class SubscriberControllerTest {
     when(service.fetchAllContactInfo()).thenReturn(List.of(lookupContact));
 
     mockMvc
-        .perform(get("/api/subscriber/contact-informations"))
+        .perform(get("/api/subscriber/contact-informations/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all subscriber contact information"))
         .andExpect(jsonPath("$.data").isArray())
@@ -498,7 +498,7 @@ public class SubscriberControllerTest {
     when(service.fetchAllSubscriptions()).thenReturn(List.of(lookUpSubscription));
 
     mockMvc
-        .perform(get("/api/subscriber/subscriptions"))
+        .perform(get("/api/subscriber/subscriptions/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all subscriptions"))
         .andExpect(jsonPath("$.data").isArray())
@@ -525,7 +525,7 @@ public class SubscriberControllerTest {
     when(service.fetchAllProfiles()).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/subscriber/profiles"))
+        .perform(get("/api/subscriber/profiles/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all profiles"))
         .andExpect(jsonPath("$.data").isArray())
@@ -554,7 +554,7 @@ public class SubscriberControllerTest {
     when(service.fetchAllSubscriberUsernames()).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/subscriber/usernames"))
+        .perform(get("/api/subscriber/usernames/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all usernames"))
         .andExpect(jsonPath("$.data").isArray())

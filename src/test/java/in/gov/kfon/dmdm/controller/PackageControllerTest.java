@@ -90,7 +90,7 @@ public class PackageControllerTest {
     when(service.fetchAllPackageMaps()).thenReturn(List.of(lookupMap));
 
     mockMvc
-        .perform(get("/api/package/maps"))
+        .perform(get("/api/package/maps/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all package maps"))
         .andExpect(jsonPath("$.data").isArray())
@@ -115,7 +115,7 @@ public class PackageControllerTest {
     when(service.fetchAllPackageCategories()).thenReturn(List.of(lookupCategory));
 
     mockMvc
-        .perform(get("/api/package/categories"))
+        .perform(get("/api/package/categories/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all package categories"))
         .andExpect(jsonPath("$.data").isArray())
@@ -140,7 +140,7 @@ public class PackageControllerTest {
     when(service.fetchAllChangeRequests()).thenReturn(List.of(lookupChangeRequest));
 
     mockMvc
-        .perform(get("/api/package/change-requests"))
+        .perform(get("/api/package/change-requests/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all change requests"))
         .andExpect(jsonPath("$.data").isArray())
@@ -164,7 +164,7 @@ public class PackageControllerTest {
     when(service.fetchAllPackages()).thenReturn(List.of(lookupPackages));
 
     mockMvc
-        .perform(get("/api/package"))
+        .perform(get("/api/package/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all packages"))
         .andExpect(jsonPath("$.data").isArray())
@@ -188,7 +188,7 @@ public class PackageControllerTest {
     when(service.fetchAllPackage()).thenReturn(List.of(lookupPackage));
 
     mockMvc
-        .perform(get("/api/package/entities"))
+        .perform(get("/api/package/entities/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all package entities"))
         .andExpect(jsonPath("$.data").isArray())

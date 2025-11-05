@@ -49,7 +49,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllGroupDetails()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/group-details"))
+        .perform(get("/api/darkfiber/group-details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all group details"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -71,7 +71,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllGroupMovements()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/group-movements"))
+        .perform(get("/api/darkfiber/group-movements/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all group movements"));
   }
@@ -91,7 +91,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllGroupInvoices()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/group-invoices"))
+        .perform(get("/api/darkfiber/group-invoices/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all group invoices"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -113,7 +113,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllGroupInvoiceMasters()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/group-invoice-masters"))
+        .perform(get("/api/darkfiber/group-invoice-masters/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all invoice masters"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -135,7 +135,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllLinkDetails()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/link-details"))
+        .perform(get("/api/darkfiber/link-details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all link details"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -157,7 +157,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllLinkRenewalHistories()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/link-renewal-histories"))
+        .perform(get("/api/darkfiber/link-renewal-histories/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all link renewal histories"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -179,7 +179,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllPowerRatings()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/power-ratings"))
+        .perform(get("/api/darkfiber/power-ratings/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all power ratings"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -201,7 +201,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllPurchaseOrders()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/purchase-orders"))
+        .perform(get("/api/darkfiber/purchase-orders/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all purchase orders"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -223,7 +223,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllRenewalDetails()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/renewal-details"))
+        .perform(get("/api/darkfiber/renewal-details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all renewal details"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -245,7 +245,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllSubFinance()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/subfinances"))
+        .perform(get("/api/darkfiber/subfinances/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all sub finances"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -267,7 +267,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllSubscribers()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/subscribers"))
+        .perform(get("/api/darkfiber/subscribers/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all subscribers"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -289,7 +289,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllTransRenewalDetails()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/trans-renewal-details"))
+        .perform(get("/api/darkfiber/trans-renewal-details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all trans renewal details"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -311,7 +311,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllTransDetails()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/trans-details"))
+        .perform(get("/api/darkfiber/trans-details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all trans details"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -333,7 +333,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllTransDetailsMovements()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/trans-movements"))
+        .perform(get("/api/darkfiber/trans-movements/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all trans movements"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -355,7 +355,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllWorkorders()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/workorders"))
+        .perform(get("/api/darkfiber/workorders/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all workorders"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -377,7 +377,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllBankDetails()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/bank-details"))
+        .perform(get("/api/darkfiber/bank-details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all bank details"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -399,7 +399,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllCustomerDetails()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/customer-details"))
+        .perform(get("/api/darkfiber/customer-details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all customer details"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -421,7 +421,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllDemandNoteHistory()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/demand-notes"))
+        .perform(get("/api/darkfiber/demand-notes/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all demand note history"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -443,7 +443,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllDemandNotes()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/demand-note-masters"))
+        .perform(get("/api/darkfiber/demand-note-masters/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all demand notes"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -465,7 +465,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllDisbursements()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/disbursements"))
+        .perform(get("/api/darkfiber/disbursements/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all disbursements"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -487,7 +487,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllFeeders()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/feeder-lists"))
+        .perform(get("/api/darkfiber/feeder-lists/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all feeder lists"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -509,7 +509,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllMasterData()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/master-datas"))
+        .perform(get("/api/darkfiber/master-datas/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all master data"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -531,7 +531,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllOtcCharges()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/charges"))
+        .perform(get("/api/darkfiber/charges/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all OTC charges"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -553,7 +553,7 @@ public class DarkFiberControllerTest {
     when(service.fetchAllOtcInvoices()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/darkfiber/invoices"))
+        .perform(get("/api/darkfiber/invoices/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all OTC invoices"))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()));
@@ -567,6 +567,28 @@ public class DarkFiberControllerTest {
         .perform(get("/api/darkfiber/invoice/{id}", id))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched OTC invoice by ID"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchAllPaymentHistories() throws Exception {
+    when(service.fetchAllPaymentHistories()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/darkfiber/payment-histories/fetch-all"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all payment histories"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchPaymentHistoryById() throws Exception {
+    when(service.fetchPaymentHistoryById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/darkfiber/payment-history/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched payment history by ID"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
 }

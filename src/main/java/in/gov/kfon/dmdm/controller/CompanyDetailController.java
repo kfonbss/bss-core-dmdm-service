@@ -20,7 +20,7 @@ public class CompanyDetailController {
 
   private final CompanyDetailService service;
 
-  @GetMapping("/company-details")
+  @GetMapping("/company-details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllCompanyDetails() {
     var data = service.fetchAllCompanyDetails();
     return ResponseEntity.status(HttpStatus.OK)

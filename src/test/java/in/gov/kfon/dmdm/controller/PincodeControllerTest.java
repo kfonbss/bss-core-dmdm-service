@@ -79,7 +79,7 @@ class PincodeControllerTest {
     when(service.fetchAllPincodeDetails()).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/pincode/details"))
+        .perform(get("/api/pincode/details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all pincode details"))
         .andExpect(jsonPath("$.data").isArray())

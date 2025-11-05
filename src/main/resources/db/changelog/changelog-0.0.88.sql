@@ -156,11 +156,25 @@ CREATE TABLE df_payment_history (
   it_tdsamount DECIMAL(10,2) DEFAULT 0.00,
   gst_tdsamount DECIMAL(10,2) DEFAULT 0.00,
   payment_recipt VARCHAR(150) DEFAULT NULL,
-  created_by VARCHAR(150) DEFAULT NULL,
-  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_payment_history PRIMARY KEY (history_id)
 );
 
 COMMENT ON COLUMN df_payment_history.is_active IS '0=Inactive,1=Active';
+
+INSERT INTO df_payment_history (
+  history_id, id, invoiceid, utr_number, amount, it_tdsamount, gst_tdsamount,
+  payment_recipt, code, name, name_in_local, is_active,
+  created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 1001, 'UTR9876543210', 25000.7500000000, 500.00, 250.00,
+  'PAYMENT_REC_2025_001.pdf', 'PAY-001', 'Dark Fiber Payment', 'ഡാർക്ക് ഫൈബർ പേയ്മെന്റ്',
+  TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);

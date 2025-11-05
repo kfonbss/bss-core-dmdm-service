@@ -20,7 +20,7 @@ public class RoleController {
 
   private final RoleService service;
 
-  @GetMapping("/role-types")
+  @GetMapping("/role-types/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllRoleTypes() {
     var data = service.fetchAllRoleTypes();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all role types"));
@@ -32,7 +32,7 @@ public class RoleController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched role type"));
   }
 
-  @GetMapping("/roles")
+  @GetMapping("/roles/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllRoles() {
     var data = service.fetchAllRoles();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all roles"));
@@ -44,7 +44,7 @@ public class RoleController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched role"));
   }
 
-  @GetMapping("/roles-modules")
+  @GetMapping("/roles-modules/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllRolesModules() {
     var data = service.fetchAllRolesModules();
     return ResponseEntity.status(HttpStatus.OK)

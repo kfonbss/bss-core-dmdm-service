@@ -59,7 +59,7 @@ class PopControllerTest {
     when(service.fetchAllPopMasters()).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/pop/masters"))
+        .perform(get("/api/pop/masters/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data.length()").value(1))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()))
@@ -89,7 +89,7 @@ class PopControllerTest {
     when(service.fetchAllPopMasterBackups()).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/pop/master-backups"))
+        .perform(get("/api/pop/master-backups/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data.length()").value(1))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()))
@@ -119,7 +119,7 @@ class PopControllerTest {
     when(service.fetchAllDfPopLists()).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/pop/df-pop-lists"))
+        .perform(get("/api/pop/df-pop-lists/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data.length()").value(1))
         .andExpect(jsonPath("$.data[0].id").value(dfPopListId.toString()))

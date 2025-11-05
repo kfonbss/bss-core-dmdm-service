@@ -51,7 +51,7 @@ public class CompanyDetailControllerTest {
     when(service.fetchAllCompanyDetails()).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/company-details"))
+        .perform(get("/api/company-details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all company details"))
         .andExpect(jsonPath("$.data").isArray())
