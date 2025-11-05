@@ -53,11 +53,11 @@ public interface SpecialEventsService {
 
   CommonLookUp proposalMovementFetchById(UUID id);
 
-    List<CommonLookUp> proposalsFetchAll();
+  List<CommonLookUp> proposalsFetchAll();
 
-    CommonLookUp proposalsFetchById(UUID id);
+  CommonLookUp proposalsFetchById(UUID id);
 
-    List<CommonLookUp> purchaseOrderFetchAll();
+  List<CommonLookUp> purchaseOrderFetchAll();
 
-    CommonLookUp purchaseOrderFetchById(UUID id);
+  CommonLookUp purchaseOrderFetchById(UUID id);
 }

@@ -29,8 +29,9 @@ class SpecialEventsServiceImplTest {
   private SePaymentHistoryRepository paymentHistoryRepository;
   private SePoMovementRepository poMovementRepository;
   private SeProposalMovementRepository proposalMovementRepository;
-    private SePurchaseOrderRepository purchaseOrderRepository;
-    private SeProposalsRepository proposalsRepository;
+  private SePurchaseOrderRepository purchaseOrderRepository;
+  private SeProposalsRepository proposalsRepository;
+
   @BeforeEach
   void setUp() {
     modelMapper = spy(new ModelMapper());
@@ -46,9 +47,8 @@ class SpecialEventsServiceImplTest {
     paymentHistoryRepository = mock(SePaymentHistoryRepository.class);
     poMovementRepository = mock(SePoMovementRepository.class);
     proposalMovementRepository = mock(SeProposalMovementRepository.class);
-      purchaseOrderRepository=mock(SePurchaseOrderRepository.class);
-              proposalsRepository=mock(SeProposalsRepository.class);
-
+    purchaseOrderRepository = mock(SePurchaseOrderRepository.class);
+    proposalsRepository = mock(SeProposalsRepository.class);
 
     service =
         new SpecialEventsServiceImpl(
@@ -65,8 +65,8 @@ class SpecialEventsServiceImplTest {
             paymentHistoryRepository,
             poMovementRepository,
             proposalMovementRepository,
-                purchaseOrderRepository,
-                proposalsRepository);
+            purchaseOrderRepository,
+            proposalsRepository);
     service.setupMapper();
   }
 
@@ -489,74 +489,74 @@ class SpecialEventsServiceImplTest {
 
     assertThrows(EntityNotFoundException.class, () -> service.proposalMovementFetchById(id));
   }
-    @Test
-    void testPurchaseOrderFetchAll_ShouldReturnMappedList() {
-        SePurchaseOrder purchaseOrder = new SePurchaseOrder();
-        purchaseOrder.setId(UUID.randomUUID());
 
-        when(purchaseOrderRepository.findAll()).thenReturn(List.of(purchaseOrder));
+  @Test
+  void testPurchaseOrderFetchAll_ShouldReturnMappedList() {
+    SePurchaseOrder purchaseOrder = new SePurchaseOrder();
+    purchaseOrder.setId(UUID.randomUUID());
 
-        List<CommonLookUp> result = service.purchaseOrderFetchAll();
+    when(purchaseOrderRepository.findAll()).thenReturn(List.of(purchaseOrder));
 
-        assertEquals(1, result.size());
-        verify(purchaseOrderRepository, times(1)).findAll();
-    }
+    List<CommonLookUp> result = service.purchaseOrderFetchAll();
 
-    @Test
-    void testPurchaseOrderFetchById_ShouldReturnMappedObject() {
-        UUID id = UUID.randomUUID();
-        SePurchaseOrder purchaseOrder = new SePurchaseOrder();
-        purchaseOrder.setId(id);
+    assertEquals(1, result.size());
+    verify(purchaseOrderRepository, times(1)).findAll();
+  }
 
-        when(purchaseOrderRepository.findById(id)).thenReturn(Optional.of(purchaseOrder));
+  @Test
+  void testPurchaseOrderFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    SePurchaseOrder purchaseOrder = new SePurchaseOrder();
+    purchaseOrder.setId(id);
 
-        CommonLookUp result = service.purchaseOrderFetchById(id);
+    when(purchaseOrderRepository.findById(id)).thenReturn(Optional.of(purchaseOrder));
 
-        assertNotNull(result);
-        verify(purchaseOrderRepository, times(1)).findById(id);
-    }
+    CommonLookUp result = service.purchaseOrderFetchById(id);
 
-    @Test
-    void testPurchaseOrderFetchById_ShouldThrowException_WhenNotFound() {
-        UUID id = UUID.randomUUID();
-        when(purchaseOrderRepository.findById(id)).thenReturn(Optional.empty());
+    assertNotNull(result);
+    verify(purchaseOrderRepository, times(1)).findById(id);
+  }
 
-        assertThrows(EntityNotFoundException.class, () -> service.purchaseOrderFetchById(id));
-    }
+  @Test
+  void testPurchaseOrderFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(purchaseOrderRepository.findById(id)).thenReturn(Optional.empty());
 
+    assertThrows(EntityNotFoundException.class, () -> service.purchaseOrderFetchById(id));
+  }
 
-    @Test
-    void testProposalsFetchAll_ShouldReturnMappedList() {
-        SeProposals proposals = new SeProposals();
-        proposals.setProposalsId(UUID.randomUUID());
+  @Test
+  void testProposalsFetchAll_ShouldReturnMappedList() {
+    SeProposals proposals = new SeProposals();
+    proposals.setProposalsId(UUID.randomUUID());
 
-        when(proposalsRepository.findAll()).thenReturn(List.of(proposals));
+    when(proposalsRepository.findAll()).thenReturn(List.of(proposals));
 
-        List<CommonLookUp> result = service.proposalsFetchAll();
+    List<CommonLookUp> result = service.proposalsFetchAll();
 
-        assertEquals(1, result.size());
-        verify(proposalsRepository, times(1)).findAll();
-    }
+    assertEquals(1, result.size());
+    verify(proposalsRepository, times(1)).findAll();
+  }
 
-    @Test
-    void testProposalsFetchById_ShouldReturnMappedObject() {
-        UUID id = UUID.randomUUID();
-        SeProposals proposals = new SeProposals();
-        proposals.setProposalsId(id);
+  @Test
+  void testProposalsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    SeProposals proposals = new SeProposals();
+    proposals.setProposalsId(id);
 
-        when(proposalsRepository.findById(id)).thenReturn(Optional.of(proposals));
+    when(proposalsRepository.findById(id)).thenReturn(Optional.of(proposals));
 
-        CommonLookUp result = service.proposalsFetchById(id);
+    CommonLookUp result = service.proposalsFetchById(id);
 
-        assertNotNull(result);
-        verify(proposalsRepository, times(1)).findById(id);
-    }
+    assertNotNull(result);
+    verify(proposalsRepository, times(1)).findById(id);
+  }
 
-    @Test
-    void testProposalsFetchById_ShouldThrowException_WhenNotFound() {
-        UUID id = UUID.randomUUID();
-        when(proposalsRepository.findById(id)).thenReturn(Optional.empty());
+  @Test
+  void testProposalsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(proposalsRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> service.proposalsFetchById(id));
-    }
+    assertThrows(EntityNotFoundException.class, () -> service.proposalsFetchById(id));
+  }
 }
