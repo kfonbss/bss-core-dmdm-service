@@ -20,7 +20,7 @@ public class SubscriberController {
 
   private final SubscriberService service;
 
-  @GetMapping("/feedbacks")
+  @GetMapping("/feedbacks/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllFeedbacks() {
     var data = service.fetchAllFeedbacks();
     return ResponseEntity.status(HttpStatus.OK)
@@ -34,7 +34,7 @@ public class SubscriberController {
         .body(Response.ok(data, "Fetched subscriber feedback"));
   }
 
-  @GetMapping("/offers")
+  @GetMapping("/offers/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllOffers() {
     var data = service.fetchAllOffers();
     return ResponseEntity.status(HttpStatus.OK)
@@ -47,7 +47,7 @@ public class SubscriberController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched subscriber offer"));
   }
 
-  @GetMapping("/status-types")
+  @GetMapping("/status-types/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllStatusTypes() {
     var data = service.fetchAllSubscriberStatusTypes();
     return ResponseEntity.status(HttpStatus.OK)
@@ -61,7 +61,7 @@ public class SubscriberController {
         .body(Response.ok(data, "Fetched subscriber status type"));
   }
 
-  @GetMapping("/accounts")
+  @GetMapping("/accounts/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllAccounts() {
     var data = service.fetchAllSubscriberAccounts();
     return ResponseEntity.status(HttpStatus.OK)
@@ -75,7 +75,7 @@ public class SubscriberController {
         .body(Response.ok(data, "Fetched subscriber account"));
   }
 
-  @GetMapping("/account-static-ips")
+  @GetMapping("/account-static-ips/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllSubscriberAccountStaticIps() {
     var data = service.fetchAllSubscriberAccountStaticIps();
     return ResponseEntity.ok(Response.ok(data, "Fetched all subscriber account static IPs"));
@@ -88,7 +88,7 @@ public class SubscriberController {
     return ResponseEntity.ok(Response.ok(data, "Fetched subscriber account static IP"));
   }
 
-  @GetMapping("/data-usages")
+  @GetMapping("/data-usages/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllSubscriberDataUsages() {
     var data = service.fetchAllSubscriberDataUsages();
     return ResponseEntity.ok(Response.ok(data, "Fetched all subscriber data usages"));
@@ -101,7 +101,7 @@ public class SubscriberController {
     return ResponseEntity.ok(Response.ok(data, "Fetched subscriber data usage"));
   }
 
-  @GetMapping("/details")
+  @GetMapping("/details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllSubscriberDetails() {
     var data = service.fetchAllSubscriberDetails();
     return ResponseEntity.status(HttpStatus.OK)
@@ -115,7 +115,7 @@ public class SubscriberController {
         .body(Response.ok(data, "Fetched subscriber detail"));
   }
 
-  @GetMapping("/emails")
+  @GetMapping("/emails/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllSubscriberEmails() {
     var data = service.fetchAllSubscriberEmails();
     return ResponseEntity.status(HttpStatus.OK)
@@ -142,7 +142,7 @@ public class SubscriberController {
         .body(Response.ok(data, "Fetched subscriber finance record"));
   }
 
-  @GetMapping("/contact-informations")
+  @GetMapping("/contact-informations/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllContactInfo() {
     var data = service.fetchAllContactInfo();
     return ResponseEntity.status(HttpStatus.OK)
@@ -181,7 +181,7 @@ public class SubscriberController {
         .body(Response.ok(data, "Fetched subscriber invoice"));
   }
 
-  @GetMapping("/profiles")
+  @GetMapping("/profiles/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllProfiles() {
     var data = service.fetchAllProfiles();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all profiles"));
@@ -193,7 +193,7 @@ public class SubscriberController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched profile"));
   }
 
-  @GetMapping("/usernames")
+  @GetMapping("/usernames/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllUsernames() {
     var data = service.fetchAllSubscriberUsernames();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all usernames"));
@@ -205,7 +205,7 @@ public class SubscriberController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched username"));
   }
 
-  @GetMapping("/subscriptions")
+  @GetMapping("/subscriptions/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllSubscriptions() {
     var data = service.fetchAllSubscriptions();
     return ResponseEntity.status(HttpStatus.OK)

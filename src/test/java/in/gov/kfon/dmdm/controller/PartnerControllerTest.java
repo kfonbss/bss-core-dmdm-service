@@ -50,7 +50,7 @@ public class PartnerControllerTest {
     when(service.fetchAllFinanceDetails()).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/partner/finances"))
+        .perform(get("/api/partner/finances/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner financial details"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -72,7 +72,7 @@ public class PartnerControllerTest {
     when(service.fetchAllTaxpayerLogs()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/taxpayer-logs"))
+        .perform(get("/api/partner/taxpayer-logs/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner taxpayer logs"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -94,7 +94,7 @@ public class PartnerControllerTest {
     when(service.fetchAllPartnerGroups()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/groups"))
+        .perform(get("/api/partner/groups/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner groups"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -116,7 +116,7 @@ public class PartnerControllerTest {
     when(service.fetchAllPartnerGstDetails()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/gst-details"))
+        .perform(get("/api/partner/gst-details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner GST details"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -138,7 +138,7 @@ public class PartnerControllerTest {
     when(service.fetchAllGstInvoices()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/gst-invoices"))
+        .perform(get("/api/partner/gst-invoices/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner GST invoices"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -160,7 +160,7 @@ public class PartnerControllerTest {
     when(service.fetchAllOnlineRecharges()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/online-recharges"))
+        .perform(get("/api/partner/online-recharges/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner online recharges"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -182,7 +182,7 @@ public class PartnerControllerTest {
     when(service.fetchAllPartnerReceipts()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/receipts"))
+        .perform(get("/api/partner/receipts/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner receipts"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -204,7 +204,7 @@ public class PartnerControllerTest {
     when(service.fetchAllPartnerAccountReports()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/account-reports"))
+        .perform(get("/api/partner/account-reports/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner account reports"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -226,7 +226,7 @@ public class PartnerControllerTest {
     when(service.fetchAllPartnerDisbursements()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/disbursements"))
+        .perform(get("/api/partner/disbursements/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner disbursements"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -248,7 +248,7 @@ public class PartnerControllerTest {
     when(service.fetchAllPartnerFinances()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/finance-records"))
+        .perform(get("/api/partner/finance-records/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner finance records"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -270,7 +270,7 @@ public class PartnerControllerTest {
     when(service.fetchAllPartnerConfirmationsFromAgnp()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/confirmations"))
+        .perform(get("/api/partner/confirmations/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner confirmations from AGNP"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -292,7 +292,7 @@ public class PartnerControllerTest {
     when(service.fetchAllPartnerConfirmationMovements()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/confirmation-movements"))
+        .perform(get("/api/partner/confirmation-movements/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner confirmation movements"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -314,7 +314,7 @@ public class PartnerControllerTest {
     when(service.fetchAllGstValets()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/gst-valets"))
+        .perform(get("/api/partner/gst-valets/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner GST valets"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -336,7 +336,7 @@ public class PartnerControllerTest {
     when(service.fetchAllRevenues()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/revenues"))
+        .perform(get("/api/partner/revenues/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner revenues"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -358,7 +358,7 @@ public class PartnerControllerTest {
     when(service.fetchAllPartnerDetails()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/details"))
+        .perform(get("/api/partner/details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner details"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -380,7 +380,7 @@ public class PartnerControllerTest {
     when(service.fetchAllAccounts()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/accounts"))
+        .perform(get("/api/partner/accounts/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner accounts"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -402,7 +402,7 @@ public class PartnerControllerTest {
     when(service.fetchAllAgreementDetails()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/agreement-details"))
+        .perform(get("/api/partner/agreement-details/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all partner agreement details"))
         .andExpect(jsonPath("$.data.length()").value(1));
@@ -424,7 +424,7 @@ public class PartnerControllerTest {
     when(service.fetchAllDemoUsers()).thenReturn(List.of(lookup));
 
     mockMvc
-        .perform(get("/api/partner/demo-users"))
+        .perform(get("/api/partner/demo-users/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all demo users"))
         .andExpect(jsonPath("$.data.length()").value(1));

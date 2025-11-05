@@ -43,6 +43,7 @@ public class DarkFiberServiceImplTest {
   @Mock private DfMasterDataRepository dfMasterDataRepository;
   @Mock private DfOtcChargesRepository dfOtcChargesRepository;
   @Mock private DfOtcInvoiceRepository dfOtcInvoiceRepository;
+  @Mock private DfPaymentHistoryRepository dfPaymentHistoryRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private DarkFiberServiceImpl service;
@@ -72,6 +73,7 @@ public class DarkFiberServiceImplTest {
   private DfMasterData masterData;
   private DfOtcCharges otcCharges;
   private DfOtcInvoice otcInvoice;
+  private DfPaymentHistory paymentHistory;
   private CommonLookUp commonLookUp;
 
   @BeforeEach
@@ -218,6 +220,13 @@ public class DarkFiberServiceImplTest {
     otcInvoice.setName("OTC Invoice 1");
     otcInvoice.setNameInLocal("ഒടിസി ഇൻവോയ്സ്");
     otcInvoice.setIsActive(true);
+
+    paymentHistory = new DfPaymentHistory();
+    paymentHistory.setHistoryId(id);
+    paymentHistory.setCode("PH001");
+    paymentHistory.setName("Payment History 1");
+    paymentHistory.setNameInLocal("പെയ്മെന്റ് ഹിസ്റ്ററി 1");
+    paymentHistory.setIsActive(true);
 
     commonLookUp = new CommonLookUp();
     commonLookUp.setId(id);
@@ -1217,6 +1226,47 @@ public class DarkFiberServiceImplTest {
 
     assertEquals("OTC Invoice not found with id: " + id, exception.getMessage());
     verify(dfOtcInvoiceRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllPaymentHistories() {
+    when(dfPaymentHistoryRepository.findAll()).thenReturn(List.of(paymentHistory));
+    when(modelMapper.map(paymentHistory, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllPaymentHistories();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfPaymentHistoryRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(paymentHistory, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchPaymentHistoryById_Success() {
+    when(dfPaymentHistoryRepository.findById(id)).thenReturn(Optional.of(paymentHistory));
+    when(modelMapper.map(paymentHistory, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchPaymentHistoryById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfPaymentHistoryRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(paymentHistory, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchPaymentHistoryById_NotFound() {
+    when(dfPaymentHistoryRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchPaymentHistoryById(id));
+
+    assertEquals("Payment History not found with id: " + id, exception.getMessage());
+    verify(dfPaymentHistoryRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
 }

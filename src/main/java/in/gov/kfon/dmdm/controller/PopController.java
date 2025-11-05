@@ -20,7 +20,7 @@ public class PopController {
 
   private final PopService service;
 
-  @GetMapping("/masters")
+  @GetMapping("/masters/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPopMasters() {
     var data = service.fetchAllPopMasters();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all pop masters"));
@@ -32,7 +32,7 @@ public class PopController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched pop master"));
   }
 
-  @GetMapping("/master-backups")
+  @GetMapping("/master-backups/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPopMasterBackups() {
     var data = service.fetchAllPopMasterBackups();
     return ResponseEntity.status(HttpStatus.OK)
@@ -46,7 +46,7 @@ public class PopController {
         .body(Response.ok(data, "Fetched pop master backup"));
   }
 
-  @GetMapping("/df-pop-lists")
+  @GetMapping("/df-pop-lists/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDfPopLists() {
     var data = service.fetchAllDfPopLists();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all DF POP lists"));

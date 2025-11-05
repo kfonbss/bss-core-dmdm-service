@@ -50,7 +50,7 @@ public class RoleControllerTest {
     when(service.fetchAllRoleTypes()).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/role-types"))
+        .perform(get("/api/role-types/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all role types"))
         .andExpect(jsonPath("$.data").isArray())
@@ -79,7 +79,7 @@ public class RoleControllerTest {
     when(service.fetchAllRoles()).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/roles"))
+        .perform(get("/api/roles/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all roles"))
         .andExpect(jsonPath("$.data").isArray())
@@ -103,7 +103,7 @@ public class RoleControllerTest {
     when(service.fetchAllRolesModules()).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/roles-modules"))
+        .perform(get("/api/roles-modules/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all roles modules"))
         .andExpect(jsonPath("$.data").isArray())

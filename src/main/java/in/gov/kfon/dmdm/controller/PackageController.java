@@ -20,7 +20,7 @@ public class PackageController {
 
   private final PackageService service;
 
-  @GetMapping("/maps")
+  @GetMapping("/maps/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPackageMaps() {
     var data = service.fetchAllPackageMaps();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all package maps"));
@@ -32,7 +32,7 @@ public class PackageController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched package map"));
   }
 
-  @GetMapping("/categories")
+  @GetMapping("/categories/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPackageCategories() {
     var data = service.fetchAllPackageCategories();
     return ResponseEntity.status(HttpStatus.OK)
@@ -45,7 +45,7 @@ public class PackageController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched package category"));
   }
 
-  @GetMapping("/change-requests")
+  @GetMapping("/change-requests/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllChangeRequests() {
     var data = service.fetchAllChangeRequests();
     return ResponseEntity.status(HttpStatus.OK)
@@ -58,7 +58,7 @@ public class PackageController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched change request"));
   }
 
-  @GetMapping
+  @GetMapping("/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPackages() {
     var data = service.fetchAllPackages();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all packages"));
@@ -70,7 +70,7 @@ public class PackageController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched package"));
   }
 
-  @GetMapping("/entities")
+  @GetMapping("/entities/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPackageEntities() {
     var data = service.fetchAllPackage();
     return ResponseEntity.status(HttpStatus.OK)

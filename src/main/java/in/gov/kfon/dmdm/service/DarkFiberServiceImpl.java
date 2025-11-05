@@ -40,6 +40,7 @@ public class DarkFiberServiceImpl implements DarkFiberService {
   private final DfMasterDataRepository dfMasterDataRepository;
   private final DfOtcInvoiceRepository dfOtcInvoiceRepository;
   private final DfOtcChargesRepository dfOtcChargesRepository;
+  private final DfPaymentHistoryRepository dfPaymentHistoryRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -459,5 +460,22 @@ public class DarkFiberServiceImpl implements DarkFiberService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("OTC Invoice not found with id: " + id));
     return modelMapper.map(invoice, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllPaymentHistories() {
+    return dfPaymentHistoryRepository.findAll().stream()
+        .map(payment -> modelMapper.map(payment, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchPaymentHistoryById(UUID id) {
+    DfPaymentHistory payment =
+        dfPaymentHistoryRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Payment History not found with id: " + id));
+    return modelMapper.map(payment, CommonLookUp.class);
   }
 }
