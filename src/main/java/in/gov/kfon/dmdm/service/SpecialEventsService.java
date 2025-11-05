@@ -28,4 +28,12 @@ public interface SpecialEventsService {
   List<CommonLookUp> locationMovementsFetchAll();
 
   CommonLookUp locationMovementsFetchById(UUID id);
+
+  List<CommonLookUp> locationsFetchAll();
+
+  CommonLookUp locationsFetchById(UUID id);
+
+  List<CommonLookUp> locFinanceFetchAll();
+
+  CommonLookUp locFinanceFetchById(UUID id);
 }

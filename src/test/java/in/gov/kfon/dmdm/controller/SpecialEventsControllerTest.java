@@ -196,4 +196,53 @@ class SpecialEventsControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("SE123"));
   }
+
+  @Test
+  void testLocationsFetchAll() throws Exception {
+    when(service.locationsFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/special-events/locations/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("SE123"));
+  }
+
+  @Test
+  void testLocationById() throws Exception {
+    when(service.locationsFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/special-events/location/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("SE123"));
+  }
+
+  @Test
+  void testLocFinanceFetchAll() throws Exception {
+    when(service.locFinanceFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/special-events/loc-finances/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("SE123"));
+  }
+
+  @Test
+  void testLocFinanceById() throws Exception {
+    when(service.locFinanceFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/special-events/loc-finance/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("SE123"));
+  }
 }
