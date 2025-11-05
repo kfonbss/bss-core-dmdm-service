@@ -481,4 +481,48 @@ public class DarkFiberControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched disbursement by ID"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
+
+  @Test
+  void testFetchAllFeederLists() throws Exception {
+    when(service.fetchAllFeeders()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/darkfiber/feeder-lists"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all feeder lists"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchFeederListById() throws Exception {
+    when(service.fetchFeederById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/darkfiber/feeder-list/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched feeder list by ID"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchAllMasterData() throws Exception {
+    when(service.fetchAllMasterData()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/darkfiber/master-datas"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all master data"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchMasterDataById() throws Exception {
+    when(service.fetchMasterDataById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/darkfiber/master-data/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched master data by ID"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
 }

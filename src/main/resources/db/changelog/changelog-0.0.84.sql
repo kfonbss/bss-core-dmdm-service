@@ -273,12 +273,27 @@ CREATE TABLE df_feeder_list (
   pop_id INTEGER NOT NULL,
   feeder_name VARCHAR(255) DEFAULT NULL,
   noof_strands_consumed INTEGER DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_feeder_list PRIMARY KEY (list_id)
 );
 
 COMMENT ON COLUMN df_feeder_list.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_feeder_list (
+  list_id, id, pop_id, feeder_name, noof_strands_consumed,
+  code, name, name_in_local,
+  is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 101, 'Feeder Alpha', 12,
+  'FL-001', 'Feeder Alpha Line', 'ഫീഡർ ആൽഫ ലൈൻ',
+  TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
 
 

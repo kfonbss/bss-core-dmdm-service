@@ -39,6 +39,8 @@ public class DarkFiberServiceImplTest {
   @Mock private DfDemandNoteHistoryRepository dfDemandNoteHistoryRepository;
   @Mock private DfDemandNoteMasterRepository demandNoteMasterRepository;
   @Mock private DfDisbursementRepository disbursementRepository;
+  @Mock private DfFeederListRepository dfFeederListRepository;
+  @Mock private DfMasterDataRepository dfMasterDataRepository;
   @Mock private ModelMapper modelMapper;
 
   @InjectMocks private DarkFiberServiceImpl service;
@@ -64,6 +66,8 @@ public class DarkFiberServiceImplTest {
   private DfDemandNoteHistory demandNoteHistory;
   private DfDemandNoteMaster demandNoteMaster;
   private DfDisbursement disbursement;
+  private DfFeederList feederList;
+  private DfMasterData masterData;
   private CommonLookUp commonLookUp;
 
   @BeforeEach
@@ -182,6 +186,20 @@ public class DarkFiberServiceImplTest {
     disbursement.setCode("DISB-001");
     disbursement.setName("Disbursement Test");
     disbursement.setIsActive(true);
+
+    feederList = new DfFeederList();
+    feederList.setListId(id);
+    feederList.setCode("FL001");
+    feederList.setName("Feeder Line 1");
+    feederList.setNameInLocal("ഫീഡർ ലൈൻ 1");
+    feederList.setIsActive(true);
+
+    masterData = new DfMasterData();
+    masterData.setDataId(id);
+    masterData.setCode("MD001");
+    masterData.setName("Master Data 1");
+    masterData.setNameInLocal("മാസ്റ്റർ ഡാറ്റ 1");
+    masterData.setIsActive(true);
 
     commonLookUp = new CommonLookUp();
     commonLookUp.setId(id);
@@ -1017,6 +1035,88 @@ public class DarkFiberServiceImplTest {
     assertEquals("Disbursement not found with id: " + id, exception.getMessage());
 
     verify(disbursementRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllFeederLists() {
+    when(dfFeederListRepository.findAll()).thenReturn(List.of(feederList));
+    when(modelMapper.map(feederList, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllFeeders();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfFeederListRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(feederList, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchFeederListById_Success() {
+    when(dfFeederListRepository.findById(id)).thenReturn(Optional.of(feederList));
+    when(modelMapper.map(feederList, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchFeederById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfFeederListRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(feederList, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchFeederListById_NotFound() {
+    when(dfFeederListRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchFeederById(id));
+
+    assertEquals("Feeder list not found with id: " + id, exception.getMessage());
+    verify(dfFeederListRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllMasterData() {
+    when(dfMasterDataRepository.findAll()).thenReturn(List.of(masterData));
+    when(modelMapper.map(masterData, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    List<CommonLookUp> result = service.fetchAllMasterData();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(id, result.get(0).getId());
+
+    verify(dfMasterDataRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(masterData, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchMasterDataById_Success() {
+    when(dfMasterDataRepository.findById(id)).thenReturn(Optional.of(masterData));
+    when(modelMapper.map(masterData, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchMasterDataById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+
+    verify(dfMasterDataRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(masterData, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchMasterDataById_NotFound() {
+    when(dfMasterDataRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchMasterDataById(id));
+
+    assertEquals("Master Data not found with id: " + id, exception.getMessage());
+    verify(dfMasterDataRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
 }

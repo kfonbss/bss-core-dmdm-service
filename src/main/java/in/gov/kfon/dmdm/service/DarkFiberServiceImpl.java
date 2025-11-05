@@ -36,6 +36,8 @@ public class DarkFiberServiceImpl implements DarkFiberService {
   private final DfDemandNoteHistoryRepository dfDemandnoteHistoryRepository;
   private final DfDemandNoteMasterRepository dfDemandNoteMasterRepository;
   private final DfDisbursementRepository dfDisbursementRepository;
+  private final DfFeederListRepository dfFeederListRepository;
+  private final DfMasterDataRepository dfMasterDataRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -387,5 +389,37 @@ public class DarkFiberServiceImpl implements DarkFiberService {
             .orElseThrow(
                 () -> new EntityNotFoundException("Disbursement not found with id: " + id));
     return modelMapper.map(disbursement, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllFeeders() {
+    return dfFeederListRepository.findAll().stream()
+        .map(feederList -> modelMapper.map(feederList, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchFeederById(UUID id) {
+    DfFeederList feeder =
+        dfFeederListRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Feeder list not found with id: " + id));
+    return modelMapper.map(feeder, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllMasterData() {
+    return dfMasterDataRepository.findAll().stream()
+        .map(entity -> modelMapper.map(entity, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchMasterDataById(UUID id) {
+    DfMasterData masterData =
+        dfMasterDataRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Master Data not found with id: " + id));
+    return modelMapper.map(masterData, CommonLookUp.class);
   }
 }
