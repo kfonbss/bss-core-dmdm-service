@@ -339,3 +339,7 @@ Get partner receipt and account balance report
 # [0.66.0] - 2025-11-05
 ### Added
 - Get special event po movement and proposal movement details
+
+# [0.67.0] - 2025-11-05
+### Added
+- Get special event proposals and purchase order details
