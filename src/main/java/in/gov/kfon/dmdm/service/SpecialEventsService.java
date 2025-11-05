@@ -20,4 +20,12 @@ public interface SpecialEventsService {
   List<CommonLookUp> invoiceMasterFetchAll();
 
   CommonLookUp invoiceMasterFetchById(UUID id);
+
+  List<CommonLookUp> kycDetailsFetchAll();
+
+  CommonLookUp kycDetailsFetchById(UUID id);
+
+  List<CommonLookUp> locationMovementsFetchAll();
+
+  CommonLookUp locationMovementsFetchById(UUID id);
 }

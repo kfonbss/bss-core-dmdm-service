@@ -180,6 +180,10 @@ INSERT INTO se_inovoice_master (
 -- Table: se_kyc_details
 CREATE TABLE se_kyc_details (
   details_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL ,
   customerid INTEGER,
   pan_numer VARCHAR(10),
@@ -192,7 +196,16 @@ CREATE TABLE se_kyc_details (
   sac VARCHAR(20),
   service_description VARCHAR(150),
   gst_status INt DEFAULT 0,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1  -- 0=Inactive, 1=Active
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_kyc_details (
+  details_id, code, name, name_in_local, is_active, id, customerid, pan_numer, pan_copy, gstin, gstindoc,
+  taxpayertype, legalname, tradename, sac, service_description, gst_status, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'KYC001', 'KYC Details for Customer 1', 'കസ്റ്റമർ 1 ന്റെ KYC വിശദാംശങ്ങൾ', true, 1, 1001, 'ABCDE1234F', 'pan_doc_1001.pdf',
+  '32ABCDE1234F1Z5', 'gst_doc_1001.pdf', 1, 'Legal Entity Pvt Ltd', 'Trade Name Ltd', '9983', 'IT and Network Services',
+  1, CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
 );

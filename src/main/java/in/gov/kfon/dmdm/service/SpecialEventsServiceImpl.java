@@ -1,14 +1,8 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-import in.gov.kfon.dmdm.model.SeCustomers;
-import in.gov.kfon.dmdm.model.SeDisbursement;
-import in.gov.kfon.dmdm.model.SeInvoice;
-import in.gov.kfon.dmdm.model.SeInvoiceMaster;
-import in.gov.kfon.dmdm.repository.SeCustomersRepository;
-import in.gov.kfon.dmdm.repository.SeDisbursementRepository;
-import in.gov.kfon.dmdm.repository.SeInvoiceMasterRepository;
-import in.gov.kfon.dmdm.repository.SeInvoiceRepository;
+import in.gov.kfon.dmdm.model.*;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +21,8 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
   private final ModelMapper modelMapper;
   private final SeInvoiceMasterRepository invoiceMasterRepository;
   private final SeInvoiceRepository invoiceRepository;
+  private final SeKycDetailsRepository kycDetailsRepository;
+  private final SeLocationMovementRepository locationMovementRepository;
 
   @Override
   @Transactional(readOnly = true)
@@ -95,6 +91,42 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
   public CommonLookUp invoiceFetchById(UUID id) {
     SeInvoice entity =
         invoiceRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> kycDetailsFetchAll() {
+    return kycDetailsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp kycDetailsFetchById(UUID id) {
+    SeKycDetails entity =
+        kycDetailsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> locationMovementsFetchAll() {
+    return locationMovementRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp locationMovementsFetchById(UUID id) {
+    SeLocationMovement entity =
+        locationMovementRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);
