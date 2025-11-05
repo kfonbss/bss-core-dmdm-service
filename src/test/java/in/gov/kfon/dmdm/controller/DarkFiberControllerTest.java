@@ -525,4 +525,48 @@ public class DarkFiberControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched master data by ID"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
+
+  @Test
+  void testFetchAllOtcCharges() throws Exception {
+    when(service.fetchAllOtcCharges()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/darkfiber/charges"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all OTC charges"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchOtcChargeById() throws Exception {
+    when(service.fetchOtcChargeById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/darkfiber/charge/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched OTC charge by ID"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchAllOtcInvoices() throws Exception {
+    when(service.fetchAllOtcInvoices()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/darkfiber/invoices"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all OTC invoices"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchOtcInvoiceById() throws Exception {
+    when(service.fetchOtcInvoiceById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/darkfiber/invoice/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched OTC invoice by ID"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
 }

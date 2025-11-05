@@ -38,6 +38,8 @@ public class DarkFiberServiceImpl implements DarkFiberService {
   private final DfDisbursementRepository dfDisbursementRepository;
   private final DfFeederListRepository dfFeederListRepository;
   private final DfMasterDataRepository dfMasterDataRepository;
+  private final DfOtcInvoiceRepository dfOtcInvoiceRepository;
+  private final DfOtcChargesRepository dfOtcChargesRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -421,5 +423,41 @@ public class DarkFiberServiceImpl implements DarkFiberService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Master Data not found with id: " + id));
     return modelMapper.map(masterData, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllOtcCharges() {
+    return dfOtcChargesRepository.findAll().stream()
+        .map(otcCharges -> modelMapper.map(otcCharges, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchOtcChargeById(UUID id) {
+    DfOtcCharges charges =
+        dfOtcChargesRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("OTC Charges not found with id: " + id));
+    return modelMapper.map(charges, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllOtcInvoices() {
+    return dfOtcInvoiceRepository.findAll().stream()
+        .map(invoice -> modelMapper.map(invoice, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchOtcInvoiceById(UUID id) {
+    DfOtcInvoice invoice =
+        dfOtcInvoiceRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("OTC Invoice not found with id: " + id));
+    return modelMapper.map(invoice, CommonLookUp.class);
   }
 }

@@ -55,13 +55,32 @@ CREATE TABLE df_otccharges (
   year VARCHAR(10) DEFAULT NULL,
   fyear_s_date DATE DEFAULT NULL,
   fyear_e_date DATE DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_otccharges PRIMARY KEY (charges_id)
 );
 
 COMMENT ON COLUMN df_otccharges.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_otccharges (
+  charges_id, id, amount, opgw_amount, adds_intercity_amount, adds_intracity_amount,
+  opgw_core_cost, opgw_pair_cost, adss_core_cost, adss_pair_cost, otc_amount, rack_amount,
+  year, fyear_s_date, fyear_e_date, code, name, name_in_local,
+  is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 150000.00, 50000.00, 30000.00, 20000.00,
+  2500.00, 5000.00, 2000.00, 4000.00, 25000.00, 15000.00,
+  '2025-26', '2025-04-01', '2026-03-31',
+  'OTC-001', 'Dark Fiber OTC Charges FY 2025-26', 'കെ-ഫോൺ OTC ചാർജുകൾ 2025-26',
+  TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
+
 
 
 DROP TABLE IF EXISTS df_otcinovoice CASCADE;
@@ -93,13 +112,37 @@ CREATE TABLE df_otcinovoice (
   igst_rate DECIMAL(26,2) DEFAULT NULL,
   gstin VARCHAR(18) DEFAULT NULL,
   particulars VARCHAR(180) DEFAULT NULL,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active SMALLINT DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_df_otcinovoice PRIMARY KEY (id)
 );
 
 COMMENT ON COLUMN df_otcinovoice.is_active IS '0=In Active,1=Active';
+
+INSERT INTO df_otcinovoice (
+  id, slno, subscriberid, groupid, mg_invoiceid, subfinanceid, billing_type,
+  invoiceno, invoicedate, grossamount, groupmount, servicetax, servicetaxrate,
+  servicestartdate, serviceenddate, quarter_start_date, quarter_end_date,
+  gst_value, cgst_value, sgst_value, igst_value,
+  cgst_rate, sgst_rate, igst_rate, gstin, particulars,
+  code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 1001, 201, 501, 301, 1,
+  'OTC-INV-2025-001', '2025-10-05', 180000.0000000000, 175000.0000000000, 0.5000000000, 0.0500000000,
+  '2025-07-01', '2025-09-30', '2025-07-01', '2025-09-30',
+  9000.0000000000, 4500.0000000000, 4500.0000000000, 0.0000000000,
+  2.50, 2.50, 0.00, '29ABCDE1234F2Z5',
+  'OTC invoice for dark fiber for Q3 FY 2025-26',
+  'OTC-INV-001', 'Dark Fiber OTC Invoice', 'ഡാർക്ക് ഫൈബർ OTC ഇൻവോയ്സ്',
+  TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
+
 
 
 DROP TABLE IF EXISTS df_payment_history CASCADE;

@@ -323,3 +323,7 @@ Get partner receipt and account balance report
 # [0.62.0] - 2025-11-05
 ### Added
 - Get special event locations and loc finance details
+
+# [0.62.0] - 2025-11-05
+### Added
+- Get dark fiber - otc charges and invoices
