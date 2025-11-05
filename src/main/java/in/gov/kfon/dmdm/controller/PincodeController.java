@@ -29,7 +29,7 @@ public class PincodeController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched pincode"));
   }
 
-  @GetMapping("/details")
+  @GetMapping("/details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDetails() {
     var data = service.fetchAllPincodeDetails();
     return ResponseEntity.status(HttpStatus.OK)

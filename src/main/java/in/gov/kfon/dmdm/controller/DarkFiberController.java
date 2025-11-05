@@ -20,7 +20,7 @@ public class DarkFiberController {
 
   private final DarkFiberService darkFiberService;
 
-  @GetMapping("/group-details")
+  @GetMapping("/group-details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllGroupDetails() {
     var data = darkFiberService.fetchAllGroupDetails();
     return ResponseEntity.status(HttpStatus.OK)
@@ -33,7 +33,7 @@ public class DarkFiberController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched group detail"));
   }
 
-  @GetMapping("/group-movements")
+  @GetMapping("/group-movements/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllGroupMovements() {
     var data = darkFiberService.fetchAllGroupMovements();
     return ResponseEntity.status(HttpStatus.OK)
@@ -46,7 +46,7 @@ public class DarkFiberController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched group movement"));
   }
 
-  @GetMapping("/group-invoices")
+  @GetMapping("/group-invoices/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllGroupInvoices() {
     var data = darkFiberService.fetchAllGroupInvoices();
     return ResponseEntity.status(HttpStatus.OK)
@@ -59,7 +59,7 @@ public class DarkFiberController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched invoice by ID"));
   }
 
-  @GetMapping("/group-invoice-masters")
+  @GetMapping("/group-invoice-masters/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllGroupInvoiceMasters() {
     var data = darkFiberService.fetchAllGroupInvoiceMasters();
     return ResponseEntity.status(HttpStatus.OK)
@@ -73,7 +73,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched invoice master by ID"));
   }
 
-  @GetMapping("/link-details")
+  @GetMapping("/link-details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllLinkDetails() {
     var data = darkFiberService.fetchAllLinkDetails();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all link details"));
@@ -86,7 +86,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched link detail by ID"));
   }
 
-  @GetMapping("/link-renewal-histories")
+  @GetMapping("/link-renewal-histories/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllLinkRenewalHistories() {
     var data = darkFiberService.fetchAllLinkRenewalHistories();
     return ResponseEntity.status(HttpStatus.OK)
@@ -100,7 +100,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched link renewal history by ID"));
   }
 
-  @GetMapping("/power-ratings")
+  @GetMapping("/power-ratings/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPowerRatings() {
     var data = darkFiberService.fetchAllPowerRatings();
     return ResponseEntity.status(HttpStatus.OK)
@@ -114,7 +114,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched power rating by ID"));
   }
 
-  @GetMapping("/purchase-orders")
+  @GetMapping("/purchase-orders/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPurchaseOrders() {
     var data = darkFiberService.fetchAllPurchaseOrders();
     return ResponseEntity.status(HttpStatus.OK)
@@ -128,7 +128,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched purchase order by ID"));
   }
 
-  @GetMapping("/renewal-details")
+  @GetMapping("/renewal-details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllRenewalDetails() {
     var data = darkFiberService.fetchAllRenewalDetails();
     return ResponseEntity.status(HttpStatus.OK)
@@ -142,7 +142,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched renewal detail by ID"));
   }
 
-  @GetMapping("/subfinances")
+  @GetMapping("/subfinances/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllSubFinances() {
     var data = darkFiberService.fetchAllSubFinance();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all sub finances"));
@@ -155,7 +155,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched sub finance by ID"));
   }
 
-  @GetMapping("/subscribers")
+  @GetMapping("/subscribers/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllSubscribers() {
     var data = darkFiberService.fetchAllSubscribers();
     return ResponseEntity.ok(Response.ok(data, "Fetched all subscribers"));
@@ -167,7 +167,7 @@ public class DarkFiberController {
     return ResponseEntity.ok(Response.ok(data, "Fetched subscriber by ID"));
   }
 
-  @GetMapping("/trans-renewal-details")
+  @GetMapping("/trans-renewal-details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllTransRenewalDetails() {
     var data = darkFiberService.fetchAllTransRenewalDetails();
     return ResponseEntity.ok(Response.ok(data, "Fetched all trans renewal details"));
@@ -179,7 +179,7 @@ public class DarkFiberController {
     return ResponseEntity.ok(Response.ok(data, "Fetched trans renewal detail by ID"));
   }
 
-  @GetMapping("/trans-details")
+  @GetMapping("/trans-details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllTransDetails() {
     var data = darkFiberService.fetchAllTransDetails();
     return ResponseEntity.status(HttpStatus.OK)
@@ -193,7 +193,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched trans detail by ID"));
   }
 
-  @GetMapping("/trans-movements")
+  @GetMapping("/trans-movements/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllTransDetailsMovements() {
     var data = darkFiberService.fetchAllTransDetailsMovements();
     return ResponseEntity.status(HttpStatus.OK)
@@ -208,7 +208,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched trans movement by ID"));
   }
 
-  @GetMapping("/workorders")
+  @GetMapping("/workorders/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllWorkorders() {
     var data = darkFiberService.fetchAllWorkorders();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all workorders"));
@@ -220,7 +220,7 @@ public class DarkFiberController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched workorder by ID"));
   }
 
-  @GetMapping("/bank-details")
+  @GetMapping("/bank-details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllBankDetails() {
     var data = darkFiberService.fetchAllBankDetails();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all bank details"));
@@ -233,7 +233,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched bank detail by ID"));
   }
 
-  @GetMapping("/customer-details")
+  @GetMapping("/customer-details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllCustomerDetails() {
     var data = darkFiberService.fetchAllCustomerDetails();
     return ResponseEntity.status(HttpStatus.OK)
@@ -247,7 +247,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched customer detail by ID"));
   }
 
-  @GetMapping("/demand-notes")
+  @GetMapping("/demand-notes/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDemandNoteHistory() {
     var data = darkFiberService.fetchAllDemandNoteHistory();
     return ResponseEntity.status(HttpStatus.OK)
@@ -261,7 +261,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched demand note history by ID"));
   }
 
-  @GetMapping("/demand-note-masters")
+  @GetMapping("/demand-note-masters/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDemandNotes() {
     var data = darkFiberService.fetchAllDemandNotes();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all demand notes"));
@@ -274,7 +274,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched demand note by ID"));
   }
 
-  @GetMapping("/disbursements")
+  @GetMapping("/disbursements/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDisbursements() {
     var data = darkFiberService.fetchAllDisbursements();
     return ResponseEntity.status(HttpStatus.OK)
@@ -288,7 +288,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched disbursement by ID"));
   }
 
-  @GetMapping("/feeder-lists")
+  @GetMapping("/feeder-lists/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllFeeders() {
     var data = darkFiberService.fetchAllFeeders();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all feeder lists"));
@@ -301,7 +301,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched feeder list by ID"));
   }
 
-  @GetMapping("/master-datas")
+  @GetMapping("/master-datas/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllMasterData() {
     var data = darkFiberService.fetchAllMasterData();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all master data"));
@@ -314,7 +314,7 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched master data by ID"));
   }
 
-  @GetMapping("/charges")
+  @GetMapping("/charges/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllOtcCharges() {
     var data = darkFiberService.fetchAllOtcCharges();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all OTC charges"));
@@ -326,7 +326,7 @@ public class DarkFiberController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched OTC charge by ID"));
   }
 
-  @GetMapping("/invoices")
+  @GetMapping("/invoices/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllOtcInvoices() {
     var data = darkFiberService.fetchAllOtcInvoices();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all OTC invoices"));
@@ -337,5 +337,19 @@ public class DarkFiberController {
     var data = darkFiberService.fetchOtcInvoiceById(id);
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched OTC invoice by ID"));
+  }
+
+  @GetMapping("payment-histories/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPaymentHistories() {
+    var data = darkFiberService.fetchAllPaymentHistories();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all payment histories"));
+  }
+
+  @GetMapping("payment-history/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPaymentHistoryById(@PathVariable UUID id) {
+    var data = darkFiberService.fetchPaymentHistoryById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched payment history by ID"));
   }
 }

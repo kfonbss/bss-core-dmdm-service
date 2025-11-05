@@ -101,4 +101,8 @@ public interface DarkFiberService {
   List<CommonLookUp> fetchAllOtcInvoices();
 
   CommonLookUp fetchOtcInvoiceById(UUID id);
+
+  List<CommonLookUp> fetchAllPaymentHistories();
+
+  CommonLookUp fetchPaymentHistoryById(UUID id);
 }

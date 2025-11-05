@@ -20,7 +20,7 @@ public class ServiceTypeController {
 
   private final ServiceTypeService service;
 
-  @GetMapping("/service-types")
+  @GetMapping("/service-types/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllServiceTypes() {
     var data = service.fetchAllServiceTypes();
     return ResponseEntity.status(HttpStatus.OK)
@@ -33,7 +33,7 @@ public class ServiceTypeController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched service type"));
   }
 
-  @GetMapping("/services")
+  @GetMapping("/services/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllServices() {
     var data = service.fetchAllServices();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all services"));

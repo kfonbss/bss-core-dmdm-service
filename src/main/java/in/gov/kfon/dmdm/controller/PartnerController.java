@@ -20,7 +20,7 @@ public class PartnerController {
 
   private final PartnerService service;
 
-  @GetMapping("/finances")
+  @GetMapping("/finances/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerFinances() {
     var data = service.fetchAllFinanceDetails();
     return ResponseEntity.status(HttpStatus.OK)
@@ -34,7 +34,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner finance detail"));
   }
 
-  @GetMapping("/taxpayer-logs")
+  @GetMapping("/taxpayer-logs/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerTaxpayerLogs() {
     var data = service.fetchAllTaxpayerLogs();
     return ResponseEntity.status(HttpStatus.OK)
@@ -48,7 +48,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner taxpayer log"));
   }
 
-  @GetMapping("/groups")
+  @GetMapping("/groups/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerGroups() {
     var data = service.fetchAllPartnerGroups();
     return ResponseEntity.status(HttpStatus.OK)
@@ -62,7 +62,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner group by id"));
   }
 
-  @GetMapping("/gst-details")
+  @GetMapping("/gst-details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerGstDetails() {
     var data = service.fetchAllPartnerGstDetails();
     return ResponseEntity.status(HttpStatus.OK)
@@ -76,7 +76,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner GST detail by id"));
   }
 
-  @GetMapping("/gst-invoices")
+  @GetMapping("/gst-invoices/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllGstInvoices() {
     var data = service.fetchAllGstInvoices();
     return ResponseEntity.status(HttpStatus.OK)
@@ -90,7 +90,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner GST invoice by id"));
   }
 
-  @GetMapping("/online-recharges")
+  @GetMapping("/online-recharges/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllOnlineRecharges() {
     var data = service.fetchAllOnlineRecharges();
     return ResponseEntity.status(HttpStatus.OK)
@@ -104,7 +104,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner online recharge by id"));
   }
 
-  @GetMapping("/receipts")
+  @GetMapping("/receipts/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerReceipts() {
     var data = service.fetchAllPartnerReceipts();
     return ResponseEntity.status(HttpStatus.OK)
@@ -118,7 +118,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner receipt by id"));
   }
 
-  @GetMapping("/account-reports")
+  @GetMapping("/account-reports/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerAccountReports() {
     var data = service.fetchAllPartnerAccountReports();
     return ResponseEntity.status(HttpStatus.OK)
@@ -133,7 +133,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner account report by id"));
   }
 
-  @GetMapping("/disbursements")
+  @GetMapping("/disbursements/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerDisbursements() {
     var data = service.fetchAllPartnerDisbursements();
     return ResponseEntity.status(HttpStatus.OK)
@@ -148,7 +148,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner disbursement by id"));
   }
 
-  @GetMapping("/finance-records")
+  @GetMapping("/finance-records/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerFinanceRecords() {
     var data = service.fetchAllPartnerFinances();
     return ResponseEntity.status(HttpStatus.OK)
@@ -163,7 +163,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner finance record by id"));
   }
 
-  @GetMapping("/confirmations")
+  @GetMapping("/confirmations/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerConfirmations() {
     var data = service.fetchAllPartnerConfirmationsFromAgnp();
     return ResponseEntity.status(HttpStatus.OK)
@@ -178,7 +178,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner confirmation from AGNP by id"));
   }
 
-  @GetMapping("/confirmation-movements")
+  @GetMapping("/confirmation-movements/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerConfirmationMovements() {
     var data = service.fetchAllPartnerConfirmationMovements();
     return ResponseEntity.status(HttpStatus.OK)
@@ -193,7 +193,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner confirmation movement by id"));
   }
 
-  @GetMapping("/gst-valets")
+  @GetMapping("/gst-valets/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllGstValets() {
     var data = service.fetchAllGstValets();
     return ResponseEntity.status(HttpStatus.OK)
@@ -207,7 +207,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner GST valet by id"));
   }
 
-  @GetMapping("/revenues")
+  @GetMapping("/revenues/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllRevenues() {
     var data = service.fetchAllRevenues();
     return ResponseEntity.status(HttpStatus.OK)
@@ -221,7 +221,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner revenue by id"));
   }
 
-  @GetMapping("/accounts")
+  @GetMapping("/accounts/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllAccounts() {
     var data = service.fetchAllAccounts();
     return ResponseEntity.status(HttpStatus.OK)
@@ -235,7 +235,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner account by id"));
   }
 
-  @GetMapping("/details")
+  @GetMapping("/details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerDetails() {
     var data = service.fetchAllPartnerDetails();
     return ResponseEntity.status(HttpStatus.OK)
@@ -249,7 +249,7 @@ public class PartnerController {
         .body(Response.ok(data, "Fetched partner detail by id"));
   }
 
-  @GetMapping("/demo-users")
+  @GetMapping("/demo-users/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDemoUsers() {
     var data = service.fetchAllDemoUsers();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all demo users"));
@@ -261,7 +261,7 @@ public class PartnerController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched demo user by id"));
   }
 
-  @GetMapping("/agreement-details")
+  @GetMapping("/agreement-details/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllAgreementDetails() {
     var data = service.fetchAllAgreementDetails();
     return ResponseEntity.status(HttpStatus.OK)
