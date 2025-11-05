@@ -12,4 +12,12 @@ public interface SpecialEventsService {
   List<CommonLookUp> disbursementFetchAll();
 
   CommonLookUp disbursementFetchById(UUID id);
+
+  List<CommonLookUp> invoiceFetchAll();
+
+  CommonLookUp invoiceFetchById(UUID id);
+
+  List<CommonLookUp> invoiceMasterFetchAll();
+
+  CommonLookUp invoiceMasterFetchById(UUID id);
 }

@@ -3,8 +3,12 @@ package in.gov.kfon.dmdm.service;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.SeCustomers;
 import in.gov.kfon.dmdm.model.SeDisbursement;
+import in.gov.kfon.dmdm.model.SeInvoice;
+import in.gov.kfon.dmdm.model.SeInvoiceMaster;
 import in.gov.kfon.dmdm.repository.SeCustomersRepository;
 import in.gov.kfon.dmdm.repository.SeDisbursementRepository;
+import in.gov.kfon.dmdm.repository.SeInvoiceMasterRepository;
+import in.gov.kfon.dmdm.repository.SeInvoiceRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +25,8 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
   private final SeCustomersRepository customersRepository;
   private final SeDisbursementRepository disbursementRepository;
   private final ModelMapper modelMapper;
+  private final SeInvoiceMasterRepository invoiceMasterRepository;
+  private final SeInvoiceRepository invoiceRepository;
 
   @Override
   @Transactional(readOnly = true)
@@ -53,6 +59,42 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
   public CommonLookUp disbursementFetchById(UUID id) {
     SeDisbursement entity =
         disbursementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> invoiceMasterFetchAll() {
+    return invoiceMasterRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp invoiceMasterFetchById(UUID id) {
+    SeInvoiceMaster entity =
+        invoiceMasterRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> invoiceFetchAll() {
+    return invoiceRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp invoiceFetchById(UUID id) {
+    SeInvoice entity =
+        invoiceRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);
