@@ -213,9 +213,14 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
   @Override
   @Transactional(readOnly = true)
   public List<CommonLookUp> paymentHistoryFetchAll() {
-    return paymentHistoryRepository.findAll().stream()
-        .map(e -> modelMapper.map(e, CommonLookUp.class))
-        .toList();
+      return paymentHistoryRepository.findAll().stream()
+              .map(
+                      details -> {
+                          CommonLookUp lookup = modelMapper.map(details, CommonLookUp.class);
+                          lookup.setId(details.getHistoryId());
+                          return lookup;
+                      })
+              .toList();
   }
 
   @Override
