@@ -1,68 +1,66 @@
 package in.gov.kfon.dmdm.service;
 
-import in.gov.kfon.dmdm.model.CafDetails;
-import in.gov.kfon.dmdm.repository.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.model.CafDetails;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 
 class CafDetailsServiceImplTest {
-    private ModelMapper modelMapper;
-    private CafDetailsRepository detailsRepository;
-    private CafDetailsServiceImpl service;
-    @BeforeEach
-    void setUp() {
-        modelMapper = spy(new ModelMapper());
-        detailsRepository=mock(CafDetailsRepository.class);
+  private ModelMapper modelMapper;
+  private CafDetailsRepository detailsRepository;
+  private CafDetailsServiceImpl service;
 
-        service =
-                new CafDetailsServiceImpl(
-                        modelMapper,
-                        detailsRepository);
-    }
-    @Test
-    void testDetailsFetchAll_ShouldReturnMappedList() {
-        CafDetails details = new CafDetails();
-        details.setDetailsId(UUID.randomUUID());
+  @BeforeEach
+  void setUp() {
+    modelMapper = spy(new ModelMapper());
+    detailsRepository = mock(CafDetailsRepository.class);
 
-        when(detailsRepository.findAll()).thenReturn(List.of(details));
+    service = new CafDetailsServiceImpl(modelMapper, detailsRepository);
+  }
 
-        List<CommonLookUp> result = service.detailsFetchAll();
+  @Test
+  void testDetailsFetchAll_ShouldReturnMappedList() {
+    CafDetails details = new CafDetails();
+    details.setDetailsId(UUID.randomUUID());
 
-        assertEquals(1, result.size());
-        verify(detailsRepository, times(1)).findAll();
-    }
+    when(detailsRepository.findAll()).thenReturn(List.of(details));
 
-    @Test
-    void testDetailsFetchById_ShouldReturnMappedObject() {
-        UUID id = UUID.randomUUID();
-        CafDetails details = new CafDetails();
-        details.setDetailsId(id);
+    List<CommonLookUp> result = service.detailsFetchAll();
 
-        when(detailsRepository.findById(id)).thenReturn(Optional.of(details));
+    assertEquals(1, result.size());
+    verify(detailsRepository, times(1)).findAll();
+  }
 
-        CommonLookUp result = service.detailsFetchById(id);
+  @Test
+  void testDetailsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    CafDetails details = new CafDetails();
+    details.setDetailsId(id);
 
-        assertNotNull(result);
-        verify(detailsRepository, times(1)).findById(id);
-    }
+    when(detailsRepository.findById(id)).thenReturn(Optional.of(details));
 
-    @Test
-    void testDetailsFetchById_ShouldThrowException_WhenNotFound() {
-        UUID id = UUID.randomUUID();
-        when(detailsRepository.findById(id)).thenReturn(Optional.empty());
+    CommonLookUp result = service.detailsFetchById(id);
 
-        assertThrows(EntityNotFoundException.class, () -> service.detailsFetchById(id));
-    }
+    assertNotNull(result);
+    verify(detailsRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testDetailsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(detailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.detailsFetchById(id));
+  }
 }
