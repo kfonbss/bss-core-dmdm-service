@@ -52,8 +52,7 @@ public class CafDetailsServiceImpl implements CafDetailsService {
     CafDetails entity =
         cafDetailsRepository
             .findById(id)
-            .orElseThrow(
-                () -> new EntityNotFoundException("Corporate Enquiry not found with id: " + id));
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
 
     CommonLookUp lookup = modelMapper.map(entity, CommonLookUp.class);
     lookup.setId(entity.getDetailsId());
