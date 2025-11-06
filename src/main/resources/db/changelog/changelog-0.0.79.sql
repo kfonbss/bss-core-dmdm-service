@@ -2,7 +2,11 @@
 DROP TABLE IF EXISTS inv_device_cat CASCADE;
 
 CREATE TABLE inv_device_cat (
-  inv_device_cat_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  cat_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   dtid int DEFAULT NULL,
   dmid int DEFAULT NULL,
@@ -12,13 +16,19 @@ CREATE TABLE inv_device_cat (
   -- '1=Type-1-Single Band,2=Type-2-Dual Band,3=GPON-4-PON Port-OLT.4=GPON-8-PON Port-OLT',
   ont_type int DEFAULT NULL,
   no_of_pon_port int DEFAULT NULL,
-  created_by varchar(70) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
-  -- '0=In Active,1=Active',
-  -- Primary key constraint
-CONSTRAINT pk_inv_device_cat PRIMARY KEY (inv_device_cat_id)
+  created_by_name varchar(70) DEFAULT NULL,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+CONSTRAINT pk_inv_device_cat PRIMARY KEY (cat_id)
+);
+INSERT INTO inv_device_cat (
+  cat_id, code, name, name_in_local, is_active, id, dtid, dmid, dc_name, dc_desc, cat_type, ont_type,
+  no_of_pon_port, created_by_name, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'CAT001', 'Dual Band ONT', 'ഡ്യൂവൽ ബാൻഡ് ഒ.എൻ.ടി', true, 1, 10, 20, 'ONT Device', 'Dual band fiber ONT device with 2 PON ports',
+  2, 1, 2, 'System Admin', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), NULL
 );
 
 
