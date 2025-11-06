@@ -359,3 +359,7 @@ Get partner receipt and account balance report
 # [0.71.0] - 2025-11-06
 ### Added
 - Get inventory credit notes and dc credit note details
+
+# [0.72.0] - 2025-11-06
+### Added
+- Get inventory device category and acknowledgement
