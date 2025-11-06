@@ -8,14 +8,29 @@ CREATE TABLE inv_device_make (
   dm_name varchar(100) DEFAULT NULL,
   dm_desc varchar(250) DEFAULT NULL,
   maker_id int DEFAULT NULL,
-  created_by varchar(70) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_device_make PRIMARY KEY (inv_device_make_id)
 );
+
+INSERT INTO inv_device_make (
+  inv_device_make_id, id, dtid, dm_name, dm_desc, maker_id,
+  code, name, name_in_local, is_active,
+  created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 101, 'Cisco Systems', 'High-performance network devices', 201,
+  'MAKE-001', 'Cisco', 'സിസ്കോ', TRUE,
+  NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
+
 
 
 -- Table : inv_device_model
@@ -29,13 +44,27 @@ CREATE TABLE inv_device_model (
   dcid int DEFAULT NULL,
   dmo_name varchar(100) DEFAULT NULL,
   dmo_desc varchar(250) DEFAULT NULL,
-  created_by varchar(70) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_device_model PRIMARY KEY (inv_device_model_id)
+);
+
+INSERT INTO inv_device_model (
+  inv_device_model_id, id, dtid, dmid, dcid, dmo_name, dmo_desc,
+  code, name, name_in_local, is_active,
+  created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 101, 1, 301, 'Cisco Catalyst 9300', 'Enterprise-class network switch',
+  'MODEL-001', 'Catalyst 9300', 'കാറ്റലിസ്റ്റ് 9300', TRUE,
+  NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
 );
 
 
