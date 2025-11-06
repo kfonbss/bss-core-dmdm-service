@@ -33,6 +33,8 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
   private final SeProposalMovementRepository proposalMovementRepository;
   private final SePurchaseOrderRepository purchaseOrderRepository;
   private final SeProposalsRepository proposalsRepository;
+  private final SeWorkOrdersRepository workOrdersRepository;
+  private final SeRenewalDetailsRepository renewalDetailsRepository;
 
   @PostConstruct
   public void setupMapper() {
@@ -298,6 +300,42 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
   public CommonLookUp proposalsFetchById(UUID id) {
     SeProposals entity =
         proposalsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> workOrdersFetchAll() {
+    return workOrdersRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp workOrdersFetchById(UUID id) {
+    SeWorkOrders entity =
+        workOrdersRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> renewalDetailsFetchAll() {
+    return renewalDetailsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp renewalDetailsFetchById(UUID id) {
+    SeRenewalDetails entity =
+        renewalDetailsRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);

@@ -31,6 +31,8 @@ class SpecialEventsServiceImplTest {
   private SeProposalMovementRepository proposalMovementRepository;
   private SePurchaseOrderRepository purchaseOrderRepository;
   private SeProposalsRepository proposalsRepository;
+  private SeWorkOrdersRepository workOrdersRepository;
+  private SeRenewalDetailsRepository renewalDetailsRepository;
 
   @BeforeEach
   void setUp() {
@@ -49,6 +51,8 @@ class SpecialEventsServiceImplTest {
     proposalMovementRepository = mock(SeProposalMovementRepository.class);
     purchaseOrderRepository = mock(SePurchaseOrderRepository.class);
     proposalsRepository = mock(SeProposalsRepository.class);
+    workOrdersRepository = mock(SeWorkOrdersRepository.class);
+    renewalDetailsRepository = mock(SeRenewalDetailsRepository.class);
 
     service =
         new SpecialEventsServiceImpl(
@@ -66,7 +70,9 @@ class SpecialEventsServiceImplTest {
             poMovementRepository,
             proposalMovementRepository,
             purchaseOrderRepository,
-            proposalsRepository);
+            proposalsRepository,
+            workOrdersRepository,
+            renewalDetailsRepository);
     service.setupMapper();
   }
 
@@ -558,5 +564,75 @@ class SpecialEventsServiceImplTest {
     when(proposalsRepository.findById(id)).thenReturn(Optional.empty());
 
     assertThrows(EntityNotFoundException.class, () -> service.proposalsFetchById(id));
+  }
+
+  @Test
+  void testWorkOrdersFetchAll_ShouldReturnMappedList() {
+    SeWorkOrders workOrders = new SeWorkOrders();
+    workOrders.setOrdersId(UUID.randomUUID());
+
+    when(workOrdersRepository.findAll()).thenReturn(List.of(workOrders));
+
+    List<CommonLookUp> result = service.workOrdersFetchAll();
+
+    assertEquals(1, result.size());
+    verify(workOrdersRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testWorkOrdersFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    SeWorkOrders workOrders = new SeWorkOrders();
+    workOrders.setOrdersId(id);
+
+    when(workOrdersRepository.findById(id)).thenReturn(Optional.of(workOrders));
+
+    CommonLookUp result = service.workOrdersFetchById(id);
+
+    assertNotNull(result);
+    verify(workOrdersRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testWorkOrdersFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(workOrdersRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.workOrdersFetchById(id));
+  }
+
+  @Test
+  void testRenewalDetailsFetchAll_ShouldReturnMappedList() {
+    SeRenewalDetails renewalDetails = new SeRenewalDetails();
+    renewalDetails.setDetailsId(UUID.randomUUID());
+
+    when(renewalDetailsRepository.findAll()).thenReturn(List.of(renewalDetails));
+
+    List<CommonLookUp> result = service.renewalDetailsFetchAll();
+
+    assertEquals(1, result.size());
+    verify(renewalDetailsRepository, times(1)).findAll();
+  }
+
+  @Test
+  void testRenewalDetailsFetchById_ShouldReturnMappedObject() {
+    UUID id = UUID.randomUUID();
+    SeRenewalDetails renewalDetails = new SeRenewalDetails();
+    renewalDetails.setDetailsId(id);
+
+    when(renewalDetailsRepository.findById(id)).thenReturn(Optional.of(renewalDetails));
+
+    CommonLookUp result = service.renewalDetailsFetchById(id);
+
+    assertNotNull(result);
+    verify(renewalDetailsRepository, times(1)).findById(id);
+  }
+
+  @Test
+  void testRenewalDetailsFetchById_ShouldThrowException_WhenNotFound() {
+    UUID id = UUID.randomUUID();
+    when(renewalDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    assertThrows(EntityNotFoundException.class, () -> service.renewalDetailsFetchById(id));
   }
 }
