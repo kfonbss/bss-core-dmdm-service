@@ -1,10 +1,8 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-import in.gov.kfon.dmdm.model.InvDeviceMake;
-import in.gov.kfon.dmdm.model.InvDeviceModel;
-import in.gov.kfon.dmdm.repository.InvDeviceMakeRepository;
-import in.gov.kfon.dmdm.repository.InvDeviceModelRepository;
+import in.gov.kfon.dmdm.model.*;
+import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +19,11 @@ public class InventoryServiceImpl implements InventoryService {
   private final InvDeviceMakeRepository invDeviceMakeRepository;
   private final InvDeviceModelRepository invDeviceModelRepository;
   private final ModelMapper modelMapper;
+  private final InvCreditNotesRepository creditNotesRepository;
+  private final InvDcCreditNotesRepository dcCreditNotesRepository;
+  private static final String NOT_FOUND = "Not found with id: ";
+  private final InvDeviceAcknowledgementRepository deviceAcknowledgementRepository;
+  private final InvDeviceCatRepository deviceCatRepository;
 
   @Override
   public List<CommonLookUp> fetchAllDeviceMakes() {
@@ -53,5 +56,77 @@ public class InventoryServiceImpl implements InventoryService {
             .orElseThrow(
                 () -> new EntityNotFoundException("Device Model not found with id: " + id));
     return modelMapper.map(deviceModel, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> creditNotesFetchAll() {
+    return creditNotesRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp creditNotesFetchById(UUID id) {
+    InvCreditNotes entity =
+        creditNotesRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> dcCreditNotesFetchAll() {
+    return dcCreditNotesRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp dcCreditNotesFetchById(UUID id) {
+    InvDcCreditNotes entity =
+        dcCreditNotesRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> deviceAcknowledgementFetchAll() {
+    return deviceAcknowledgementRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp deviceAcknowledgementFetchById(UUID id) {
+    InvDeviceAcknowledgement entity =
+        deviceAcknowledgementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> deviceCatFetchAll() {
+    return deviceCatRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp deviceCatFetchById(UUID id) {
+    InvDeviceCat entity =
+        deviceCatRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
   }
 }

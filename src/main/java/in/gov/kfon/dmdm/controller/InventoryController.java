@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class InventoryController {
 
   private final InventoryService inventoryService;
+  private static final String FETCHED = "Fetched";
 
   @GetMapping("/device-makes/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDeviceMakes() {
@@ -43,5 +44,54 @@ public class InventoryController {
   public ResponseEntity<Response<CommonLookUp>> fetchDeviceModelById(@PathVariable UUID id) {
     var data = inventoryService.fetchDeviceModelById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched device model"));
+  }
+
+  @GetMapping("credit-notes/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> creditNotesFetchAll() {
+    var data = inventoryService.creditNotesFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("credit-note/{id}")
+  public ResponseEntity<Response<CommonLookUp>> creditNotesFetchById(@PathVariable UUID id) {
+    var data = inventoryService.creditNotesFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("dc/credit-notes/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> dcCreditNotesFetchAll() {
+    var data = inventoryService.dcCreditNotesFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("dc/credit-note/{id}")
+  public ResponseEntity<Response<CommonLookUp>> dcCreditNotesFetchById(@PathVariable UUID id) {
+    var data = inventoryService.dcCreditNotesFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("device-acknowledgements/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> deviceAcknowledgementFetchAll() {
+    var data = inventoryService.deviceAcknowledgementFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("device-acknowledgement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> deviceAcknowledgementFetchById(
+      @PathVariable UUID id) {
+    var data = inventoryService.deviceAcknowledgementFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("device-cats/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> deviceCatFetchAll() {
+    var data = inventoryService.deviceCatFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("device-cat/{id}")
+  public ResponseEntity<Response<CommonLookUp>> deviceCatFetchById(@PathVariable UUID id) {
+    var data = inventoryService.deviceCatFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 }

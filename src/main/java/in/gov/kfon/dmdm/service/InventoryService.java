@@ -13,4 +13,20 @@ public interface InventoryService {
   List<CommonLookUp> fetchAllDeviceModels();
 
   CommonLookUp fetchDeviceModelById(UUID id);
+
+  List<CommonLookUp> creditNotesFetchAll();
+
+  CommonLookUp creditNotesFetchById(UUID id);
+
+  List<CommonLookUp> dcCreditNotesFetchAll();
+
+  CommonLookUp dcCreditNotesFetchById(UUID id);
+
+  List<CommonLookUp> deviceAcknowledgementFetchAll();
+
+  CommonLookUp deviceAcknowledgementFetchById(UUID id);
+
+  List<CommonLookUp> deviceCatFetchAll();
+
+  CommonLookUp deviceCatFetchById(UUID id);
 }
