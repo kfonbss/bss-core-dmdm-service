@@ -115,7 +115,11 @@ CONSTRAINT pk_incidenttracker PRIMARY KEY (incidenttracker_id)
 DROP TABLE IF EXISTS inv_credit_notes CASCADE;
 
 CREATE TABLE inv_credit_notes (
-  inv_credit_notes_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  notes_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   dtid int DEFAULT NULL,
   dmid int DEFAULT NULL,
@@ -123,13 +127,19 @@ CREATE TABLE inv_credit_notes (
   dmoid int DEFAULT NULL,
   device_count decimal(10,2) DEFAULT 0.00,
   file_name varchar(70) DEFAULT NULL,
-  created_by varchar(70) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
-  -- '0=In Active,1=Active',
-  -- Primary key constraint
-CONSTRAINT pk_inv_credit_notes PRIMARY KEY (inv_credit_notes_id)
+  created_by_name varchar(70) DEFAULT NULL,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+CONSTRAINT pk_inv_credit_notes PRIMARY KEY (notes_id)
+);
+INSERT INTO inv_credit_notes (
+  notes_id, code, name, name_in_local, is_active, id, dtid, dmid, dcid, dmoid, device_count,
+  file_name, created_by_name, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'CN001', 'Credit Note - Device', 'ക്രെഡിറ്റ് നോട്ട് - ഉപകരണം', true, 1, 101, 202, 303, 404, 5.00,
+  'credit_device_list.pdf', 'Admin User', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), NULL
 );
 
 
@@ -137,18 +147,28 @@ CONSTRAINT pk_inv_credit_notes PRIMARY KEY (inv_credit_notes_id)
 DROP TABLE IF EXISTS inv_dc_credit_notes CASCADE;
 
 CREATE TABLE inv_dc_credit_notes (
-  inv_dc_credit_notes_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  notes_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   device_count int DEFAULT 0,
   remarks varchar(70) DEFAULT NULL,
   created_by_id int DEFAULT NULL,
   created_by_name varchar(150) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
-  -- '0=In Active,1=Active',
-  -- Primary key constraint
-CONSTRAINT pk_inv_dc_credit_notes PRIMARY KEY (inv_dc_credit_notes_id)
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+CONSTRAINT pk_inv_dc_credit_notes PRIMARY KEY (notes_id)
+);
+INSERT INTO inv_dc_credit_notes (
+  notes_id, code, name, name_in_local, is_active, id, device_count, remarks,
+  created_by_id, created_by_name, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'DCCN001', 'DC Credit Note', 'ഡി.സി ക്രെഡിറ്റ് നോട്ട്', true, 1, 10, 'Return of defective devices',
+  101, 'Admin User', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), NULL
 );
 
 
@@ -181,7 +201,11 @@ CONSTRAINT pk_inv_dccredit_notes PRIMARY KEY (inv_dccredit_notes_id)
 DROP TABLE IF EXISTS inv_device_acknowledgement CASCADE;
 
 CREATE TABLE inv_device_acknowledgement (
-  inv_device_acknowledgement_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  ack_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   deviceid int DEFAULT NULL,
   lnp_reqid int DEFAULT NULL,
@@ -194,10 +218,17 @@ CREATE TABLE inv_device_acknowledgement (
   mspdc_id int DEFAULT NULL,
   created_by_id bigint DEFAULT NULL,
   created_by_name varchar(150) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
-  -- '0=In Active,1=Active',
-  -- Primary key constraint
-CONSTRAINT pk_inv_device_acknowledgement PRIMARY KEY (inv_device_acknowledgement_id)
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+CONSTRAINT pk_inv_device_acknowledgement PRIMARY KEY (ack_id)
+);
+INSERT INTO inv_device_acknowledgement (
+  ack_id, code, name, name_in_local, is_active, id, deviceid, lnp_reqid, device_status, lnpid,
+  reqid, dc_reqid, noc_id, kfondc_id, mspdc_id, created_by_id, created_by_name, created_date,
+  modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'ACK001', 'Device Acknowledgement', 'ഡിവൈസ് അക്നലഡ്ജ്മെന്റ്', true, 1, 101, 5001, 1, 9876543210,
+  7001, 3001, 9001, 8001, 7002, 1001, 'System Admin', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), NULL
 );
