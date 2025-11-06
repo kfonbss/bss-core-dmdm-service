@@ -347,3 +347,7 @@ Get partner receipt and account balance report
 # [0.68.0] - 2025-11-05
 ### Added
 - Get inventory device make and device model details
+
+# [0.69.0] - 2025-11-06
+### Added
+- Get special event renewal and work order details
