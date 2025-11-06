@@ -351,3 +351,7 @@ Get partner receipt and account balance report
 # [0.69.0] - 2025-11-06
 ### Added
 - Get special event renewal and work order details
+
+# [0.70.0] - 2025-11-06
+### Added
+- Get caf details

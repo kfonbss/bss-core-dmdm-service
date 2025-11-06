@@ -2,6 +2,10 @@ DROP TABLE IF EXISTS caf_details CASCADE;
 
 CREATE TABLE caf_details (
   details_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active BOOLEAN,
   id SERIAL,
   caf_no varchar(60) DEFAULT NULL,
   loc varchar(60) DEFAULT NULL,
@@ -94,7 +98,35 @@ CREATE TABLE caf_details (
   feasbilitycheckdate date DEFAULT NULL,
   flag boolean DEFAULT NULL,
   corp_loc_id int DEFAULT NULL,
+  created_by UUID,
+  modified_by UUID,
   CONSTRAINT pk_caf_details PRIMARY KEY (details_id)
+);
+INSERT INTO caf_details (
+  details_id, code, name, name_in_local, is_active, id, caf_no, loc, caf_type, prefix, firstname, middlename, lastname,
+  nameof_firm, gender, nationality, father_husband_name, dateofbirth, panno, marital_status, existing_customer,
+  proof_of_identity, proof_of_identity_anyother, proof_of_address, proof_of_address_anyother, customer_photo, status,
+  instalation_address, instalation_city, instalation_pincode, instalation_landmark, instalation_mobile,
+  instalation_telephone, instalation_faxno, instalation_emailid, billing_address, billing_city, billing_pincode,
+  billing_landmark, billing_mobile, billing_telephone, billing_faxno, billing_emailid, packageid, connection_type,
+  package_type, port_sped, port_sped_usage, service1, service2, service3, service4, noof_static_ips, amount_paid_inr,
+  amount_paid_wrds, mode_of_payments, cash_reciept_no, dd_check_no, dateofpaid, bank_name, branch_name,
+  authorized_sign, dateofsign, partnerid, created_date, modified_date, idproof, addressproof, photoattaced, fsecode,
+  fsesignanddate, asmcode, crmcorsignanddate, paymentrealizationdate, custommacid, accessprovider, fsmacid,
+  wiredprovider, bsmacid, wirelessprovider, fsport, activationdate, bsport, officeuse, anpstampname, signatureofanp,
+  mspstamname, signaturofmsp, mspcode, mspdate, railtelrepresentivename, railtelsignature, railtel_desgnation,
+  railtel_date, feasbilitycheckdate, flag, corp_loc_id, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'CAF001', 'John Doe CAF', 'ജോൺ ഡോ സി.എ.എഫ്', true, 1, 'CAF-2025-001', 'Trivandrum', 'Individual', 'Mr',
+  'John', '', 'Doe', 'JD Solutions Pvt Ltd', 1, 'Indian', 'Richard Doe', '1990-05-21', 'ABCDE1234F', 'Single', 'No',
+  'Passport', NULL, 'Aadhaar', NULL, 'photo.jpg', 'Submitted', '123 MG Road', 'Trivandrum', '695001', 'Near Park',
+  '9876543210', '0471234567', NULL, 'john@example.com', '123 MG Road', 'Trivandrum', '695001', 'Near Park',
+  '9876543210', NULL, NULL, 'billing@example.com', 101, 'FTTH', 'Residential', '100 Mbps', 'Unlimited', 'Internet',
+  'Voice', NULL, NULL, '0', 1500.00, 'One Thousand Five Hundred Only', 'Cash', 'CR123', NULL, '2025-04-10', 'SBI',
+  'Main Branch', 'John Doe', '2025-04-10', 'PART001', CURRENT_TIMESTAMP, NULL, 'PAN', 'Aadhaar', 'Yes', 'FSE001',
+  '2025-04-11', 'ASM001', '2025-04-12', '2025-04-13', '00:1B:44:11:3A:B7', 'BSNL', 'FSM001', 'RailTel', 'BSM001',
+  'Airtel', 'FS001', '2025-04-20', 'BS001', 'Yes', 'ANP123', 'SignANP', 'MSP123', 'SignMSP', 'MSP001', '2025-04-22',
+  'Ravi Kumar', 'SignRail', 'Manager', '2025-04-25', '2025-04-18', true, 12, gen_random_uuid(), gen_random_uuid()
 );
 
 
