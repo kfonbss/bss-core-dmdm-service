@@ -60,4 +60,12 @@ public interface SpecialEventsService {
   List<CommonLookUp> purchaseOrderFetchAll();
 
   CommonLookUp purchaseOrderFetchById(UUID id);
+
+  List<CommonLookUp> renewalDetailsFetchAll();
+
+  CommonLookUp renewalDetailsFetchById(UUID id);
+
+  List<CommonLookUp> workOrdersFetchAll();
+
+  CommonLookUp workOrdersFetchById(UUID id);
 }

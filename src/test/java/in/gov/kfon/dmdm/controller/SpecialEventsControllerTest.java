@@ -398,4 +398,55 @@ class SpecialEventsControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("SE123"));
   }
+
+  @Test
+  void testRenewalDetailsFetchAll() throws Exception {
+    when(service.renewalDetailsFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/special-events/renewal-details/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("SE123"));
+  }
+
+  @Test
+  void testRenewalDetailById() throws Exception {
+    when(service.renewalDetailsFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/special-events/renewal-detail/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("SE123"));
+  }
+
+  @Test
+  void testWorkOrdersFetchAll() throws Exception {
+    when(service.workOrdersFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/special-events/work-orders/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("SE123"));
+  }
+
+  @Test
+  void testWorkOrderById() throws Exception {
+    when(service.workOrdersFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/special-events/work-order/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("SE123"));
+  }
 }

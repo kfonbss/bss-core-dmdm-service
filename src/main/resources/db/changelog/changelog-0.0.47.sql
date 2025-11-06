@@ -94,6 +94,10 @@ INSERT INTO se_purchase_order (
 -- Table: se_renewal_details
 CREATE TABLE se_renewal_details (
   details_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   locid INTEGER,
   cause VARCHAR(100),
@@ -107,22 +111,46 @@ CREATE TABLE se_renewal_details (
   establishment_gst NUMERIC(26,10) DEFAULT 0.0000000000,
   otc_cost NUMERIC(26,10) DEFAULT 0.0000000000,
   otc_gst NUMERIC(26,10) DEFAULT 0.0000000000,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1 -- 0=Inactive, 1=Active
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_renewal_details (
+  details_id, code, name, name_in_local, is_active, locid, cause,
+  service_sdate, service_edate, finrefid, total_sdays,
+  bandwidth_cost, bandwidth_gst, establishment_cost, establishment_gst,
+  otc_cost, otc_gst, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'REN001', 'Annual Renewal - Fiber Link', 'വാർഷിക പുതുക്കൽ - ഫൈബർ ലിങ്ക്', true,  2001, 'Renewal due to annual maintenance',
+  CURRENT_DATE, CURRENT_DATE + INTERVAL '365 days', 301, 365,
+  15000.0000000000, 2700.0000000000, 5000.0000000000, 900.0000000000,
+  2000.0000000000, 360.0000000000, CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: se_workorders
 CREATE TABLE se_workorders (
   orders_id UUID DEFAULT gen_random_uuid() NOT NULL PRIMARY KEY,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   poid INTEGER,
   proposalid INTEGER,
   wo_no VARCHAR(25),
   approve_status INTEGER DEFAULT 1,
-  create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  is_active INTEGER DEFAULT 1 -- 0=Inactive, 1=Active
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID
+);
+INSERT INTO se_workorders (
+  orders_id, code, name, name_in_local, is_active, poid, proposalid,
+  wo_no, approve_status, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'WO001', 'Fiber Installation Work Order', 'ഫൈബർ ഇൻസ്റ്റലേഷൻ വർക്ക് ഓർഡർ', true,  101, 201,
+  'WO-2025-001', 1, CURRENT_TIMESTAMP, NULL, gen_random_uuid(), gen_random_uuid()
 );
 
 -- Table: security
