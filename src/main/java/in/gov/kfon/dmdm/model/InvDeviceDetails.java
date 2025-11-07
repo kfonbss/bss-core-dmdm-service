@@ -8,7 +8,7 @@ import lombok.Data;
 @Entity
 @Table(name = "inv_device_details")
 @Data
-public class InvDeviceDetails {
+public class InvDeviceDetails extends Auditor {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "details_id")
