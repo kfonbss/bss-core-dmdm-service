@@ -46,6 +46,8 @@ public class InventoryServiceImpl implements InventoryService {
   private final InvLnpDeviceRequestRepository invLnpDeviceRequestRepository;
   private final InvDcCreditNoteRepository dcCreditNoteRepository;
   private final InvDeviceConditionStatusRepository deviceConditionStatusRepository;
+  private final InvKfonDcDeviceRequestRepository kfonDcDeviceRequestRepository;
+  private final InvDeviceDetailsMovementRepository deviceDetailsMovementRepository;
 
   @Override
   public List<CommonLookUp> fetchAllDeviceMakes() {
@@ -398,6 +400,42 @@ public class InventoryServiceImpl implements InventoryService {
   public CommonLookUp deviceConditionStatusFetchById(UUID id) {
     InvDeviceConditionStatus entity =
         deviceConditionStatusRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> kfonDcDeviceRequestsFetchAll() {
+    return kfonDcDeviceRequestRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp kfonDcDeviceRequestsFetchById(UUID id) {
+    InvKfonDcDeviceRequest entity =
+        kfonDcDeviceRequestRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> deviceDetailsMovementFetchAll() {
+    return deviceDetailsMovementRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp deviceDetailsMovementFetchById(UUID id) {
+    InvDeviceDetailsMovement entity =
+        deviceDetailsMovementRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);

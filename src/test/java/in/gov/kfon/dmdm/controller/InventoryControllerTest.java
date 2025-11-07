@@ -522,4 +522,56 @@ class InventoryControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("INV001"));
   }
+
+  @Test
+  void testDeviceDetailsMovementFetchAll() throws Exception {
+    when(service.deviceDetailsMovementFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/inventory/device/details-movements/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("INV001"));
+  }
+
+  @Test
+  void testDetailsMovementById() throws Exception {
+    when(service.deviceDetailsMovementFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/inventory/device/details-movement/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("INV001"));
+  }
+
+  @Test
+  void testKfonDcDeviceRequestsFetchAll() throws Exception {
+    when(service.kfonDcDeviceRequestsFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/inventory/kfon-dc/device-requests/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("INV001"));
+  }
+
+  @Test
+  void testDevice_requestById() throws Exception {
+    when(service.kfonDcDeviceRequestsFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/inventory/kfon-dc/device-request/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("INV001"));
+  }
 }

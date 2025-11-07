@@ -273,4 +273,30 @@ public class InventoryController {
     var data = inventoryService.deviceConditionStatusFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("device/details-movements/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> deviceDetailsMovementFetchAll() {
+    var data = inventoryService.deviceDetailsMovementFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("device/details-movement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> deviceDetailsMovementFetchById(
+      @PathVariable UUID id) {
+    var data = inventoryService.deviceDetailsMovementFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("kfon-dc/device-requests/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> kfonDcDeviceRequestsFetchAll() {
+    var data = inventoryService.kfonDcDeviceRequestsFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("kfon-dc/device-request/{id}")
+  public ResponseEntity<Response<CommonLookUp>> kfonDcDeviceRequestsFetchById(
+      @PathVariable UUID id) {
+    var data = inventoryService.kfonDcDeviceRequestsFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }

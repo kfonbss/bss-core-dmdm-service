@@ -41,6 +41,8 @@ class InventoryServiceImplTest {
   @Mock private InvLnpDeviceRequestMovementRepository invLnpDeviceRequestMovementRepository;
   @Mock private InvDcCreditNoteRepository dcCreditNoteRepository;
   @Mock private InvDeviceConditionStatusRepository deviceConditionStatusRepository;
+  @Mock private InvKfonDcDeviceRequestRepository kfonDcDeviceRequestRepository;
+  @Mock private InvDeviceDetailsMovementRepository deviceDetailsMovementRepository;
   @InjectMocks private InventoryServiceImpl inventoryService;
 
   private InvDeviceMake invDeviceMake;
@@ -65,6 +67,8 @@ class InventoryServiceImplTest {
   private InvLnpDeviceRequestMovement invLnpDeviceRequestMovement;
   private InvDcCreditNote invDcCreditNote;
   private InvDeviceConditionStatus invDeviceConditionStatus;
+  private InvKfonDcDeviceRequest invKfonDcDeviceRequest;
+  private InvDeviceDetailsMovement invDeviceDetailsMovement;
 
   @BeforeEach
   void setUp() {
@@ -175,6 +179,14 @@ class InventoryServiceImplTest {
     invDeviceConditionStatus = new InvDeviceConditionStatus();
     invDeviceConditionStatus.setStatusId(id);
     invDeviceConditionStatus.setName("Device Condition Test");
+
+    invKfonDcDeviceRequest = new InvKfonDcDeviceRequest();
+    invKfonDcDeviceRequest.setRequestId(id);
+    invKfonDcDeviceRequest.setName("KFON DC Device Request Test");
+
+    invDeviceDetailsMovement = new InvDeviceDetailsMovement();
+    invDeviceDetailsMovement.setMovementId(id);
+    invDeviceDetailsMovement.setName("Device Details Movement Test");
 
     lookup = new CommonLookUp();
     lookup.setId(id);
@@ -893,5 +905,67 @@ class InventoryServiceImplTest {
     when(deviceConditionStatusRepository.findById(id)).thenReturn(Optional.empty());
     assertThrows(
         EntityNotFoundException.class, () -> inventoryService.deviceConditionStatusFetchById(id));
+  }
+
+  @Test
+  void testKfonDcDeviceRequestsFetchAll() {
+    when(kfonDcDeviceRequestRepository.findAll()).thenReturn(List.of(invKfonDcDeviceRequest));
+    when(modelMapper.map(invKfonDcDeviceRequest, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.kfonDcDeviceRequestsFetchAll();
+
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getName()).isEqualTo("Test Name");
+    assertThat(result.get(0).getCode()).isEqualTo("T001");
+  }
+
+  @Test
+  void testKfonDcDeviceRequestsFetchById() {
+    when(kfonDcDeviceRequestRepository.findById(id))
+        .thenReturn(Optional.of(invKfonDcDeviceRequest));
+    when(modelMapper.map(invKfonDcDeviceRequest, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.kfonDcDeviceRequestsFetchById(id);
+
+    assertThat(result.getId()).isEqualTo(id);
+    assertThat(result.getNameInLocal()).isEqualTo("ടെസ്റ്റ് നെയിം");
+  }
+
+  @Test
+  void testKfonDcDeviceRequestsFetchById_NotFound() {
+    when(kfonDcDeviceRequestRepository.findById(id)).thenReturn(Optional.empty());
+    assertThrows(
+        EntityNotFoundException.class, () -> inventoryService.kfonDcDeviceRequestsFetchById(id));
+  }
+
+  @Test
+  void testDeviceDetailsMovementFetchAll() {
+    when(deviceDetailsMovementRepository.findAll()).thenReturn(List.of(invDeviceDetailsMovement));
+    when(modelMapper.map(invDeviceDetailsMovement, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.deviceDetailsMovementFetchAll();
+
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getName()).isEqualTo("Test Name");
+    assertThat(result.get(0).getCode()).isEqualTo("T001");
+  }
+
+  @Test
+  void testDeviceDetailsMovementFetchById() {
+    when(deviceDetailsMovementRepository.findById(id))
+        .thenReturn(Optional.of(invDeviceDetailsMovement));
+    when(modelMapper.map(invDeviceDetailsMovement, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.deviceDetailsMovementFetchById(id);
+
+    assertThat(result.getId()).isEqualTo(id);
+    assertThat(result.getCode()).isEqualTo("T001");
+  }
+
+  @Test
+  void testDeviceDetailsMovementFetchById_NotFound() {
+    when(deviceDetailsMovementRepository.findById(id)).thenReturn(Optional.empty());
+    assertThrows(
+        EntityNotFoundException.class, () -> inventoryService.deviceDetailsMovementFetchById(id));
   }
 }
