@@ -158,14 +158,24 @@ CREATE TABLE inv_device_type (
   dt_desc varchar(250) DEFAULT NULL,
   device_type int DEFAULT 0,
   -- '1=OLT,2=ONT,3=Switch,4=SFP=5=Fiber Patch cord,6=PON SFP',
-  created_by varchar(70) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_device_type PRIMARY KEY (inv_device_type_id)
 );
+
+INSERT INTO inv_device_type (
+  inv_device_type_id, id, dt_name, dt_desc, device_type, code, name, name_in_local,
+  is_active, created_date, modified_date, created_by, modified_by
+) VALUES
+(gen_random_uuid(), 1, 'OLT Device', 'Optical Line Terminal device used for fiber distribution', 1, 'DT001', 'OLT', 'ഓ.എൽ.ടി.', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : inv_device_vendor
@@ -180,14 +190,24 @@ CREATE TABLE inv_device_vendor (
   dmoid int DEFAULT NULL,
   dve_name varchar(100) DEFAULT NULL,
   dve_desc varchar(250) DEFAULT NULL,
-  created_by varchar(70) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_device_vendor PRIMARY KEY (inv_device_vendor_id)
 );
+
+INSERT INTO inv_device_vendor (
+  inv_device_vendor_id, id, dtid, dmid, dcid, dmoid, dve_name, dve_desc, code, name, name_in_local,
+  is_active, created_date, modified_date, created_by, modified_by
+) VALUES
+(gen_random_uuid(), 1, 1, 1, 1, 1, 'Cisco Systems', 'Leading network equipment vendor', 'DV001', 'Cisco', 'സിസ്കോ', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : inv_dtransfer_request

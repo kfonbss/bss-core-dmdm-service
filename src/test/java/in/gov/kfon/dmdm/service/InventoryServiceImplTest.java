@@ -31,6 +31,8 @@ class InventoryServiceImplTest {
   @Mock private InvDeviceStatusRepository invDeviceStatusRepository;
   @Mock private InvDeviceDetailsRepository deviceDetailsRepository;
   @Mock private InvDeviceDetailsAuditRepository deviceDetailsAuditRepository;
+  @Mock private InvDeviceTypeRepository invDeviceTypeRepository;
+  @Mock private InvDeviceVendorRepository invDeviceVendorRepository;
   @InjectMocks private InventoryServiceImpl inventoryService;
 
   private InvDeviceMake invDeviceMake;
@@ -45,6 +47,8 @@ class InventoryServiceImplTest {
   private InvDeviceStatus invDeviceStatus;
   private InvDeviceDetails invDeviceDetails;
   private InvDeviceDetailsAudit invDeviceDetailsAudit;
+  private InvDeviceType invDeviceType;
+  private InvDeviceVendor invDeviceVendor;
 
   @BeforeEach
   void setUp() {
@@ -96,6 +100,16 @@ class InventoryServiceImplTest {
     invDeviceDetailsAudit = new InvDeviceDetailsAudit();
     invDeviceDetailsAudit.setAuditId(id);
     invDeviceDetailsAudit.setName("Device Details Audit Test");
+    invDeviceType = new InvDeviceType();
+    invDeviceType.setInvDeviceTypeId(id);
+    invDeviceType.setDtName("OLT Device");
+    invDeviceType.setDtDesc("Optical Line Terminal");
+
+    invDeviceVendor = new InvDeviceVendor();
+    invDeviceVendor.setInvDeviceVendorId(id);
+    invDeviceVendor.setDveName("Cisco");
+    invDeviceVendor.setDveDesc("Network Vendor");
+
     lookup = new CommonLookUp();
     lookup.setId(id);
     lookup.setName("Test Name");
@@ -433,5 +447,81 @@ class InventoryServiceImplTest {
     when(deviceDetailsAuditRepository.findById(id)).thenReturn(Optional.empty());
     assertThrows(
         EntityNotFoundException.class, () -> inventoryService.deviceDetailsAuditsFetchById(id));
+  }
+
+  @Test
+  void testFetchAllDeviceTypes_Success() {
+    when(invDeviceTypeRepository.findAll()).thenReturn(List.of(invDeviceType));
+    when(modelMapper.map(invDeviceType, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.fetchAllDeviceTypes();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals("Test Name", result.get(0).getName());
+    verify(invDeviceTypeRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(invDeviceType, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDeviceTypeById_Success() {
+    when(invDeviceTypeRepository.findById(id)).thenReturn(Optional.of(invDeviceType));
+    when(modelMapper.map(invDeviceType, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.fetchDeviceTypeById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(invDeviceTypeRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(invDeviceType, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDeviceTypeById_NotFound() {
+    when(invDeviceTypeRepository.findById(id)).thenReturn(Optional.empty());
+
+    RuntimeException exception =
+        assertThrows(RuntimeException.class, () -> inventoryService.fetchDeviceTypeById(id));
+    assertEquals("Device Type not found with id: " + id, exception.getMessage());
+    verify(invDeviceTypeRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllDeviceVendors_Success() {
+    when(invDeviceVendorRepository.findAll()).thenReturn(List.of(invDeviceVendor));
+    when(modelMapper.map(invDeviceVendor, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.fetchAllDeviceVendors();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals("Test Name", result.get(0).getName());
+    verify(invDeviceVendorRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(invDeviceVendor, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDeviceVendorById_Success() {
+    when(invDeviceVendorRepository.findById(id)).thenReturn(Optional.of(invDeviceVendor));
+    when(modelMapper.map(invDeviceVendor, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.fetchDeviceVendorById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(invDeviceVendorRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(invDeviceVendor, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDeviceVendorById_NotFound() {
+    when(invDeviceVendorRepository.findById(id)).thenReturn(Optional.empty());
+
+    RuntimeException exception =
+        assertThrows(RuntimeException.class, () -> inventoryService.fetchDeviceVendorById(id));
+    assertEquals("Device Vendor not found with id: " + id, exception.getMessage());
+    verify(invDeviceVendorRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
   }
 }

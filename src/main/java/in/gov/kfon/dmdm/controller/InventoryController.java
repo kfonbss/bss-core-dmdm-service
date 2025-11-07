@@ -146,4 +146,29 @@ public class InventoryController {
     var data = inventoryService.deviceDetailsAuditsFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("/device-types/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDeviceTypes() {
+    var data = inventoryService.fetchAllDeviceTypes();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all device types"));
+  }
+
+  @GetMapping("/device-type/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchDeviceTypeById(@PathVariable UUID id) {
+    var data = inventoryService.fetchDeviceTypeById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched device type"));
+  }
+
+  @GetMapping("/device-vendors/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDeviceVendors() {
+    var data = inventoryService.fetchAllDeviceVendors();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all device vendors"));
+  }
+
+  @GetMapping("/device-vendor/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchDeviceVendorById(@PathVariable UUID id) {
+    var data = inventoryService.fetchDeviceVendorById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched device vendor"));
+  }
 }

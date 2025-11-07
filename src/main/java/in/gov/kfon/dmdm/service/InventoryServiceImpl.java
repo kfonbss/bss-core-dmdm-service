@@ -36,6 +36,8 @@ public class InventoryServiceImpl implements InventoryService {
   private final InvDeviceCatRepository deviceCatRepository;
   private final InvDeviceDetailsRepository deviceDetailsRepository;
   private final InvDeviceDetailsAuditRepository deviceDetailsAuditRepository;
+  private final InvDeviceTypeRepository invDeviceTypeRepository;
+  private final InvDeviceVendorRepository invDeviceVendorRepository;
 
   @Override
   public List<CommonLookUp> fetchAllDeviceMakes() {
@@ -210,5 +212,38 @@ public class InventoryServiceImpl implements InventoryService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllDeviceTypes() {
+    return invDeviceTypeRepository.findAll().stream()
+        .map(deviceType -> modelMapper.map(deviceType, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchDeviceTypeById(UUID id) {
+    var deviceType =
+        invDeviceTypeRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Device Type not found with id: " + id));
+    return modelMapper.map(deviceType, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllDeviceVendors() {
+    return invDeviceVendorRepository.findAll().stream()
+        .map(vendor -> modelMapper.map(vendor, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchDeviceVendorById(UUID id) {
+    var vendor =
+        invDeviceVendorRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Device Vendor not found with id: " + id));
+    return modelMapper.map(vendor, CommonLookUp.class);
   }
 }
