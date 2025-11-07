@@ -391,3 +391,7 @@ _ Get inventory device transfer request and movement details
 # [0.79.0] - 2025-11-07
 ### Added
 - Get inventory dc credit note and device condition status details
+
+# [0.80.0] - 2025-11-07
+### Added
+- Get inventory kfondc device request device movement details
