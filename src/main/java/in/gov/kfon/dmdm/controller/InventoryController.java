@@ -94,4 +94,31 @@ public class InventoryController {
     var data = inventoryService.deviceCatFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("/returns/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDeviceReturns() {
+    var data = inventoryService.fetchAllDeviceReturns();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all device return to OEM"));
+  }
+
+  @GetMapping("/return/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchDeviceReturnById(@PathVariable UUID id) {
+    var data = inventoryService.fetchDeviceReturnById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched device return to OEM"));
+  }
+
+  @GetMapping("/statuses/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDeviceStatuses() {
+    var data = inventoryService.fetchAllDeviceStatuses();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all device statuses"));
+  }
+
+  @GetMapping("/status/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchDeviceStatusById(@PathVariable UUID id) {
+    var data = inventoryService.fetchDeviceStatusById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched device status"));
+  }
 }

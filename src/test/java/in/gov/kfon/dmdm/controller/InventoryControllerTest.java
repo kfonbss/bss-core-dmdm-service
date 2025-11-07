@@ -185,4 +185,48 @@ class InventoryControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("INV001"));
   }
+
+  @Test
+  void testFetchAllDeviceReturnToOem() throws Exception {
+    when(service.fetchAllDeviceReturns()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/inventory/returns/fetch-all"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all device return to OEM"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchDeviceReturnToOemById() throws Exception {
+    when(service.fetchDeviceReturnById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/inventory/return/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched device return to OEM"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchAllDeviceStatuses() throws Exception {
+    when(service.fetchAllDeviceStatuses()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/inventory/statuses/fetch-all"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all device statuses"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testFetchDeviceStatusById() throws Exception {
+    when(service.fetchDeviceStatusById(id)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/inventory/status/{id}", id))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched device status"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
 }
