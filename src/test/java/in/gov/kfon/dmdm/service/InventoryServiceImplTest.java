@@ -33,6 +33,8 @@ class InventoryServiceImplTest {
   @Mock private InvDeviceDetailsAuditRepository deviceDetailsAuditRepository;
   @Mock private InvDeviceTypeRepository invDeviceTypeRepository;
   @Mock private InvDeviceVendorRepository invDeviceVendorRepository;
+  @Mock private InvDtransferRequestRepository invDtransferRequestRepository;
+  @Mock private InvDtransferRmovementRepository invDtransferRmovementRepository;
   @InjectMocks private InventoryServiceImpl inventoryService;
 
   private InvDeviceMake invDeviceMake;
@@ -49,6 +51,8 @@ class InventoryServiceImplTest {
   private InvDeviceDetailsAudit invDeviceDetailsAudit;
   private InvDeviceType invDeviceType;
   private InvDeviceVendor invDeviceVendor;
+  private InvDtransferRequest invDtransferRequest;
+  private InvDtransferRmovement invDtransferRmovement;
 
   @BeforeEach
   void setUp() {
@@ -109,6 +113,20 @@ class InventoryServiceImplTest {
     invDeviceVendor.setInvDeviceVendorId(id);
     invDeviceVendor.setDveName("Cisco");
     invDeviceVendor.setDveDesc("Network Vendor");
+
+    invDtransferRequest = new InvDtransferRequest();
+    invDtransferRequest.setInvDtransferRequestId(id);
+    invDtransferRequest.setCode("REQ001");
+    invDtransferRequest.setName("Device Transfer Request");
+    invDtransferRequest.setNameInLocal("ഡിവൈസ് ട്രാൻസ്ഫർ റിക്വസ്റ്റ്");
+    invDtransferRequest.setIsActive(true);
+
+    invDtransferRmovement = new InvDtransferRmovement();
+    invDtransferRmovement.setInvDtransferRmovementId(id);
+    invDtransferRmovement.setCode("MOV001");
+    invDtransferRmovement.setName("Device Transfer Movement");
+    invDtransferRmovement.setNameInLocal("ഡിവൈസ് ട്രാൻസ്ഫർ മൂവ്മെന്റ്");
+    invDtransferRmovement.setIsActive(true);
 
     lookup = new CommonLookUp();
     lookup.setId(id);
@@ -522,6 +540,91 @@ class InventoryServiceImplTest {
         assertThrows(RuntimeException.class, () -> inventoryService.fetchDeviceVendorById(id));
     assertEquals("Device Vendor not found with id: " + id, exception.getMessage());
     verify(invDeviceVendorRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllDeviceTransferRequests_Success() {
+    when(invDtransferRequestRepository.findAll()).thenReturn(List.of(invDtransferRequest));
+    when(modelMapper.map(invDtransferRequest, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.fetchAllDeviceTransferRequests();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals("Test Name", result.get(0).getName());
+    verify(invDtransferRequestRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(invDtransferRequest, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDeviceTransferRequestById_Success() {
+    when(invDtransferRequestRepository.findById(id)).thenReturn(Optional.of(invDtransferRequest));
+    when(modelMapper.map(invDtransferRequest, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.fetchDeviceTransferRequestById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    assertEquals("Test Name", result.getName());
+    verify(invDtransferRequestRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(invDtransferRequest, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDeviceTransferRequestById_NotFound() {
+    when(invDtransferRequestRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(
+            EntityNotFoundException.class,
+            () -> inventoryService.fetchDeviceTransferRequestById(id));
+    assertEquals("Not found with id: " + id, exception.getMessage());
+
+    verify(invDtransferRequestRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllDeviceTransferMovements_Success() {
+    when(invDtransferRmovementRepository.findAll()).thenReturn(List.of(invDtransferRmovement));
+    when(modelMapper.map(invDtransferRmovement, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.fetchAllDeviceTransferMovements();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals("Test Name", result.get(0).getName());
+    verify(invDtransferRmovementRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(invDtransferRmovement, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDeviceTransferMovementById_Success() {
+    when(invDtransferRmovementRepository.findById(id))
+        .thenReturn(Optional.of(invDtransferRmovement));
+    when(modelMapper.map(invDtransferRmovement, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.fetchDeviceTransferMovementById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    assertEquals("Test Name", result.getName());
+    verify(invDtransferRmovementRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(invDtransferRmovement, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDeviceTransferMovementById_NotFound() {
+    when(invDtransferRmovementRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(
+            EntityNotFoundException.class,
+            () -> inventoryService.fetchDeviceTransferMovementById(id));
+    assertEquals("Not found with id: " + id, exception.getMessage());
+
+    verify(invDtransferRmovementRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
 }

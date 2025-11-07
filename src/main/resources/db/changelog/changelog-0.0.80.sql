@@ -228,15 +228,28 @@ CREATE TABLE inv_dtransfer_request (
   request_status int DEFAULT 1,
   -- '1=KFON-MGR Ceated the request,2=KFON-GM Approved the   request,3=KFON-GM Rejected the request',
   remarks varchar(150) DEFAULT NULL,
-  created_by varchar(70) DEFAULT NULL,
   accepted_count int DEFAULT 0,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_dtransfer_request PRIMARY KEY (inv_dtransfer_request_id)
 );
+
+INSERT INTO inv_dtransfer_request (
+  inv_dtransfer_request_id, dtid, dmid, dcid, dmoid, noc_id, kfon_dcid,
+  device_count, transfer_type, request_status, remarks,
+  accepted_count, code, name, name_in_local, is_active,
+  created_date, modified_date, created_by, modified_by
+)
+VALUES
+  (gen_random_uuid(), 101, 201, 301, 401, 501, 601, 10, 1, 1, 'Initial transfer request', 5, 'TRF001', 'Device Transfer Request 1', 'ഡിവൈസ് ട്രാൻസ്ഫർ 1', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : inv_dtransfer_rmovement
@@ -249,14 +262,26 @@ CREATE TABLE inv_dtransfer_rmovement (
   request_status int DEFAULT 1,
   -- '1=KFON-MGR Ceated the request,2=KFON-GM Approved the   request,3=KFON-GM Rejected the request',
   remarks varchar(150) DEFAULT NULL,
-  created_by varchar(70) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_dtransfer_rmovement PRIMARY KEY (inv_dtransfer_rmovement_id)
 );
+
+INSERT INTO inv_dtransfer_rmovement (
+  inv_dtransfer_rmovement_id, reqid, request_status, remarks,
+  code, name, name_in_local, is_active,
+  created_date, modified_date, created_by, modified_by
+)
+VALUES
+  (gen_random_uuid(), 1, 1, 'Movement initiated by MGR', 'RMV001', 'Device Movement 1', 'ഡിവൈസ് മൂവ്‌മെന്റ് 1', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : inv_kfondc_device_request

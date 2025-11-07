@@ -38,6 +38,8 @@ public class InventoryServiceImpl implements InventoryService {
   private final InvDeviceDetailsAuditRepository deviceDetailsAuditRepository;
   private final InvDeviceTypeRepository invDeviceTypeRepository;
   private final InvDeviceVendorRepository invDeviceVendorRepository;
+  private final InvDtransferRequestRepository invDtransferRequestRepository;
+  private final InvDtransferRmovementRepository invDtransferRmovementRepository;
 
   @Override
   public List<CommonLookUp> fetchAllDeviceMakes() {
@@ -245,5 +247,41 @@ public class InventoryServiceImpl implements InventoryService {
             .orElseThrow(
                 () -> new EntityNotFoundException("Device Vendor not found with id: " + id));
     return modelMapper.map(vendor, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllDeviceTransferRequests() {
+    return invDtransferRequestRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchDeviceTransferRequestById(UUID id) {
+    InvDtransferRequest entity =
+        invDtransferRequestRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllDeviceTransferMovements() {
+    return invDtransferRmovementRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchDeviceTransferMovementById(UUID id) {
+    InvDtransferRmovement entity =
+        invDtransferRmovementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
   }
 }
