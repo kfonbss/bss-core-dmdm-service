@@ -420,4 +420,56 @@ class InventoryControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched PO document"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
+
+  @Test
+  void testLnpDeviceRequestsFetchAll() throws Exception {
+    when(service.fetchAllLnpDeviceRequests()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/inventory/lnp-device-requests/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all LNP device requests"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testLnpDeviceRequestFetchById() throws Exception {
+    when(service.fetchLnpDeviceRequestById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/inventory/lnp-device-request/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched LNP device request"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testLnpDeviceRequestMovementsFetchAll() throws Exception {
+    when(service.fetchAllLnpDeviceRequestMovements()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/inventory/lnp-device-request-movements/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all LNP device request movements"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testLnpDeviceRequestMovementFetchById() throws Exception {
+    when(service.fetchLnpDeviceRequestMovementById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/inventory/lnp-device-request-movement/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched LNP device request movement"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
 }

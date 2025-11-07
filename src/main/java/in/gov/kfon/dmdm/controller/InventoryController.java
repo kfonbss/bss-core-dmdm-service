@@ -219,4 +219,33 @@ public class InventoryController {
     var data = inventoryService.fetchPoDocumentById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched PO document"));
   }
+
+  @GetMapping("/lnp-device-requests/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllLnpDeviceRequests() {
+    var data = inventoryService.fetchAllLnpDeviceRequests();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all LNP device requests"));
+  }
+
+  @GetMapping("/lnp-device-request/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchLnpDeviceRequestById(@PathVariable UUID id) {
+    var data = inventoryService.fetchLnpDeviceRequestById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched LNP device request"));
+  }
+
+  @GetMapping("/lnp-device-request-movements/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllLnpDeviceRequestMovements() {
+    var data = inventoryService.fetchAllLnpDeviceRequestMovements();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all LNP device request movements"));
+  }
+
+  @GetMapping("/lnp-device-request-movement/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchLnpDeviceRequestMovementById(
+      @PathVariable UUID id) {
+    var data = inventoryService.fetchLnpDeviceRequestMovementById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched LNP device request movement"));
+  }
 }

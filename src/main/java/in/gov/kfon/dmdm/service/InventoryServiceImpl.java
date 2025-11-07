@@ -42,6 +42,8 @@ public class InventoryServiceImpl implements InventoryService {
   private final InvDtransferRmovementRepository invDtransferRmovementRepository;
   private final InvPoDetailsRepository invPoDetailsRepository;
   private final InvPoDocumentsRepository invPoDocumentsRepository;
+  private final InvLnpDeviceRequestMovementRepository invLnpDeviceRequestMovementRepository;
+  private final InvLnpDeviceRequestRepository invLnpDeviceRequestRepository;
 
   @Override
   public List<CommonLookUp> fetchAllDeviceMakes() {
@@ -320,6 +322,46 @@ public class InventoryServiceImpl implements InventoryService {
         invPoDocumentsRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllLnpDeviceRequests() {
+    return invLnpDeviceRequestRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchLnpDeviceRequestById(UUID id) {
+    InvLnpDeviceRequest entity =
+        invLnpDeviceRequestRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("LNP Device Request not found with id: " + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllLnpDeviceRequestMovements() {
+    return invLnpDeviceRequestMovementRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchLnpDeviceRequestMovementById(UUID id) {
+    InvLnpDeviceRequestMovement entity =
+        invLnpDeviceRequestMovementRepository
+            .findById(id)
+            .orElseThrow(
+                () ->
+                    new EntityNotFoundException(
+                        "LNP Device Request Movement not found with id: " + id));
     return modelMapper.map(entity, CommonLookUp.class);
   }
 }

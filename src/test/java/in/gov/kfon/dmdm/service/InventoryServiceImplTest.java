@@ -37,6 +37,8 @@ class InventoryServiceImplTest {
   @Mock private InvDtransferRmovementRepository invDtransferRmovementRepository;
   @Mock private InvPoDetailsRepository invPoDetailsRepository;
   @Mock private InvPoDocumentsRepository invPoDocumentsRepository;
+  @Mock private InvLnpDeviceRequestRepository invLnpDeviceRequestRepository;
+  @Mock private InvLnpDeviceRequestMovementRepository invLnpDeviceRequestMovementRepository;
   @InjectMocks private InventoryServiceImpl inventoryService;
 
   private InvDeviceMake invDeviceMake;
@@ -57,6 +59,8 @@ class InventoryServiceImplTest {
   private InvDtransferRmovement invDtransferRmovement;
   private InvPoDetails poDetailsEntity;
   private InvPoDocuments poDocumentEntity;
+  private InvLnpDeviceRequest invLnpDeviceRequest;
+  private InvLnpDeviceRequestMovement invLnpDeviceRequestMovement;
 
   @BeforeEach
   void setUp() {
@@ -145,6 +149,20 @@ class InventoryServiceImplTest {
     poDocumentEntity.setName("Invoice Copy");
     poDocumentEntity.setNameInLocal("ഇൻവോയ്സ് പകർപ്പ്");
     poDocumentEntity.setIsActive(true);
+
+    invLnpDeviceRequest = new InvLnpDeviceRequest();
+    invLnpDeviceRequest.setInvLnpDeviceRequestId(id);
+    invLnpDeviceRequest.setCode("LNPREQ001");
+    invLnpDeviceRequest.setName("LNP Device Request");
+    invLnpDeviceRequest.setNameInLocal("എൽ.എൻ.പി ഡിവൈസ് റിക്വസ്റ്റ്");
+    invLnpDeviceRequest.setIsActive(true);
+
+    invLnpDeviceRequestMovement = new InvLnpDeviceRequestMovement();
+    invLnpDeviceRequestMovement.setInvLnpDeviceRequestMovementId(id);
+    invLnpDeviceRequestMovement.setCode("LNPMOV001");
+    invLnpDeviceRequestMovement.setName("LNP Device Request Movement");
+    invLnpDeviceRequestMovement.setNameInLocal("എൽ.എൻ.പി ഡിവൈസ് മൂവ്മെന്റ്");
+    invLnpDeviceRequestMovement.setIsActive(true);
 
     lookup = new CommonLookUp();
     lookup.setId(id);
@@ -721,6 +739,87 @@ class InventoryServiceImplTest {
     assertEquals("Not found with id: " + id, exception.getMessage());
 
     verify(invPoDocumentsRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllLnpDeviceRequests_Success() {
+    when(invLnpDeviceRequestRepository.findAll()).thenReturn(List.of(invLnpDeviceRequest));
+    when(modelMapper.map(invLnpDeviceRequest, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.fetchAllLnpDeviceRequests();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals("Test Name", result.get(0).getName());
+    verify(invLnpDeviceRequestRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(invLnpDeviceRequest, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchLnpDeviceRequestById_Success() {
+    when(invLnpDeviceRequestRepository.findById(id)).thenReturn(Optional.of(invLnpDeviceRequest));
+    when(modelMapper.map(invLnpDeviceRequest, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.fetchLnpDeviceRequestById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(invLnpDeviceRequestRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(invLnpDeviceRequest, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchLnpDeviceRequestById_NotFound() {
+    when(invLnpDeviceRequestRepository.findById(id)).thenReturn(Optional.empty());
+
+    RuntimeException exception =
+        assertThrows(RuntimeException.class, () -> inventoryService.fetchLnpDeviceRequestById(id));
+    assertEquals("LNP Device Request not found with id: " + id, exception.getMessage());
+
+    verify(invLnpDeviceRequestRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllLnpDeviceRequestMovements_Success() {
+    when(invLnpDeviceRequestMovementRepository.findAll())
+        .thenReturn(List.of(invLnpDeviceRequestMovement));
+    when(modelMapper.map(invLnpDeviceRequestMovement, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.fetchAllLnpDeviceRequestMovements();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals("Test Name", result.get(0).getName());
+    verify(invLnpDeviceRequestMovementRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(invLnpDeviceRequestMovement, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchLnpDeviceRequestMovementById_Success() {
+    when(invLnpDeviceRequestMovementRepository.findById(id))
+        .thenReturn(Optional.of(invLnpDeviceRequestMovement));
+    when(modelMapper.map(invLnpDeviceRequestMovement, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.fetchLnpDeviceRequestMovementById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(invLnpDeviceRequestMovementRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(invLnpDeviceRequestMovement, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchLnpDeviceRequestMovementById_NotFound() {
+    when(invLnpDeviceRequestMovementRepository.findById(id)).thenReturn(Optional.empty());
+
+    RuntimeException exception =
+        assertThrows(
+            RuntimeException.class, () -> inventoryService.fetchLnpDeviceRequestMovementById(id));
+    assertEquals("LNP Device Request Movement not found with id: " + id, exception.getMessage());
+
+    verify(invLnpDeviceRequestMovementRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
 }

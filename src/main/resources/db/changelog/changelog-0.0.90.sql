@@ -16,13 +16,22 @@ CREATE TABLE inv_lnp_device_request (
   -- '1=LNP Raised a request,2=DC Approved Request,3=DC Rejected Request',
   approve_remarks varchar(250) DEFAULT NULL,
   accepted_count int DEFAULT 0,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_lnp_device_request PRIMARY KEY (inv_lnp_device_request_id)
 );
+
+INSERT INTO inv_lnp_device_request (inv_lnp_device_request_id, dtid, req_dev_count, app_dev_count, device_type, lnpid, mspdc_id, request_from, remarks, request_status, approve_remarks, accepted_count, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 101, 10, 8, 2, 501, 301, 1, 'Initial request for devices', 1, 'Approved partially', 8, 'LNP001', 'LNP Request 1', 'എൽഎൻപി അഭ്യർത്ഥന 1', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : inv_lnp_device_request_movement
@@ -37,13 +46,22 @@ CREATE TABLE inv_lnp_device_request_movement (
   -- '1=LNP Raised a request,2=DC Approved Request,3=DC Rejected Request,4=LNP acknowledged ',
   created_by_id int DEFAULT NULL,
   created_by_name varchar(150) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_lnp_device_request_movement PRIMARY KEY (inv_lnp_device_request_movement_id)
 );
+
+INSERT INTO inv_lnp_device_request_movement (inv_lnp_device_request_movement_id, reqid, remarks, request_status, created_by_id, created_by_name, code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by)
+VALUES
+(gen_random_uuid(), 101, 'Request raised by LNP', 1, 1001, 'John LNP', 'LNPMV001', 'LNP Request Movement 1', 'എൽഎൻപി അഭ്യർത്ഥന ചലനം 1', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : inv_po_details

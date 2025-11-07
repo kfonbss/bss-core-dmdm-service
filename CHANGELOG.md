@@ -383,3 +383,7 @@ _ Get inventory device transfer request and movement details
 # [0.77.0] - 2025-11-07
 ### Added
 - Get inventory po details and po documents
+
+# [0.78.0] - 2025-11-07
+### Added
+- Get inventory lnp device request and request movement details
