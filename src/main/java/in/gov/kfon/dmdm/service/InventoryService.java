@@ -45,4 +45,12 @@ public interface InventoryService {
   List<CommonLookUp> deviceDetailsAuditsFetchAll();
 
   CommonLookUp deviceDetailsAuditsFetchById(UUID id);
+
+  List<CommonLookUp> fetchAllDeviceTypes();
+
+  CommonLookUp fetchDeviceTypeById(UUID id);
+
+  List<CommonLookUp> fetchAllDeviceVendors();
+
+  CommonLookUp fetchDeviceVendorById(UUID id);
 }
