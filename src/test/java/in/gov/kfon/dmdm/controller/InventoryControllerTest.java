@@ -229,4 +229,54 @@ class InventoryControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched device status"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
+
+  @Test
+  void testDeviceDetailsFetchAll() throws Exception {
+    when(service.deviceDetailsFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/inventory/device-details/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("INV001"));
+  }
+
+  @Test
+  void testDeviceDetailById() throws Exception {
+    when(service.deviceDetailsFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/inventory/device-detail/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("INV001"));
+  }
+
+  @Test
+  void testDeviceDetailsAuditsFetchAll() throws Exception {
+    when(service.deviceDetailsAuditsFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/inventory/device/details-audits/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("INV001"));
+  }
+
+  @Test
+  void testDetailsAuditById() throws Exception {
+    when(service.deviceDetailsAuditsFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/inventory/device/details-audit/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("INV001"));
+  }
 }

@@ -29,6 +29,8 @@ class InventoryServiceImplTest {
   @Mock private InvDeviceCatRepository deviceCatRepository;
   @Mock private InvDeviceReturnTooemRepository invDeviceReturnTooemRepository;
   @Mock private InvDeviceStatusRepository invDeviceStatusRepository;
+  @Mock private InvDeviceDetailsRepository deviceDetailsRepository;
+  @Mock private InvDeviceDetailsAuditRepository deviceDetailsAuditRepository;
   @InjectMocks private InventoryServiceImpl inventoryService;
 
   private InvDeviceMake invDeviceMake;
@@ -41,6 +43,8 @@ class InventoryServiceImplTest {
   private InvDeviceCat invDeviceCat;
   private InvDeviceReturnTooem invDeviceReturnTooem;
   private InvDeviceStatus invDeviceStatus;
+  private InvDeviceDetails invDeviceDetails;
+  private InvDeviceDetailsAudit invDeviceDetailsAudit;
 
   @BeforeEach
   void setUp() {
@@ -85,6 +89,13 @@ class InventoryServiceImplTest {
     invDeviceStatus.setName("Working");
     invDeviceStatus.setNameInLocal("പ്രവർത്തനം");
 
+    invDeviceDetails = new InvDeviceDetails();
+    invDeviceDetails.setDetailsId(id);
+    invDeviceDetails.setName("Device Details Test");
+
+    invDeviceDetailsAudit = new InvDeviceDetailsAudit();
+    invDeviceDetailsAudit.setAuditId(id);
+    invDeviceDetailsAudit.setName("Device Details Audit Test");
     lookup = new CommonLookUp();
     lookup.setId(id);
     lookup.setName("Test Name");
@@ -363,5 +374,64 @@ class InventoryServiceImplTest {
 
     verify(invDeviceStatusRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testDeviceDetailsFetchAll() {
+    when(deviceDetailsRepository.findAll()).thenReturn(List.of(invDeviceDetails));
+    when(modelMapper.map(invDeviceDetails, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.deviceDetailsFetchAll();
+
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getName()).isEqualTo("Test Name");
+    assertThat(result.get(0).getCode()).isEqualTo("T001");
+  }
+
+  @Test
+  void testDeviceDetailsFetchById() {
+    when(deviceDetailsRepository.findById(id)).thenReturn(Optional.of(invDeviceDetails));
+    when(modelMapper.map(invDeviceDetails, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.deviceDetailsFetchById(id);
+
+    assertThat(result.getId()).isEqualTo(id);
+    assertThat(result.getNameInLocal()).isEqualTo("ടെസ്റ്റ് നെയിം");
+  }
+
+  @Test
+  void testDeviceDetailsFetchById_NotFound() {
+    when(deviceDetailsRepository.findById(id)).thenReturn(Optional.empty());
+    assertThrows(EntityNotFoundException.class, () -> inventoryService.deviceDetailsFetchById(id));
+  }
+
+  @Test
+  void testDeviceDetailsAuditsFetchAll() {
+    when(deviceDetailsAuditRepository.findAll()).thenReturn(List.of(invDeviceDetailsAudit));
+    when(modelMapper.map(invDeviceDetailsAudit, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.deviceDetailsAuditsFetchAll();
+
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getName()).isEqualTo("Test Name");
+    assertThat(result.get(0).getCode()).isEqualTo("T001");
+  }
+
+  @Test
+  void testDeviceDetailsAuditsFetchById() {
+    when(deviceDetailsAuditRepository.findById(id)).thenReturn(Optional.of(invDeviceDetailsAudit));
+    when(modelMapper.map(invDeviceDetailsAudit, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.deviceDetailsAuditsFetchById(id);
+
+    assertThat(result.getId()).isEqualTo(id);
+    assertThat(result.getCode()).isEqualTo("T001");
+  }
+
+  @Test
+  void testDeviceDetailsAuditsFetchById_NotFound() {
+    when(deviceDetailsAuditRepository.findById(id)).thenReturn(Optional.empty());
+    assertThrows(
+        EntityNotFoundException.class, () -> inventoryService.deviceDetailsAuditsFetchById(id));
   }
 }

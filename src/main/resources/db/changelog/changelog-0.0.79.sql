@@ -55,7 +55,11 @@ CONSTRAINT pk_inv_device_condition_status PRIMARY KEY (inv_device_condition_stat
 DROP TABLE IF EXISTS inv_device_details CASCADE;
 
 CREATE TABLE inv_device_details (
-  inv_device_details_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  details_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   dtid int DEFAULT NULL,
   dmid int DEFAULT NULL,
@@ -101,35 +105,45 @@ CREATE TABLE inv_device_details (
   repair_status INT DEFAULT 0,
   created_userid int DEFAULT NULL,
   created_username varchar(100) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
-  -- '0=In Active,1=Active',
-  -- Primary key constraint
-CONSTRAINT pk_inv_device_details PRIMARY KEY (inv_device_details_id)
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+CONSTRAINT pk_inv_device_details PRIMARY KEY (details_id)
+);
+INSERT INTO inv_device_details (
+  details_id, code, name, name_in_local, is_active, id, dtid, dmid, dcid, dmoid, dvid,
+  asset_type, device_slno, old_deviceslno, slno_updatedate, device_serial_number, device_mack,
+  sfp_distance, invoice_date, warranty_sdate, warranty_edate, po_no, file_name, device_status,
+  noc_id, kfon_dcid, msp_dcid, lnpid, subid, user_type, appid, ce_kycid, reqid, dc_reqid,
+  con_device_type, ip_address, port_number, secondry_remarks, device_mapped_to, pop_name,
+  discovered_inacs, device_status_inacs, condition_statusid, oem_request_id, repair_status,
+  created_userid, created_username, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'DEV001', 'GPON OLT Device', 'ജി.പി.ഒ.എൻ ഒ.എൽ.ടി ഉപകരണം', TRUE, 1, 101, 202, 303, 404, 505,
+  1, 'SN123456', 'OLD123456', CURRENT_DATE, 'SN987654', 'MAC-AA:BB:CC:DD:EE:FF',
+  '20km', '2025-01-15', '2025-01-16', '2028-01-15', 'PO-2025-01', 'invoice_2025.pdf', 1,
+  11, 22, 33, 444555666, 77, 1, 88, 99, 100, 111,
+  1, '192.168.10.10', '8080', 'Test device remarks', 1, 'KFON POP-1',
+  1, 2, 1, 55, 0,
+  1010, 'System Admin', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), NULL
 );
 
+
 -- Create indexes for better performance
-CREATE INDEX idx_inv_device_details_dtid ON inv_device_details (dtid);
-CREATE INDEX idx_inv_device_details_dmid ON inv_device_details (dmid);
-CREATE INDEX idx_inv_device_details_dcid ON inv_device_details (dcid);
-CREATE INDEX idx_inv_device_details_dmoid ON inv_device_details (dmoid);
-CREATE INDEX idx_inv_device_details_dvid ON inv_device_details (dvid);
 CREATE INDEX idx_inv_device_details_device_status ON inv_device_details (device_status);
-CREATE INDEX idx_inv_device_details_kfon_dcid ON inv_device_details (kfon_dcid);
-CREATE INDEX idx_inv_device_details_msp_dcid ON inv_device_details (msp_dcid);
-CREATE INDEX idx_inv_device_details_lnpid ON inv_device_details (lnpid);
-CREATE INDEX idx_inv_device_details_subid ON inv_device_details (subid);
-CREATE INDEX idx_inv_device_details_appid ON inv_device_details (appid);
-CREATE INDEX idx_inv_device_details_reqid ON inv_device_details (reqid);
 CREATE INDEX idx_inv_device_details_dc_reqid ON inv_device_details (dc_reqid);
 
 -- Table : inv_device_details_audit
 DROP TABLE IF EXISTS inv_device_details_audit CASCADE;
 
 CREATE TABLE inv_device_details_audit (
-  inv_device_details_audit_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  audit_id UUID DEFAULT gen_random_uuid() NOT NULL,
   id SERIAL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   deviceid int DEFAULT NULL,
   old_deviceid int DEFAULT NULL,
   invoice_date varchar(12) DEFAULT NULL,
@@ -138,12 +152,20 @@ CREATE TABLE inv_device_details_audit (
   po_no varchar(200) DEFAULT NULL,
   created_by_id int DEFAULT NULL,
   created_by_name varchar(150) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
-  -- '0=In Active,1=Active',
-  -- Primary key constraint
-CONSTRAINT pk_inv_device_details_audit PRIMARY KEY (inv_device_details_audit_id)
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+CONSTRAINT pk_inv_device_details_audit PRIMARY KEY (audit_id)
+);
+INSERT INTO inv_device_details_audit (
+  audit_id, id, code, name, name_in_local, is_active, deviceid, old_deviceid,
+  invoice_date, warranty_sdate, warranty_edate, po_no,
+  created_by_id, created_by_name, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 'AUD001', 'Device Audit Entry', 'ഡിവൈസ് ഓഡിറ്റ് എൻട്രി', true,
+  101, 99, '2024-06-10', '2024-06-15', '2027-06-15', 'PO-123456',
+  11, 'AuditUser', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), NULL
 );
 
 
