@@ -53,4 +53,12 @@ public interface InventoryService {
   List<CommonLookUp> fetchAllDeviceVendors();
 
   CommonLookUp fetchDeviceVendorById(UUID id);
+
+  List<CommonLookUp> fetchAllDeviceTransferRequests();
+
+  CommonLookUp fetchDeviceTransferRequestById(UUID id);
+
+  List<CommonLookUp> fetchAllDeviceTransferMovements();
+
+  CommonLookUp fetchDeviceTransferMovementById(UUID id);
 }

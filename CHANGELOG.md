@@ -375,3 +375,7 @@ Get partner receipt and account balance report
 # [0.75.0] - 2025-11-07
 ### Added
 - Get inventory device type and vendor details
+
+# [0.76.0] - 2025-11-07
+### Added
+_ Get inventory device transfer request and movement details

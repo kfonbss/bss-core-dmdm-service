@@ -325,4 +325,54 @@ class InventoryControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched device vendor"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
+
+  @Test
+  void testDeviceTransfersFetchAll() throws Exception {
+    when(service.fetchAllDeviceTransferRequests()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/inventory/device-transfers/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testDeviceTransfersFetchById() throws Exception {
+    when(service.fetchDeviceTransferRequestById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/inventory/device-transfer/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("INV001"));
+  }
+
+  @Test
+  void testDeviceMovementsFetchAll() throws Exception {
+    when(service.fetchAllDeviceTransferMovements()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/inventory/device-movements/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testDeviceMovementsFetchById() throws Exception {
+    when(service.fetchDeviceTransferMovementById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/inventory/device-movement/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("INV001"));
+  }
 }
