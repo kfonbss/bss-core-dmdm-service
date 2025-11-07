@@ -83,14 +83,31 @@ CREATE TABLE inv_device_return_tooem (
   approval_reject_remarks text DEFAULT NULL,
   enable_for_dgm INT DEFAULT 0,
   created_by_id bigint DEFAULT NULL,
-  created_by_name varchar(150) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=Inactive,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_device_return_tooem PRIMARY KEY (inv_device_return_tooem_id)
 );
+
+INSERT INTO inv_device_return_tooem (
+  inv_device_return_tooem_id, id, returncount, request_status, support_doc,
+  kfondc_id, remarks, approval_reject_remarks, enable_for_dgm, created_by_id,
+  code, name, name_in_local, is_active,
+  created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 5, 1, 'RETURN_DOC_2025_001.pdf',
+  1001, 'Defective routers returned to OEM', 'Pending DGM approval', 0, 501,
+  'RET-001', 'Device Return to OEM', 'ഡിവൈസ് മടക്കൽ ഒഇഎമ്മിലേക്ക്', TRUE,
+  NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
+);
+
 
 
 -- Table : inv_device_status
@@ -105,12 +122,29 @@ CREATE TABLE inv_device_status (
   kfondc_user INT DEFAULT 0,
   mspdc_user INT DEFAULT 0,
   partner_user INT DEFAULT 0,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_device_status PRIMARY KEY (inv_device_status_id)
+);
+
+INSERT INTO inv_device_status (
+  inv_device_status_id, id, status_id, device_status_name,
+  global_user, kfondc_user, mspdc_user, partner_user,
+  code, name, name_in_local, is_active,
+  created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 1, 101, 'Available',
+  1, 1, 0, 0,
+  'STS-001', 'Device Available', 'ഡിവൈസ് ലഭ്യമാണ്', TRUE,
+  NOW(), NOW(), gen_random_uuid(), gen_random_uuid()
 );
 
 

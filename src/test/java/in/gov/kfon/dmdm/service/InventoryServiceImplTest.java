@@ -27,6 +27,8 @@ class InventoryServiceImplTest {
   @Mock private InvDcCreditNotesRepository dcCreditNotesRepository;
   @Mock private InvDeviceAcknowledgementRepository deviceAcknowledgementRepository;
   @Mock private InvDeviceCatRepository deviceCatRepository;
+  @Mock private InvDeviceReturnTooemRepository invDeviceReturnTooemRepository;
+  @Mock private InvDeviceStatusRepository invDeviceStatusRepository;
   @InjectMocks private InventoryServiceImpl inventoryService;
 
   private InvDeviceMake invDeviceMake;
@@ -37,6 +39,8 @@ class InventoryServiceImplTest {
   private InvDcCreditNotes invDcCreditNotes;
   private InvDeviceAcknowledgement invDeviceAck;
   private InvDeviceCat invDeviceCat;
+  private InvDeviceReturnTooem invDeviceReturnTooem;
+  private InvDeviceStatus invDeviceStatus;
 
   @BeforeEach
   void setUp() {
@@ -68,6 +72,18 @@ class InventoryServiceImplTest {
     invDeviceCat = new InvDeviceCat();
     invDeviceCat.setCatId(id);
     invDeviceCat.setName("Device Category Test");
+
+    invDeviceReturnTooem = new InvDeviceReturnTooem();
+    invDeviceReturnTooem.setInvDeviceReturnTooemId(id);
+    invDeviceReturnTooem.setCode("RET001");
+    invDeviceReturnTooem.setName("Device Return Batch");
+    invDeviceReturnTooem.setNameInLocal("ഡിവൈസ് റിട്ടേൺ ബാച്ച്");
+
+    invDeviceStatus = new InvDeviceStatus();
+    invDeviceStatus.setInvDeviceStatusId(id);
+    invDeviceStatus.setCode("STAT001");
+    invDeviceStatus.setName("Working");
+    invDeviceStatus.setNameInLocal("പ്രവർത്തനം");
 
     lookup = new CommonLookUp();
     lookup.setId(id);
@@ -268,5 +284,84 @@ class InventoryServiceImplTest {
     assertThat(result.get(0).getId()).isEqualTo(id);
     assertThat(result.get(0).getName()).isEqualTo("Test Name");
     assertThat(result.get(0).getCode()).isEqualTo("T001");
+  }
+
+  @Test
+  void testFetchAllDeviceReturnTooem_Success() {
+    when(invDeviceReturnTooemRepository.findAll()).thenReturn(List.of(invDeviceReturnTooem));
+    when(modelMapper.map(invDeviceReturnTooem, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.fetchAllDeviceReturns();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals("Test Name", result.get(0).getName());
+    verify(invDeviceReturnTooemRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(invDeviceReturnTooem, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDeviceReturnTooemById_Success() {
+    when(invDeviceReturnTooemRepository.findById(id)).thenReturn(Optional.of(invDeviceReturnTooem));
+    when(modelMapper.map(invDeviceReturnTooem, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.fetchDeviceReturnById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(invDeviceReturnTooemRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(invDeviceReturnTooem, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDeviceReturnTooemById_NotFound() {
+    when(invDeviceReturnTooemRepository.findById(id)).thenReturn(Optional.empty());
+
+    RuntimeException exception =
+        assertThrows(RuntimeException.class, () -> inventoryService.fetchDeviceReturnById(id));
+    assertEquals("Device Return not found with id: " + id, exception.getMessage());
+
+    verify(invDeviceReturnTooemRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllDeviceStatus_Success() {
+    when(invDeviceStatusRepository.findAll()).thenReturn(List.of(invDeviceStatus));
+    when(modelMapper.map(invDeviceStatus, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.fetchAllDeviceStatuses();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals("Test Name", result.get(0).getName());
+    verify(invDeviceStatusRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(invDeviceStatus, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDeviceStatusById_Success() {
+    when(invDeviceStatusRepository.findById(id)).thenReturn(Optional.of(invDeviceStatus));
+    when(modelMapper.map(invDeviceStatus, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.fetchDeviceStatusById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    assertEquals("Test Name", result.getName());
+    verify(invDeviceStatusRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(invDeviceStatus, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchDeviceStatusById_NotFound() {
+    when(invDeviceStatusRepository.findById(id)).thenReturn(Optional.empty());
+
+    RuntimeException exception =
+        assertThrows(RuntimeException.class, () -> inventoryService.fetchDeviceStatusById(id));
+    assertEquals("Device Status not found with id: " + id, exception.getMessage());
+
+    verify(invDeviceStatusRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
   }
 }

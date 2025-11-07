@@ -2,7 +2,15 @@ package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.*;
+import in.gov.kfon.dmdm.model.InvDeviceMake;
+import in.gov.kfon.dmdm.model.InvDeviceModel;
+import in.gov.kfon.dmdm.model.InvDeviceReturnTooem;
+import in.gov.kfon.dmdm.model.InvDeviceStatus;
 import in.gov.kfon.dmdm.repository.*;
+import in.gov.kfon.dmdm.repository.InvDeviceMakeRepository;
+import in.gov.kfon.dmdm.repository.InvDeviceModelRepository;
+import in.gov.kfon.dmdm.repository.InvDeviceReturnTooemRepository;
+import in.gov.kfon.dmdm.repository.InvDeviceStatusRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +26,8 @@ public class InventoryServiceImpl implements InventoryService {
 
   private final InvDeviceMakeRepository invDeviceMakeRepository;
   private final InvDeviceModelRepository invDeviceModelRepository;
+  private final InvDeviceReturnTooemRepository invDeviceReturnTooemRepository;
+  private final InvDeviceStatusRepository invDeviceStatusRepository;
   private final ModelMapper modelMapper;
   private final InvCreditNotesRepository creditNotesRepository;
   private final InvDcCreditNotesRepository dcCreditNotesRepository;
@@ -128,5 +138,39 @@ public class InventoryServiceImpl implements InventoryService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllDeviceReturns() {
+    return invDeviceReturnTooemRepository.findAll().stream()
+        .map(deviceReturn -> modelMapper.map(deviceReturn, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchDeviceReturnById(UUID id) {
+    InvDeviceReturnTooem deviceReturn =
+        invDeviceReturnTooemRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Device Return not found with id: " + id));
+    return modelMapper.map(deviceReturn, CommonLookUp.class);
+  }
+
+  @Override
+  public List<CommonLookUp> fetchAllDeviceStatuses() {
+    return invDeviceStatusRepository.findAll().stream()
+        .map(deviceStatus -> modelMapper.map(deviceStatus, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  public CommonLookUp fetchDeviceStatusById(UUID id) {
+    InvDeviceStatus deviceStatus =
+        invDeviceStatusRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Device Status not found with id: " + id));
+    return modelMapper.map(deviceStatus, CommonLookUp.class);
   }
 }

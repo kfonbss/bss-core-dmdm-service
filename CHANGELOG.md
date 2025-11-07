@@ -363,3 +363,7 @@ Get partner receipt and account balance report
 # [0.72.0] - 2025-11-06
 ### Added
 - Get inventory device category and acknowledgement
+
+# [0.73.0] - 2025-11-07
+### Added
+- Get inventory device return and status details
