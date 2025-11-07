@@ -299,4 +299,19 @@ public class InventoryController {
     var data = inventoryService.kfonDcDeviceRequestsFetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
+
+  @GetMapping("/return-faulty-requests/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllReturnFaultyRequests() {
+    var data = inventoryService.fetchAllFaultyRequests();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched all return faulty requests"));
+  }
+
+  @GetMapping("/return-faulty-request/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchReturnFaultyRequestById(
+      @PathVariable UUID id) {
+    var data = inventoryService.fetchFaultyRequestById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched return faulty request"));
+  }
 }

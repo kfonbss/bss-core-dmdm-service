@@ -48,6 +48,7 @@ public class InventoryServiceImpl implements InventoryService {
   private final InvDeviceConditionStatusRepository deviceConditionStatusRepository;
   private final InvKfonDcDeviceRequestRepository kfonDcDeviceRequestRepository;
   private final InvDeviceDetailsMovementRepository deviceDetailsMovementRepository;
+  private final InvReturnFaultyRequestRepository invReturnFaultyRequestRepository;
 
   @Override
   public List<CommonLookUp> fetchAllDeviceMakes() {
@@ -436,6 +437,24 @@ public class InventoryServiceImpl implements InventoryService {
   public CommonLookUp deviceDetailsMovementFetchById(UUID id) {
     InvDeviceDetailsMovement entity =
         deviceDetailsMovementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllFaultyRequests() {
+    return invReturnFaultyRequestRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchFaultyRequestById(UUID id) {
+    InvReturnFaultyRequest entity =
+        invReturnFaultyRequestRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);

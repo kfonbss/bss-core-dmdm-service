@@ -138,14 +138,25 @@ CREATE TABLE inv_return_faulty_request (
   kfondc_id int DEFAULT NULL,
   noc_id int DEFAULT NULL,
   created_by_id int DEFAULT NULL,
-  created_by_name varchar(150) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_return_faulty_request PRIMARY KEY (inv_return_faulty_request_id)
 );
+
+INSERT INTO inv_return_faulty_request (
+  inv_return_faulty_request_id, id, deviceid, condition_statusid, request_type, status,
+  lnpid, mspdc_id, kfondc_id, noc_id, created_by_id,
+  code, name, name_in_local, is_active, created_date, modified_date, created_by, modified_by
+) VALUES
+  (gen_random_uuid(), 1, 101, 5, 1, 1, 201, 301, 401, 501, 601, 'RFQ001', 'Return Faulty Request 1', 'റിട്ടേൺ ഫോൾട്ടി റിക്വസ്റ്റ് 1', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : invoice_creditnote
