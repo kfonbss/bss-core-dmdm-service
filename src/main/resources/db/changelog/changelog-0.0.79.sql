@@ -184,7 +184,11 @@ INSERT INTO inv_device_details_audit (
 DROP TABLE IF EXISTS inv_device_details_movement CASCADE;
 
 CREATE TABLE inv_device_details_movement (
-  inv_device_details_movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  movement_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   deviceid int DEFAULT NULL,
   reqid int DEFAULT NULL,
@@ -216,29 +220,26 @@ CREATE TABLE inv_device_details_movement (
   secondry_remarks varchar(250) DEFAULT NULL,
   created_by_id bigint DEFAULT NULL,
   created_by_name varchar(150) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
-  -- '0=In Active,1=Active',
-  -- Primary key constraint
-CONSTRAINT pk_inv_device_details_movement PRIMARY KEY (inv_device_details_movement_id)
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+CONSTRAINT pk_inv_device_details_movement PRIMARY KEY (movement_id)
+);
+INSERT INTO inv_device_details_movement (
+  movement_id, code, name, name_in_local, is_active, id, deviceid, reqid, dc_reqid,
+  lnp_reqid, cnid, device_status, noc_id, kfon_dcid, msp_dcid, subid, user_type, appid, ce_kycid, lnpid,
+  remarks, device_mapped_to, pop_name, condition_statusid, return_faulty_id, oem_request_id, repair_status,
+  return_remarks, con_device_type, ip_address, port_number, secondry_remarks, created_by_id,
+  created_by_name, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'MOV001', 'Device Movement Entry', 'ഡിവൈസ് മൂവ്‌മെന്റ് എൻട്രി', TRUE, 1, 1001, 2001, 3001,
+  4001, 5001, 1, 10, 20, 30, 2, 1, 987654321, 55, 999888777,
+  'Device transferred to LNP warehouse', 2, 'Ernakulam POP', 101, 202, 303, 0,
+  'Returned after testing', 3, '192.168.1.10', '8080', 'Secondary port active', 11,
+  'System Admin', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), NULL
 );
 
 -- Create indexes for better performance
-CREATE INDEX idx_inv_device_details_movement_deviceid ON inv_device_details_movement (deviceid);
-CREATE INDEX idx_inv_device_details_movement_reqid ON inv_device_details_movement (reqid);
-CREATE INDEX idx_inv_device_details_movement_dc_reqid ON inv_device_details_movement (dc_reqid);
-CREATE INDEX idx_inv_device_details_movement_lnp_reqid ON inv_device_details_movement (lnp_reqid);
-CREATE INDEX idx_inv_device_details_movement_cnid ON inv_device_details_movement (cnid);
-CREATE INDEX idx_inv_device_details_movement_device_status ON inv_device_details_movement (device_status);
-CREATE INDEX idx_inv_device_details_movement_kfon_dcid ON inv_device_details_movement (kfon_dcid);
-CREATE INDEX idx_inv_device_details_movement_msp_dcid ON inv_device_details_movement (msp_dcid);
-CREATE INDEX idx_inv_device_details_movement_subid ON inv_device_details_movement (subid);
-CREATE INDEX idx_inv_device_details_movement_user_type ON inv_device_details_movement (user_type);
-CREATE INDEX idx_inv_device_details_movement_appid ON inv_device_details_movement (appid);
-CREATE INDEX idx_inv_device_details_movement_lnpid ON inv_device_details_movement (lnpid);
-CREATE INDEX idx_inv_device_details_movement_device_mapped_to ON inv_device_details_movement (device_mapped_to);
-CREATE INDEX idx_inv_device_details_movement_condition_statusid ON inv_device_details_movement (condition_statusid);
-CREATE INDEX idx_inv_device_details_movement_return_faulty_id ON inv_device_details_movement (return_faulty_id);
-CREATE INDEX idx_inv_device_details_movement_con_device_type ON inv_device_details_movement (con_device_type);
-CREATE INDEX idx_inv_device_details_movement_created_by_id ON inv_device_details_movement (created_by_id);
+CREATE INDEX idx_inv_device_details_movement_deviceid ON inv_device_details_movement (movement_id);
+

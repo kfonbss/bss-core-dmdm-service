@@ -85,4 +85,12 @@ public interface InventoryService {
   List<CommonLookUp> deviceConditionStatusFetchAll();
 
   CommonLookUp deviceConditionStatusFetchById(UUID id);
+
+  List<CommonLookUp> deviceDetailsMovementFetchAll();
+
+  CommonLookUp deviceDetailsMovementFetchById(UUID id);
+
+  List<CommonLookUp> kfonDcDeviceRequestsFetchAll();
+
+  CommonLookUp kfonDcDeviceRequestsFetchById(UUID id);
 }

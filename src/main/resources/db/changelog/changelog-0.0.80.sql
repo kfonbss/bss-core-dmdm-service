@@ -288,7 +288,11 @@ VALUES
 DROP TABLE IF EXISTS inv_kfondc_device_request CASCADE;
 
 CREATE TABLE inv_kfondc_device_request (
-  inv_kfondc_device_request_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  request_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   device_count int DEFAULT 0,
   status INT DEFAULT 0,
@@ -299,10 +303,18 @@ CREATE TABLE inv_kfondc_device_request (
   accepted_count int DEFAULT 0,
   created_by_id int DEFAULT NULL,
   created_by_name varchar(150) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
-  -- '0=In Active,1=Active',
-  -- Primary key constraint
-CONSTRAINT pk_inv_kfondc_device_request PRIMARY KEY (inv_kfondc_device_request_id)
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+CONSTRAINT pk_inv_kfondc_device_request PRIMARY KEY (request_id)
+);
+INSERT INTO inv_kfondc_device_request (
+  request_id, code, name, name_in_local, is_active, id, device_count, status,
+  kfon_dcid, remarks, rej_app_remarks, accepted_count, created_by_id,
+  created_by_name, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'REQ001', 'KFON DC Device Request', 'കെഫോൺ ഡി.സി ഉപകരണ അഭ്യർത്ഥന', TRUE, 1,
+  50, 2, 101, 'Request approved for 50 ONT devices', 'Approved successfully',
+  50, 1001, 'System Admin', CURRENT_TIMESTAMP, NULL, gen_random_uuid(), NULL
 );
