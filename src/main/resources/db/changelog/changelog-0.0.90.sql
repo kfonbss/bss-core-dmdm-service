@@ -55,14 +55,24 @@ CREATE TABLE inv_po_details (
   po_no varchar(200) DEFAULT NULL,
   remarks varchar(250) DEFAULT NULL,
   created_by_id int DEFAULT NULL,
-  created_by_name varchar(150) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_po_details PRIMARY KEY (inv_po_details_id)
 );
+
+INSERT INTO inv_po_details (
+  inv_po_details_id, po_no, remarks, created_by_id, code, name, name_in_local,
+  is_active, created_date, modified_date, created_by, modified_by
+) VALUES
+  (gen_random_uuid(), 'PO-001', 'First batch of routers', 101, 'PO001', 'Router Purchase', 'റൗട്ടർ വാങ്ങൽ', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : inv_po_documnets
@@ -73,13 +83,24 @@ CREATE TABLE inv_po_documnets (
   id SERIAL,
   poid int DEFAULT NULL,
   documnet varchar(250) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
+  code VARCHAR(50),
+  name VARCHAR(100),
+  name_in_local VARCHAR(100),
+  is_active BOOLEAN DEFAULT TRUE,
+  created_date TIMESTAMP DEFAULT NOW(),
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
   -- '0=In Active,1=Active',
   -- Primary key constraint
 CONSTRAINT pk_inv_po_documnets PRIMARY KEY (inv_po_documnets_id)
 );
+
+INSERT INTO inv_po_documnets (
+  inv_po_documnets_id, poid, documnet, code, name, name_in_local,
+  is_active, created_date, modified_date, created_by, modified_by
+) VALUES
+  (gen_random_uuid(), 1, 'po_001_invoice.pdf', 'DOC001', 'Invoice for PO-001', 'PO-001 ഇൻവോയ്സ്', TRUE, NOW(), NOW(), gen_random_uuid(), gen_random_uuid());
 
 
 -- Table : inv_return_faulty_request

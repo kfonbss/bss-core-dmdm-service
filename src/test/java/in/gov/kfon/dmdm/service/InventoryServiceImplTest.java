@@ -35,6 +35,8 @@ class InventoryServiceImplTest {
   @Mock private InvDeviceVendorRepository invDeviceVendorRepository;
   @Mock private InvDtransferRequestRepository invDtransferRequestRepository;
   @Mock private InvDtransferRmovementRepository invDtransferRmovementRepository;
+  @Mock private InvPoDetailsRepository invPoDetailsRepository;
+  @Mock private InvPoDocumentsRepository invPoDocumentsRepository;
   @InjectMocks private InventoryServiceImpl inventoryService;
 
   private InvDeviceMake invDeviceMake;
@@ -53,6 +55,8 @@ class InventoryServiceImplTest {
   private InvDeviceVendor invDeviceVendor;
   private InvDtransferRequest invDtransferRequest;
   private InvDtransferRmovement invDtransferRmovement;
+  private InvPoDetails poDetailsEntity;
+  private InvPoDocuments poDocumentEntity;
 
   @BeforeEach
   void setUp() {
@@ -127,6 +131,20 @@ class InventoryServiceImplTest {
     invDtransferRmovement.setName("Device Transfer Movement");
     invDtransferRmovement.setNameInLocal("ഡിവൈസ് ട്രാൻസ്ഫർ മൂവ്മെന്റ്");
     invDtransferRmovement.setIsActive(true);
+
+    poDetailsEntity = new InvPoDetails();
+    poDetailsEntity.setInvPoDetailsId(id);
+    poDetailsEntity.setCode("PO001");
+    poDetailsEntity.setName("Router Purchase");
+    poDetailsEntity.setNameInLocal("റൗട്ടർ വാങ്ങൽ");
+    poDetailsEntity.setIsActive(true);
+
+    poDocumentEntity = new InvPoDocuments();
+    poDocumentEntity.setInvPoDocumnetsId(id);
+    poDocumentEntity.setCode("DOC001");
+    poDocumentEntity.setName("Invoice Copy");
+    poDocumentEntity.setNameInLocal("ഇൻവോയ്സ് പകർപ്പ്");
+    poDocumentEntity.setIsActive(true);
 
     lookup = new CommonLookUp();
     lookup.setId(id);
@@ -625,6 +643,84 @@ class InventoryServiceImplTest {
     assertEquals("Not found with id: " + id, exception.getMessage());
 
     verify(invDtransferRmovementRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllPoDetails_Success() {
+    when(invPoDetailsRepository.findAll()).thenReturn(List.of(poDetailsEntity));
+    when(modelMapper.map(poDetailsEntity, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.fetchAllPoDetails();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals("Test Name", result.get(0).getName());
+    verify(invPoDetailsRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(poDetailsEntity, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchPoDetailById_Success() {
+    when(invPoDetailsRepository.findById(id)).thenReturn(Optional.of(poDetailsEntity));
+    when(modelMapper.map(poDetailsEntity, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.fetchPoDetailsById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(invPoDetailsRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(poDetailsEntity, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchPoDetailById_NotFound() {
+    when(invPoDetailsRepository.findById(id)).thenReturn(Optional.empty());
+
+    RuntimeException exception =
+        assertThrows(RuntimeException.class, () -> inventoryService.fetchPoDetailsById(id));
+    assertEquals("Not found with id: " + id, exception.getMessage());
+
+    verify(invPoDetailsRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testFetchAllPoDocuments_Success() {
+    when(invPoDocumentsRepository.findAll()).thenReturn(List.of(poDocumentEntity));
+    when(modelMapper.map(poDocumentEntity, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.fetchAllPoDocuments();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals("Test Name", result.get(0).getName());
+    verify(invPoDocumentsRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(poDocumentEntity, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchPoDocumentById_Success() {
+    when(invPoDocumentsRepository.findById(id)).thenReturn(Optional.of(poDocumentEntity));
+    when(modelMapper.map(poDocumentEntity, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.fetchPoDocumentById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(invPoDocumentsRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(poDocumentEntity, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchPoDocumentById_NotFound() {
+    when(invPoDocumentsRepository.findById(id)).thenReturn(Optional.empty());
+
+    RuntimeException exception =
+        assertThrows(RuntimeException.class, () -> inventoryService.fetchPoDocumentById(id));
+    assertEquals("Not found with id: " + id, exception.getMessage());
+
+    verify(invPoDocumentsRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
   }
 }

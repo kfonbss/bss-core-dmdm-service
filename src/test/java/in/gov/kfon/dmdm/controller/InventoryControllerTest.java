@@ -375,4 +375,49 @@ class InventoryControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("INV001"));
   }
+
+  @Test
+  void testPoDetailsFetchAll() throws Exception {
+    when(service.fetchAllPoDetails()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(get("/api/inventory/po-details/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all PO details"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testPoDetailFetchById() throws Exception {
+    when(service.fetchPoDetailsById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/inventory/po-detail/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched PO detail"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
+
+  @Test
+  void testPoDocumentsFetchAll() throws Exception {
+    when(service.fetchAllPoDocuments()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/inventory/po-documents/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all PO documents"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testPoDocumentFetchById() throws Exception {
+    when(service.fetchPoDocumentById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/inventory/po-document/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched PO document"))
+        .andExpect(jsonPath("$.data.id").value(id.toString()));
+  }
 }
