@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "inv_device_status")
-public class InvDeviceStatus extends Auditor{
+public class InvDeviceStatus extends Auditor {
 
   @Id
   @Column(name = "inv_device_status_id")

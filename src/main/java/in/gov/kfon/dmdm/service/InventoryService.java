@@ -37,4 +37,12 @@ public interface InventoryService {
   List<CommonLookUp> fetchAllDeviceStatuses();
 
   CommonLookUp fetchDeviceStatusById(UUID id);
+
+  List<CommonLookUp> deviceDetailsFetchAll();
+
+  CommonLookUp deviceDetailsFetchById(UUID id);
+
+  List<CommonLookUp> deviceDetailsAuditsFetchAll();
+
+  CommonLookUp deviceDetailsAuditsFetchById(UUID id);
 }

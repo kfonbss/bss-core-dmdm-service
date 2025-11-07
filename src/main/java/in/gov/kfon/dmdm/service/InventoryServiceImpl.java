@@ -34,6 +34,8 @@ public class InventoryServiceImpl implements InventoryService {
   private static final String NOT_FOUND = "Not found with id: ";
   private final InvDeviceAcknowledgementRepository deviceAcknowledgementRepository;
   private final InvDeviceCatRepository deviceCatRepository;
+  private final InvDeviceDetailsRepository deviceDetailsRepository;
+  private final InvDeviceDetailsAuditRepository deviceDetailsAuditRepository;
 
   @Override
   public List<CommonLookUp> fetchAllDeviceMakes() {
@@ -172,5 +174,41 @@ public class InventoryServiceImpl implements InventoryService {
             .orElseThrow(
                 () -> new EntityNotFoundException("Device Status not found with id: " + id));
     return modelMapper.map(deviceStatus, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> deviceDetailsFetchAll() {
+    return deviceDetailsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp deviceDetailsFetchById(UUID id) {
+    InvDeviceDetails entity =
+        deviceDetailsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> deviceDetailsAuditsFetchAll() {
+    return deviceDetailsAuditRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp deviceDetailsAuditsFetchById(UUID id) {
+    InvDeviceDetailsAudit entity =
+        deviceDetailsAuditRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
   }
 }
