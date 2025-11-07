@@ -69,4 +69,12 @@ public interface InventoryService {
   List<CommonLookUp> fetchAllPoDocuments();
 
   CommonLookUp fetchPoDocumentById(UUID id);
+
+  List<CommonLookUp> fetchAllLnpDeviceRequests();
+
+  CommonLookUp fetchLnpDeviceRequestById(UUID id);
+
+  List<CommonLookUp> fetchAllLnpDeviceRequestMovements();
+
+  CommonLookUp fetchLnpDeviceRequestMovementById(UUID id);
 }
