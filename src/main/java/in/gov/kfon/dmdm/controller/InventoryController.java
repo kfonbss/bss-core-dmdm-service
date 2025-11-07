@@ -172,27 +172,51 @@ public class InventoryController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched device vendor"));
   }
 
-  @GetMapping("device-transfers/fetch-all")
+  @GetMapping("/device-transfers/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> deviceTransfersFetchAll() {
     var data = inventoryService.fetchAllDeviceTransferRequests();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("device-transfer/{id}")
+  @GetMapping("/device-transfer/{id}")
   public ResponseEntity<Response<CommonLookUp>> deviceTransfersFetchById(@PathVariable UUID id) {
     var data = inventoryService.fetchDeviceTransferRequestById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("device-movements/fetch-all")
+  @GetMapping("/device-movements/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> deviceMovementsFetchAll() {
     var data = inventoryService.fetchAllDeviceTransferMovements();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("device-movement/{id}")
+  @GetMapping("/device-movement/{id}")
   public ResponseEntity<Response<CommonLookUp>> deviceMovementsFetchById(@PathVariable UUID id) {
     var data = inventoryService.fetchDeviceTransferMovementById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("/po-details/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPoDetails() {
+    var data = inventoryService.fetchAllPoDetails();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all PO details"));
+  }
+
+  @GetMapping("/po-detail/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPoDetailsById(@PathVariable UUID id) {
+    var data = inventoryService.fetchPoDetailsById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched PO detail"));
+  }
+
+  @GetMapping("/po-documents/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPoDocuments() {
+    var data = inventoryService.fetchAllPoDocuments();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all PO documents"));
+  }
+
+  @GetMapping("/po-document/{id}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPoDocumentById(@PathVariable UUID id) {
+    var data = inventoryService.fetchPoDocumentById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched PO document"));
   }
 }

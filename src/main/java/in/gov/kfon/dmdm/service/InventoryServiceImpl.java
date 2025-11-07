@@ -40,6 +40,8 @@ public class InventoryServiceImpl implements InventoryService {
   private final InvDeviceVendorRepository invDeviceVendorRepository;
   private final InvDtransferRequestRepository invDtransferRequestRepository;
   private final InvDtransferRmovementRepository invDtransferRmovementRepository;
+  private final InvPoDetailsRepository invPoDetailsRepository;
+  private final InvPoDocumentsRepository invPoDocumentsRepository;
 
   @Override
   public List<CommonLookUp> fetchAllDeviceMakes() {
@@ -280,6 +282,42 @@ public class InventoryServiceImpl implements InventoryService {
   public CommonLookUp fetchDeviceTransferMovementById(UUID id) {
     InvDtransferRmovement entity =
         invDtransferRmovementRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllPoDetails() {
+    return invPoDetailsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchPoDetailsById(UUID id) {
+    InvPoDetails entity =
+        invPoDetailsRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchAllPoDocuments() {
+    return invPoDocumentsRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchPoDocumentById(UUID id) {
+    InvPoDocuments entity =
+        invPoDocumentsRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);

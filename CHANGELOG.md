@@ -379,3 +379,7 @@ Get partner receipt and account balance report
 # [0.76.0] - 2025-11-07
 ### Added
 _ Get inventory device transfer request and movement details
+
+# [0.77.0] - 2025-11-07
+### Added
+- Get inventory po details and po documents
