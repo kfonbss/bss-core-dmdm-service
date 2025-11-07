@@ -248,4 +248,29 @@ public class InventoryController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched LNP device request movement"));
   }
+
+  @GetMapping("dc-credit-notes/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> dcCreditNoteFetchAll() {
+    var data = inventoryService.dcCreditNoteFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("dc-credit-note/{id}")
+  public ResponseEntity<Response<CommonLookUp>> dcCreditNoteFetchById(@PathVariable UUID id) {
+    var data = inventoryService.dcCreditNoteFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("device/condition-statuses/fetch-all")
+  public ResponseEntity<Response<List<CommonLookUp>>> deviceConditionStatusFetchAll() {
+    var data = inventoryService.deviceConditionStatusFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("device/condition-status/{id}")
+  public ResponseEntity<Response<CommonLookUp>> deviceConditionStatusFetchById(
+      @PathVariable UUID id) {
+    var data = inventoryService.deviceConditionStatusFetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 }

@@ -39,6 +39,8 @@ class InventoryServiceImplTest {
   @Mock private InvPoDocumentsRepository invPoDocumentsRepository;
   @Mock private InvLnpDeviceRequestRepository invLnpDeviceRequestRepository;
   @Mock private InvLnpDeviceRequestMovementRepository invLnpDeviceRequestMovementRepository;
+  @Mock private InvDcCreditNoteRepository dcCreditNoteRepository;
+  @Mock private InvDeviceConditionStatusRepository deviceConditionStatusRepository;
   @InjectMocks private InventoryServiceImpl inventoryService;
 
   private InvDeviceMake invDeviceMake;
@@ -61,6 +63,8 @@ class InventoryServiceImplTest {
   private InvPoDocuments poDocumentEntity;
   private InvLnpDeviceRequest invLnpDeviceRequest;
   private InvLnpDeviceRequestMovement invLnpDeviceRequestMovement;
+  private InvDcCreditNote invDcCreditNote;
+  private InvDeviceConditionStatus invDeviceConditionStatus;
 
   @BeforeEach
   void setUp() {
@@ -163,6 +167,14 @@ class InventoryServiceImplTest {
     invLnpDeviceRequestMovement.setName("LNP Device Request Movement");
     invLnpDeviceRequestMovement.setNameInLocal("എൽ.എൻ.പി ഡിവൈസ് മൂവ്മെന്റ്");
     invLnpDeviceRequestMovement.setIsActive(true);
+
+    invDcCreditNote = new InvDcCreditNote();
+    invDcCreditNote.setNotesId(id);
+    invDcCreditNote.setName("DC Credit Note Test");
+
+    invDeviceConditionStatus = new InvDeviceConditionStatus();
+    invDeviceConditionStatus.setStatusId(id);
+    invDeviceConditionStatus.setName("Device Condition Test");
 
     lookup = new CommonLookUp();
     lookup.setId(id);
@@ -821,5 +833,65 @@ class InventoryServiceImplTest {
 
     verify(invLnpDeviceRequestMovementRepository, times(1)).findById(id);
     verifyNoInteractions(modelMapper);
+  }
+
+  @Test
+  void testDcCreditNoteFetchAll() {
+    when(dcCreditNoteRepository.findAll()).thenReturn(List.of(invDcCreditNote));
+    when(modelMapper.map(invDcCreditNote, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.dcCreditNoteFetchAll();
+
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getName()).isEqualTo("Test Name");
+    assertThat(result.get(0).getCode()).isEqualTo("T001");
+  }
+
+  @Test
+  void testDcCreditNoteFetchById() {
+    when(dcCreditNoteRepository.findById(id)).thenReturn(Optional.of(invDcCreditNote));
+    when(modelMapper.map(invDcCreditNote, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.dcCreditNoteFetchById(id);
+
+    assertThat(result.getId()).isEqualTo(id);
+    assertThat(result.getNameInLocal()).isEqualTo("ടെസ്റ്റ് നെയിം");
+  }
+
+  @Test
+  void testDcCreditNoteFetchById_NotFound() {
+    when(dcCreditNoteRepository.findById(id)).thenReturn(Optional.empty());
+    assertThrows(EntityNotFoundException.class, () -> inventoryService.dcCreditNoteFetchById(id));
+  }
+
+  @Test
+  void testDeviceConditionStatusFetchAll() {
+    when(deviceConditionStatusRepository.findAll()).thenReturn(List.of(invDeviceConditionStatus));
+    when(modelMapper.map(invDeviceConditionStatus, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.deviceConditionStatusFetchAll();
+
+    assertThat(result).hasSize(1);
+    assertThat(result.get(0).getName()).isEqualTo("Test Name");
+    assertThat(result.get(0).getCode()).isEqualTo("T001");
+  }
+
+  @Test
+  void testDeviceConditionStatusFetchById() {
+    when(deviceConditionStatusRepository.findById(id))
+        .thenReturn(Optional.of(invDeviceConditionStatus));
+    when(modelMapper.map(invDeviceConditionStatus, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.deviceConditionStatusFetchById(id);
+
+    assertThat(result.getId()).isEqualTo(id);
+    assertThat(result.getCode()).isEqualTo("T001");
+  }
+
+  @Test
+  void testDeviceConditionStatusFetchById_NotFound() {
+    when(deviceConditionStatusRepository.findById(id)).thenReturn(Optional.empty());
+    assertThrows(
+        EntityNotFoundException.class, () -> inventoryService.deviceConditionStatusFetchById(id));
   }
 }

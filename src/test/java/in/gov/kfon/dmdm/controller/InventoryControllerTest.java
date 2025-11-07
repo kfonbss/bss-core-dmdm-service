@@ -472,4 +472,54 @@ class InventoryControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched LNP device request movement"))
         .andExpect(jsonPath("$.data.id").value(id.toString()));
   }
+
+  @Test
+  void testDcCreditNoteFetchAll() throws Exception {
+    when(service.dcCreditNoteFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/inventory/dc-credit-notes/fetch-all").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("INV001"));
+  }
+
+  @Test
+  void testDdcCreditNoteById() throws Exception {
+    when(service.dcCreditNoteFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/inventory/dc-credit-note/{id}", id).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("INV001"));
+  }
+
+  @Test
+  void testDeviceConditionStatusFetchAll() throws Exception {
+    when(service.deviceConditionStatusFetchAll()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/inventory/device/condition-statuses/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data[0].code").value("INV001"));
+  }
+
+  @Test
+  void testConditionStatuseById() throws Exception {
+    when(service.deviceConditionStatusFetchById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/inventory/device/condition-status/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched"))
+        .andExpect(jsonPath("$.data.code").value("INV001"));
+  }
 }
