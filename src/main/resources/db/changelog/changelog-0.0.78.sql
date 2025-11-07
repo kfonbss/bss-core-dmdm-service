@@ -176,7 +176,11 @@ INSERT INTO inv_dc_credit_notes (
 DROP TABLE IF EXISTS inv_dccredit_notes CASCADE;
 
 CREATE TABLE inv_dccredit_notes (
-  inv_dccredit_notes_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  notes_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   device_count int DEFAULT 0,
   transfer_to INT DEFAULT 0,
@@ -188,14 +192,22 @@ CREATE TABLE inv_dccredit_notes (
   dc_reqid int DEFAULT NULL,
   created_by_id int DEFAULT NULL,
   created_by_name varchar(150) DEFAULT NULL,
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
-  -- '0=In Active,1=Active',
-  -- Primary key constraint
-CONSTRAINT pk_inv_dccredit_notes PRIMARY KEY (inv_dccredit_notes_id)
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+CONSTRAINT pk_inv_dccredit_notes PRIMARY KEY (notes_id)
 );
 
+INSERT INTO inv_dccredit_notes (
+  notes_id, code, name, name_in_local, is_active, id, device_count, transfer_to,
+  kfon_dcid, msp_dcid, lnpid, reqid, dc_reqid, created_by_id, created_by_name,
+  created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'DCN001', 'Device Credit Note', 'ഉപകരണ ക്രെഡിറ്റ് നോട്ട്സ്', TRUE, 1, 25, 2,
+  101, 202, 9876543210, 303, 404, 1001, 'System Admin',
+  CURRENT_TIMESTAMP, NULL, gen_random_uuid(), NULL
+);
 
 -- Table : inv_device_acknowledgement
 DROP TABLE IF EXISTS inv_device_acknowledgement CASCADE;

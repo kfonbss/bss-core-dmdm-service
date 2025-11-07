@@ -44,6 +44,8 @@ public class InventoryServiceImpl implements InventoryService {
   private final InvPoDocumentsRepository invPoDocumentsRepository;
   private final InvLnpDeviceRequestMovementRepository invLnpDeviceRequestMovementRepository;
   private final InvLnpDeviceRequestRepository invLnpDeviceRequestRepository;
+  private final InvDcCreditNoteRepository dcCreditNoteRepository;
+  private final InvDeviceConditionStatusRepository deviceConditionStatusRepository;
 
   @Override
   public List<CommonLookUp> fetchAllDeviceMakes() {
@@ -362,6 +364,42 @@ public class InventoryServiceImpl implements InventoryService {
                 () ->
                     new EntityNotFoundException(
                         "LNP Device Request Movement not found with id: " + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> dcCreditNoteFetchAll() {
+    return dcCreditNoteRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp dcCreditNoteFetchById(UUID id) {
+    InvDcCreditNote entity =
+        dcCreditNoteRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
+    return modelMapper.map(entity, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> deviceConditionStatusFetchAll() {
+    return deviceConditionStatusRepository.findAll().stream()
+        .map(e -> modelMapper.map(e, CommonLookUp.class))
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp deviceConditionStatusFetchById(UUID id) {
+    InvDeviceConditionStatus entity =
+        deviceConditionStatusRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND + id));
     return modelMapper.map(entity, CommonLookUp.class);
   }
 }

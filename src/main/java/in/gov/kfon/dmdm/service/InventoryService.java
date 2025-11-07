@@ -77,4 +77,12 @@ public interface InventoryService {
   List<CommonLookUp> fetchAllLnpDeviceRequestMovements();
 
   CommonLookUp fetchLnpDeviceRequestMovementById(UUID id);
+
+  List<CommonLookUp> dcCreditNoteFetchAll();
+
+  CommonLookUp dcCreditNoteFetchById(UUID id);
+
+  List<CommonLookUp> deviceConditionStatusFetchAll();
+
+  CommonLookUp deviceConditionStatusFetchById(UUID id);
 }

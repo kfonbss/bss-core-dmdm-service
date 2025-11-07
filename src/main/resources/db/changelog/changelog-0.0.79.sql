@@ -36,18 +36,29 @@ INSERT INTO inv_device_cat (
 DROP TABLE IF EXISTS inv_device_condition_status CASCADE;
 
 CREATE TABLE inv_device_condition_status (
-  inv_device_condition_status_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  status_id UUID DEFAULT gen_random_uuid() NOT NULL,
+  code VARCHAR(45),
+  name VARCHAR(255),
+  name_in_local VARCHAR(255),
+  is_active boolean,
   id SERIAL,
   condition_statusid int DEFAULT NULL,
   condition_status_name varchar(100) DEFAULT NULL,
   category INT DEFAULT 1,
   -- '1=Faulty List,2=Return List',
-  create_date timestamp DEFAULT CURRENT_TIMESTAMP,
-  update_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  is_active int DEFAULT 1,
-  -- '0=In Active,1=Active',
-  -- Primary key constraint
-CONSTRAINT pk_inv_device_condition_status PRIMARY KEY (inv_device_condition_status_id)
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modified_date TIMESTAMP,
+  created_by UUID,
+  modified_by UUID,
+CONSTRAINT pk_inv_device_condition_status PRIMARY KEY (status_id)
+);
+
+INSERT INTO inv_device_condition_status (
+  status_id, code, name, name_in_local, is_active, id, condition_statusid,
+  condition_status_name, category, created_date, modified_date, created_by, modified_by
+) VALUES (
+  gen_random_uuid(), 'CS001', 'Faulty Device', 'തകരാറുള്ള ഉപകരണം', TRUE, 1, 101,
+  'Faulty - Needs Repair', 1, CURRENT_TIMESTAMP, NULL, gen_random_uuid(), NULL
 );
 
 
