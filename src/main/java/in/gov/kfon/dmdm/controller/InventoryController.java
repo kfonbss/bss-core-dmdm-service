@@ -287,13 +287,13 @@ public class InventoryController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("kfon-dc/device_requests/fetch-all")
+  @GetMapping("kfon-dc/device-requests/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> kfonDcDeviceRequestsFetchAll() {
     var data = inventoryService.kfonDcDeviceRequestsFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 
-  @GetMapping("kfon-dc/device_request/{id}")
+  @GetMapping("kfon-dc/device-request/{id}")
   public ResponseEntity<Response<CommonLookUp>> kfonDcDeviceRequestsFetchById(
       @PathVariable UUID id) {
     var data = inventoryService.kfonDcDeviceRequestsFetchById(id);

@@ -555,7 +555,7 @@ class InventoryControllerTest {
 
     mockMvc
         .perform(
-            get("/api/inventory/kfon-dc/device_requests/fetch-all")
+            get("/api/inventory/kfon-dc/device-requests/fetch-all")
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
@@ -568,7 +568,7 @@ class InventoryControllerTest {
 
     mockMvc
         .perform(
-            get("/api/inventory/kfon-dc/device_request/{id}", id)
+            get("/api/inventory/kfon-dc/device-request/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
