@@ -43,6 +43,7 @@ class InventoryServiceImplTest {
   @Mock private InvDeviceConditionStatusRepository deviceConditionStatusRepository;
   @Mock private InvKfonDcDeviceRequestRepository kfonDcDeviceRequestRepository;
   @Mock private InvDeviceDetailsMovementRepository deviceDetailsMovementRepository;
+  @Mock private InvReturnFaultyRequestRepository invReturnFaultyRequestRepository;
   @InjectMocks private InventoryServiceImpl inventoryService;
 
   private InvDeviceMake invDeviceMake;
@@ -69,6 +70,7 @@ class InventoryServiceImplTest {
   private InvDeviceConditionStatus invDeviceConditionStatus;
   private InvKfonDcDeviceRequest invKfonDcDeviceRequest;
   private InvDeviceDetailsMovement invDeviceDetailsMovement;
+  private InvReturnFaultyRequest invReturnFaultyRequest;
 
   @BeforeEach
   void setUp() {
@@ -187,6 +189,12 @@ class InventoryServiceImplTest {
     invDeviceDetailsMovement = new InvDeviceDetailsMovement();
     invDeviceDetailsMovement.setMovementId(id);
     invDeviceDetailsMovement.setName("Device Details Movement Test");
+
+    invReturnFaultyRequest = new InvReturnFaultyRequest();
+    invReturnFaultyRequest.setInvReturnFaultyRequestId(id);
+    invReturnFaultyRequest.setCode("FLT001");
+    invReturnFaultyRequest.setName("Faulty Device Request");
+    invReturnFaultyRequest.setNameInLocal("ഫോൾട്ടി ഡിവൈസ് റിക്വസ്റ്റ്");
 
     lookup = new CommonLookUp();
     lookup.setId(id);
@@ -967,5 +975,47 @@ class InventoryServiceImplTest {
     when(deviceDetailsMovementRepository.findById(id)).thenReturn(Optional.empty());
     assertThrows(
         EntityNotFoundException.class, () -> inventoryService.deviceDetailsMovementFetchById(id));
+  }
+
+  @Test
+  void testFetchAllFaultyRequests_Success() {
+    when(invReturnFaultyRequestRepository.findAll()).thenReturn(List.of(invReturnFaultyRequest));
+    when(modelMapper.map(invReturnFaultyRequest, CommonLookUp.class)).thenReturn(lookup);
+
+    List<CommonLookUp> result = inventoryService.fetchAllFaultyRequests();
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals("Test Name", result.get(0).getName());
+    verify(invReturnFaultyRequestRepository, times(1)).findAll();
+    verify(modelMapper, times(1)).map(invReturnFaultyRequest, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchFaultyRequestById_Success() {
+    when(invReturnFaultyRequestRepository.findById(id))
+        .thenReturn(Optional.of(invReturnFaultyRequest));
+    when(modelMapper.map(invReturnFaultyRequest, CommonLookUp.class)).thenReturn(lookup);
+
+    CommonLookUp result = inventoryService.fetchFaultyRequestById(id);
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    assertEquals("Test Name", result.getName());
+    verify(invReturnFaultyRequestRepository, times(1)).findById(id);
+    verify(modelMapper, times(1)).map(invReturnFaultyRequest, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchFaultyRequestById_NotFound() {
+    when(invReturnFaultyRequestRepository.findById(id)).thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(
+            EntityNotFoundException.class, () -> inventoryService.fetchFaultyRequestById(id));
+    assertEquals("Not found with id: " + id, exception.getMessage());
+
+    verify(invReturnFaultyRequestRepository, times(1)).findById(id);
+    verifyNoInteractions(modelMapper);
   }
 }

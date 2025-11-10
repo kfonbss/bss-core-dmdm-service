@@ -93,4 +93,8 @@ public interface InventoryService {
   List<CommonLookUp> kfonDcDeviceRequestsFetchAll();
 
   CommonLookUp kfonDcDeviceRequestsFetchById(UUID id);
+
+  List<CommonLookUp> fetchAllFaultyRequests();
+
+  CommonLookUp fetchFaultyRequestById(UUID id);
 }

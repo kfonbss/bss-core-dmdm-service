@@ -395,3 +395,7 @@ _ Get inventory device transfer request and movement details
 # [0.80.0] - 2025-11-07
 ### Added
 - Get inventory kfondc device request device movement details
+
+# [0.81.0] - 2025-11-07
+### Added
+- Get inventory return faulty request details

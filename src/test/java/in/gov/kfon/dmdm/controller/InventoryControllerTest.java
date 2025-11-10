@@ -574,4 +574,30 @@ class InventoryControllerTest {
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data.code").value("INV001"));
   }
+
+  @Test
+  void testReturnFaultyRequestsFetchAll() throws Exception {
+    when(service.fetchAllFaultyRequests()).thenReturn(List.of(lookup));
+
+    mockMvc
+        .perform(
+            get("/api/inventory/return-faulty-requests/fetch-all")
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched all return faulty requests"))
+        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+  }
+
+  @Test
+  void testReturnFaultyRequestFetchById() throws Exception {
+    when(service.fetchFaultyRequestById(any(UUID.class))).thenReturn(lookup);
+
+    mockMvc
+        .perform(
+            get("/api/inventory/return-faulty-request/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched return faulty request"))
+        .andExpect(jsonPath("$.data.code").value("INV001"));
+  }
 }
