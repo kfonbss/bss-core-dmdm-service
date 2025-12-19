@@ -7,13 +7,13 @@ image:
 
 service:
   type: ClusterIP
-  servicePort: 80        # service port exposed inside cluster
-  port: 8080             # containerPort your app listens on
+  servicePort: 80
+  port: 8080
 
 db:
-  host: bss-core-dmdm-dev.cbsio6i24e5a.ap-south-1.rds.amazonaws.com
+  host: bss-core-dmdm-db.cbsio6i24e5a.ap-south-1.rds.amazonaws.com
   port: 5432
-  name: bss_core-dmdm-dev-db    # you created this DB already (with hyphens)
+  name: bss_core_dmdm_db
   user: appuser
   password: "Kfonbss2025#"
   sslmode: require
