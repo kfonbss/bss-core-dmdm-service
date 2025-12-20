@@ -399,3 +399,7 @@ _ Get inventory device transfer request and movement details
 # [0.81.0] - 2025-11-07
 ### Added
 - Get inventory return faulty request details
+
+# [0.82.0] - 2025-12-20
+### Added
+- Fetch postoffice by pincode api

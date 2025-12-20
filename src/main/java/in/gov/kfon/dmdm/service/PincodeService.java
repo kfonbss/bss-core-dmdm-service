@@ -13,4 +13,6 @@ public interface PincodeService {
   List<CommonLookUp> fetchAllPincodeDetails();
 
   CommonLookUp fetchPincodeDetailsById(UUID id);
+
+  CommonLookUp fetchPostOfficeByPincode(String pincode);
 }

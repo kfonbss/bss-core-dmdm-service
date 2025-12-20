@@ -100,4 +100,22 @@ class PincodeControllerTest {
         .andExpect(jsonPath("$.data.code").value("P001"))
         .andExpect(jsonPath("$.data.isActive").value(true));
   }
+
+  @Test
+  void testFetchPostOfficeByPincode() throws Exception {
+    String pincode = "682001";
+
+    when(service.fetchPostOfficeByPincode(pincode)).thenReturn(lookup);
+
+    mockMvc
+        .perform(get("/api/pincode/post-office/{pincode}", pincode))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message").value("Fetched post office by pincode"))
+        .andExpect(jsonPath("$.data").isNotEmpty())
+        .andExpect(jsonPath("$.data.id").value(id.toString()))
+        .andExpect(jsonPath("$.data.name").value("Pincode Sample"))
+        .andExpect(jsonPath("$.data.nameInLocal").value("പിന്കോഡ് സാമ്പിൾ"))
+        .andExpect(jsonPath("$.data.code").value("P001"))
+        .andExpect(jsonPath("$.data.isActive").value(true));
+  }
 }
