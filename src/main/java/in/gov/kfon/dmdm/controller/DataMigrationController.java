@@ -16,11 +16,13 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/migration")
 @RequiredArgsConstructor
 public class DataMigrationController {
-    @Autowired DataMigrationService dataMigrationService;
+  @Autowired DataMigrationService dataMigrationService;
 
-    @PostMapping("/district")
-    public ResponseEntity<Response<String>> migrateDistrict(@RequestParam("file") MultipartFile file) {
-        dataMigrationService.migrateDistrict(file);
-        return ResponseEntity.status(HttpStatus.OK).body(Response.ok("", "District Migration Completed Successfully"));
-    }
+  @PostMapping("/district")
+  public ResponseEntity<Response<String>> migrateDistrict(
+      @RequestParam("file") MultipartFile file) {
+    dataMigrationService.migrateDistrict(file);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok("", "District Migration Completed Successfully"));
+  }
 }

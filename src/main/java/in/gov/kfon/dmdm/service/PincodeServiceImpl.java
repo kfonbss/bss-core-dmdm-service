@@ -66,16 +66,21 @@ public class PincodeServiceImpl implements PincodeService {
 
   @Override
   @Transactional(readOnly = true)
-  public CommonLookUp fetchPostOfficeByPincode(String pincode) {
-    Pincodes entity =
-        pincodesRepository
-            .findByPincodeAndIsActiveTrue(pincode)
-            .orElseThrow(() -> new EntityNotFoundException("Post office not found"));
+  public List<CommonLookUp> fetchPostOfficeByPincode(String pincode) {
+    List<Pincodes> entities = pincodesRepository.findAllByPincodeAndIsActiveTrue(pincode);
 
-    CommonLookUp response = modelMapper.map(entity, CommonLookUp.class);
-    response.setCode(entity.getPincode());
-    response.setName(entity.getPostOfficeName());
+    if (entities.isEmpty()) {
+      throw new EntityNotFoundException("Post office not found for pincode: " + pincode);
+    }
 
-    return response;
+    return entities.stream()
+        .map(
+            entity -> {
+              CommonLookUp lookup = new CommonLookUp();
+              lookup.setCode(entity.getPincode());
+              lookup.setName(entity.getPostOfficeName());
+              return lookup;
+            })
+        .toList();
   }
 }

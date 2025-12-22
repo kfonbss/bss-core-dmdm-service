@@ -9,6 +9,7 @@ import in.gov.kfon.dmdm.model.Pincodes;
 import in.gov.kfon.dmdm.repository.PincodeDetailsRepository;
 import in.gov.kfon.dmdm.repository.PincodesRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -138,39 +139,39 @@ public class PincodeServiceImplTest {
   void testFetchPostOfficeByPincode_Success() {
     String pincodeValue = "682001";
 
+    pincodes.setId(id);
     pincodes.setPincode(pincodeValue);
     pincodes.setPostOfficeName("Ernakulam Head Post Office");
 
-    when(pincodesRepository.findByPincodeAndIsActiveTrue(pincodeValue))
-        .thenReturn(Optional.of(pincodes));
+    List<Pincodes> pincodesList = List.of(pincodes);
 
-    when(modelMapper.map(pincodes, CommonLookUp.class)).thenReturn(commonLookUp);
+    when(pincodesRepository.findAllByPincodeAndIsActiveTrue(pincodeValue)).thenReturn(pincodesList);
 
-    CommonLookUp result = service.fetchPostOfficeByPincode(pincodeValue);
+    List<CommonLookUp> result = service.fetchPostOfficeByPincode(pincodeValue);
 
     assertNotNull(result);
-    assertEquals(id, result.getId());
-    assertEquals(pincodeValue, result.getCode());
-    assertEquals("Ernakulam Head Post Office", result.getName());
+    assertEquals(1, result.size());
 
-    verify(pincodesRepository, times(1)).findByPincodeAndIsActiveTrue(pincodeValue);
-    verify(modelMapper, times(1)).map(pincodes, CommonLookUp.class);
+    CommonLookUp lookup = result.get(0);
+    assertEquals(pincodeValue, lookup.getCode());
+    assertEquals("Ernakulam Head Post Office", lookup.getName());
+
+    verify(pincodesRepository, times(1)).findAllByPincodeAndIsActiveTrue(pincodeValue);
   }
 
   @Test
   void testFetchPostOfficeByPincode_NotFound() {
     String pincodeValue = "999999";
 
-    when(pincodesRepository.findByPincodeAndIsActiveTrue(pincodeValue))
-        .thenReturn(Optional.empty());
+    when(pincodesRepository.findAllByPincodeAndIsActiveTrue(pincodeValue))
+        .thenReturn(Collections.emptyList());
 
     EntityNotFoundException exception =
         assertThrows(
             EntityNotFoundException.class, () -> service.fetchPostOfficeByPincode(pincodeValue));
 
-    assertEquals("Post office not found", exception.getMessage());
+    assertEquals("Post office not found for pincode: " + pincodeValue, exception.getMessage());
 
-    verify(pincodesRepository, times(1)).findByPincodeAndIsActiveTrue(pincodeValue);
-    verifyNoInteractions(modelMapper);
+    verify(pincodesRepository, times(1)).findAllByPincodeAndIsActiveTrue(pincodeValue);
   }
 }
