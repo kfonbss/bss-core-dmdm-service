@@ -43,7 +43,7 @@ public class PincodeController {
   }
 
   @GetMapping("/post-office/{pincode}")
-  public ResponseEntity<Response<CommonLookUp>> fetchPostOfficeByPincode(
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchPostOfficeByPincode(
       @PathVariable String pincode) {
 
     var data = service.fetchPostOfficeByPincode(pincode);

@@ -403,3 +403,7 @@ _ Get inventory device transfer request and movement details
 # [0.82.0] - 2025-12-20
 ### Added
 - Fetch postoffice by pincode api
+
+# [0.83.0] - 2025-12-22
+### Added
+- changes in post office api
