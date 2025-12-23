@@ -5,6 +5,7 @@ import static org.apache.commons.lang3.math.NumberUtils.toInt;
 import com.opencsv.CSVReader;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -386,5 +387,126 @@ public class DataMigrationServiceImpl implements DataMigrationService {
     } catch (Exception e) {
       return null;
     }
+  }
+
+  @Override
+  public void migrateRevenueShare(MultipartFile file) {
+
+    if (file == null || file.isEmpty()) {
+      throw new RuntimeException("CSV file is required");
+    }
+
+    String filename = file.getOriginalFilename();
+    if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
+      throw new RuntimeException("Invalid file format. Upload CSV only.");
+    }
+
+    try (Connection conn = dataSource.getConnection()) {
+
+      if (tableHasData(conn)) {
+        throw new RuntimeException("Revenue Share already migrated");
+      }
+
+      runMigration(conn, file);
+
+    } catch (Exception e) {
+      throw new RuntimeException("Migration failed: " + e.getMessage(), e);
+    }
+  }
+
+  private boolean tableHasData(Connection conn) throws Exception {
+    try (ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM revenueshare")) {
+      rs.next();
+      return rs.getInt(1) > 0;
+    }
+  }
+
+  private void runMigration(Connection conn, MultipartFile file) throws Exception {
+
+    String sql =
+        """
+                INSERT INTO revenueshare (
+                  revenueshareid, sharename, subgroup,
+                  ibnpshare, ibwpshare, anpshare, agpshare,
+                  cnpshare, mspshare, mktshare, ispshare,
+                  permshare, dotshare, provshare,
+                  state, prs,
+                  code,
+                  name,
+                  name_in_local,
+                  is_active
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """;
+
+    conn.setAutoCommit(false);
+
+    try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+
+      reader.readNext();
+      String[] c;
+      int batch = 0;
+
+      while ((c = reader.readNext()) != null) {
+
+        int p = 1;
+
+        ps.setInt(p++, toInt(c[0]));
+        ps.setString(p++, toStr(c[1]));
+        ps.setInt(p++, toInt(c[2]));
+
+        ps.setBigDecimal(p++, toDec(c[3]));
+        ps.setBigDecimal(p++, toDec(c[4]));
+        ps.setBigDecimal(p++, toDec(c[5]));
+        ps.setBigDecimal(p++, toDec(c[6]));
+        ps.setBigDecimal(p++, toDec(c[7]));
+        ps.setBigDecimal(p++, toDec(c[8]));
+        ps.setBigDecimal(p++, toDec(c[9]));
+        ps.setBigDecimal(p++, toDec(c[10]));
+        ps.setBigDecimal(p++, toDec(c[11]));
+        ps.setBigDecimal(p++, toDec(c[12]));
+
+        if (isNull(c[13])) ps.setNull(p++, Types.NUMERIC);
+        else ps.setBigDecimal(p++, toDec(c[13]));
+
+        ps.setString(p++, toStr(c[14]));
+
+        if (isNull(c[15])) ps.setNull(p++, Types.NUMERIC);
+        else ps.setBigDecimal(p++, toDec(c[15]));
+
+        ps.setString(p++, toStr(c[0]));
+
+        ps.setString(p++, toStr(c[1]));
+
+        if (c.length > 17 && !isNull(c[17])) ps.setString(p++, toStr(c[17]));
+        else ps.setNull(p++, Types.VARCHAR);
+
+        if (c.length > 18 && !isNull(c[18])) ps.setBoolean(p++, Boolean.parseBoolean(c[18]));
+        else ps.setBoolean(p++, true);
+
+        ps.addBatch();
+
+        if (++batch % 500 == 0) {
+          ps.executeBatch();
+        }
+      }
+
+      ps.executeBatch();
+      conn.commit();
+
+    } catch (Exception ex) {
+      conn.rollback();
+      throw ex;
+    }
+  }
+
+  private BigDecimal toDec(String v) {
+    if (isNull(v)) return BigDecimal.ZERO;
+    return new BigDecimal(v.trim());
+  }
+
+  private boolean isNull(String v) {
+    return v == null || v.trim().isEmpty() || v.equalsIgnoreCase("NULL");
   }
 }

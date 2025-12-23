@@ -42,4 +42,13 @@ public class DataMigrationController {
 
     return ResponseEntity.ok(Response.ok("", "Pincode Migration Completed Successfully"));
   }
+
+  @PostMapping("/revenueshare")
+  public ResponseEntity<Response<String>> migrateRevenueShare(
+      @RequestParam("file") MultipartFile file) {
+
+    dataMigrationService.migrateRevenueShare(file);
+
+    return ResponseEntity.ok(Response.ok("", "Revenue Share Migration Completed Successfully"));
+  }
 }

@@ -8,4 +8,6 @@ public interface DataMigrationService {
   void migratePopMaster(MultipartFile file);
 
   void migratePincodeDetails(MultipartFile file);
+
+  void migrateRevenueShare(MultipartFile file);
 }
