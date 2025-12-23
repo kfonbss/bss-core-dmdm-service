@@ -418,4 +418,8 @@ _ Get inventory device transfer request and movement details
 
 # [0.86.0] - 2025-12-23
 ### Added
-- pincode details migration 
+- pincode details migration
+
+# [0.87.0] - 2025-12-23
+### Added
+-   revenue share details migration
