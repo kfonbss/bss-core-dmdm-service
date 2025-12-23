@@ -4,4 +4,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface DataMigrationService {
   void migrateDistrict(MultipartFile file);
+
+  void migratePopMaster(MultipartFile file);
 }

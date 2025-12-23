@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.Map;
+import java.util.UUID;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -144,5 +145,120 @@ public class DataMigrationServiceImpl implements DataMigrationService {
     if (v == null) return null;
     v = v.trim();
     return (v.isEmpty() || v.equalsIgnoreCase("NULL")) ? null : v;
+  }
+
+  @Override
+  public void migratePopMaster(MultipartFile file) {
+
+    if (file == null || file.isEmpty()) {
+      throw new RuntimeException("CSV file is required");
+    }
+
+    String filename = file.getOriginalFilename();
+    if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
+      throw new RuntimeException("Invalid file format. Upload CSV only.");
+    }
+
+    try (Connection conn = dataSource.getConnection()) {
+
+      if (popMasterTableHasData(conn)) {
+        throw new RuntimeException("POP Master already migrated");
+      }
+
+      runPopMasterMigration(conn, file);
+
+    } catch (Exception e) {
+      throw new RuntimeException("POP Master migration failed: " + e.getMessage(), e);
+    }
+  }
+
+  private boolean popMasterTableHasData(Connection conn) throws Exception {
+    try (ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM pop_master")) {
+      rs.next();
+      return rs.getInt(1) > 0;
+    }
+  }
+
+  private void runPopMasterMigration(Connection conn, MultipartFile file) throws Exception {
+
+    String sql =
+        """
+                INSERT INTO pop_master (
+                    id,
+                    master_id,
+                    popname,
+                    district,
+                    poptype,
+                    popid,
+                    code,
+                    name,
+                    name_in_local,
+                    is_active
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """;
+
+    conn.setAutoCommit(false);
+
+    try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+
+      reader.readNext();
+
+      String[] cols;
+      int batch = 0;
+
+      while ((cols = reader.readNext()) != null) {
+
+        Integer masterId = toInt(cols[0]);
+        String popName = toStr(cols[1]);
+        String district = toStr(cols[2]);
+        String popType = toStr(cols[3]);
+        String popId = toStr(cols[4]);
+
+        if (masterId == null || popName == null) {
+          continue;
+        }
+
+        int p = 1;
+        ps.setObject(p++, UUID.randomUUID());
+        ps.setInt(p++, masterId);
+        ps.setString(p++, popName);
+        ps.setString(p++, district);
+        ps.setString(p++, popType);
+        ps.setString(p++, popId);
+
+        if (popId != null && popId.length() >= 3) {
+          ps.setString(p++, popId.substring(popId.length() - 3));
+        } else {
+          ps.setNull(p++, Types.VARCHAR);
+        }
+
+        ps.setString(p++, popName);
+        ps.setNull(p++, Types.VARCHAR);
+        ps.setBoolean(p++, true);
+
+        ps.addBatch();
+
+        if (++batch % 500 == 0) {
+          ps.executeBatch();
+        }
+      }
+
+      ps.executeBatch();
+      conn.commit();
+
+    } catch (Exception ex) {
+      conn.rollback();
+      throw ex;
+    }
+  }
+
+  private Integer toInt(String v) {
+    try {
+      return (v == null || v.trim().isEmpty()) ? null : Integer.parseInt(v.trim());
+    } catch (Exception e) {
+      return null;
+    }
   }
 }
