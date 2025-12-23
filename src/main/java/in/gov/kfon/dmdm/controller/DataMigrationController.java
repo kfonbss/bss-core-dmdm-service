@@ -51,4 +51,13 @@ public class DataMigrationController {
 
     return ResponseEntity.ok(Response.ok("", "Revenue Share Migration Completed Successfully"));
   }
+
+  @PostMapping("/bank-details")
+  public ResponseEntity<Response<String>> migrateBankDetails(
+      @RequestParam("file") MultipartFile file) {
+
+    dataMigrationService.migrateBankDetails(file);
+
+    return ResponseEntity.ok(Response.ok("", "Bank Details Migration Completed Successfully"));
+  }
 }

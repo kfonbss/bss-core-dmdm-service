@@ -423,3 +423,7 @@ _ Get inventory device transfer request and movement details
 # [0.87.0] - 2025-12-23
 ### Added
 -   revenue share details migration
+
+# [0.88.0] - 2025-12-23
+### Added
+-   bank details migration and apis
