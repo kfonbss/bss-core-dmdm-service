@@ -77,8 +77,12 @@ public class PincodeServiceImpl implements PincodeService {
         .map(
             entity -> {
               CommonLookUp lookup = new CommonLookUp();
+              lookup.setId(entity.getId());
               lookup.setCode(entity.getPincode());
               lookup.setName(entity.getPostOfficeName());
+              lookup.setNameInLocal(entity.getNameInLocal());
+              lookup.setIsActive(entity.getIsActive());
+              lookup.setDistrict(entity.getDistrict());
               return lookup;
             })
         .toList();

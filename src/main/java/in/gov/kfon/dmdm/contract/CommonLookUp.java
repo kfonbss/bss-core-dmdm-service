@@ -10,4 +10,5 @@ public class CommonLookUp {
   private String name;
   private String nameInLocal;
   private Boolean isActive;
+  private String district;
 }
