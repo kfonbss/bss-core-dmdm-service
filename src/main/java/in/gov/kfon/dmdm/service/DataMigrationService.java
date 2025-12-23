@@ -10,4 +10,6 @@ public interface DataMigrationService {
   void migratePincodeDetails(MultipartFile file);
 
   void migrateRevenueShare(MultipartFile file);
+
+  void migrateBankDetails(MultipartFile file);
 }

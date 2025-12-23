@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
@@ -508,5 +509,103 @@ public class DataMigrationServiceImpl implements DataMigrationService {
 
   private boolean isNull(String v) {
     return v == null || v.trim().isEmpty() || v.equalsIgnoreCase("NULL");
+  }
+
+  @Override
+  @Transactional
+  public void migrateBankDetails(MultipartFile file) {
+
+    if (file == null || file.isEmpty()) {
+      throw new RuntimeException("CSV file is required");
+    }
+
+    String filename = file.getOriginalFilename();
+    if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
+      throw new RuntimeException("Invalid file format. Upload CSV only.");
+    }
+
+    try (Connection conn = dataSource.getConnection()) {
+
+      if (tableHasDatas(conn)) {
+        throw new RuntimeException("Bank details already migrated");
+      }
+
+      runBankMigration(conn, file);
+
+    } catch (Exception e) {
+      throw new RuntimeException("Migration failed: " + e.getMessage(), e);
+    }
+  }
+
+  private void runBankMigration(Connection conn, MultipartFile file) throws Exception {
+
+    String sql =
+        """
+        INSERT INTO bank_details (
+          bank_id, bank_name, bank_ifsc_code, bank_micr,
+          bank_branch, bank_address, bank_contact,
+          bank_city, bank_district, bank_state
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
+
+    conn.setAutoCommit(false);
+
+    try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+
+      reader.readNext();
+      String[] c;
+      int batch = 0;
+
+      while ((c = reader.readNext()) != null) {
+        int p = 1;
+
+        Long bankId = toLong(c[0]);
+        ps.setObject(p++, bankId != null ? bankId : null, Types.BIGINT);
+
+        ps.setString(p++, safeString(c[1]));
+        ps.setString(p++, safeString(c[2]));
+
+        String micr = safeString(c[3]);
+        ps.setString(p++, micr);
+
+        ps.setString(p++, safeString(c[4]));
+        ps.setString(p++, safeString(c[5]));
+
+        Integer contact = toInt(c[6]);
+        ps.setInt(p++, Objects.requireNonNullElse(contact, 0));
+
+        ps.setString(p++, safeString(c[7]));
+        ps.setString(p++, safeString(c[8]));
+        ps.setString(p++, safeString(c[9]));
+
+        ps.addBatch();
+
+        if (++batch % 500 == 0) {
+          ps.executeBatch();
+        }
+      }
+
+      ps.executeBatch();
+      conn.commit();
+
+    } catch (Exception ex) {
+      conn.rollback();
+      throw ex;
+    }
+  }
+
+  private String safeString(String s) {
+    return (s == null || s.isBlank() || s.equalsIgnoreCase("NA") || s.equalsIgnoreCase("WAITING"))
+        ? ""
+        : s.trim();
+  }
+
+  private boolean tableHasDatas(Connection conn) throws Exception {
+    try (ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM bank_details")) {
+      rs.next();
+      return rs.getInt(1) > 0;
+    }
   }
 }
