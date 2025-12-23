@@ -407,3 +407,7 @@ _ Get inventory device transfer request and movement details
 # [0.83.0] - 2025-12-22
 ### Added
 - changes in post office api
+
+# [0.84.0] - 2025-12-23
+### Added
+- Add district in the response of post office api
