@@ -415,3 +415,7 @@ _ Get inventory device transfer request and movement details
 # [0.85.0] - 2025-12-23
 ### Added
 - pop master table migration 
+
+# [0.86.0] - 2025-12-23
+### Added
+- pincode details migration 
