@@ -3,6 +3,7 @@ package in.gov.kfon.dmdm.service;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 import com.opencsv.CSVReader;
+import jakarta.persistence.EntityNotFoundException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -257,6 +258,131 @@ public class DataMigrationServiceImpl implements DataMigrationService {
   private Integer toInt(String v) {
     try {
       return (v == null || v.trim().isEmpty()) ? null : Integer.parseInt(v.trim());
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  @Override
+  public void migratePincodeDetails(MultipartFile file) {
+
+    if (file == null || file.isEmpty()) {
+      throw new RuntimeException("CSV file is required");
+    }
+
+    String filename = file.getOriginalFilename();
+    if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
+      throw new RuntimeException("Invalid file format. Upload CSV only.");
+    }
+
+    try (Connection conn = dataSource.getConnection()) {
+
+      if (pincodeTableHasData(conn)) {
+        throw new EntityNotFoundException("Pincode details already migrated");
+      }
+
+      runPincodeMigration(conn, file);
+
+    } catch (Exception e) {
+      throw new RuntimeException("Pincode migration failed: " + e.getMessage(), e);
+    }
+  }
+
+  private boolean pincodeTableHasData(Connection conn) throws Exception {
+    try (ResultSet rs =
+        conn.createStatement().executeQuery("SELECT COUNT(*) FROM pincode_details")) {
+      rs.next();
+      return rs.getInt(1) > 0;
+    }
+  }
+
+  private void runPincodeMigration(Connection conn, MultipartFile file) throws Exception {
+
+    String sql =
+        """
+                INSERT INTO pincode_details (
+                    id,
+                    details_id,
+                    pincode,
+                    post_office_name,
+                    sub_po_name,
+                    district,
+                    districtcode,
+                    code,
+                    name,
+                    name_in_local,
+                    is_active,
+                    created_date,
+                    created_by,
+                    modified_date,
+                    modified_by
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """;
+
+    conn.setAutoCommit(false);
+
+    try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+
+      reader.readNext();
+
+      String[] cols;
+      int batch = 0;
+
+      while ((cols = reader.readNext()) != null) {
+
+        Long detailsId = toLong(cols[0]);
+        Integer pincode = toInt(cols[1]);
+        String postOffice = toStr(cols[2]);
+        String subPo = toStr(cols[3]);
+        String district = toStr(cols[4]);
+        Integer districtCode = toInt(cols[5]);
+
+        if (pincode == null || postOffice == null) {
+          continue;
+        }
+
+        int p = 1;
+        ps.setObject(p++, UUID.randomUUID());
+        ps.setLong(p++, detailsId);
+        ps.setInt(p++, pincode);
+        ps.setString(p++, postOffice);
+        ps.setString(p++, subPo);
+        ps.setString(p++, district);
+        ps.setInt(p++, districtCode);
+
+        ps.setString(p++, String.valueOf(pincode));
+
+        ps.setString(p++, postOffice);
+
+        ps.setNull(p++, Types.VARCHAR);
+        ps.setBoolean(p++, true);
+
+        ps.setNull(p++, Types.TIMESTAMP);
+        ps.setNull(p++, Types.OTHER);
+        ps.setNull(p++, Types.TIMESTAMP);
+        ps.setNull(p++, Types.OTHER);
+
+        ps.addBatch();
+
+        if (++batch % 500 == 0) {
+          ps.executeBatch();
+        }
+      }
+
+      ps.executeBatch();
+      conn.commit();
+
+    } catch (Exception ex) {
+      conn.rollback();
+      throw ex;
+    }
+  }
+
+  private Long toLong(String v) {
+    try {
+      return (v == null || v.trim().isEmpty()) ? null : Long.parseLong(v.trim());
     } catch (Exception e) {
       return null;
     }

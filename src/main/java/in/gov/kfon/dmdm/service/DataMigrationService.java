@@ -6,4 +6,6 @@ public interface DataMigrationService {
   void migrateDistrict(MultipartFile file);
 
   void migratePopMaster(MultipartFile file);
+
+  void migratePincodeDetails(MultipartFile file);
 }
