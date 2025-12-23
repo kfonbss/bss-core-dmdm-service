@@ -25,4 +25,13 @@ public class DataMigrationController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok("", "District Migration Completed Successfully"));
   }
+
+  @PostMapping("/pop-master")
+  public ResponseEntity<Response<String>> migratePopMaster(
+      @RequestParam("file") MultipartFile file) {
+
+    dataMigrationService.migratePopMaster(file);
+
+    return ResponseEntity.ok(Response.ok("", "POP Master Migration Completed Successfully"));
+  }
 }

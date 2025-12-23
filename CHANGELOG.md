@@ -411,3 +411,7 @@ _ Get inventory device transfer request and movement details
 # [0.84.0] - 2025-12-23
 ### Added
 - Add district in the response of post office api
+
+# [0.85.0] - 2025-12-23
+### Added
+- pop master table migration 
