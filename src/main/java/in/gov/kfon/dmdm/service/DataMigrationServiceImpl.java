@@ -48,24 +48,24 @@ public class DataMigrationServiceImpl implements DataMigrationService {
   public void migrateDistrict(MultipartFile file) {
 
     if (file == null || file.isEmpty()) {
-      throw new RuntimeException("CSV file is required");
+      throw new EntityNotFoundException("CSV file is required");
     }
 
     String filename = file.getOriginalFilename();
     if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
-      throw new RuntimeException("Invalid file format. Upload CSV only.");
+      throw new EntityNotFoundException("Invalid file format. Upload CSV only.");
     }
 
     try (Connection conn = dataSource.getConnection()) {
 
       if (districtsTableHasData(conn)) {
-        throw new RuntimeException("Districts already imported successfully");
+        throw new EntityNotFoundException("Districts already imported successfully");
       }
 
       runDistrictMigration(conn, file);
 
     } catch (Exception e) {
-      throw new RuntimeException("Migration failed: " + e.getMessage(), e);
+      throw new EntityNotFoundException("Migration failed: " + e.getMessage(), e);
     }
   }
 
@@ -154,24 +154,24 @@ public class DataMigrationServiceImpl implements DataMigrationService {
   public void migratePopMaster(MultipartFile file) {
 
     if (file == null || file.isEmpty()) {
-      throw new RuntimeException("CSV file is required");
+      throw new EntityNotFoundException("CSV file is required");
     }
 
     String filename = file.getOriginalFilename();
     if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
-      throw new RuntimeException("Invalid file format. Upload CSV only.");
+      throw new EntityNotFoundException("Invalid file format. Upload CSV only.");
     }
 
     try (Connection conn = dataSource.getConnection()) {
 
       if (popMasterTableHasData(conn)) {
-        throw new RuntimeException("POP Master already migrated");
+        throw new EntityNotFoundException("POP Master already migrated");
       }
 
       runPopMasterMigration(conn, file);
 
     } catch (Exception e) {
-      throw new RuntimeException("POP Master migration failed: " + e.getMessage(), e);
+      throw new EntityNotFoundException("POP Master migration failed: " + e.getMessage(), e);
     }
   }
 
@@ -269,12 +269,12 @@ public class DataMigrationServiceImpl implements DataMigrationService {
   public void migratePincodeDetails(MultipartFile file) {
 
     if (file == null || file.isEmpty()) {
-      throw new RuntimeException("CSV file is required");
+      throw new EntityNotFoundException("CSV file is required");
     }
 
     String filename = file.getOriginalFilename();
     if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
-      throw new RuntimeException("Invalid file format. Upload CSV only.");
+      throw new EntityNotFoundException("Invalid file format. Upload CSV only.");
     }
 
     try (Connection conn = dataSource.getConnection()) {
@@ -286,7 +286,7 @@ public class DataMigrationServiceImpl implements DataMigrationService {
       runPincodeMigration(conn, file);
 
     } catch (Exception e) {
-      throw new RuntimeException("Pincode migration failed: " + e.getMessage(), e);
+      throw new EntityNotFoundException("Pincode migration failed: " + e.getMessage(), e);
     }
   }
 
@@ -394,24 +394,24 @@ public class DataMigrationServiceImpl implements DataMigrationService {
   public void migrateRevenueShare(MultipartFile file) {
 
     if (file == null || file.isEmpty()) {
-      throw new RuntimeException("CSV file is required");
+      throw new EntityNotFoundException("CSV file is required");
     }
 
     String filename = file.getOriginalFilename();
     if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
-      throw new RuntimeException("Invalid file format. Upload CSV only.");
+      throw new EntityNotFoundException("Invalid file format. Upload CSV only.");
     }
 
     try (Connection conn = dataSource.getConnection()) {
 
       if (tableHasData(conn)) {
-        throw new RuntimeException("Revenue Share already migrated");
+        throw new EntityNotFoundException("Revenue Share already migrated");
       }
 
       runMigration(conn, file);
 
     } catch (Exception e) {
-      throw new RuntimeException("Migration failed: " + e.getMessage(), e);
+      throw new EntityNotFoundException("Migration failed: " + e.getMessage(), e);
     }
   }
 
@@ -483,8 +483,12 @@ public class DataMigrationServiceImpl implements DataMigrationService {
         if (c.length > 17 && !isNull(c[17])) ps.setString(p++, toStr(c[17]));
         else ps.setNull(p++, Types.VARCHAR);
 
-        if (c.length > 18 && !isNull(c[18])) ps.setBoolean(p++, Boolean.parseBoolean(c[18]));
-        else ps.setBoolean(p++, true);
+        int lastColIndex = c.length - 1;
+        if (c.length > 0 && c[lastColIndex] != null && !c[lastColIndex].isBlank()) {
+          ps.setBoolean(p++, c[lastColIndex].trim().equalsIgnoreCase("TRUE"));
+        } else {
+          ps.setBoolean(p++, false);
+        }
 
         ps.addBatch();
 
@@ -516,24 +520,24 @@ public class DataMigrationServiceImpl implements DataMigrationService {
   public void migrateBankDetails(MultipartFile file) {
 
     if (file == null || file.isEmpty()) {
-      throw new RuntimeException("CSV file is required");
+      throw new EntityNotFoundException("CSV file is required");
     }
 
     String filename = file.getOriginalFilename();
     if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
-      throw new RuntimeException("Invalid file format. Upload CSV only.");
+      throw new EntityNotFoundException("Invalid file format. Upload CSV only.");
     }
 
     try (Connection conn = dataSource.getConnection()) {
 
       if (tableHasDatas(conn)) {
-        throw new RuntimeException("Bank details already migrated");
+        throw new EntityNotFoundException("Bank details already migrated");
       }
 
       runBankMigration(conn, file);
 
     } catch (Exception e) {
-      throw new RuntimeException("Migration failed: " + e.getMessage(), e);
+      throw new EntityNotFoundException("Migration failed: " + e.getMessage(), e);
     }
   }
 
