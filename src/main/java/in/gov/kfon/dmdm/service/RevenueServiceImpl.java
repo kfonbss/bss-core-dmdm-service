@@ -22,16 +22,20 @@ public class RevenueServiceImpl implements RevenueService {
   @Transactional(readOnly = true)
   public List<CommonLookUp> fetchRevenue() {
     return repository.findAll().stream()
+        .filter(RevenueShare::getIsActive)
         .map(pm -> modelMapper.map(pm, CommonLookUp.class))
         .toList();
   }
 
   @Override
   public CommonLookUp fetchRevenueById(UUID id) {
-    RevenueShare popMaster =
+    RevenueShare revenueShare =
         repository
             .findById(id)
-            .orElseThrow(() -> new EntityNotFoundException("not found with id: " + id));
-    return modelMapper.map(popMaster, CommonLookUp.class);
+            .filter(RevenueShare::getIsActive)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Active record not found with id: " + id));
+
+    return modelMapper.map(revenueShare, CommonLookUp.class);
   }
 }
