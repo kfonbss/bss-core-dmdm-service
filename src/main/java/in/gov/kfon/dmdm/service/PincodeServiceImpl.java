@@ -87,4 +87,25 @@ public class PincodeServiceImpl implements PincodeService {
             })
         .toList();
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchPostOfficeDetailsByPincode(Integer pincode) {
+
+    PincodeDetails entity =
+        pincodeDetailsRepository
+            .findFirstByPincodeAndIsActiveTrue(pincode)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Post office not found for pincode: " + pincode));
+
+    CommonLookUp lookup = new CommonLookUp();
+    lookup.setId(entity.getId());
+    lookup.setCode(String.valueOf(entity.getPincode()));
+    lookup.setName(entity.getPostOfficeName());
+    lookup.setNameInLocal(entity.getNameInLocal());
+    lookup.setIsActive(entity.getIsActive());
+    lookup.setDistrict(entity.getDistrict());
+
+    return lookup;
+  }
 }
