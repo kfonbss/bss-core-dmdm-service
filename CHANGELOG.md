@@ -439,3 +439,7 @@ _ Get inventory device transfer request and movement details
 # [0.89.2] - 2025-12-24
 ### Added
 - migration changes
+
+# [0.89.3] - 2025-12-24
+### Added
+- dev yml changes
