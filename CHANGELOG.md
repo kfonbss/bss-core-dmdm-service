@@ -431,3 +431,7 @@ _ Get inventory device transfer request and movement details
 # [0.89.0] - 2025-12-24
 ### Added
 -    Post office fetch by pincode
+
+# [0.89.1] - 2025-12-24
+### Added
+-    Post office fetch by pincode modified
