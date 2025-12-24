@@ -427,3 +427,7 @@ _ Get inventory device transfer request and movement details
 # [0.88.0] - 2025-12-23
 ### Added
 -   bank details migration and apis
+
+# [0.89.0] - 2025-12-24
+### Added
+-    Post office fetch by pincode
