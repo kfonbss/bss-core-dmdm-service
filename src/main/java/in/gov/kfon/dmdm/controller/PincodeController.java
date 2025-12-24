@@ -52,11 +52,11 @@ public class PincodeController {
   }
 
   @GetMapping("/post-office-details/{pincode}")
-  public ResponseEntity<Response<CommonLookUp>> fetchPostOfficeDetailsByPincode(
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchPostOfficeDetailsByPincode(
       @PathVariable Integer pincode) {
 
     var data = service.fetchPostOfficeDetailsByPincode(pincode);
     return ResponseEntity.status(HttpStatus.OK)
-        .body(Response.ok(data, "Fetched post office by pincode"));
+        .body(Response.ok(data, "Fetched post offices by pincode"));
   }
 }
