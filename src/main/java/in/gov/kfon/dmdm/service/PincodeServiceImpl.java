@@ -83,6 +83,7 @@ public class PincodeServiceImpl implements PincodeService {
               lookup.setNameInLocal(entity.getNameInLocal());
               lookup.setIsActive(entity.getIsActive());
               lookup.setDistrict(entity.getDistrict());
+              lookup.setDistrictId(entity.getDistrictId());
               return lookup;
             })
         .toList();
