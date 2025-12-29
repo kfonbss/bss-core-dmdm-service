@@ -443,3 +443,7 @@ _ Get inventory device transfer request and movement details
 # [0.89.3] - 2025-12-24
 ### Added
 - dev yml changes
+
+# [0.89.4] - 2025-12-29
+### Added
+- Added district id in postoffice api response

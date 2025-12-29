@@ -32,6 +32,9 @@ public class Pincodes extends Auditor {
   @Column(length = 256)
   private String district;
 
+  @Column(name = "district_id")
+  private UUID districtId;
+
   @Column(length = 256)
   private String state;
 
