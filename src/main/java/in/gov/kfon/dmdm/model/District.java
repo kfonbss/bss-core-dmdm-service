@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class District {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(name = "district_id")
   private UUID districtId;
 
   @GeneratedValue(strategy = GenerationType.IDENTITY)
