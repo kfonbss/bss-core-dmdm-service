@@ -60,4 +60,11 @@ public class DataMigrationController {
 
     return ResponseEntity.ok(Response.ok("", "Bank Details Migration Completed Successfully"));
   }
+
+  @PostMapping("/village-type")
+  public ResponseEntity<Response<String>> migrateVillageType(
+      @RequestParam("file") MultipartFile file) {
+    dataMigrationService.migrateVillageType(file);
+    return ResponseEntity.ok(Response.ok("", "Village Type Migration Completed Successfully"));
+  }
 }
