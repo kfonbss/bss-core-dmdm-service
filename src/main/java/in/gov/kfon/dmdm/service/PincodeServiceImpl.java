@@ -110,6 +110,7 @@ public class PincodeServiceImpl implements PincodeService {
               lookup.setNameInLocal(entity.getNameInLocal());
               lookup.setIsActive(entity.getIsActive());
               lookup.setDistrict(entity.getDistrict());
+              lookup.setDistrictCode(entity.getDistrictCode());
               return lookup;
             })
         .toList();
