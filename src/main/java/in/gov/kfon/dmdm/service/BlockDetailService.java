@@ -1,18 +1,13 @@
 package in.gov.kfon.dmdm.service;
 
-import in.gov.kfon.dmdm.constant.LocationType;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-
 import java.util.List;
-import java.util.UUID;
 
 public interface BlockDetailService {
 
-    List<CommonLookUp> fetchCorporationName(int districtId, int villageTypeId);
+  List<CommonLookUp> fetchCorporationName(int districtId, int villageTypeId);
 
-    List<CommonLookUp> fetchPanchayatName(int districtId, int villageTypeId);
+  List<CommonLookUp> fetchPanchayatName(int districtId, int villageTypeId);
 
-    List<CommonLookUp> fetchBlockName(int districtId, int villageTypeId);
-
-
+  List<CommonLookUp> fetchBlockName(int districtId, int villageTypeId);
 }

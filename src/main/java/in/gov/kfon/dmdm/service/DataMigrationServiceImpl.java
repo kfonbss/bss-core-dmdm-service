@@ -3,6 +3,7 @@ package in.gov.kfon.dmdm.service;
 import static org.apache.commons.lang3.math.NumberUtils.toInt;
 
 import com.opencsv.CSVReader;
+import in.gov.kfon.dmdm.constant.LocationType;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
@@ -11,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import javax.sql.DataSource;
@@ -56,19 +56,17 @@ public class DataMigrationServiceImpl implements DataMigrationService {
     }
   }
 
-
   private boolean districtTableHasData(Connection conn) throws Exception {
-    try (ResultSet rs = conn.createStatement()
-            .executeQuery("SELECT COUNT(*) FROM district")) {
+    try (ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM district")) {
       rs.next();
       return rs.getInt(1) > 0;
     }
   }
 
-
   private void runDistrictMigration(Connection conn, MultipartFile file) throws Exception {
 
-    String sql = """
+    String sql =
+        """
         INSERT INTO district (
             id, name, shortname, is_active
         )
@@ -78,7 +76,7 @@ public class DataMigrationServiceImpl implements DataMigrationService {
     conn.setAutoCommit(false);
 
     try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
-         PreparedStatement ps = conn.prepareStatement(sql)) {
+        PreparedStatement ps = conn.prepareStatement(sql)) {
 
       reader.readNext();
 
@@ -87,9 +85,8 @@ public class DataMigrationServiceImpl implements DataMigrationService {
 
       while ((cols = reader.readNext()) != null) {
 
-
-        Integer id = toInt(cols[0]);       // id
-        String name = toStr(cols[1]);      // district
+        Integer id = toInt(cols[0]); // id
+        String name = toStr(cols[1]); // district
         String shortName = toStr(cols[2]); // shortname
 
         if (id == null || name == null) {
@@ -117,7 +114,6 @@ public class DataMigrationServiceImpl implements DataMigrationService {
       throw ex;
     }
   }
-
 
   private String toStr(String v) {
     if (v == null) return null;
@@ -586,5 +582,116 @@ public class DataMigrationServiceImpl implements DataMigrationService {
       rs.next();
       return rs.getInt(1) > 0;
     }
+  }
+
+  @Override
+  public void migrateVillageType(MultipartFile file) {
+
+    if (file == null || file.isEmpty()) {
+      throw new RuntimeException("CSV file is required");
+    }
+
+    String filename = file.getOriginalFilename();
+    if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
+      throw new RuntimeException("Invalid file format. Upload CSV only.");
+    }
+
+    try (Connection conn = dataSource.getConnection()) {
+
+      if (villageTypeTableHasData(conn)) {
+        throw new RuntimeException("Village types already migrated");
+      }
+
+      runVillageTypeMigration(conn, file);
+
+    } catch (Exception e) {
+      throw new RuntimeException("Village type migration failed: " + e.getMessage(), e);
+    }
+  }
+
+  private boolean villageTypeTableHasData(Connection conn) throws Exception {
+    try (ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM village_types")) {
+      rs.next();
+      return rs.getInt(1) > 0;
+    }
+  }
+
+  private void runVillageTypeMigration(Connection conn, MultipartFile file) throws Exception {
+
+    String sql =
+        """
+        INSERT INTO village_types (
+            id, village_type_id, village_type, loc_type, is_active,
+            created_date, created_by, modified_date, modified_by
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """;
+
+    conn.setAutoCommit(false);
+
+    try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+
+      reader.readNext(); // skip header
+
+      String[] cols;
+      int batch = 0;
+
+      while ((cols = reader.readNext()) != null) {
+
+        Long id = toLong(cols[0]);
+        Integer villageTypeId = toInt(cols[1]);
+        String villageType = toStr(cols[2]);
+        Integer locTypeCsv = toInt(cols[3]);
+        Integer activeCsv = toInt(cols[6]);
+
+        if (id == null || villageTypeId == null || villageType == null) {
+          continue;
+        }
+
+        Integer locTypeOrdinal = mapLocType(locTypeCsv);
+
+        boolean isActive = (activeCsv != null && activeCsv == 1);
+
+        int p = 1;
+        ps.setLong(p++, id);
+        ps.setInt(p++, villageTypeId);
+        ps.setString(p++, villageType);
+
+        if (locTypeOrdinal == null) {
+          ps.setNull(p++, Types.INTEGER);
+        } else {
+          ps.setInt(p++, locTypeOrdinal);
+        }
+
+        ps.setBoolean(p++, isActive);
+
+        // Auditor fields → NULL
+        ps.setNull(p++, Types.TIMESTAMP);
+        ps.setNull(p++, Types.OTHER);
+        ps.setNull(p++, Types.TIMESTAMP);
+        ps.setNull(p++, Types.OTHER);
+
+        ps.addBatch();
+
+        if (++batch % 500 == 0) {
+          ps.executeBatch();
+        }
+      }
+
+      ps.executeBatch();
+      conn.commit();
+
+    } catch (Exception ex) {
+      conn.rollback();
+      throw ex;
+    }
+  }
+
+  private Integer mapLocType(Integer csvValue) {
+    if (csvValue == null) return null;
+    if (csvValue == 1) return LocationType.URBAN.ordinal();
+    if (csvValue == 2) return LocationType.RURAL.ordinal();
+    return null;
   }
 }

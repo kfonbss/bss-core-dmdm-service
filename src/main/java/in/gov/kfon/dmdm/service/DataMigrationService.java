@@ -12,4 +12,6 @@ public interface DataMigrationService {
   void migrateRevenueShare(MultipartFile file);
 
   void migrateBankDetails(MultipartFile file);
+
+  void migrateVillageType(MultipartFile file);
 }
