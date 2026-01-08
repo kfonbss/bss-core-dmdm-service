@@ -32,6 +32,8 @@ public class DataMigrationServiceImpl implements DataMigrationService {
   @Override
   public void migrateDistrict(MultipartFile file) {
 
+    // todo implement the state code field mapping when the state table is ready
+
     if (file == null || file.isEmpty()) {
       throw new RuntimeException("CSV file is required");
     }
