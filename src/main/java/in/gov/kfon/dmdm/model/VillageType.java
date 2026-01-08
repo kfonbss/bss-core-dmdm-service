@@ -15,8 +15,8 @@ import lombok.*;
 public class VillageType extends Auditor {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(name = "uuid", nullable = false)
-  private UUID uuid;
+  @Column(name = "village_id", nullable = false)
+  private UUID villageId;
 
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
