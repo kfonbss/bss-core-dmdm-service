@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -24,22 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 public class DataMigrationServiceImpl implements DataMigrationService {
   private final DataSource dataSource;
-  private static final Map<String, String> DISTRICT_CODE_MAP =
-      Map.ofEntries(
-          Map.entry("Kottayam", "KTM"),
-          Map.entry("Malappuram", "MLP"),
-          Map.entry("Thrissur", "TCR"),
-          Map.entry("Alappuzha", "ALP"),
-          Map.entry("Ernakulam", "EKM"),
-          Map.entry("Idukki", "IDK"),
-          Map.entry("Kannur", "KNR"),
-          Map.entry("Kasaragod", "KGD"),
-          Map.entry("Kollam", "KLM"),
-          Map.entry("Kozhikode", "KKD"),
-          Map.entry("Palakkad", "PLK"),
-          Map.entry("Pathanamthitta", "PTA"),
-          Map.entry("Thiruvananthapuram", "TVM"),
-          Map.entry("Wayanad", "WYD"));
 
   // -------------------------------------------------District
   // ------------------------------------------------------
@@ -47,86 +32,75 @@ public class DataMigrationServiceImpl implements DataMigrationService {
   @Override
   public void migrateDistrict(MultipartFile file) {
 
+    // todo implement the state code field mapping when the state table is ready
+
     if (file == null || file.isEmpty()) {
-      throw new EntityNotFoundException("CSV file is required");
+      throw new RuntimeException("CSV file is required");
     }
 
     String filename = file.getOriginalFilename();
     if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
-      throw new EntityNotFoundException("Invalid file format. Upload CSV only.");
+      throw new RuntimeException("Invalid file format. Upload CSV only.");
     }
 
     try (Connection conn = dataSource.getConnection()) {
 
-      if (districtsTableHasData(conn)) {
-        throw new EntityNotFoundException("Districts already imported successfully");
+      if (districtTableHasData(conn)) {
+        throw new RuntimeException("District table already has data");
       }
 
       runDistrictMigration(conn, file);
 
     } catch (Exception e) {
-      throw new EntityNotFoundException("Migration failed: " + e.getMessage(), e);
+      throw new RuntimeException("District migration failed: " + e.getMessage(), e);
     }
   }
 
-  private boolean districtsTableHasData(Connection conn) throws Exception {
-    try (ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM districts")) {
+
+  private boolean districtTableHasData(Connection conn) throws Exception {
+    try (ResultSet rs = conn.createStatement()
+            .executeQuery("SELECT COUNT(*) FROM district")) {
       rs.next();
       return rs.getInt(1) > 0;
     }
   }
 
+
   private void runDistrictMigration(Connection conn, MultipartFile file) throws Exception {
 
-    String sql =
-        """
-            district_id, district_
-        INSERT INTO districts (name, district_code,
-            state_name, state_code, is_active,
-            created_date, created_by, modified_date, modified_by
+    String sql = """
+        INSERT INTO district (
+            id, name, shortname, is_active
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?)
     """;
 
     conn.setAutoCommit(false);
 
     try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
-        PreparedStatement ps = conn.prepareStatement(sql)) {
+         PreparedStatement ps = conn.prepareStatement(sql)) {
 
-      reader.readNext(); // skip header
+      reader.readNext();
+
       String[] cols;
       int batch = 0;
 
       while ((cols = reader.readNext()) != null) {
 
-        Integer districtId = toInt(cols[84]); // bu_id
-        String districtName = toStr(cols[55]); // District
-        String stateName = toStr(cols[54]); // StateName
-        Integer stateCode = toInt(cols[49]); // STCode
 
-        if (districtId == null || districtName == null) {
-          continue; // skip invalid rows
+        Integer id = toInt(cols[0]);       // id
+        String name = toStr(cols[1]);      // district
+        String shortName = toStr(cols[2]); // shortname
+
+        if (id == null || name == null) {
+          continue;
         }
 
-        String districtCode = DISTRICT_CODE_MAP.getOrDefault(districtName.trim(), null);
-
         int p = 1;
-        ps.setInt(p++, districtId); // district_id (migration value)
-        ps.setString(p++, districtName); // district_name
-
-        if (districtCode == null) ps.setNull(p++, Types.VARCHAR);
-        else ps.setString(p++, districtCode); // district_code
-
-        ps.setString(p++, stateName); // state_name
-        ps.setInt(p++, stateCode); // state_code
-
+        ps.setInt(p++, id);
+        ps.setString(p++, name);
+        ps.setString(p++, shortName);
         ps.setBoolean(p++, true); // is_active
-
-        // audit fields → NULL
-        ps.setNull(p++, Types.TIMESTAMP);
-        ps.setNull(p++, Types.OTHER);
-        ps.setNull(p++, Types.TIMESTAMP);
-        ps.setNull(p++, Types.OTHER);
 
         ps.addBatch();
 
@@ -143,6 +117,7 @@ public class DataMigrationServiceImpl implements DataMigrationService {
       throw ex;
     }
   }
+
 
   private String toStr(String v) {
     if (v == null) return null;

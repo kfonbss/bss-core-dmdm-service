@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class District {
+public class District extends Auditor {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "district_id")
