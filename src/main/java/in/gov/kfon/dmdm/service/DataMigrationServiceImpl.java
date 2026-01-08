@@ -7,13 +7,9 @@ import in.gov.kfon.dmdm.constant.LocationType;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Types;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.UUID;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.*;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -693,5 +689,150 @@ public class DataMigrationServiceImpl implements DataMigrationService {
     if (csvValue == 1) return LocationType.URBAN.ordinal();
     if (csvValue == 2) return LocationType.RURAL.ordinal();
     return null;
+  }
+
+  @Override
+  public void migrateBlockDetail(MultipartFile file) {
+
+    if (file == null || file.isEmpty()) {
+      throw new RuntimeException("CSV file is required");
+    }
+
+    String filename = file.getOriginalFilename();
+    if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
+      throw new RuntimeException("Invalid file format. CSV required");
+    }
+
+    try (Connection conn = dataSource.getConnection()) {
+
+      if (blockDetailTableHasData(conn)) {
+        throw new RuntimeException("Block details already migrated");
+      }
+
+      Map<Integer, UUID> districtLookup = loadDistrictById(conn);
+
+      runBlockMigration(conn, file, districtLookup);
+
+    } catch (Exception e) {
+      throw new RuntimeException("Block migration failed: " + e.getMessage(), e);
+    }
+  }
+
+  private boolean blockDetailTableHasData(Connection conn) throws Exception {
+    try (ResultSet rs = conn.createStatement().executeQuery("SELECT COUNT(*) FROM block_details")) {
+      rs.next();
+      return rs.getInt(1) > 0;
+    }
+  }
+
+  private Map<Integer, UUID> loadDistrictById(Connection conn) throws Exception {
+    Map<Integer, UUID> map = new HashMap<>();
+
+    String sql = "SELECT id, district_id FROM district";
+
+    try (PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery()) {
+
+      while (rs.next()) {
+        Integer id = rs.getInt("id");
+        UUID uuid = (UUID) rs.getObject("district_id");
+
+        if (!rs.wasNull() && uuid != null) {
+          map.put(id, uuid);
+        }
+      }
+    }
+    return map;
+  }
+
+  private void runBlockMigration(
+      Connection conn, MultipartFile file, Map<Integer, UUID> districtLookup) throws Exception {
+
+    String sql =
+        """
+        INSERT INTO block_details (
+            id, village_name, block_id, block_name,
+            village_type, village_type_id,
+            district, district_id, loc_type,
+            is_active, district_entity,
+            created_date, created_by, modified_date, modified_by
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """;
+
+    conn.setAutoCommit(false);
+
+    try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+
+      reader.readNext(); // skip header
+      String[] cols;
+      int batch = 0;
+
+      while ((cols = reader.readNext()) != null) {
+
+        int idx = 0;
+
+        Integer id = toInt(cols[idx++]);
+        String villageName = toStr(cols[idx++]);
+        Integer blockId = toInt(cols[idx++]);
+        String blockName = toStr(cols[idx++]);
+        String villageType = toStr(cols[idx++]);
+        Integer villageTypeId = toInt(cols[idx++]);
+        String district = toStr(cols[idx++]);
+        Integer districtId = toInt(cols[idx++]);
+        Integer locTypeRaw = toInt(cols[idx++]);
+
+        idx += 2; // skip create_date, update_date
+
+        boolean isActive = toInt(cols[idx++]) == 1;
+
+        // ENUM mapping
+        Integer locType = null;
+        if (locTypeRaw != null) {
+          locType = (locTypeRaw == 1) ? 0 : 1; // ORDINAL: URBAN=0, RURAL=1
+        }
+
+        UUID districtUUID = districtLookup.get(districtId);
+
+        int p = 1;
+        ps.setInt(p++, id);
+        ps.setString(p++, villageName);
+        ps.setInt(p++, blockId);
+        ps.setString(p++, blockName);
+        ps.setString(p++, villageType);
+        ps.setInt(p++, villageTypeId);
+        ps.setString(p++, district);
+        ps.setInt(p++, districtId);
+
+        if (locType == null) ps.setNull(p++, Types.INTEGER);
+        else ps.setInt(p++, locType);
+
+        ps.setBoolean(p++, isActive);
+
+        if (districtUUID == null) ps.setNull(p++, Types.OTHER);
+        else ps.setObject(p++, districtUUID, Types.OTHER);
+
+        // Auditor fields → NULL
+        Timestamp now = Timestamp.valueOf(LocalDateTime.now());
+        ps.setTimestamp(p++, now);
+        ps.setNull(p++, Types.OTHER);
+        ps.setTimestamp(p++, now);
+        ps.setNull(p++, Types.OTHER);
+
+        ps.addBatch();
+
+        if (++batch % 500 == 0) {
+          ps.executeBatch();
+        }
+      }
+
+      ps.executeBatch();
+      conn.commit();
+
+    } catch (Exception ex) {
+      conn.rollback();
+      throw ex;
+    }
   }
 }

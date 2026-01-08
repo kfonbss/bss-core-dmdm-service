@@ -14,4 +14,6 @@ public interface DataMigrationService {
   void migrateBankDetails(MultipartFile file);
 
   void migrateVillageType(MultipartFile file);
+
+  void migrateBlockDetail(MultipartFile file);
 }
