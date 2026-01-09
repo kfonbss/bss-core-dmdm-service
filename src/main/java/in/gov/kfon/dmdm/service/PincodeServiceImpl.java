@@ -83,7 +83,6 @@ public class PincodeServiceImpl implements PincodeService {
               lookup.setNameInLocal(entity.getNameInLocal());
               lookup.setIsActive(entity.getIsActive());
               lookup.setDistrict(entity.getDistrict());
-              lookup.setDistrictId(entity.getDistrictId());
               return lookup;
             })
         .toList();
@@ -109,7 +108,10 @@ public class PincodeServiceImpl implements PincodeService {
               lookup.setName(entity.getPostOfficeName());
               lookup.setNameInLocal(entity.getNameInLocal());
               lookup.setIsActive(entity.getIsActive());
-              lookup.setDistrict(entity.getDistrict());
+              if (entity.getDistrictMaster() != null) {
+                lookup.setDistrict(entity.getDistrictMaster().getName());
+                lookup.setDistrictId(entity.getDistrictMaster().getId());
+              }
               lookup.setDistrictCode(entity.getDistrictCode());
               return lookup;
             })
