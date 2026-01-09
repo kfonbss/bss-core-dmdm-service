@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.model.District;
 import in.gov.kfon.dmdm.model.PincodeDetails;
 import in.gov.kfon.dmdm.model.Pincodes;
 import in.gov.kfon.dmdm.repository.PincodeDetailsRepository;
@@ -174,4 +175,67 @@ public class PincodeServiceImplTest {
 
     verify(pincodesRepository, times(1)).findAllByPincodeAndIsActiveTrue(pincodeValue);
   }
+
+  @Test
+  void testFetchPostOfficeDetailsByPincode_Success() {
+
+    Integer pincodeValue = 695001;
+
+    District district = new District();
+    district.setId(1);
+    district.setName("Thiruvananthapuram");
+
+    PincodeDetails details = new PincodeDetails();
+    details.setId(id);
+    details.setPincode(pincodeValue);
+    details.setPostOfficeName("Thiruvananthapuram GPO");
+    details.setNameInLocal("തിരുവനന്തപുരം ജിപിഒ");
+    details.setIsActive(true);
+    details.setDistrictCode(1);
+    details.setDistrictMaster(district);
+
+    when(pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pincodeValue))
+            .thenReturn(List.of(details));
+
+    List<CommonLookUp> result = service.fetchPostOfficeDetailsByPincode(pincodeValue);
+
+    assertNotNull(result);
+    assertEquals(1, result.size());
+
+    CommonLookUp lookup = result.get(0);
+
+    assertEquals(id, lookup.getId());
+    assertEquals("695001", lookup.getCode());
+    assertEquals("Thiruvananthapuram GPO", lookup.getName());
+    assertEquals("തിരുവനന്തപുരം ജിപിഒ", lookup.getNameInLocal());
+    assertTrue(lookup.getIsActive());
+    assertEquals("Thiruvananthapuram", lookup.getDistrict());
+    assertEquals(1, lookup.getDistrictId());
+    assertEquals(1, lookup.getDistrictCode());
+
+    verify(pincodeDetailsRepository, times(1))
+            .findAllByPincodeAndIsActiveTrue(pincodeValue);
+  }
+
+  @Test
+  void testFetchPostOfficeDetailsByPincode_NotFound() {
+
+    Integer pincodeValue = 999999;
+
+    when(pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pincodeValue))
+            .thenReturn(Collections.emptyList());
+
+    EntityNotFoundException exception =
+            assertThrows(
+                    EntityNotFoundException.class,
+                    () -> service.fetchPostOfficeDetailsByPincode(pincodeValue));
+
+    assertEquals(
+            "No post offices found for pincode: " + pincodeValue,
+            exception.getMessage());
+
+    verify(pincodeDetailsRepository, times(1))
+            .findAllByPincodeAndIsActiveTrue(pincodeValue);
+  }
+
 }

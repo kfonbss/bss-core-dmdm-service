@@ -447,3 +447,7 @@ _ Get inventory device transfer request and movement details
 # [0.89.4] - 2025-12-29
 ### Added
 - Added district id in postoffice api response
+
+# [0.89.5] - 2026-01-09
+### Added
+- changes in postoffice details api and added foreign key mapping between postoffice details and district table

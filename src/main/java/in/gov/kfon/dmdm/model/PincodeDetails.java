@@ -35,6 +35,10 @@ public class PincodeDetails extends Auditor {
   @Column(name = "districtcode")
   private Integer districtCode;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "district_id", referencedColumnName = "district_id")
+  private District districtMaster;
+
   @Column(length = 50)
   private String code;
 
