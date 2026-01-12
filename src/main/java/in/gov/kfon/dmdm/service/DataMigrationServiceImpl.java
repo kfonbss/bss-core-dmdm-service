@@ -232,88 +232,106 @@ public class DataMigrationServiceImpl implements DataMigrationService {
     }
   }
 
+
   @Override
   public void migratePincodeDetails(MultipartFile file) {
 
     if (file == null || file.isEmpty()) {
-      throw new EntityNotFoundException("CSV file is required");
+      throw new RuntimeException("CSV file is required");
     }
 
     String filename = file.getOriginalFilename();
     if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
-      throw new EntityNotFoundException("Invalid file format. Upload CSV only.");
+      throw new RuntimeException("Invalid file format. CSV required");
     }
 
     try (Connection conn = dataSource.getConnection()) {
 
-      if (pincodeTableHasData(conn)) {
-        throw new EntityNotFoundException("Pincode details already migrated");
-      }
+      Map<String, UUID> districtLookup = loadDistrictByName(conn);
 
-      runPincodeMigration(conn, file);
+      runPincodeMigration(conn, file, districtLookup);
 
     } catch (Exception e) {
-      throw new EntityNotFoundException("Pincode migration failed: " + e.getMessage(), e);
+      throw new RuntimeException("Pincode migration failed: " + e.getMessage(), e);
     }
   }
 
-  private boolean pincodeTableHasData(Connection conn) throws Exception {
-    try (ResultSet rs =
-        conn.createStatement().executeQuery("SELECT COUNT(*) FROM pincode_details")) {
-      rs.next();
-      return rs.getInt(1) > 0;
+
+  private Map<String, UUID> loadDistrictByName(Connection conn) throws Exception {
+    Map<String, UUID> map = new HashMap<>();
+
+    String sql = "SELECT name, district_id FROM district";
+
+    try (PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+      while (rs.next()) {
+        String name = rs.getString("name");
+        UUID uuid = (UUID) rs.getObject("district_id");
+
+        if (name != null && uuid != null) {
+          map.put(name.trim().toLowerCase(), uuid);
+        }
+      }
     }
+    return map;
   }
 
-  private void runPincodeMigration(Connection conn, MultipartFile file) throws Exception {
+  private void runPincodeMigration(
+          Connection conn,
+          MultipartFile file,
+          Map<String, UUID> districtLookup
+  ) throws Exception {
 
-    String sql =
-        """
-                INSERT INTO pincode_details (
-                    id,
-                    details_id,
-                    pincode,
-                    post_office_name,
-                    sub_po_name,
-                    district,
-                    districtcode,
-                    code,
-                    name,
-                    name_in_local,
-                    is_active,
-                    created_date,
-                    created_by,
-                    modified_date,
-                    modified_by
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """;
+    String sql = """
+        INSERT INTO pincode_details (
+            details_id,
+            pincode,
+            post_office_name,
+            sub_po_name,
+            district,
+            districtcode,
+            district_id,
+            is_active
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """;
 
     conn.setAutoCommit(false);
 
     try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
-        PreparedStatement ps = conn.prepareStatement(sql)) {
+         PreparedStatement ps = conn.prepareStatement(sql)) {
 
-      reader.readNext();
-
+      reader.readNext(); // skip header
       String[] cols;
       int batch = 0;
 
       while ((cols = reader.readNext()) != null) {
 
-        Long detailsId = toLong(cols[0]);
-        Integer pincode = toInt(cols[1]);
-        String postOffice = toStr(cols[2]);
-        String subPo = toStr(cols[3]);
-        String district = toStr(cols[4]);
-        Integer districtCode = toInt(cols[5]);
+        int idx = 0;
 
-        if (pincode == null || postOffice == null) {
-          continue;
+        Long detailsId = toLong(cols[idx++]);     // id
+        Integer pincode = toInt(cols[idx++]);    // pincode
+        String postOffice = toStr(cols[idx++]);  // post_office_name
+        String subPo = toStr(cols[idx++]);       // sub_po_name
+        String district = toStr(cols[idx++]);    // district
+        Integer districtCode = toInt(cols[idx++]); // districtcode
+
+        idx += 2; // skip create_date, update_date
+
+        Boolean isActive = toInt(cols[idx++]) == 1;
+
+        UUID districtUUID = null;
+        if (district != null) {
+          districtUUID = districtLookup.get(district.trim().toLowerCase());
+        }
+
+        // DEBUG (keep during first run)
+        if (districtUUID == null) {
+          System.err.println("⚠ District NOT FOUND: " + district);
         }
 
         int p = 1;
-        ps.setObject(p++, UUID.randomUUID());
         ps.setLong(p++, detailsId);
         ps.setInt(p++, pincode);
         ps.setString(p++, postOffice);
@@ -321,17 +339,10 @@ public class DataMigrationServiceImpl implements DataMigrationService {
         ps.setString(p++, district);
         ps.setInt(p++, districtCode);
 
-        ps.setString(p++, String.valueOf(pincode));
+        if (districtUUID == null) ps.setNull(p++, Types.OTHER);
+        else ps.setObject(p++, districtUUID, Types.OTHER);
 
-        ps.setString(p++, postOffice);
-
-        ps.setNull(p++, Types.VARCHAR);
-        ps.setBoolean(p++, true);
-
-        ps.setNull(p++, Types.TIMESTAMP);
-        ps.setNull(p++, Types.OTHER);
-        ps.setNull(p++, Types.TIMESTAMP);
-        ps.setNull(p++, Types.OTHER);
+        ps.setBoolean(p++, isActive);
 
         ps.addBatch();
 
@@ -348,6 +359,8 @@ public class DataMigrationServiceImpl implements DataMigrationService {
       throw ex;
     }
   }
+
+
 
   private Long toLong(String v) {
     try {

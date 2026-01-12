@@ -35,12 +35,12 @@ public class DataMigrationController {
     return ResponseEntity.ok(Response.ok("", "POP Master Migration Completed Successfully"));
   }
 
-  @PostMapping("/pincode")
-  public ResponseEntity<Response<String>> migratePincode(@RequestParam("file") MultipartFile file) {
+  @PostMapping("/pincode-detail")
+  public ResponseEntity<Response<String>> migratePincodeDetails(@RequestParam("file") MultipartFile file) {
 
     dataMigrationService.migratePincodeDetails(file);
 
-    return ResponseEntity.ok(Response.ok("", "Pincode Migration Completed Successfully"));
+    return ResponseEntity.ok(Response.ok("", "Pincode detail Migration Completed Successfully"));
   }
 
   @PostMapping("/revenueshare")
