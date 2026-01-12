@@ -66,6 +66,7 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
 
   @PostConstruct
   public void setupMapper() {
+    modelMapper.getConfiguration().setAmbiguityIgnored(true);
     // For CorporateEnquiry
     modelMapper.addMappings(
         new PropertyMap<CorporateEnquiry, CommonLookUp>() {
@@ -121,6 +122,25 @@ public class CorporateOnboardingServiceImpl implements CorporateOnboardingServic
           @Override
           protected void configure() {
             skip(destination.getId());
+          }
+        });
+    // For CeInovoiceMaster
+    modelMapper.addMappings(
+        new PropertyMap<CeInovoiceMaster, CommonLookUp>() {
+          @Override
+          protected void configure() {
+            map().setId(source.getMasterId());
+            skip(destination.getMasterId());
+          }
+        });
+
+    // For CeDnoteMaster
+    modelMapper.addMappings(
+        new PropertyMap<CeDnoteMaster, CommonLookUp>() {
+          @Override
+          protected void configure() {
+            map().setId(source.getMasterId());
+            skip(destination.getMasterId());
           }
         });
   }

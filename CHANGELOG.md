@@ -451,3 +451,7 @@ _ Get inventory device transfer request and movement details
 # [0.89.5] - 2026-01-09
 ### Added
 - changes in postoffice details api and added foreign key mapping between postoffice details and district table
+
+# [0.89.6] - 2026-01-12
+### Added
+- Added integer ID to Revenue Share CommonLookUp and resolved ModelMapper ambiguity

@@ -232,7 +232,6 @@ public class DataMigrationServiceImpl implements DataMigrationService {
     }
   }
 
-
   @Override
   public void migratePincodeDetails(MultipartFile file) {
 
@@ -256,14 +255,13 @@ public class DataMigrationServiceImpl implements DataMigrationService {
     }
   }
 
-
   private Map<String, UUID> loadDistrictByName(Connection conn) throws Exception {
     Map<String, UUID> map = new HashMap<>();
 
     String sql = "SELECT name, district_id FROM district";
 
     try (PreparedStatement ps = conn.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) {
+        ResultSet rs = ps.executeQuery()) {
 
       while (rs.next()) {
         String name = rs.getString("name");
@@ -278,12 +276,10 @@ public class DataMigrationServiceImpl implements DataMigrationService {
   }
 
   private void runPincodeMigration(
-          Connection conn,
-          MultipartFile file,
-          Map<String, UUID> districtLookup
-  ) throws Exception {
+      Connection conn, MultipartFile file, Map<String, UUID> districtLookup) throws Exception {
 
-    String sql = """
+    String sql =
+        """
         INSERT INTO pincode_details (
             details_id,
             pincode,
@@ -300,7 +296,7 @@ public class DataMigrationServiceImpl implements DataMigrationService {
     conn.setAutoCommit(false);
 
     try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
-         PreparedStatement ps = conn.prepareStatement(sql)) {
+        PreparedStatement ps = conn.prepareStatement(sql)) {
 
       reader.readNext(); // skip header
       String[] cols;
@@ -310,11 +306,11 @@ public class DataMigrationServiceImpl implements DataMigrationService {
 
         int idx = 0;
 
-        Long detailsId = toLong(cols[idx++]);     // id
-        Integer pincode = toInt(cols[idx++]);    // pincode
-        String postOffice = toStr(cols[idx++]);  // post_office_name
-        String subPo = toStr(cols[idx++]);       // sub_po_name
-        String district = toStr(cols[idx++]);    // district
+        Long detailsId = toLong(cols[idx++]); // id
+        Integer pincode = toInt(cols[idx++]); // pincode
+        String postOffice = toStr(cols[idx++]); // post_office_name
+        String subPo = toStr(cols[idx++]); // sub_po_name
+        String district = toStr(cols[idx++]); // district
         Integer districtCode = toInt(cols[idx++]); // districtcode
 
         idx += 2; // skip create_date, update_date
@@ -359,8 +355,6 @@ public class DataMigrationServiceImpl implements DataMigrationService {
       throw ex;
     }
   }
-
-
 
   private Long toLong(String v) {
     try {
