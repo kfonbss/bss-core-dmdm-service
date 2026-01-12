@@ -36,7 +36,8 @@ public class DataMigrationController {
   }
 
   @PostMapping("/pincode-detail")
-  public ResponseEntity<Response<String>> migratePincodeDetails(@RequestParam("file") MultipartFile file) {
+  public ResponseEntity<Response<String>> migratePincodeDetails(
+      @RequestParam("file") MultipartFile file) {
 
     dataMigrationService.migratePincodeDetails(file);
 

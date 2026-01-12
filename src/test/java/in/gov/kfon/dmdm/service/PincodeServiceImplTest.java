@@ -195,7 +195,7 @@ public class PincodeServiceImplTest {
     details.setDistrictMaster(district);
 
     when(pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pincodeValue))
-            .thenReturn(List.of(details));
+        .thenReturn(List.of(details));
 
     List<CommonLookUp> result = service.fetchPostOfficeDetailsByPincode(pincodeValue);
 
@@ -213,8 +213,7 @@ public class PincodeServiceImplTest {
     assertEquals(1, lookup.getDistrictId());
     assertEquals(1, lookup.getDistrictCode());
 
-    verify(pincodeDetailsRepository, times(1))
-            .findAllByPincodeAndIsActiveTrue(pincodeValue);
+    verify(pincodeDetailsRepository, times(1)).findAllByPincodeAndIsActiveTrue(pincodeValue);
   }
 
   @Test
@@ -223,19 +222,15 @@ public class PincodeServiceImplTest {
     Integer pincodeValue = 999999;
 
     when(pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pincodeValue))
-            .thenReturn(Collections.emptyList());
+        .thenReturn(Collections.emptyList());
 
     EntityNotFoundException exception =
-            assertThrows(
-                    EntityNotFoundException.class,
-                    () -> service.fetchPostOfficeDetailsByPincode(pincodeValue));
+        assertThrows(
+            EntityNotFoundException.class,
+            () -> service.fetchPostOfficeDetailsByPincode(pincodeValue));
 
-    assertEquals(
-            "No post offices found for pincode: " + pincodeValue,
-            exception.getMessage());
+    assertEquals("No post offices found for pincode: " + pincodeValue, exception.getMessage());
 
-    verify(pincodeDetailsRepository, times(1))
-            .findAllByPincodeAndIsActiveTrue(pincodeValue);
+    verify(pincodeDetailsRepository, times(1)).findAllByPincodeAndIsActiveTrue(pincodeValue);
   }
-
 }

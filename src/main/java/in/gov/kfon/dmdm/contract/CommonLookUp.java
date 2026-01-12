@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommonLookUp {
   private UUID id;
+  private Integer masterId;
   private String code;
   private String name;
   private String nameInLocal;

@@ -1,5 +1,7 @@
 package in.gov.kfon.dmdm.Config;
 
+import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.model.RevenueShare;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +10,12 @@ import org.springframework.context.annotation.Configuration;
 public class ModelMapperConfig {
   @Bean
   public ModelMapper modelMapper() {
-    return new ModelMapper();
+    ModelMapper modelMapper = new ModelMapper();
+
+    modelMapper
+        .typeMap(RevenueShare.class, CommonLookUp.class)
+        .addMapping(RevenueShare::getRevenueShareId, CommonLookUp::setMasterId);
+
+    return modelMapper;
   }
 }
