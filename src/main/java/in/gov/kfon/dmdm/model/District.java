@@ -3,6 +3,7 @@ package in.gov.kfon.dmdm.model;
 import jakarta.persistence.*;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class District extends Auditor {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)

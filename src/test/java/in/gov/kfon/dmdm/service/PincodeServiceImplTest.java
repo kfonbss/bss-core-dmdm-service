@@ -96,17 +96,44 @@ public class PincodeServiceImplTest {
 
   @Test
   void testFetchAllPincodeDetails() {
+
+    UUID id = UUID.randomUUID();
+
+    District district = District.builder().id(10).build();
+
+    PincodeDetails pincodeDetails =
+        PincodeDetails.builder()
+            .id(id)
+            .details_id(101L)
+            .code("TVM001")
+            .postOfficeName("Trivandrum GPO")
+            .nameInLocal("തിരുവനന്തപുരം")
+            .district("Thiruvananthapuram")
+            .districtCode(695001)
+            .districtMaster(district)
+            .isActive(true)
+            .build();
+
     when(pincodeDetailsRepository.findAll()).thenReturn(List.of(pincodeDetails));
-    when(modelMapper.map(pincodeDetails, CommonLookUp.class)).thenReturn(commonLookUp);
 
     List<CommonLookUp> result = service.fetchAllPincodeDetails();
 
     assertNotNull(result);
     assertEquals(1, result.size());
-    assertEquals(id, result.get(0).getId());
+
+    CommonLookUp response = result.get(0);
+
+    assertEquals(id, response.getId());
+    assertEquals("TVM001", response.getCode());
+    assertEquals("Trivandrum GPO", response.getName());
+    assertEquals("തിരുവനന്തപുരം", response.getNameInLocal());
+    assertEquals("Thiruvananthapuram", response.getDistrict());
+    assertEquals(695001, response.getDistrictCode());
+    assertEquals(10, response.getDistrictId());
+    assertTrue(response.getIsActive());
 
     verify(pincodeDetailsRepository, times(1)).findAll();
-    verify(modelMapper, times(1)).map(pincodeDetails, CommonLookUp.class);
+    verifyNoInteractions(modelMapper);
   }
 
   @Test

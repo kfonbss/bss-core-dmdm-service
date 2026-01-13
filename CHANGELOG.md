@@ -455,3 +455,7 @@ _ Get inventory device transfer request and movement details
 # [0.89.6] - 2026-01-12
 ### Added
 - Added integer ID to Revenue Share CommonLookUp and resolved ModelMapper ambiguity
+
+# [0.89.7] - 2026-01-13
+### Added
+- Mapped postofficename in the pincode details get api response
