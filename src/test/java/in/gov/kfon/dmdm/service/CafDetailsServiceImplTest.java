@@ -27,6 +27,7 @@ class CafDetailsServiceImplTest {
     detailsRepository = mock(CafDetailsRepository.class);
 
     service = new CafDetailsServiceImpl(modelMapper, detailsRepository);
+    service.setupMapper();
   }
 
   @Test
