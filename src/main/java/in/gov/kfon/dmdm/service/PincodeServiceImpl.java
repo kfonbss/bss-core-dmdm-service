@@ -55,6 +55,7 @@ public class PincodeServiceImpl implements PincodeService {
     return CommonLookUp.builder()
         .id(pd.getId())
         .code(pd.getCode())
+        .pincode(pd.getPincode())
         .name(pd.getPostOfficeName())
         .nameInLocal(pd.getNameInLocal())
         .isActive(pd.getIsActive())

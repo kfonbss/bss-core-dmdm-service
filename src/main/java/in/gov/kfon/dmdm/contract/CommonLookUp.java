@@ -14,6 +14,7 @@ public class CommonLookUp {
   private UUID id;
   private Integer masterId;
   private String code;
+  private Integer pincode;
   private String name;
   private String nameInLocal;
   private Boolean isActive;
