@@ -45,9 +45,11 @@ public class StateServiceImpl implements StateService {
     Optional<State> state = repository.findByCodeAndIsActive(code, true).stream().findFirst();
     if (state.isPresent()) {
       return StateResponse.builder()
-              .id(state.get().getId())
-              .code(state.get().getCode())
-              .name(state.get().getName()).build();
-    } return StateResponse.builder().build();
+          .id(state.get().getId())
+          .code(state.get().getCode())
+          .name(state.get().getName())
+          .build();
+    }
+    return StateResponse.builder().build();
   }
 }

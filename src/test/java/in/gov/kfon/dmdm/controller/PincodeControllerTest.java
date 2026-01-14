@@ -133,6 +133,7 @@ class PincodeControllerTest {
   void testFetchPostOfficeDetailsByPincode() throws Exception {
 
     Integer pincode = 695001;
+    UUID districtId = UUID.randomUUID();
 
     CommonLookUp lookup = new CommonLookUp();
     lookup.setId(id);
@@ -141,7 +142,7 @@ class PincodeControllerTest {
     lookup.setNameInLocal("തിരുവനന്തപുരം ജിപിഒ");
     lookup.setIsActive(true);
     lookup.setDistrict("Thiruvananthapuram");
-    lookup.setDistrictId(1);
+    lookup.setDistrictId(districtId);
 
     List<CommonLookUp> list = List.of(lookup);
 
@@ -158,7 +159,7 @@ class PincodeControllerTest {
         .andExpect(jsonPath("$.data[0].name").value("Thiruvananthapuram GPO"))
         .andExpect(jsonPath("$.data[0].nameInLocal").value("തിരുവനന്തപുരം ജിപിഒ"))
         .andExpect(jsonPath("$.data[0].district").value("Thiruvananthapuram"))
-        .andExpect(jsonPath("$.data[0].districtId").value(1))
+        .andExpect(jsonPath("$.data[0].districtId").value(districtId.toString()))
         .andExpect(jsonPath("$.data[0].isActive").value(true));
   }
 }
