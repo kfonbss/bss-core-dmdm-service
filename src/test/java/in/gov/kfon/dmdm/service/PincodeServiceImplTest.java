@@ -99,7 +99,8 @@ public class PincodeServiceImplTest {
 
     UUID id = UUID.randomUUID();
 
-    District district = District.builder().id(10).build();
+    UUID districtId = UUID.randomUUID();
+    District district = District.builder().districtId(districtId).build();
 
     PincodeDetails pincodeDetails =
         PincodeDetails.builder()
@@ -129,7 +130,7 @@ public class PincodeServiceImplTest {
     assertEquals("തിരുവനന്തപുരം", response.getNameInLocal());
     assertEquals("Thiruvananthapuram", response.getDistrict());
     assertEquals(695001, response.getDistrictCode());
-    assertEquals(10, response.getDistrictId());
+    assertEquals(districtId, response.getDistrictId());
     assertTrue(response.getIsActive());
 
     verify(pincodeDetailsRepository, times(1)).findAll();
@@ -208,8 +209,9 @@ public class PincodeServiceImplTest {
 
     Integer pincodeValue = 695001;
 
+    UUID districtId = UUID.randomUUID();
     District district = new District();
-    district.setId(1);
+    district.setDistrictId(districtId);
     district.setName("Thiruvananthapuram");
 
     PincodeDetails details = new PincodeDetails();
@@ -219,6 +221,7 @@ public class PincodeServiceImplTest {
     details.setNameInLocal("തിരുവനന്തപുരം ജിപിഒ");
     details.setIsActive(true);
     details.setDistrictCode(1);
+    details.setDistrict("Thiruvananthapuram");
     details.setDistrictMaster(district);
 
     when(pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pincodeValue))
@@ -237,7 +240,7 @@ public class PincodeServiceImplTest {
     assertEquals("തിരുവനന്തപുരം ജിപിഒ", lookup.getNameInLocal());
     assertTrue(lookup.getIsActive());
     assertEquals("Thiruvananthapuram", lookup.getDistrict());
-    assertEquals(1, lookup.getDistrictId());
+    assertEquals(districtId, lookup.getDistrictId());
     assertEquals(1, lookup.getDistrictCode());
 
     verify(pincodeDetailsRepository, times(1)).findAllByPincodeAndIsActiveTrue(pincodeValue);

@@ -459,3 +459,7 @@ _ Get inventory device transfer request and movement details
 # [0.89.7] - 2026-01-13
 ### Added
 - Mapped postofficename in the pincode details get api response
+
+# [0.89.8] - 2026-01-14
+### Added
+- districtId dropdown uuid changes

@@ -60,7 +60,7 @@ public class PincodeServiceImpl implements PincodeService {
         .isActive(pd.getIsActive())
         .district(pd.getDistrict())
         .districtCode(pd.getDistrictCode())
-        .districtId(pd.getDistrictMaster() != null ? pd.getDistrictMaster().getId() : null)
+        .districtId(pd.getDistrictMaster().getDistrictId())
         .build();
   }
 
@@ -121,7 +121,7 @@ public class PincodeServiceImpl implements PincodeService {
               lookup.setIsActive(entity.getIsActive());
               if (entity.getDistrictMaster() != null) {
                 lookup.setDistrict(entity.getDistrictMaster().getName());
-                lookup.setDistrictId(entity.getDistrictMaster().getId());
+                lookup.setDistrictId(entity.getDistrictMaster().getDistrictId());
               }
               lookup.setDistrictCode(entity.getDistrictCode());
               return lookup;

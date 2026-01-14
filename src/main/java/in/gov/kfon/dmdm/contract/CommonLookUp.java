@@ -18,7 +18,7 @@ public class CommonLookUp {
   private String nameInLocal;
   private Boolean isActive;
   private String district;
-  private Integer districtId;
+  private UUID districtId;
   private Integer villageTypeId;
   private Integer districtCode;
 }
