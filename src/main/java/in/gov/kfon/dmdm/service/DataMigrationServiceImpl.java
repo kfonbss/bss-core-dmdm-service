@@ -716,7 +716,7 @@ public class DataMigrationServiceImpl implements DataMigrationService {
         throw new RuntimeException("Block details already migrated");
       }
 
-      Map<Integer, UUID> districtLookup = loadDistrictById(conn);
+      Map<String, UUID> districtLookup = loadDistrictById(conn);
 
       runBlockMigration(conn, file, districtLookup);
 
@@ -732,20 +732,20 @@ public class DataMigrationServiceImpl implements DataMigrationService {
     }
   }
 
-  private Map<Integer, UUID> loadDistrictById(Connection conn) throws Exception {
-    Map<Integer, UUID> map = new HashMap<>();
+  private Map<String, UUID> loadDistrictById(Connection conn) throws Exception {
+    Map<String, UUID> map = new HashMap<>();
 
-    String sql = "SELECT id, district_id FROM district";
+    String sql = "SELECT name, district_id FROM district";
 
     try (PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery()) {
 
       while (rs.next()) {
-        Integer id = rs.getInt("id");
+        String name = rs.getString("name");
         UUID uuid = (UUID) rs.getObject("district_id");
 
         if (!rs.wasNull() && uuid != null) {
-          map.put(id, uuid);
+          map.put(name, uuid);
         }
       }
     }
@@ -753,7 +753,7 @@ public class DataMigrationServiceImpl implements DataMigrationService {
   }
 
   private void runBlockMigration(
-      Connection conn, MultipartFile file, Map<Integer, UUID> districtLookup) throws Exception {
+      Connection conn, MultipartFile file, Map<String, UUID> districtLookup) throws Exception {
 
     String sql =
         """
@@ -800,7 +800,7 @@ public class DataMigrationServiceImpl implements DataMigrationService {
           locType = (locTypeRaw == 1) ? 0 : 1; // ORDINAL: URBAN=0, RURAL=1
         }
 
-        UUID districtUUID = districtLookup.get(districtId);
+        UUID districtUUID = districtLookup.get(district);
 
         int p = 1;
         ps.setInt(p++, id);
