@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BlockDetailRepository extends JpaRepository<BlockDetail, UUID> {
-  public List<BlockDetail> findByLocTypeAndDistrictIdAndVillageTypeIdAndIsActive(
-      LocationType locationType, int districtId, int villageTypeId, boolean isActive);
+  List<BlockDetail> findByLocTypeAndDistrictEntityDistrictIdAndVillageTypeIdAndIsActive(
+      LocationType locationType, UUID districtId, int villageTypeId, boolean isActive);
 }

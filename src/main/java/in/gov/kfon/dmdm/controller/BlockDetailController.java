@@ -4,6 +4,8 @@ import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.contract.Response;
 import in.gov.kfon.dmdm.service.BlockDetailService;
 import java.util.List;
+import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,21 +21,21 @@ public class BlockDetailController {
 
   @GetMapping("/corporation-name/{districtId}/{villageTypeId}")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchCorporationName(
-      @PathVariable int districtId, @PathVariable int villageTypeId) {
+          @PathVariable UUID districtId, @PathVariable int villageTypeId) {
     var data = blockDetailService.fetchCorporationName(districtId, villageTypeId);
     return ResponseEntity.ok(Response.ok(data, "Fetched corporation names"));
   }
 
   @GetMapping("/panchayat-name/{districtId}/{villageTypeId}")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchPanchayatName(
-      @PathVariable int districtId, @PathVariable int villageTypeId) {
+      @PathVariable UUID districtId, @PathVariable int villageTypeId) {
     var data = blockDetailService.fetchPanchayatName(districtId, villageTypeId);
     return ResponseEntity.ok(Response.ok(data, "Fetched panchayat names"));
   }
 
   @GetMapping("/block-name/{districtId}/{villageTypeId}")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchBlockName(
-      @PathVariable int districtId, @PathVariable int villageTypeId) {
+      @PathVariable UUID districtId, @PathVariable int villageTypeId) {
     var data = blockDetailService.fetchBlockName(districtId, villageTypeId);
     return ResponseEntity.ok(Response.ok(data, "Fetched block names"));
   }

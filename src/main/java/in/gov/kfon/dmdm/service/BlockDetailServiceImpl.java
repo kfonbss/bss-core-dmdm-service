@@ -4,6 +4,8 @@ import in.gov.kfon.dmdm.constant.LocationType;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.repository.BlockDetailRepository;
 import java.util.List;
+import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +15,9 @@ public class BlockDetailServiceImpl implements BlockDetailService {
   private final BlockDetailRepository blockDetailRepository;
 
   @Override
-  public List<CommonLookUp> fetchCorporationName(int districtId, int villageTypeId) {
+  public List<CommonLookUp> fetchCorporationName(UUID districtId, int villageTypeId) {
     return blockDetailRepository
-        .findByLocTypeAndDistrictIdAndVillageTypeIdAndIsActive(
+        .findByLocTypeAndDistrictEntityDistrictIdAndVillageTypeIdAndIsActive(
             LocationType.URBAN, districtId, villageTypeId, true)
         .stream()
         .map(
@@ -29,9 +31,9 @@ public class BlockDetailServiceImpl implements BlockDetailService {
   }
 
   @Override
-  public List<CommonLookUp> fetchPanchayatName(int districtId, int villageTypeId) {
+  public List<CommonLookUp> fetchPanchayatName(UUID districtId, int villageTypeId) {
     return blockDetailRepository
-        .findByLocTypeAndDistrictIdAndVillageTypeIdAndIsActive(
+        .findByLocTypeAndDistrictEntityDistrictIdAndVillageTypeIdAndIsActive(
             LocationType.RURAL, districtId, villageTypeId, true)
         .stream()
         .filter(b -> b.getBlockId() != 0)
@@ -46,9 +48,9 @@ public class BlockDetailServiceImpl implements BlockDetailService {
   }
 
   @Override
-  public List<CommonLookUp> fetchBlockName(int districtId, int villageTypeId) {
+  public List<CommonLookUp> fetchBlockName(UUID districtId, int villageTypeId) {
     return blockDetailRepository
-        .findByLocTypeAndDistrictIdAndVillageTypeIdAndIsActive(
+        .findByLocTypeAndDistrictEntityDistrictIdAndVillageTypeIdAndIsActive(
             LocationType.RURAL, districtId, villageTypeId, true)
         .stream()
         .filter(b -> b.getBlockId() != 0)
