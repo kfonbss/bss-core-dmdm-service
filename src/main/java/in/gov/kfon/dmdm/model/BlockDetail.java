@@ -15,7 +15,7 @@ import lombok.*;
 public class BlockDetail extends Auditor {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  @Column(name = "uuid", nullable = false, updatable = false)
+  @Column(name = "details_id", nullable = false, updatable = false)
   private UUID uuid;
 
   @GeneratedValue(strategy = GenerationType.IDENTITY)
