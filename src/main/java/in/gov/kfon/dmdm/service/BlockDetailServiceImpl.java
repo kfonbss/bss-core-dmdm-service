@@ -24,7 +24,7 @@ public class BlockDetailServiceImpl implements BlockDetailService {
             blockDetail -> {
               return CommonLookUp.builder()
                   .id(blockDetail.getUuid())
-                  .name(blockDetail.getBlockName())
+                  .name(blockDetail.getVillageName())
                   .build();
             })
         .toList();
