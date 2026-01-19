@@ -1,5 +1,6 @@
 package in.gov.kfon.dmdm.controller;
 
+import in.gov.kfon.dmdm.contract.BlockDetailResponse;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.contract.Response;
 import in.gov.kfon.dmdm.service.BlockDetailService;
@@ -7,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,5 +40,11 @@ public class BlockDetailController {
       @PathVariable UUID districtId, @PathVariable int villageTypeId) {
     var data = blockDetailService.fetchBlockName(districtId, villageTypeId);
     return ResponseEntity.ok(Response.ok(data, "Fetched block names"));
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Response<BlockDetailResponse>> fetchById(@PathVariable UUID id) {
+    var data = blockDetailService.fetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Block details fetched successfully!"));
   }
 }
