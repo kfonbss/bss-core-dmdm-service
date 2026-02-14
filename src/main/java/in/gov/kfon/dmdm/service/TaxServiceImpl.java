@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.TaxTypeResponse;
 import in.gov.kfon.dmdm.model.*;
 import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -68,6 +69,15 @@ public class TaxServiceImpl implements TaxService {
         .map(taxCollection -> modelMapper.map(taxCollection, CommonLookUp.class))
         .toList();
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<TaxTypeResponse> fetchByTaxTypeId(int taxTypeId) {
+    return taxTypeRepository.findByTaxTypeId(taxTypeId).stream()
+            .map(taxCollection -> modelMapper.map(taxCollection, TaxTypeResponse.class))
+            .toList();
+  }
+
 
   @Override
   @Transactional(readOnly = true)

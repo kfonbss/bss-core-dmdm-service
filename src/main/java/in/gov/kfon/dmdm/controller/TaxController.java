@@ -2,6 +2,7 @@ package in.gov.kfon.dmdm.controller;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.contract.Response;
+import in.gov.kfon.dmdm.contract.TaxTypeResponse;
 import in.gov.kfon.dmdm.service.TaxService;
 import java.util.List;
 import java.util.UUID;
@@ -100,6 +101,12 @@ public class TaxController {
   @GetMapping("/distribution/{id}")
   public ResponseEntity<Response<CommonLookUp>> distributionFetch(@PathVariable UUID id) {
     var data = service.distributionFetch(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("/tax-type/{taxTypeId}")
+  public ResponseEntity<Response<List<TaxTypeResponse>>> fetchByTaxTypeId(@PathVariable int taxTypeId) {
+    var data = service.fetchByTaxTypeId(taxTypeId);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 }
