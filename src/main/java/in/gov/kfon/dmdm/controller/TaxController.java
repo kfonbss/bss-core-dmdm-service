@@ -105,7 +105,8 @@ public class TaxController {
   }
 
   @GetMapping("/tax-type/{taxTypeId}")
-  public ResponseEntity<Response<List<TaxTypeResponse>>> fetchByTaxTypeId(@PathVariable int taxTypeId) {
+  public ResponseEntity<Response<List<TaxTypeResponse>>> fetchByTaxTypeId(
+      @PathVariable int taxTypeId) {
     var data = service.fetchByTaxTypeId(taxTypeId);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }

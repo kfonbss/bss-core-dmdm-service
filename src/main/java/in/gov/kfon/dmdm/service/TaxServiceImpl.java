@@ -74,10 +74,9 @@ public class TaxServiceImpl implements TaxService {
   @Transactional(readOnly = true)
   public List<TaxTypeResponse> fetchByTaxTypeId(int taxTypeId) {
     return taxTypeRepository.findByTaxTypeId(taxTypeId).stream()
-            .map(taxCollection -> modelMapper.map(taxCollection, TaxTypeResponse.class))
-            .toList();
+        .map(taxCollection -> modelMapper.map(taxCollection, TaxTypeResponse.class))
+        .toList();
   }
-
 
   @Override
   @Transactional(readOnly = true)

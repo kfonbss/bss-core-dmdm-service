@@ -6,7 +6,6 @@ import in.gov.kfon.dmdm.contract.Response;
 import in.gov.kfon.dmdm.service.BlockDetailService;
 import java.util.List;
 import java.util.UUID;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,7 @@ public class BlockDetailController {
 
   @GetMapping("/corporation-name/{districtId}/{villageTypeId}")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchCorporationName(
-          @PathVariable UUID districtId, @PathVariable int villageTypeId) {
+      @PathVariable UUID districtId, @PathVariable int villageTypeId) {
     var data = blockDetailService.fetchCorporationName(districtId, villageTypeId);
     return ResponseEntity.ok(Response.ok(data, "Fetched corporation names"));
   }
@@ -45,6 +44,7 @@ public class BlockDetailController {
   @GetMapping("/{id}")
   public ResponseEntity<Response<BlockDetailResponse>> fetchById(@PathVariable UUID id) {
     var data = blockDetailService.fetchById(id);
-    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Block details fetched successfully!"));
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Block details fetched successfully!"));
   }
 }
