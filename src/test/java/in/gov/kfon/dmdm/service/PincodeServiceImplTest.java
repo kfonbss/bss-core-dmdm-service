@@ -96,17 +96,45 @@ public class PincodeServiceImplTest {
 
   @Test
   void testFetchAllPincodeDetails() {
+
+    UUID id = UUID.randomUUID();
+
+    UUID districtId = UUID.randomUUID();
+    District district = District.builder().districtId(districtId).build();
+
+    PincodeDetails pincodeDetails =
+        PincodeDetails.builder()
+            .id(id)
+            .details_id(101L)
+            .code("TVM001")
+            .postOfficeName("Trivandrum GPO")
+            .nameInLocal("തിരുവനന്തപുരം")
+            .district("Thiruvananthapuram")
+            .districtCode(695001)
+            .districtMaster(district)
+            .isActive(true)
+            .build();
+
     when(pincodeDetailsRepository.findAll()).thenReturn(List.of(pincodeDetails));
-    when(modelMapper.map(pincodeDetails, CommonLookUp.class)).thenReturn(commonLookUp);
 
     List<CommonLookUp> result = service.fetchAllPincodeDetails();
 
     assertNotNull(result);
     assertEquals(1, result.size());
-    assertEquals(id, result.get(0).getId());
+
+    CommonLookUp response = result.get(0);
+
+    assertEquals(id, response.getId());
+    assertEquals("TVM001", response.getCode());
+    assertEquals("Trivandrum GPO", response.getName());
+    assertEquals("തിരുവനന്തപുരം", response.getNameInLocal());
+    assertEquals("Thiruvananthapuram", response.getDistrict());
+    assertEquals(695001, response.getDistrictCode());
+    assertEquals(districtId, response.getDistrictId());
+    assertTrue(response.getIsActive());
 
     verify(pincodeDetailsRepository, times(1)).findAll();
-    verify(modelMapper, times(1)).map(pincodeDetails, CommonLookUp.class);
+    verifyNoInteractions(modelMapper);
   }
 
   @Test
@@ -181,8 +209,9 @@ public class PincodeServiceImplTest {
 
     Integer pincodeValue = 695001;
 
+    UUID districtId = UUID.randomUUID();
     District district = new District();
-    district.setId(1);
+    district.setDistrictId(districtId);
     district.setName("Thiruvananthapuram");
 
     PincodeDetails details = new PincodeDetails();
@@ -192,10 +221,11 @@ public class PincodeServiceImplTest {
     details.setNameInLocal("തിരുവനന്തപുരം ജിപിഒ");
     details.setIsActive(true);
     details.setDistrictCode(1);
+    details.setDistrict("Thiruvananthapuram");
     details.setDistrictMaster(district);
 
     when(pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pincodeValue))
-            .thenReturn(List.of(details));
+        .thenReturn(List.of(details));
 
     List<CommonLookUp> result = service.fetchPostOfficeDetailsByPincode(pincodeValue);
 
@@ -210,11 +240,10 @@ public class PincodeServiceImplTest {
     assertEquals("തിരുവനന്തപുരം ജിപിഒ", lookup.getNameInLocal());
     assertTrue(lookup.getIsActive());
     assertEquals("Thiruvananthapuram", lookup.getDistrict());
-    assertEquals(1, lookup.getDistrictId());
+    assertEquals(districtId, lookup.getDistrictId());
     assertEquals(1, lookup.getDistrictCode());
 
-    verify(pincodeDetailsRepository, times(1))
-            .findAllByPincodeAndIsActiveTrue(pincodeValue);
+    verify(pincodeDetailsRepository, times(1)).findAllByPincodeAndIsActiveTrue(pincodeValue);
   }
 
   @Test
@@ -223,19 +252,15 @@ public class PincodeServiceImplTest {
     Integer pincodeValue = 999999;
 
     when(pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pincodeValue))
-            .thenReturn(Collections.emptyList());
+        .thenReturn(Collections.emptyList());
 
     EntityNotFoundException exception =
-            assertThrows(
-                    EntityNotFoundException.class,
-                    () -> service.fetchPostOfficeDetailsByPincode(pincodeValue));
+        assertThrows(
+            EntityNotFoundException.class,
+            () -> service.fetchPostOfficeDetailsByPincode(pincodeValue));
 
-    assertEquals(
-            "No post offices found for pincode: " + pincodeValue,
-            exception.getMessage());
+    assertEquals("No post offices found for pincode: " + pincodeValue, exception.getMessage());
 
-    verify(pincodeDetailsRepository, times(1))
-            .findAllByPincodeAndIsActiveTrue(pincodeValue);
+    verify(pincodeDetailsRepository, times(1)).findAllByPincodeAndIsActiveTrue(pincodeValue);
   }
-
 }

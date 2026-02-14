@@ -48,9 +48,21 @@ public class PincodeServiceImpl implements PincodeService {
   @Override
   @Transactional(readOnly = true)
   public List<CommonLookUp> fetchAllPincodeDetails() {
-    return pincodeDetailsRepository.findAll().stream()
-        .map(pd -> modelMapper.map(pd, CommonLookUp.class))
-        .toList();
+    return pincodeDetailsRepository.findAll().stream().map(this::mapToCommonLookUp).toList();
+  }
+
+  private CommonLookUp mapToCommonLookUp(PincodeDetails pd) {
+    return CommonLookUp.builder()
+        .id(pd.getId())
+        .code(pd.getCode())
+        .pincode(pd.getPincode())
+        .name(pd.getPostOfficeName())
+        .nameInLocal(pd.getNameInLocal())
+        .isActive(pd.getIsActive())
+        .district(pd.getDistrict())
+        .districtCode(pd.getDistrictCode())
+        .districtId(pd.getDistrictMaster().getDistrictId())
+        .build();
   }
 
   @Override
@@ -110,7 +122,7 @@ public class PincodeServiceImpl implements PincodeService {
               lookup.setIsActive(entity.getIsActive());
               if (entity.getDistrictMaster() != null) {
                 lookup.setDistrict(entity.getDistrictMaster().getName());
-                lookup.setDistrictId(entity.getDistrictMaster().getId());
+                lookup.setDistrictId(entity.getDistrictMaster().getDistrictId());
               }
               lookup.setDistrictCode(entity.getDistrictCode());
               return lookup;

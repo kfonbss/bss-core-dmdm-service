@@ -29,6 +29,7 @@ public class CafDetailsServiceImpl implements CafDetailsService {
           @Override
           protected void configure() {
             skip(destination.getId());
+            skip(destination.getPincode());
           }
         });
   }

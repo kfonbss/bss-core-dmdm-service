@@ -38,12 +38,22 @@ public class SpecialEventsServiceImpl implements SpecialEventsService {
 
   @PostConstruct
   public void setupMapper() {
+    modelMapper.getConfiguration().setAmbiguityIgnored(true);
     // For Payment History
     modelMapper.addMappings(
         new PropertyMap<SePaymentHistory, CommonLookUp>() {
           @Override
           protected void configure() {
             skip(destination.getId());
+          }
+        });
+    // for SeInvoiceMaster
+    modelMapper.addMappings(
+        new PropertyMap<SeInvoiceMaster, CommonLookUp>() {
+          @Override
+          protected void configure() {
+            map().setId(source.getId());
+            skip(destination.getMasterId());
           }
         });
   }

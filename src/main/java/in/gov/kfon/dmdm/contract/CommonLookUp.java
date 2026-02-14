@@ -12,12 +12,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommonLookUp {
   private UUID id;
+  private Integer masterId;
   private String code;
+  private Integer pincode;
   private String name;
   private String nameInLocal;
   private Boolean isActive;
   private String district;
-  private Integer districtId;
+  private UUID districtId;
   private Integer villageTypeId;
   private Integer districtCode;
 }
