@@ -8,7 +8,6 @@ import in.gov.kfon.dmdm.repository.BlockDetailRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -68,18 +67,19 @@ public class BlockDetailServiceImpl implements BlockDetailService {
   }
 
   public BlockDetailResponse fetchById(UUID blockId) {
-      Optional<BlockDetail> blockDetail = blockDetailRepository.findById(blockId);
-      if (blockDetail.isPresent()) {
-          return BlockDetailResponse.builder()
-                  .id(blockDetail.get().getUuid())
-                  .villageName(blockDetail.get().getVillageName())
-                  .blockName(blockDetail.get().getBlockName())
-                  .villageType(blockDetail.get().getVillageType())
-                  .district(blockDetail.get().getDistrict())
-                  .type(blockDetail.get().getLocType())
-                  .districtId(blockDetail.get().getDistrictEntity().getDistrictId())
-                  .districtName(blockDetail.get().getDistrictEntity().getName())
-                  .build();
-      } return BlockDetailResponse.builder().build();
+    Optional<BlockDetail> blockDetail = blockDetailRepository.findById(blockId);
+    if (blockDetail.isPresent()) {
+      return BlockDetailResponse.builder()
+          .id(blockDetail.get().getUuid())
+          .villageName(blockDetail.get().getVillageName())
+          .blockName(blockDetail.get().getBlockName())
+          .villageType(blockDetail.get().getVillageType())
+          .district(blockDetail.get().getDistrict())
+          .type(blockDetail.get().getLocType())
+          .districtId(blockDetail.get().getDistrictEntity().getDistrictId())
+          .districtName(blockDetail.get().getDistrictEntity().getName())
+          .build();
+    }
+    return BlockDetailResponse.builder().build();
   }
 }
