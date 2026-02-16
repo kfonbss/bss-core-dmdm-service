@@ -1,46 +1,48 @@
-management:
-  endpoint:
-    health:
-      probes:
-        enabled: true
-      enabled: true
-  endpoints:
-    web:
-      base-path: /
-
 server:
+  port: 8080
   servlet:
     context-path: /bss-core-dmdm-service
-  port: 8080
+
 
 spring:
-  servlet:
-    multipart:
-      max-file-size: 50MB
-      max-request-size: 50MB
   datasource:
-    driverClassName: org.postgresql.Driver
-    url: ${POSTGRES_URL}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
       idle-timeout: 30000
+      connection-timeout: 30000
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show_sql: false
+
   liquibase:
     enabled: true
     drop-first: false
     change-log: classpath:/db/changelog/changelog-master.xml
-  jpa:
-    properties:
-      org:
-        hibernate:
-          envers:
-            do_not_audit_optimistic_locking_field: false
-  security:
-    jwt:
-      secret: ${JWT_SECRET}
 
+management:
+  server:
+    port: 8080
+    servlet:
+      context-path: /bss-core-dmdm-service
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
 
-
-
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate.SQL: WARN
