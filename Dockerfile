@@ -16,7 +16,7 @@ RUN apt-get update && \
         net-tools \
         dnsutils \
         curl \
-&& rm -rf /var/lib/apt/lists/* \
+&& rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /workspace/target/*.jar app.jar
 EXPOSE 8080
