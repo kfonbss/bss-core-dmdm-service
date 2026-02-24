@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.PinCodeDistrictResponse;
 import in.gov.kfon.dmdm.model.PincodeDetails;
 import in.gov.kfon.dmdm.model.Pincodes;
 import in.gov.kfon.dmdm.repository.PincodeDetailsRepository;
@@ -129,4 +130,20 @@ public class PincodeServiceImpl implements PincodeService {
             })
         .toList();
   }
+
+    public PinCodeDistrictResponse getDistrictDetails(Integer pinCode) {
+        PincodeDetails pincodeDetails =
+                pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pinCode).stream()
+                        .findFirst()
+                        .orElseThrow(() -> new EntityNotFoundException("Pincode not found: " + pinCode));
+
+        return PinCodeDistrictResponse.builder()
+                .pinCode(pinCode)
+                .district(pincodeDetails.getDistrict())
+                .districtId(
+                        pincodeDetails.getDistrictMaster() != null
+                                ? pincodeDetails.getDistrictMaster().getDistrictId()
+                                : null)
+                .build();
+    }
 }
