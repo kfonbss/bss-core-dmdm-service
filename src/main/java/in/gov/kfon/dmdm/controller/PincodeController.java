@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.controller;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.PinCodeDistrictResponse;
 import in.gov.kfon.dmdm.contract.Response;
 import in.gov.kfon.dmdm.service.PincodeService;
 import java.util.List;
@@ -58,5 +59,12 @@ public class PincodeController {
     var data = service.fetchPostOfficeDetailsByPincode(pincode);
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched post offices by pincode"));
+  }
+
+  @GetMapping("/{pinCode}/district")
+  public ResponseEntity<Response<PinCodeDistrictResponse>> getDistrictDetails(
+      @PathVariable Integer pinCode) {
+    var data = service.getDistrictDetails(pinCode);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "District Fetched."));
   }
 }
