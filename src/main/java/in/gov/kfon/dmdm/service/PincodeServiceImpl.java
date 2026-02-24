@@ -131,19 +131,19 @@ public class PincodeServiceImpl implements PincodeService {
         .toList();
   }
 
-    public PinCodeDistrictResponse getDistrictDetails(Integer pinCode) {
-        PincodeDetails pincodeDetails =
-                pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pinCode).stream()
-                        .findFirst()
-                        .orElseThrow(() -> new EntityNotFoundException("Pincode not found: " + pinCode));
+  public PinCodeDistrictResponse getDistrictDetails(Integer pinCode) {
+    PincodeDetails pincodeDetails =
+        pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pinCode).stream()
+            .findFirst()
+            .orElseThrow(() -> new EntityNotFoundException("Pincode not found: " + pinCode));
 
-        return PinCodeDistrictResponse.builder()
-                .pinCode(pinCode)
-                .district(pincodeDetails.getDistrict())
-                .districtId(
-                        pincodeDetails.getDistrictMaster() != null
-                                ? pincodeDetails.getDistrictMaster().getDistrictId()
-                                : null)
-                .build();
-    }
+    return PinCodeDistrictResponse.builder()
+        .pinCode(pinCode)
+        .district(pincodeDetails.getDistrict())
+        .districtId(
+            pincodeDetails.getDistrictMaster() != null
+                ? pincodeDetails.getDistrictMaster().getDistrictId()
+                : null)
+        .build();
+  }
 }

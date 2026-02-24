@@ -62,9 +62,9 @@ public class PincodeController {
   }
 
   @GetMapping("/{pinCode}/district")
-  public ResponseEntity<Response<PinCodeDistrictResponse>> getDistrictDetails(@PathVariable Integer pinCode) {
+  public ResponseEntity<Response<PinCodeDistrictResponse>> getDistrictDetails(
+      @PathVariable Integer pinCode) {
     var data = service.getDistrictDetails(pinCode);
-    return ResponseEntity.status(HttpStatus.OK)
-            .body(Response.ok(data, "District Fetched."));
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "District Fetched."));
   }
 }
