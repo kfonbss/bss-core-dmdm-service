@@ -1,9 +1,8 @@
 # ---- image ----
 image:
-  repository: bss-core-dmdm-service
-  tag: dev
-  pullPolicy: Never
-
+  repository: "172.16.80.150:5000/bss-core-dmdm-service"
+  tag: "dev"
+  pullPolicy: Always
 # ---- service / ports ----
 service:
   selector:
