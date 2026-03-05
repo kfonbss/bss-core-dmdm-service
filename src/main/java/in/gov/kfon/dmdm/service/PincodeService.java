@@ -20,4 +20,6 @@ public interface PincodeService {
   List<CommonLookUp> fetchPostOfficeDetailsByPincode(Integer pincode);
 
   PinCodeDistrictResponse getDistrictDetails(Integer pinCode);
+
+  List<CommonLookUp> fetchPincodeDetailsByDistrictIds(List<UUID> districtIds);
 }

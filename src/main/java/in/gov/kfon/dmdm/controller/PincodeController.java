@@ -67,4 +67,12 @@ public class PincodeController {
     var data = service.getDistrictDetails(pinCode);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "District Fetched."));
   }
+
+  @PostMapping("/details/district-ids")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchPincodeDetailsByDistrictIds(
+      @RequestParam List<UUID> districtIds) {
+    var data = service.fetchPincodeDetailsByDistrictIds(districtIds);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched pincode details by district IDs"));
+  }
 }

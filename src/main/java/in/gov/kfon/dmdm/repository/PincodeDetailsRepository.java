@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PincodeDetailsRepository extends JpaRepository<PincodeDetails, UUID> {
 
   List<PincodeDetails> findAllByPincodeAndIsActiveTrue(Integer pincode);
+
+  List<PincodeDetails> findAllByDistrictMasterDistrictIdIn(List<UUID> districtIds);
 }
