@@ -70,7 +70,7 @@ public class PincodeController {
 
   @PostMapping("/details/district-ids")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchPincodeDetailsByDistrictIds(
-      @RequestParam List<UUID> districtIds) {
+      @RequestBody List<UUID> districtIds) {
     var data = service.fetchPincodeDetailsByDistrictIds(districtIds);
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched pincode details by district IDs"));
