@@ -2,6 +2,7 @@ package in.gov.kfon.dmdm.controller;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.contract.Response;
+import in.gov.kfon.dmdm.contract.RevenueShareResponse;
 import in.gov.kfon.dmdm.service.RevenueService;
 import java.util.List;
 import java.util.UUID;
@@ -30,5 +31,13 @@ public class RevenueController {
   public ResponseEntity<Response<CommonLookUp>> fetchRevenueById(@PathVariable UUID id) {
     var data = service.fetchRevenueById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched Revenue Share"));
+  }
+
+  @GetMapping("/revenue-share/{id}")
+  public ResponseEntity<Response<RevenueShareResponse>> fetchRevenueShareById(
+      @PathVariable UUID id) {
+    var data = service.fetchRevenueShareById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched Revenue Share Details"));
   }
 }
