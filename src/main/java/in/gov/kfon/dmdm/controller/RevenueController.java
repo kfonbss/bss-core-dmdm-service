@@ -33,7 +33,7 @@ public class RevenueController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched Revenue Share"));
   }
 
-  @GetMapping("/revenue-share/{id}")
+  @GetMapping("/share/{id}")
   public ResponseEntity<Response<RevenueShareResponse>> fetchRevenueShareById(
       @PathVariable UUID id) {
     var data = service.fetchRevenueShareById(id);
