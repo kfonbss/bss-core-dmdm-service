@@ -36,8 +36,4 @@ public class TaxDetailResponse {
   private String status;
   private Timestamp endDate;
   private String remarks;
-  private Date createdDate;
-  private Date modifiedDate;
-  private UUID createdBy;
-  private UUID modifiedBy;
 }
