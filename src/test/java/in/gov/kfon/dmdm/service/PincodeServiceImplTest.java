@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
- class PincodeServiceImplTest {
+class PincodeServiceImplTest {
 
   @Mock private PincodesRepository pincodesRepository;
   @Mock private PincodeDetailsRepository pincodeDetailsRepository;
