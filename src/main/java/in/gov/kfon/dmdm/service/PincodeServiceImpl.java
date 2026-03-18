@@ -160,4 +160,20 @@ public class PincodeServiceImpl implements PincodeService {
                 : null)
         .build();
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchPincodeDetailsByDistrictIds(List<UUID> districtIds) {
+    List<PincodeDetails> entities =
+        pincodeDetailsRepository.findAllByDistrictMasterDistrictIdIn(districtIds);
+
+    if (entities.isEmpty()) {
+      throw new EntityNotFoundException(
+          "No pincode details found for the given district IDs");
+    }
+
+    return entities.stream().map(this::mapToCommonLookUp).toList();
+  }
+
+
 }

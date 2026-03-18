@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.RevenueShareResponse;
 import in.gov.kfon.dmdm.model.RevenueShare;
 import in.gov.kfon.dmdm.repository.RevenueShareRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,5 +38,18 @@ public class RevenueServiceImpl implements RevenueService {
                 () -> new EntityNotFoundException("Active record not found with id: " + id));
 
     return modelMapper.map(revenueShare, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public RevenueShareResponse fetchRevenueShareById(UUID id) {
+    RevenueShare revenueShare =
+        repository
+            .findById(id)
+            .filter(RevenueShare::getIsActive)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Active record not found with id: " + id));
+
+    return modelMapper.map(revenueShare, RevenueShareResponse.class);
   }
 }
