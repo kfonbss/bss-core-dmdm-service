@@ -168,12 +168,9 @@ public class PincodeServiceImpl implements PincodeService {
         pincodeDetailsRepository.findAllByDistrictMasterDistrictIdIn(districtIds);
 
     if (entities.isEmpty()) {
-      throw new EntityNotFoundException(
-          "No pincode details found for the given district IDs");
+      throw new EntityNotFoundException("No pincode details found for the given district IDs");
     }
 
     return entities.stream().map(this::mapToCommonLookUp).toList();
   }
-
-
 }
