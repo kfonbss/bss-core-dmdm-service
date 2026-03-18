@@ -8,7 +8,11 @@ import in.gov.kfon.dmdm.repository.PincodeDetailsRepository;
 import in.gov.kfon.dmdm.repository.PincodesRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -49,7 +53,17 @@ public class PincodeServiceImpl implements PincodeService {
   @Override
   @Transactional(readOnly = true)
   public List<CommonLookUp> fetchAllPincodeDetails() {
-    return pincodeDetailsRepository.findAll().stream().map(this::mapToCommonLookUp).toList();
+
+    return pincodeDetailsRepository.findAll().stream()
+        .filter(pd -> pd.getPincode() != null)
+        .filter(distinctByKey(PincodeDetails::getPincode))
+        .map(this::mapToCommonLookUp)
+        .toList();
+  }
+
+  private <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
+    Set<Object> seen = ConcurrentHashMap.newKeySet();
+    return t -> seen.add(keyExtractor.apply(t));
   }
 
   private CommonLookUp mapToCommonLookUp(PincodeDetails pd) {
@@ -154,12 +168,9 @@ public class PincodeServiceImpl implements PincodeService {
         pincodeDetailsRepository.findAllByDistrictMasterDistrictIdIn(districtIds);
 
     if (entities.isEmpty()) {
-      throw new EntityNotFoundException(
-          "No pincode details found for the given district IDs");
+      throw new EntityNotFoundException("No pincode details found for the given district IDs");
     }
 
     return entities.stream().map(this::mapToCommonLookUp).toList();
   }
-
-
 }
