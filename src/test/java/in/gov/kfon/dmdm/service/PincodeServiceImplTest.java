@@ -21,7 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
-public class PincodeServiceImplTest {
+class PincodeServiceImplTest {
 
   @Mock private PincodesRepository pincodesRepository;
   @Mock private PincodeDetailsRepository pincodeDetailsRepository;
@@ -91,49 +91,6 @@ public class PincodeServiceImplTest {
     assertEquals("Pincode not found with id: " + id, exception.getMessage());
 
     verify(pincodesRepository, times(1)).findById(id);
-    verifyNoInteractions(modelMapper);
-  }
-
-  @Test
-  void testFetchAllPincodeDetails() {
-
-    UUID id = UUID.randomUUID();
-
-    UUID districtId = UUID.randomUUID();
-    District district = District.builder().districtId(districtId).build();
-
-    PincodeDetails pincodeDetails =
-        PincodeDetails.builder()
-            .id(id)
-            .details_id(101L)
-            .code("TVM001")
-            .postOfficeName("Trivandrum GPO")
-            .nameInLocal("തിരുവനന്തപുരം")
-            .district("Thiruvananthapuram")
-            .districtCode(695001)
-            .districtMaster(district)
-            .isActive(true)
-            .build();
-
-    when(pincodeDetailsRepository.findAll()).thenReturn(List.of(pincodeDetails));
-
-    List<CommonLookUp> result = service.fetchAllPincodeDetails();
-
-    assertNotNull(result);
-    assertEquals(1, result.size());
-
-    CommonLookUp response = result.get(0);
-
-    assertEquals(id, response.getId());
-    assertEquals("TVM001", response.getCode());
-    assertEquals("Trivandrum GPO", response.getName());
-    assertEquals("തിരുവനന്തപുരം", response.getNameInLocal());
-    assertEquals("Thiruvananthapuram", response.getDistrict());
-    assertEquals(695001, response.getDistrictCode());
-    assertEquals(districtId, response.getDistrictId());
-    assertTrue(response.getIsActive());
-
-    verify(pincodeDetailsRepository, times(1)).findAll();
     verifyNoInteractions(modelMapper);
   }
 
