@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.TaxDetailResponse;
 import in.gov.kfon.dmdm.contract.TaxTypeResponse;
 import in.gov.kfon.dmdm.model.*;
 import in.gov.kfon.dmdm.repository.*;
@@ -158,5 +159,14 @@ public class TaxServiceImpl implements TaxService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Tax not found with id: " + id));
     return modelMapper.map(tax, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public TaxDetailResponse detailsFetchAllActive() {
+    TaxDetail taxDetail =
+        detailRepository
+            .findFirstByIsActive(true).getFirst();
+    return modelMapper.map(taxDetail, TaxDetailResponse.class);
   }
 }
