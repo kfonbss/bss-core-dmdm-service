@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.controller;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.PartnerResponse;
 import in.gov.kfon.dmdm.contract.Response;
 import in.gov.kfon.dmdm.service.PartnerService;
 import java.util.List;
@@ -19,6 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class PartnerController {
 
   private final PartnerService service;
+  private static final String FETCHED = "Fetched";
+
+  @GetMapping("type/fetch-all")
+  public ResponseEntity<Response<List<PartnerResponse>>> fetchAll() {
+    var data = service.fetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @GetMapping("type/{id}")
+  public ResponseEntity<Response<PartnerResponse>> fetchById(@PathVariable UUID id) {
+    var data = service.fetchById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
 
   @GetMapping("/finances/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPartnerFinances() {
