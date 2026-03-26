@@ -105,4 +105,5 @@
             <include file="/db/changelog/changelog-0.0.100.sql"/>
             <include file="/db/changelog/changelog-0.0.101.sql"/>
             <include file="/db/changelog/changelog-0.0.102.sql"/>
+            <include file="/db/changelog/changelog-0.0.103.sql"/>
 </databaseChangeLog>

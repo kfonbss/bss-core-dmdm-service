@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.PartnerResponse;
 import in.gov.kfon.dmdm.model.PartnerAccount;
 import in.gov.kfon.dmdm.model.PartnerAgreementDetail;
 import in.gov.kfon.dmdm.model.PartnerDemoUsers;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PartnerServiceImpl implements PartnerService {
 
+  private final PartnerRepository partnerRepository;
   private final PartnerFinance2Repository partnerFinance2Repository;
   private final PartnerTaxpayerLogsRepository taxpayerLogsRepository;
   private final PartnerGroupRepository partnerGroupRepository;
@@ -37,6 +39,22 @@ public class PartnerServiceImpl implements PartnerService {
   private final PartnerDemoUsersRepository partnerDemoUsersRepository;
   private final PartnerAgreementDetailRepository partnerAgreementDetailRepository;
   private final ModelMapper modelMapper;
+
+  @Override
+  public List<PartnerResponse> fetchAll() {
+    return partnerRepository.findAll().stream()
+        .map(partner -> modelMapper.map(partner, PartnerResponse.class))
+        .toList();
+  }
+
+  @Override
+  public PartnerResponse fetchById(UUID id) {
+    var entity =
+        partnerRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Partner not found: " + id));
+    return modelMapper.map(entity, PartnerResponse.class);
+  }
 
   @Override
   public List<CommonLookUp> fetchAllFinanceDetails() {

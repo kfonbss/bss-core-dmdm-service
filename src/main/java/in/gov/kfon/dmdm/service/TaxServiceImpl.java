@@ -164,9 +164,7 @@ public class TaxServiceImpl implements TaxService {
   @Override
   @Transactional(readOnly = true)
   public TaxDetailResponse detailsFetchAllActive() {
-    TaxDetail taxDetail =
-        detailRepository
-            .findFirstByIsActive(true).getFirst();
+    TaxDetail taxDetail = detailRepository.findFirstByIsActive(true).getFirst();
     return modelMapper.map(taxDetail, TaxDetailResponse.class);
   }
 }
