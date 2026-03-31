@@ -1,0 +1,48 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /bss-core-dmdm-service
+
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      connection-timeout: 30000
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show_sql: false
+
+  liquibase:
+    enabled: true
+    drop-first: false
+    change-log: classpath:/db/changelog/changelog-master.xml
+
+management:
+  server:
+    port: 8080
+    servlet:
+      context-path: /bss-core-dmdm-service
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate.SQL: WARN
