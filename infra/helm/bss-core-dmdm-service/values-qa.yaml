@@ -1,6 +1,6 @@
 # ---- image ----
 image:
-  repository: "172.16.80.150:5000/bss-core-dmdm-service"
+  repository: "kfonbss/qa/bss-core-dmdm-service"
   tag: "qa"
   pullPolicy: Always
 # ---- service / ports ----
