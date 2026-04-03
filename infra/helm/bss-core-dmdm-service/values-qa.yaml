@@ -1,8 +1,10 @@
 # ---- image ----
 image:
-  repository: "kfonbss/qa/bss-core-dmdm-service"
-  tag: "qa"
+  repository: "kfonbss/qa"
+  tag: "bss-core-dmdm-service-qa"
   pullPolicy: Always
+  pullSecrets:
+    - dockerhub-secret
 # ---- service / ports ----
 service:
   selector:
