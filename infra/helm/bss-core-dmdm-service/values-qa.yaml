@@ -53,7 +53,7 @@ env:
 # (kept for reference if your chart templates read these)
 db:
   host: 172.16.80.153
-  port: 5432
+  port: 5433
   name: bss_dmdm_qa
   user: appuser
   password: "Kfonbss2025#"
