@@ -21,7 +21,7 @@ env:
 
   # Datasource
   - name: SPRING_DATASOURCE_URL
-    value: jdbc:postgresql://172.16.80.153:5432/bss_dmdm_dev?sslmode=require
+    value: jdbc:postgresql://172.16.80.153:5433/bss_dmdm_qa?sslmode=require
   - name: SPRING_DATASOURCE_USERNAME
     value: appuser
   - name: SPRING_DATASOURCE_PASSWORD
@@ -51,8 +51,8 @@ env:
 # (kept for reference if your chart templates read these)
 db:
   host: 172.16.80.153
-  port: 5432
-  name: bss_dmdm_dev
+  port: 5433
+  name: bss_dmdm_qa
   user: appuser
   password: "Kfonbss2025#"
   sslmode: require
