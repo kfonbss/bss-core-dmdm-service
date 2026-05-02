@@ -16,4 +16,6 @@ public interface DataMigrationService {
   void migrateVillageType(MultipartFile file);
 
   void migrateBlockDetail(MultipartFile file);
+
+  void migrateStreetboxLocation(MultipartFile file);
 }

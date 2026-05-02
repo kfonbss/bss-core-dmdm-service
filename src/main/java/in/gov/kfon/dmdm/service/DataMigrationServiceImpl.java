@@ -842,4 +842,119 @@ public class DataMigrationServiceImpl implements DataMigrationService {
       throw ex;
     }
   }
+
+  @Override
+  public void migrateStreetboxLocation(MultipartFile file) {
+
+    if (file == null || file.isEmpty()) {
+      throw new RuntimeException("CSV file is required");
+    }
+
+    String filename = file.getOriginalFilename();
+    if (filename == null || !filename.toLowerCase().endsWith(".csv")) {
+      throw new RuntimeException("Invalid file format. Upload CSV only.");
+    }
+
+    try (Connection conn = dataSource.getConnection()) {
+
+      if (streetboxTableHasData(conn)) {
+        throw new RuntimeException("Streetbox data already migrated");
+      }
+
+      runStreetboxMigration(conn, file);
+
+    } catch (Exception e) {
+      throw new RuntimeException("Streetbox migration failed: " + e.getMessage(), e);
+    }
+  }
+
+  private boolean streetboxTableHasData(Connection conn) throws Exception {
+    try (ResultSet rs =
+        conn.createStatement().executeQuery("SELECT COUNT(*) FROM streetbox_location")) {
+      rs.next();
+      return rs.getInt(1) > 0;
+    }
+  }
+
+  private void runStreetboxMigration(Connection conn, MultipartFile file) throws Exception {
+
+    String sql =
+        """
+        INSERT INTO streetbox_location (
+            id,
+            equipment_name,
+            pop_name,
+            district,
+            pop_type,
+            latitude,
+            longitude,
+            type,
+            category
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """;
+
+    conn.setAutoCommit(false);
+
+    try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()));
+        PreparedStatement ps = conn.prepareStatement(sql)) {
+
+      reader.readNext();
+
+      String[] cols;
+      int batch = 0;
+
+      while ((cols = reader.readNext()) != null) {
+
+        int idx = 0;
+
+        String equipmentName = toStr(cols[idx++]);
+        String popName = toStr(cols[idx++]);
+        String district = toStr(cols[idx++]);
+        String popType = toStr(cols[idx++]);
+
+        Double latitude = toDouble(cols[idx++]);
+        Double longitude = toDouble(cols[idx++]);
+
+        String type = toStr(cols[idx++]);
+        String category = toStr(cols[idx++]);
+
+        if (equipmentName == null || latitude == null || longitude == null) {
+          continue;
+        }
+
+        int p = 1;
+        ps.setObject(p++, UUID.randomUUID());
+        ps.setString(p++, equipmentName);
+        ps.setString(p++, popName);
+        ps.setString(p++, district);
+        ps.setString(p++, popType);
+        ps.setDouble(p++, latitude);
+        ps.setDouble(p++, longitude);
+        ps.setString(p++, type);
+        ps.setString(p++, category);
+
+        ps.addBatch();
+
+        if (++batch % 500 == 0) {
+          ps.executeBatch();
+        }
+      }
+
+      ps.executeBatch();
+      conn.commit();
+
+    } catch (Exception ex) {
+      conn.rollback();
+      throw ex;
+    }
+  }
+
+  private Double toDouble(String v) {
+    try {
+      return (v == null || v.trim().isEmpty()) ? null : Double.parseDouble(v.trim());
+    } catch (Exception e) {
+      return null;
+    }
+  }
 }

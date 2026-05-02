@@ -75,4 +75,14 @@ public class DataMigrationController {
     dataMigrationService.migrateBlockDetail(file);
     return ResponseEntity.ok(Response.ok("", "Block Details Migration Completed Successfully"));
   }
+
+  @PostMapping("/streetbox-location")
+  public ResponseEntity<Response<String>> migrateStreetboxLocation(
+      @RequestParam("file") MultipartFile file) {
+
+    dataMigrationService.migrateStreetboxLocation(file);
+
+    return ResponseEntity.ok(
+        Response.ok("", "Streetbox Location Migration Completed Successfully"));
+  }
 }
