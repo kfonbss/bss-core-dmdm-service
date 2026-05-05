@@ -1,6 +1,6 @@
 # ---- image ----
 image:
-  repository: "172.16.80.150:5000/bss-core-dmdm-service"
+  repository: "{ip}/bss-core-dmdm-service"
   tag: "prod"
   pullPolicy: Always
 # ---- service / ports ----
@@ -21,7 +21,7 @@ env:
 
   # Datasource
   - name: SPRING_DATASOURCE_URL
-    value: jdbc:postgresql://172.16.80.153:5433/bss_dmdm_prod?sslmode=require
+    value: jdbc:postgresql://{ip}/bss_dmdm_prod?sslmode=require
   - name: SPRING_DATASOURCE_USERNAME
     value: appuser
   - name: SPRING_DATASOURCE_PASSWORD
@@ -50,7 +50,7 @@ env:
 
 # (kept for reference if your chart templates read these)
 db:
-  host: 172.16.80.153
+  host: {ip}
   port: 5433
   name: bss_dmdm_prod
   user: appuser
