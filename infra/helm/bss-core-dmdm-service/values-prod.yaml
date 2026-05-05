@@ -1,0 +1,118 @@
+# ---- image ----
+image:
+  repository: "{ip}/bss-core-dmdm-service"
+  tag: "prod"
+  pullPolicy: Always
+# ---- service / ports ----
+service:
+  selector:
+    app.kubernetes.io/instance: bss-core-dmdm-service
+    app.kubernetes.io/name: bss-core-dmdm-service
+  type: ClusterIP
+  servicePort: 80
+  port: 8080
+
+containerPort: 8080
+
+# ---- app env (Spring Boot 3.x) ----
+env:
+  - name: SPRING_PROFILES_ACTIVE
+    value: prs
+
+  # Datasource
+  - name: SPRING_DATASOURCE_URL
+    value: jdbc:postgresql://{ip}/bss_dmdm_prod?sslmode=require
+  - name: SPRING_DATASOURCE_USERNAME
+    value: appuser
+  - name: SPRING_DATASOURCE_PASSWORD
+    value: "Kfonbss2025#"
+
+  # Make health endpoints definitely available at /actuator/*
+  - name: SERVER_PORT
+    value: "8080"
+  - name: SERVER_SERVLET_CONTEXT_PATH
+    value: "/bss-core-dmdm-service"
+  - name: MANAGEMENT_SERVER_PORT
+    value: "8080"
+  - name: MANAGEMENT_ENDPOINTS_WEB_BASE_PATH
+    value: "/actuator"
+  - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
+    value: "health,info"
+  - name: MANAGEMENT_HEALTH_PROBES_ENABLED
+    value: "true"
+  - name: MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED
+    value: "true"
+
+  - name: TZ
+    value: "Asia/Kolkata"
+  - name: JAVA_TOOL_OPTIONS
+    value: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=75"
+
+# (kept for reference if your chart templates read these)
+db:
+  host: {ip}
+  port: 5433
+  name: bss_dmdm_prod
+  user: appuser
+  password: "Kfonbss2025#"
+  sslmode: require
+
+spring:
+  profiles: prod
+
+# ---- probes (valid: exactly one handler per probe) ----
+probes:
+  port: 8080
+
+  # Give JVM time to boot and DB to connect before any judgment
+  startup:
+    enabled: true
+    httpGet:
+      path: /bss-core-dmdm-service/actuator/health
+      port: 8080
+    periodSeconds: 5
+    failureThreshold: 120   # ~10 minutes grace
+
+  # Readiness: path-agnostic so it won't 404 due to context/actuator variance
+  readinessProbe:
+    tcpSocket:
+      port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 5
+    timeoutSeconds: 2
+    failureThreshold: 6
+
+  # Liveness: temporarily DISABLE so kubelet doesn't kill the pod while we test
+  livenessProbe: null
+
+ingress:
+  enabled: false
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  hosts:
+    - host: prodapi.kfon.co.in
+      paths:
+        - path: /bss-core-dmdm-service
+          pathType: Prefix
+          serviceName: bss-core-dmdm-service
+          servicePort: 80
+  tls:
+    - secretName: bss-all-services-tls
+      hosts:
+        - prodapi.kfon.co.in
+
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: null
+
+resources:
+  requests:
+    cpu: "200m"
+    memory: "512Mi"
+  limits:
+    cpu: "1"
+    memory: "1Gi"
