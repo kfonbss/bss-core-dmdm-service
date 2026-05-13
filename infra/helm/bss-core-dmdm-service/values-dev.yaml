@@ -51,8 +51,8 @@ env:
 # (kept for reference if your chart templates read these)
 db:
   host: 172.16.80.153
-  port: 5433
-  name: bss_dmdm_qa
+  port: 5432
+  name: bss_dmdm_dev
   user: appuser
   password: "Kfonbss2025#"
   sslmode: require
