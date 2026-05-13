@@ -21,7 +21,7 @@ env:
 
   # Datasource
   - name: SPRING_DATASOURCE_URL
-    value: jdbc:postgresql://172.16.80.153:5433/bss_dmdm_qa?sslmode=require
+    value: jdbc:postgresql://172.16.80.153:5432/bss_dmdm_dev?sslmode=require
   - name: SPRING_DATASOURCE_USERNAME
     value: appuser
   - name: SPRING_DATASOURCE_PASSWORD
