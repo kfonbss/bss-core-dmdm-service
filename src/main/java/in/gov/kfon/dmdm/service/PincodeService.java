@@ -22,4 +22,6 @@ public interface PincodeService {
   PinCodeDistrictResponse getDistrictDetails(Integer pinCode);
 
   List<CommonLookUp> fetchPincodeDetailsByDistrictIds(List<UUID> districtIds);
+
+  CommonLookUp fetchPincodeDetailByPincode(Integer pincode);
 }

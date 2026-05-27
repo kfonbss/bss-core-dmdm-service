@@ -173,4 +173,15 @@ public class PincodeServiceImpl implements PincodeService {
 
     return entities.stream().map(this::mapToCommonLookUp).toList();
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchPincodeDetailByPincode(Integer pincode) {
+    PincodeDetails pd =
+        pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pincode).stream()
+            .findFirst()
+            .orElseThrow(
+                () -> new EntityNotFoundException("Pincode details not found for pincode: " + pincode));
+    return mapToCommonLookUp(pd);
+  }
 }
