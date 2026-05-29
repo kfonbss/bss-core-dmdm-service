@@ -80,7 +80,6 @@ public class PincodeController {
   public ResponseEntity<Response<CommonLookUp>> fetchPincodeDetailByPincode(
       @PathVariable Integer pincode) {
     var data = service.fetchPincodeDetailByPincode(pincode);
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(Response.ok(data, "Fetched pincode details"));
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched pincode details"));
   }
 }

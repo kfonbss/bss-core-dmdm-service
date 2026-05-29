@@ -181,7 +181,9 @@ public class PincodeServiceImpl implements PincodeService {
         pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pincode).stream()
             .findFirst()
             .orElseThrow(
-                () -> new EntityNotFoundException("Pincode details not found for pincode: " + pincode));
+                () ->
+                    new EntityNotFoundException(
+                        "Pincode details not found for pincode: " + pincode));
     return mapToCommonLookUp(pd);
   }
 }
