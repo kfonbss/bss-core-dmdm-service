@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,9 +33,10 @@ public class StateController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 
-  @GetMapping("/code/{code}")
-  public ResponseEntity<Response<StateResponse>> fetchStateByCode(@PathVariable String code) {
-    var data = service.fetchStateByCode(code);
-    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched state by code"));
+  @GetMapping("/code")
+  public ResponseEntity<Response<List<StateResponse>>> fetchStatesByCodes(
+      @RequestParam List<String> codes) {
+    var data = service.fetchStatesByCodes(codes);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched states by codes"));
   }
 }

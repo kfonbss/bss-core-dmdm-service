@@ -10,5 +10,5 @@ public interface StateService {
 
   CommonLookUp fetchById(UUID id);
 
-  StateResponse fetchStateByCode(String code);
+  List<StateResponse> fetchStatesByCodes(List<String> codes);
 }

@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StateRepository extends JpaRepository<State, UUID> {
   List<State> findByCodeAndIsActive(String code, boolean active);
+
+  List<State> findByCodeInAndIsActive(List<String> codes, boolean active);
 }
