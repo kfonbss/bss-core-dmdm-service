@@ -23,7 +23,7 @@ public class StateServiceImpl implements StateService {
   @Override
   @Transactional(readOnly = true)
   public List<CommonLookUp> fetchAll() {
-    return repository.findAll().stream()
+    return repository.findByIsActive(true).stream()
         .map(state -> modelMapper.map(state, CommonLookUp.class))
         .toList();
   }
