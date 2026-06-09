@@ -75,4 +75,11 @@ public class PincodeController {
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched pincode details by district IDs"));
   }
+
+  @GetMapping("/details/pincode/{pincode}")
+  public ResponseEntity<Response<CommonLookUp>> fetchPincodeDetailByPincode(
+      @PathVariable Integer pincode) {
+    var data = service.fetchPincodeDetailByPincode(pincode);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched pincode details"));
+  }
 }

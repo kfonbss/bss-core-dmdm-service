@@ -1,7 +1,7 @@
 # ---- image ----
 image:
-  repository: "172.16.80.150:5000/bss-core-dmdm-service"
-  tag: "dev"
+  repository: "{ip}/bss-core-dmdm-service"
+  tag: "prod"
   pullPolicy: Always
 # ---- service / ports ----
 service:
@@ -17,11 +17,11 @@ containerPort: 8080
 # ---- app env (Spring Boot 3.x) ----
 env:
   - name: SPRING_PROFILES_ACTIVE
-    value: dev
+    value: prs
 
   # Datasource
   - name: SPRING_DATASOURCE_URL
-    value: jdbc:postgresql://172.16.80.153:5432/bss_dmdm_dev?sslmode=require
+    value: jdbc:postgresql://{ip}/bss_dmdm_prod?sslmode=require
   - name: SPRING_DATASOURCE_USERNAME
     value: appuser
   - name: SPRING_DATASOURCE_PASSWORD
@@ -50,15 +50,15 @@ env:
 
 # (kept for reference if your chart templates read these)
 db:
-  host: 172.16.80.153
-  port: 5432
-  name: bss_dmdm_dev
+  host: {ip}
+  port: 5433
+  name: bss_dmdm_prod
   user: appuser
   password: "Kfonbss2025#"
   sslmode: require
 
 spring:
-  profiles: dev
+  profiles: prod
 
 # ---- probes (valid: exactly one handler per probe) ----
 probes:
@@ -91,7 +91,7 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   hosts:
-    - host: devapi.kfon.co.in
+    - host: prodapi.kfon.co.in
       paths:
         - path: /bss-core-dmdm-service
           pathType: Prefix
@@ -100,7 +100,7 @@ ingress:
   tls:
     - secretName: bss-all-services-tls
       hosts:
-        - devapi.kfon.co.in
+        - prodapi.kfon.co.in
 
 hpa:
   enabled: false

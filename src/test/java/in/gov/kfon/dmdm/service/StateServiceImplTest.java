@@ -54,7 +54,7 @@ class StateServiceImplTest {
   void testFetchAll() {
     List<State> states = List.of(state);
 
-    when(repository.findAll()).thenReturn(states);
+    when(repository.findByIsActive(true)).thenReturn(states);
     when(modelMapper.map(state, CommonLookUp.class)).thenReturn(commonLookUp);
 
     List<CommonLookUp> result = service.fetchAll();
@@ -63,7 +63,7 @@ class StateServiceImplTest {
     assertEquals(1, result.size());
     assertEquals(stateId, result.get(0).getId());
 
-    verify(repository, times(1)).findAll();
+    verify(repository, times(1)).findByIsActive(true);
     verify(modelMapper, times(1)).map(state, CommonLookUp.class);
   }
 

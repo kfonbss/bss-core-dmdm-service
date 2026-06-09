@@ -6,7 +6,6 @@ import in.gov.kfon.dmdm.model.State;
 import in.gov.kfon.dmdm.repository.StateRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -24,7 +23,7 @@ public class StateServiceImpl implements StateService {
   @Override
   @Transactional(readOnly = true)
   public List<CommonLookUp> fetchAll() {
-    return repository.findAll().stream()
+    return repository.findByIsActive(true).stream()
         .map(state -> modelMapper.map(state, CommonLookUp.class))
         .toList();
   }
@@ -41,15 +40,15 @@ public class StateServiceImpl implements StateService {
 
   @Override
   @Transactional(readOnly = true)
-  public StateResponse fetchStateByCode(String code) {
-    Optional<State> state = repository.findByCodeAndIsActive(code, true).stream().findFirst();
-    if (state.isPresent()) {
-      return StateResponse.builder()
-          .id(state.get().getId())
-          .code(state.get().getCode())
-          .name(state.get().getName())
-          .build();
-    }
-    return StateResponse.builder().build();
+  public List<StateResponse> fetchStatesByCodes(List<String> codes) {
+    return repository.findByCodeInAndIsActive(codes, true).stream()
+        .map(
+            state ->
+                StateResponse.builder()
+                    .id(state.getId())
+                    .code(state.getCode())
+                    .name(state.getName())
+                    .build())
+        .toList();
   }
 }
