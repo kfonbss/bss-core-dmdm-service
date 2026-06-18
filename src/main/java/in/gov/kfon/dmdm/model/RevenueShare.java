@@ -79,6 +79,9 @@ public class RevenueShare {
   @Column(name = "name_in_local", length = 256)
   private String nameInLocal;
 
+  @Column(name = "provider_uuid")
+  private UUID providerUuid;
+
   @Column(name = "is_active")
   private Boolean isActive = true;
 }

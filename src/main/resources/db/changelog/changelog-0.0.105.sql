@@ -1,0 +1,1 @@
+ALTER TABLE revenueshare ADD COLUMN IF NOT EXISTS provider_uuid UUID;
