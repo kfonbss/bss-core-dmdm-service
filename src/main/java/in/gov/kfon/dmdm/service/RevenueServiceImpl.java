@@ -52,4 +52,15 @@ public class RevenueServiceImpl implements RevenueService {
 
     return modelMapper.map(revenueShare, RevenueShareResponse.class);
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<CommonLookUp> fetchRevenueSharesByServiceOrProvider(
+      Integer subgroup, UUID providerUuid) {
+    List<RevenueShare> result =
+        providerUuid != null
+            ? repository.findByProviderUuidAndIsActiveTrue(providerUuid)
+            : repository.findBySubgroupAndProviderUuidIsNullAndIsActiveTrue(subgroup);
+    return result.stream().map(rs -> modelMapper.map(rs, CommonLookUp.class)).toList();
+  }
 }

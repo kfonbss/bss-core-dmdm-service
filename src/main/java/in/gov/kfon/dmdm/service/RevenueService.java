@@ -11,4 +11,6 @@ public interface RevenueService {
   CommonLookUp fetchRevenueById(UUID id);
 
   RevenueShareResponse fetchRevenueShareById(UUID id);
+
+  List<CommonLookUp> fetchRevenueSharesByServiceOrProvider(Integer subgroup, UUID providerUuid);
 }

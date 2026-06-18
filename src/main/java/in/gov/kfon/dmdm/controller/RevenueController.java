@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,5 +40,12 @@ public class RevenueController {
     var data = service.fetchRevenueShareById(id);
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched Revenue Share Details"));
+  }
+
+  @GetMapping("/lookup/by-service-or-provider")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchRevenueSharesByServiceOrProvider(
+      @RequestParam Integer subgroup, @RequestParam(required = false) UUID providerUuid) {
+    var data = service.fetchRevenueSharesByServiceOrProvider(subgroup, providerUuid);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched Revenue Shares"));
   }
 }
