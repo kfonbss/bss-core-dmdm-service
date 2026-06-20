@@ -2,9 +2,11 @@ package in.gov.kfon.dmdm.Config;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,15 +15,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.SerializationException;
 
 @Configuration
 public class RedisConfig {
 
   @Bean
   public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-    GenericJackson2JsonRedisSerializer serializer = buildSerializer();
+    RedisSerializer<Object> serializer = buildSerializer();
 
     RedisCacheConfiguration defaults =
         RedisCacheConfiguration.defaultCacheConfig()
@@ -219,8 +222,13 @@ public class RedisConfig {
   /**
    * Jackson serializer that embeds type metadata so Spring can deserialize generic types (e.g.
    * {@code List<CommonLookUp>}) correctly without extra configuration.
+   *
+   * <p>Uses {@code writerFor(Object.class)} so Jackson treats every cached value as a polymorphic
+   * {@code Object}, emitting the outer type wrapper (e.g. {@code ["java.util.ArrayList",[...]]})
+   * for root-level collections. Without this, {@code writeValueAsBytes(list)} infers the concrete
+   * type ({@code ArrayList}) and skips the wrapper, breaking deserialization.
    */
-  private GenericJackson2JsonRedisSerializer buildSerializer() {
+  private RedisSerializer<Object> buildSerializer() {
     ObjectMapper mapper =
         new ObjectMapper()
             .registerModule(new JavaTimeModule())
@@ -231,8 +239,30 @@ public class RedisConfig {
                     .allowIfSubType("java.util")
                     .build(),
                 ObjectMapper.DefaultTyping.NON_FINAL,
-                JsonTypeInfo.As.WRAPPER_ARRAY);
+                JsonTypeInfo.As.PROPERTY);
 
-    return new GenericJackson2JsonRedisSerializer(mapper);
+    ObjectWriter writer = mapper.writerFor(Object.class);
+
+    return new RedisSerializer<Object>() {
+      @Override
+      public byte[] serialize(Object value) throws SerializationException {
+        if (value == null) return new byte[0];
+        try {
+          return writer.writeValueAsBytes(value);
+        } catch (IOException e) {
+          throw new SerializationException("Could not serialize to JSON: " + e.getMessage(), e);
+        }
+      }
+
+      @Override
+      public Object deserialize(byte[] bytes) throws SerializationException {
+        if (bytes == null || bytes.length == 0) return null;
+        try {
+          return mapper.readValue(bytes, Object.class);
+        } catch (IOException e) {
+          throw new SerializationException("Could not deserialize from JSON: " + e.getMessage(), e);
+        }
+      }
+    };
   }
 }
