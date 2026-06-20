@@ -231,7 +231,7 @@ public class RedisConfig {
                     .allowIfSubType("java.util")
                     .build(),
                 ObjectMapper.DefaultTyping.NON_FINAL,
-                JsonTypeInfo.As.PROPERTY);
+                JsonTypeInfo.As.WRAPPER_ARRAY);
 
     return new GenericJackson2JsonRedisSerializer(mapper);
   }
