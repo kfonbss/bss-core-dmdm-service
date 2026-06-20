@@ -93,6 +93,19 @@ spec:
                   name: {{ .Release.Name }}-db
                   key: DB_PASSWORD
 
+            # ---- Redis (shared bss-redis service in the same namespace) ----
+            - name: REDIS_HOST
+              value: "{{ required "redis.host is required" .Values.redis.host }}"
+            - name: REDIS_PORT
+              value: "{{ default 6379 .Values.redis.port }}"
+            {{- if .Values.redis.password }}
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bss-redis
+                  key: REDIS_PASSWORD
+            {{- end }}
+
             # ---- Safe profile (no dig; default to dev if .Values.spring.profiles unset) ----
             {{- $spring := (default dict .Values.spring) }}
             - name: SPRING_PROFILES_ACTIVE
