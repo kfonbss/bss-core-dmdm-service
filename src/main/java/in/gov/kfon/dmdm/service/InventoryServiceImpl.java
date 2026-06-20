@@ -1,5 +1,6 @@
 package in.gov.kfon.dmdm.service;
 
+import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.*;
 import in.gov.kfon.dmdm.model.InvDeviceMake;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +52,10 @@ public class InventoryServiceImpl implements InventoryService {
   private final InvDeviceDetailsMovementRepository deviceDetailsMovementRepository;
   private final InvReturnFaultyRequestRepository invReturnFaultyRequestRepository;
 
+  // ---- Device Makes (master data) ----
+
   @Override
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_MAKES)
   public List<CommonLookUp> fetchAllDeviceMakes() {
     return invDeviceMakeRepository.findAll().stream()
         .map(deviceMake -> modelMapper.map(deviceMake, CommonLookUp.class))
@@ -58,6 +63,7 @@ public class InventoryServiceImpl implements InventoryService {
   }
 
   @Override
+  @Cacheable(cacheNames = CacheNames.DEVICE_MAKE_BY_ID, key = "#id")
   public CommonLookUp fetchDeviceMakeById(UUID id) {
     InvDeviceMake deviceMake =
         invDeviceMakeRepository
@@ -66,7 +72,10 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(deviceMake, CommonLookUp.class);
   }
 
+  // ---- Device Models (master data) ----
+
   @Override
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_MODELS)
   public List<CommonLookUp> fetchAllDeviceModels() {
     return invDeviceModelRepository.findAll().stream()
         .map(model -> modelMapper.map(model, CommonLookUp.class))
@@ -74,6 +83,7 @@ public class InventoryServiceImpl implements InventoryService {
   }
 
   @Override
+  @Cacheable(cacheNames = CacheNames.DEVICE_MODEL_BY_ID, key = "#id")
   public CommonLookUp fetchDeviceModelById(UUID id) {
     InvDeviceModel deviceModel =
         invDeviceModelRepository
@@ -83,8 +93,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(deviceModel, CommonLookUp.class);
   }
 
+  // ---- Credit Notes (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_CREDIT_NOTES)
   public List<CommonLookUp> creditNotesFetchAll() {
     return creditNotesRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -93,6 +106,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.CREDIT_NOTE_BY_ID, key = "#id")
   public CommonLookUp creditNotesFetchById(UUID id) {
     InvCreditNotes entity =
         creditNotesRepository
@@ -101,8 +115,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- DC Credit Notes (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_DC_CREDIT_NOTES)
   public List<CommonLookUp> dcCreditNotesFetchAll() {
     return dcCreditNotesRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -111,6 +128,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.DC_CREDIT_NOTES_BY_ID, key = "#id")
   public CommonLookUp dcCreditNotesFetchById(UUID id) {
     InvDcCreditNotes entity =
         dcCreditNotesRepository
@@ -119,8 +137,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- Device Acknowledgements (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_ACKNOWLEDGEMENTS)
   public List<CommonLookUp> deviceAcknowledgementFetchAll() {
     return deviceAcknowledgementRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -129,6 +150,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.DEVICE_ACKNOWLEDGEMENT_BY_ID, key = "#id")
   public CommonLookUp deviceAcknowledgementFetchById(UUID id) {
     InvDeviceAcknowledgement entity =
         deviceAcknowledgementRepository
@@ -137,8 +159,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- Device Categories (master data) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_CATS)
   public List<CommonLookUp> deviceCatFetchAll() {
     return deviceCatRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -147,6 +172,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.DEVICE_CAT_BY_ID, key = "#id")
   public CommonLookUp deviceCatFetchById(UUID id) {
     InvDeviceCat entity =
         deviceCatRepository
@@ -155,7 +181,10 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- Device Returns (master data) ----
+
   @Override
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_RETURNS)
   public List<CommonLookUp> fetchAllDeviceReturns() {
     return invDeviceReturnTooemRepository.findAll().stream()
         .map(deviceReturn -> modelMapper.map(deviceReturn, CommonLookUp.class))
@@ -163,6 +192,7 @@ public class InventoryServiceImpl implements InventoryService {
   }
 
   @Override
+  @Cacheable(cacheNames = CacheNames.DEVICE_RETURN_BY_ID, key = "#id")
   public CommonLookUp fetchDeviceReturnById(UUID id) {
     InvDeviceReturnTooem deviceReturn =
         invDeviceReturnTooemRepository
@@ -172,7 +202,10 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(deviceReturn, CommonLookUp.class);
   }
 
+  // ---- Device Statuses (master data) ----
+
   @Override
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_STATUSES)
   public List<CommonLookUp> fetchAllDeviceStatuses() {
     return invDeviceStatusRepository.findAll().stream()
         .map(deviceStatus -> modelMapper.map(deviceStatus, CommonLookUp.class))
@@ -180,6 +213,7 @@ public class InventoryServiceImpl implements InventoryService {
   }
 
   @Override
+  @Cacheable(cacheNames = CacheNames.DEVICE_STATUS_BY_ID, key = "#id")
   public CommonLookUp fetchDeviceStatusById(UUID id) {
     InvDeviceStatus deviceStatus =
         invDeviceStatusRepository
@@ -189,8 +223,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(deviceStatus, CommonLookUp.class);
   }
 
+  // ---- Device Details (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_DETAILS)
   public List<CommonLookUp> deviceDetailsFetchAll() {
     return deviceDetailsRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -199,6 +236,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.DEVICE_DETAILS_BY_ID, key = "#id")
   public CommonLookUp deviceDetailsFetchById(UUID id) {
     InvDeviceDetails entity =
         deviceDetailsRepository
@@ -207,8 +245,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- Device Details Audits (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_DETAILS_AUDITS)
   public List<CommonLookUp> deviceDetailsAuditsFetchAll() {
     return deviceDetailsAuditRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -217,6 +258,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.DEVICE_DETAILS_AUDIT_BY_ID, key = "#id")
   public CommonLookUp deviceDetailsAuditsFetchById(UUID id) {
     InvDeviceDetailsAudit entity =
         deviceDetailsAuditRepository
@@ -225,7 +267,10 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- Device Types (master data) ----
+
   @Override
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_TYPES)
   public List<CommonLookUp> fetchAllDeviceTypes() {
     return invDeviceTypeRepository.findAll().stream()
         .map(deviceType -> modelMapper.map(deviceType, CommonLookUp.class))
@@ -233,6 +278,7 @@ public class InventoryServiceImpl implements InventoryService {
   }
 
   @Override
+  @Cacheable(cacheNames = CacheNames.DEVICE_TYPE_BY_ID, key = "#id")
   public CommonLookUp fetchDeviceTypeById(UUID id) {
     var deviceType =
         invDeviceTypeRepository
@@ -241,7 +287,10 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(deviceType, CommonLookUp.class);
   }
 
+  // ---- Device Vendors (master data) ----
+
   @Override
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_VENDORS)
   public List<CommonLookUp> fetchAllDeviceVendors() {
     return invDeviceVendorRepository.findAll().stream()
         .map(vendor -> modelMapper.map(vendor, CommonLookUp.class))
@@ -249,6 +298,7 @@ public class InventoryServiceImpl implements InventoryService {
   }
 
   @Override
+  @Cacheable(cacheNames = CacheNames.DEVICE_VENDOR_BY_ID, key = "#id")
   public CommonLookUp fetchDeviceVendorById(UUID id) {
     var vendor =
         invDeviceVendorRepository
@@ -258,8 +308,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(vendor, CommonLookUp.class);
   }
 
+  // ---- Device Transfer Requests (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_TRANSFER_REQUESTS)
   public List<CommonLookUp> fetchAllDeviceTransferRequests() {
     return invDtransferRequestRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -268,6 +321,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.DEVICE_TRANSFER_REQUEST_BY_ID, key = "#id")
   public CommonLookUp fetchDeviceTransferRequestById(UUID id) {
     InvDtransferRequest entity =
         invDtransferRequestRepository
@@ -276,8 +330,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- Device Transfer Movements (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_TRANSFER_MOVEMENTS)
   public List<CommonLookUp> fetchAllDeviceTransferMovements() {
     return invDtransferRmovementRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -286,6 +343,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.DEVICE_TRANSFER_MOVEMENT_BY_ID, key = "#id")
   public CommonLookUp fetchDeviceTransferMovementById(UUID id) {
     InvDtransferRmovement entity =
         invDtransferRmovementRepository
@@ -294,8 +352,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- PO Details (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_PO_DETAILS)
   public List<CommonLookUp> fetchAllPoDetails() {
     return invPoDetailsRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -304,6 +365,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.PO_DETAILS_BY_ID, key = "#id")
   public CommonLookUp fetchPoDetailsById(UUID id) {
     InvPoDetails entity =
         invPoDetailsRepository
@@ -312,8 +374,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- PO Documents (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_PO_DOCUMENTS)
   public List<CommonLookUp> fetchAllPoDocuments() {
     return invPoDocumentsRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -322,6 +387,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.PO_DOCUMENT_BY_ID, key = "#id")
   public CommonLookUp fetchPoDocumentById(UUID id) {
     InvPoDocuments entity =
         invPoDocumentsRepository
@@ -330,8 +396,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- LNP Device Requests (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_LNP_DEVICE_REQUESTS)
   public List<CommonLookUp> fetchAllLnpDeviceRequests() {
     return invLnpDeviceRequestRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -340,6 +409,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.LNP_DEVICE_REQUEST_BY_ID, key = "#id")
   public CommonLookUp fetchLnpDeviceRequestById(UUID id) {
     InvLnpDeviceRequest entity =
         invLnpDeviceRequestRepository
@@ -349,8 +419,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- LNP Device Request Movements (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_LNP_DEVICE_REQUEST_MOVEMENTS)
   public List<CommonLookUp> fetchAllLnpDeviceRequestMovements() {
     return invLnpDeviceRequestMovementRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -359,6 +432,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.LNP_DEVICE_REQUEST_MOVEMENT_BY_ID, key = "#id")
   public CommonLookUp fetchLnpDeviceRequestMovementById(UUID id) {
     InvLnpDeviceRequestMovement entity =
         invLnpDeviceRequestMovementRepository
@@ -370,8 +444,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- DC Credit Note (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_DC_CREDIT_NOTE)
   public List<CommonLookUp> dcCreditNoteFetchAll() {
     return dcCreditNoteRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -380,6 +457,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.DC_CREDIT_NOTE_BY_ID, key = "#id")
   public CommonLookUp dcCreditNoteFetchById(UUID id) {
     InvDcCreditNote entity =
         dcCreditNoteRepository
@@ -388,8 +466,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- Device Condition Statuses (master data) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_CONDITION_STATUSES)
   public List<CommonLookUp> deviceConditionStatusFetchAll() {
     return deviceConditionStatusRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -398,6 +479,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.DEVICE_CONDITION_STATUS_BY_ID, key = "#id")
   public CommonLookUp deviceConditionStatusFetchById(UUID id) {
     InvDeviceConditionStatus entity =
         deviceConditionStatusRepository
@@ -406,8 +488,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- KFON DC Device Requests (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_KFON_DC_DEVICE_REQUESTS)
   public List<CommonLookUp> kfonDcDeviceRequestsFetchAll() {
     return kfonDcDeviceRequestRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -416,6 +501,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.KFON_DC_DEVICE_REQUEST_BY_ID, key = "#id")
   public CommonLookUp kfonDcDeviceRequestsFetchById(UUID id) {
     InvKfonDcDeviceRequest entity =
         kfonDcDeviceRequestRepository
@@ -424,8 +510,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- Device Details Movements (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_DEVICE_DETAILS_MOVEMENTS)
   public List<CommonLookUp> deviceDetailsMovementFetchAll() {
     return deviceDetailsMovementRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -434,6 +523,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.DEVICE_DETAILS_MOVEMENT_BY_ID, key = "#id")
   public CommonLookUp deviceDetailsMovementFetchById(UUID id) {
     InvDeviceDetailsMovement entity =
         deviceDetailsMovementRepository
@@ -442,8 +532,11 @@ public class InventoryServiceImpl implements InventoryService {
     return modelMapper.map(entity, CommonLookUp.class);
   }
 
+  // ---- Faulty Requests (transactional) ----
+
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_FAULTY_REQUESTS)
   public List<CommonLookUp> fetchAllFaultyRequests() {
     return invReturnFaultyRequestRepository.findAll().stream()
         .map(e -> modelMapper.map(e, CommonLookUp.class))
@@ -452,6 +545,7 @@ public class InventoryServiceImpl implements InventoryService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.FAULTY_REQUEST_BY_ID, key = "#id")
   public CommonLookUp fetchFaultyRequestById(UUID id) {
     InvReturnFaultyRequest entity =
         invReturnFaultyRequestRepository

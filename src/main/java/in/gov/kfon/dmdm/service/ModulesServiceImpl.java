@@ -1,5 +1,6 @@
 package in.gov.kfon.dmdm.service;
 
+import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.Modules;
 import in.gov.kfon.dmdm.repository.ModulesRepository;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ public class ModulesServiceImpl implements ModulesService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_MODULES)
   public List<CommonLookUp> fetchAll() {
     return repository.findAll().stream()
         .map(modules -> modelMapper.map(modules, CommonLookUp.class))
@@ -29,6 +32,7 @@ public class ModulesServiceImpl implements ModulesService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.MODULE_BY_ID, key = "#id")
   public CommonLookUp fetchById(UUID id) {
     Modules modules =
         repository
