@@ -1,5 +1,6 @@
 package in.gov.kfon.dmdm.service;
 
+import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.CafDetails;
 import in.gov.kfon.dmdm.repository.CafDetailsRepository;
@@ -10,6 +11,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,7 @@ public class CafDetailsServiceImpl implements CafDetailsService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_CAF_DETAILS)
   public List<CommonLookUp> detailsFetchAll() {
     return cafDetailsRepository.findAll().stream()
         .map(
@@ -49,6 +52,7 @@ public class CafDetailsServiceImpl implements CafDetailsService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.CAF_DETAIL_BY_ID, key = "#id")
   public CommonLookUp detailsFetchById(UUID id) {
     CafDetails entity =
         cafDetailsRepository

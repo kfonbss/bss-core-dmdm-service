@@ -1,5 +1,6 @@
 package in.gov.kfon.dmdm.service;
 
+import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.DfPopList;
 import in.gov.kfon.dmdm.model.PopMaster;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ public class PopServiceImpl implements PopService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_POP_MASTERS)
   public List<CommonLookUp> fetchAllPopMasters() {
     return popMasterRepository.findAll().stream()
         .map(pm -> modelMapper.map(pm, CommonLookUp.class))
@@ -35,6 +38,7 @@ public class PopServiceImpl implements PopService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.POP_MASTER_BY_ID, key = "#id")
   public CommonLookUp fetchPopMasterById(UUID id) {
     PopMaster popMaster =
         popMasterRepository
@@ -45,6 +49,7 @@ public class PopServiceImpl implements PopService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_POP_MASTER_BACKUPS)
   public List<CommonLookUp> fetchAllPopMasterBackups() {
     return popMasterBackupRepository.findAll().stream()
         .map(pb -> modelMapper.map(pb, CommonLookUp.class))
@@ -53,6 +58,7 @@ public class PopServiceImpl implements PopService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.POP_MASTER_BACKUP_BY_ID, key = "#id")
   public CommonLookUp fetchPopMasterBackupById(UUID id) {
     PopMasterBackup popMasterBackup =
         popMasterBackupRepository
@@ -64,6 +70,7 @@ public class PopServiceImpl implements PopService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_DF_POP_LISTS)
   public List<CommonLookUp> fetchAllDfPopLists() {
     return dfPopListRepository.findAll().stream()
         .map(df -> modelMapper.map(df, CommonLookUp.class))
@@ -72,6 +79,7 @@ public class PopServiceImpl implements PopService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.DF_POP_BY_ID, key = "#id")
   public CommonLookUp fetchDfPopById(UUID id) {
     DfPopList dfPop =
         dfPopListRepository

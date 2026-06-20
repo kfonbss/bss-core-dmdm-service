@@ -1,5 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
+import in.gov.kfon.dmdm.Config.CacheKeyUtil;
+import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.contract.PinCodeDistrictResponse;
 import in.gov.kfon.dmdm.model.PincodeDetails;
@@ -15,6 +17,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +32,7 @@ public class PincodeServiceImpl implements PincodeService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_PINCODES)
   public List<CommonLookUp> fetchAllPincodes() {
     return pincodesRepository.findAll().stream()
         .map(
@@ -42,6 +46,7 @@ public class PincodeServiceImpl implements PincodeService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.PINCODE_BY_ID, key = "#id")
   public CommonLookUp fetchPincodeById(UUID id) {
     Pincodes p =
         pincodesRepository
@@ -52,6 +57,7 @@ public class PincodeServiceImpl implements PincodeService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_PINCODE_DETAILS)
   public List<CommonLookUp> fetchAllPincodeDetails() {
 
     return pincodeDetailsRepository.findAll().stream()
@@ -82,6 +88,7 @@ public class PincodeServiceImpl implements PincodeService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.PINCODE_DETAILS_BY_ID, key = "#id")
   public CommonLookUp fetchPincodeDetailsById(UUID id) {
     PincodeDetails pd =
         pincodeDetailsRepository
@@ -93,6 +100,7 @@ public class PincodeServiceImpl implements PincodeService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.POST_OFFICE_BY_PINCODE, key = "#pincode")
   public List<CommonLookUp> fetchPostOfficeByPincode(String pincode) {
     List<Pincodes> entities = pincodesRepository.findAllByPincodeAndIsActiveTrue(pincode);
 
@@ -117,6 +125,7 @@ public class PincodeServiceImpl implements PincodeService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.POST_OFFICE_DETAILS_BY_PINCODE, key = "#pincode")
   public List<CommonLookUp> fetchPostOfficeDetailsByPincode(Integer pincode) {
 
     List<PincodeDetails> entities =
@@ -145,6 +154,7 @@ public class PincodeServiceImpl implements PincodeService {
         .toList();
   }
 
+  @Cacheable(cacheNames = CacheNames.DISTRICT_DETAILS_BY_PINCODE, key = "#pinCode")
   public PinCodeDistrictResponse getDistrictDetails(Integer pinCode) {
     PincodeDetails pincodeDetails =
         pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pinCode).stream()
@@ -163,6 +173,9 @@ public class PincodeServiceImpl implements PincodeService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(
+      cacheNames = CacheNames.PINCODE_DETAILS_BY_DISTRICT,
+      key = "T(in.gov.kfon.dmdm.Config.CacheKeyUtil).sortedUuids(#districtIds)")
   public List<CommonLookUp> fetchPincodeDetailsByDistrictIds(List<UUID> districtIds) {
     List<PincodeDetails> entities =
         pincodeDetailsRepository.findAllByDistrictMasterDistrictIdIn(districtIds);
@@ -176,6 +189,7 @@ public class PincodeServiceImpl implements PincodeService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.PINCODE_DETAIL_BY_PINCODE, key = "#pincode")
   public CommonLookUp fetchPincodeDetailByPincode(Integer pincode) {
     PincodeDetails pd =
         pincodeDetailsRepository.findAllByPincodeAndIsActiveTrue(pincode).stream()
