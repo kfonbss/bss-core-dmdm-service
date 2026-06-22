@@ -16,7 +16,11 @@ public class WebConfig {
         registry
             .addMapping("/**")
             .allowedOrigins(
-                "http://localhost:5173", "https://dev.kfonbss.co.in", "https://dev.kfon.co.in","https://qa.kfon.co.in","https://*.sritindia.com")
+                "http://localhost:5173",
+                "https://dev.kfonbss.co.in",
+                "https://dev.kfon.co.in",
+                "https://qa.kfon.co.in",
+                "https://*.sritindia.com","https://bssdemo.sritindia.com")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
             .allowedHeaders("*")
             .allowCredentials(true);

@@ -1,5 +1,6 @@
 package in.gov.kfon.dmdm.service;
 
+import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.constant.LocationType;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.VillageType;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +18,7 @@ public class VillageTypeServiceImpl implements VillageTypeService {
   private final VillageTypeRepository villageTypeRepository;
 
   @Override
+  @Cacheable(cacheNames = CacheNames.VILLAGE_TYPE_BY_LOCATION, key = "#locationType")
   public List<CommonLookUp> fetchByLocationType(LocationType locationType) {
     List<VillageType> villageTypes =
         villageTypeRepository.findByLocTypeAndIsActive(locationType, true);

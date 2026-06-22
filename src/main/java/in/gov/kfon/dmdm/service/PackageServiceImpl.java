@@ -1,5 +1,6 @@
 package in.gov.kfon.dmdm.service;
 
+import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.Package;
 import in.gov.kfon.dmdm.model.PackageCategory;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,7 @@ public class PackageServiceImpl implements PackageService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_PACKAGE_MAPS)
   public List<CommonLookUp> fetchAllPackageMaps() {
     return packageMapRepository.findAll().stream()
         .map(pm -> modelMapper.map(pm, CommonLookUp.class))
@@ -37,6 +40,7 @@ public class PackageServiceImpl implements PackageService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.PACKAGE_MAP_BY_ID, key = "#id")
   public CommonLookUp fetchPackageMapById(UUID id) {
     PackageMap pm =
         packageMapRepository
@@ -47,6 +51,7 @@ public class PackageServiceImpl implements PackageService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_PACKAGE_CATEGORIES)
   public List<CommonLookUp> fetchAllPackageCategories() {
     return packageCategoryRepository.findAll().stream()
         .map(pc -> modelMapper.map(pc, CommonLookUp.class))
@@ -55,6 +60,7 @@ public class PackageServiceImpl implements PackageService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.PACKAGE_CATEGORY_BY_ID, key = "#id")
   public CommonLookUp fetchPackageCategoryById(UUID id) {
     PackageCategory pc =
         packageCategoryRepository
@@ -85,6 +91,7 @@ public class PackageServiceImpl implements PackageService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_PACKAGES)
   public List<CommonLookUp> fetchAllPackages() {
     return packagesRepository.findAll().stream()
         .map(p -> modelMapper.map(p, CommonLookUp.class))
@@ -93,6 +100,7 @@ public class PackageServiceImpl implements PackageService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.PACKAGES_BY_ID, key = "#id")
   public CommonLookUp fetchPackagesById(UUID id) {
     Packages p =
         packagesRepository
@@ -103,6 +111,7 @@ public class PackageServiceImpl implements PackageService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_PACKAGE)
   public List<CommonLookUp> fetchAllPackage() {
     return packageRepository.findAll().stream()
         .map(p -> modelMapper.map(p, CommonLookUp.class))
@@ -111,6 +120,7 @@ public class PackageServiceImpl implements PackageService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.PACKAGE_BY_ID, key = "#id")
   public CommonLookUp fetchPackageById(UUID id) {
     Package p =
         packageRepository
