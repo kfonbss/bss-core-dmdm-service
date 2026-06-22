@@ -59,6 +59,11 @@ db:
   password: "Kfonbss2025#"
   sslmode: require
 
+redis:
+  host: bss-redis
+  port: 6379
+  # password: ""   # uncomment and set if your Redis requires auth
+
 spring:
   profiles: qa
 
