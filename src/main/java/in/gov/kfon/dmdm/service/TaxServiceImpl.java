@@ -89,6 +89,14 @@ public class TaxServiceImpl implements TaxService {
 
   @Override
   @Transactional(readOnly = true)
+  public List<TaxTypeResponse> taxTypeFetchAll() {
+    return taxTypeRepository.findAll().stream()
+            .map(taxCollection -> modelMapper.map(taxCollection, TaxTypeResponse.class))
+            .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   @Cacheable(cacheNames = CacheNames.TAX_TYPE_BY_ID, key = "#id")
   public CommonLookUp typeFetchById(UUID id) {
     TaxType taxType =
