@@ -237,6 +237,7 @@ public class RedisConfig {
                 BasicPolymorphicTypeValidator.builder()
                     .allowIfSubType("in.gov.kfon")
                     .allowIfSubType("java.util")
+                    .allowIfSubType("java.math")
                     .build(),
                 ObjectMapper.DefaultTyping.NON_FINAL,
                 JsonTypeInfo.As.PROPERTY);
