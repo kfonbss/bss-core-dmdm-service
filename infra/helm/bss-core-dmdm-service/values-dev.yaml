@@ -116,3 +116,12 @@ resources:
   limits:
     cpu: "1"
     memory: "1Gi"
+
+# ── Redis (shared instance — deployed via bss-redis Helm chart) ───────────────
+# Redis is NOT owned by this service. It runs as a shared ClusterIP service
+# named "bss-redis" in the same namespace, deployed once using the bss-redis chart.
+# All microservices point to the same instance.
+redis:
+  host: "bss-redis"   # ClusterIP service name of the shared Redis pod
+  port: 6379
+  password: ""        # empty for dev; set via secret for production

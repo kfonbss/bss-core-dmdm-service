@@ -1,5 +1,6 @@
 package in.gov.kfon.dmdm.service;
 
+import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.constant.LocationType;
 import in.gov.kfon.dmdm.contract.BlockDetailResponse;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +19,9 @@ public class BlockDetailServiceImpl implements BlockDetailService {
   private final BlockDetailRepository blockDetailRepository;
 
   @Override
+  @Cacheable(
+      cacheNames = CacheNames.BLOCK_CORPORATION_BY_DISTRICT,
+      key = "#districtId + ':' + #villageTypeId")
   public List<CommonLookUp> fetchCorporationName(UUID districtId, int villageTypeId) {
     return blockDetailRepository
         .findByLocTypeAndDistrictEntityDistrictIdAndVillageTypeIdAndIsActive(
@@ -33,6 +38,9 @@ public class BlockDetailServiceImpl implements BlockDetailService {
   }
 
   @Override
+  @Cacheable(
+      cacheNames = CacheNames.BLOCK_PANCHAYAT_BY_DISTRICT,
+      key = "#districtId + ':' + #villageTypeId")
   public List<CommonLookUp> fetchPanchayatName(UUID districtId, int villageTypeId) {
     return blockDetailRepository
         .findByLocTypeAndDistrictEntityDistrictIdAndVillageTypeIdAndIsActive(
@@ -50,6 +58,9 @@ public class BlockDetailServiceImpl implements BlockDetailService {
   }
 
   @Override
+  @Cacheable(
+      cacheNames = CacheNames.BLOCK_NAME_BY_DISTRICT,
+      key = "#districtId + ':' + #villageTypeId")
   public List<CommonLookUp> fetchBlockName(UUID districtId, int villageTypeId) {
     return blockDetailRepository
         .findByLocTypeAndDistrictEntityDistrictIdAndVillageTypeIdAndIsActive(
@@ -66,6 +77,7 @@ public class BlockDetailServiceImpl implements BlockDetailService {
         .toList();
   }
 
+  @Cacheable(cacheNames = CacheNames.BLOCK_BY_ID, key = "#blockId")
   public BlockDetailResponse fetchById(UUID blockId) {
     Optional<BlockDetail> blockDetail = blockDetailRepository.findById(blockId);
     if (blockDetail.isPresent()) {

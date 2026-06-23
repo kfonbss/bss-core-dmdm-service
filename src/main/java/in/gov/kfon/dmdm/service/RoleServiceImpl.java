@@ -1,5 +1,6 @@
 package in.gov.kfon.dmdm.service;
 
+import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.RoleType;
 import in.gov.kfon.dmdm.model.Roles;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ public class RoleServiceImpl implements RoleService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_ROLE_TYPES)
   public List<CommonLookUp> fetchAllRoleTypes() {
     return roleTypeRepository.findAll().stream()
         .map(rt -> modelMapper.map(rt, CommonLookUp.class))
@@ -35,6 +38,7 @@ public class RoleServiceImpl implements RoleService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ROLE_TYPE_BY_ID, key = "#id")
   public CommonLookUp fetchRoleTypeById(UUID id) {
     RoleType roleType =
         roleTypeRepository
@@ -45,6 +49,7 @@ public class RoleServiceImpl implements RoleService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_ROLES)
   public List<CommonLookUp> fetchAllRoles() {
     return rolesRepository.findAll().stream()
         .map(r -> modelMapper.map(r, CommonLookUp.class))
@@ -53,6 +58,7 @@ public class RoleServiceImpl implements RoleService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ROLE_BY_ID, key = "#id")
   public CommonLookUp fetchRoleById(UUID id) {
     Roles roles =
         rolesRepository
@@ -63,6 +69,7 @@ public class RoleServiceImpl implements RoleService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_ROLES_MODULES)
   public List<CommonLookUp> fetchAllRolesModules() {
     return rolesModulesRepository.findAll().stream()
         .map(rm -> modelMapper.map(rm, CommonLookUp.class))
@@ -71,6 +78,7 @@ public class RoleServiceImpl implements RoleService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ROLES_MODULE_BY_ID, key = "#id")
   public CommonLookUp fetchRolesModuleById(UUID id) {
     RolesModules rolesModules =
         rolesModulesRepository
