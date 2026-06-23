@@ -237,9 +237,9 @@ public class RedisConfig {
                 BasicPolymorphicTypeValidator.builder()
                     .allowIfSubType("in.gov.kfon")
                     .allowIfSubType("java.util")
-                    .allowIfSubType("java.math")
+                    .allowIfSubType("java.time")
                     .build(),
-                ObjectMapper.DefaultTyping.NON_FINAL,
+                ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE,
                 JsonTypeInfo.As.PROPERTY);
 
     ObjectWriter writer = mapper.writerFor(Object.class);
