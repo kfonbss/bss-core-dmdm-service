@@ -34,7 +34,6 @@ public class TaxType extends Auditor {
   private Boolean isActive;
 
   @Column(name = "taxtypeid")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer taxTypeId;
 
   @Column(name = "taxvaluepercent", precision = 10, scale = 2, nullable = false)
