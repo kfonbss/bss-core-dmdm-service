@@ -112,6 +112,12 @@ public class TaxController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 
+  @GetMapping("/tax-type/fetch-all")
+  public ResponseEntity<Response<List<TaxTypeResponse>>> taxTypeFetchAll() {
+    var data = service.taxTypeFetchAll();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
   @GetMapping("/details/fetch-all-active")
   public ResponseEntity<Response<TaxDetailResponse>> detailsFetchAllActive() {
     var data = service.detailsFetchAllActive();

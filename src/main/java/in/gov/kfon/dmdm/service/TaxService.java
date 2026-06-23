@@ -37,5 +37,7 @@ public interface TaxService {
 
   List<TaxTypeResponse> fetchByTaxTypeId(int taxTypeId);
 
+  List<TaxTypeResponse> taxTypeFetchAll();
+
   TaxDetailResponse detailsFetchAllActive();
 }
