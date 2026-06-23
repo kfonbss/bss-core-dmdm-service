@@ -35,7 +35,7 @@ pipeline {
 				sh '''
                     cd /home/jenkins/workspace/$SERVICE_NAME/infra/helm/$SERVICE_NAME
                     kubectl scale deployment $SERVICE_NAME --replicas=0 || true
-                    helm upgrade --install $SERVICE_NAME . -f values-dev.yaml
+                    helm upgrade --install --force $SERVICE_NAME . -f values-dev.yaml
                 '''
 			}
 		}

@@ -1,5 +1,6 @@
 package in.gov.kfon.dmdm.service;
 
+import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.contract.RevenueShareResponse;
 import in.gov.kfon.dmdm.model.RevenueShare;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,7 @@ public class RevenueServiceImpl implements RevenueService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_REVENUE)
   public List<CommonLookUp> fetchRevenue() {
     return repository.findAll().stream()
         .filter(RevenueShare::getIsActive)
@@ -29,6 +32,7 @@ public class RevenueServiceImpl implements RevenueService {
   }
 
   @Override
+  @Cacheable(cacheNames = CacheNames.REVENUE_BY_ID, key = "#id")
   public CommonLookUp fetchRevenueById(UUID id) {
     RevenueShare revenueShare =
         repository
@@ -42,6 +46,7 @@ public class RevenueServiceImpl implements RevenueService {
 
   @Override
   @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.REVENUE_SHARE_BY_ID, key = "#id")
   public RevenueShareResponse fetchRevenueShareById(UUID id) {
     RevenueShare revenueShare =
         repository
