@@ -60,30 +60,6 @@ db:
 spring:
   profiles: dev
 
-# ---- probes (valid: exactly one handler per probe) ----
-probes:
-  port: 8080
-
-  # Give JVM time to boot and DB to connect before any judgment
-  startup:
-    enabled: true
-    httpGet:
-      path: /bss-core-dmdm-service/actuator/health
-      port: 8080
-    periodSeconds: 5
-    failureThreshold: 120   # ~10 minutes grace
-
-  # Readiness: path-agnostic so it won't 404 due to context/actuator variance
-  readinessProbe:
-    tcpSocket:
-      port: 8080
-    initialDelaySeconds: 30
-    periodSeconds: 5
-    timeoutSeconds: 2
-    failureThreshold: 6
-
-  # Liveness: temporarily DISABLE so kubelet doesn't kill the pod while we test
-  livenessProbe: null
 
 ingress:
   enabled: false
