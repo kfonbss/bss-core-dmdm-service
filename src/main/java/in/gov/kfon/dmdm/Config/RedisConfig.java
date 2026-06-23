@@ -238,6 +238,8 @@ public class RedisConfig {
                     .allowIfSubType("in.gov.kfon")
                     .allowIfSubType("java.util")
                     .allowIfSubType("java.math")
+                    .allowIfSubType("java.sql")
+                    .allowIfSubType("java.time")
                     .build(),
                 ObjectMapper.DefaultTyping.NON_FINAL,
                 JsonTypeInfo.As.PROPERTY);
