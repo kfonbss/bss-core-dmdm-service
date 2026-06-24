@@ -238,6 +238,7 @@ public class RedisConfig {
                     .allowIfSubType("in.gov.kfon")
                     .allowIfSubType("java.util")
                     .allowIfSubType("java.time")
+                    .allowIfSubType("java.sql")
                     .build(),
                 ObjectMapper.DefaultTyping.OBJECT_AND_NON_CONCRETE,
                 JsonTypeInfo.As.PROPERTY);
