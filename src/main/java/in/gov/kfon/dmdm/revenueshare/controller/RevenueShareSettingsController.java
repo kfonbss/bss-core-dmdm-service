@@ -48,8 +48,20 @@ public class RevenueShareSettingsController {
 
   @GetMapping
   public ResponseEntity<Response<Page<RevenueShareSettingsResponse>>> getAll(
-      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-    Page<RevenueShareSettingsResponse> data = revenueShareSettingsService.getAll(page, size);
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size,
+      @RequestParam(required = false) Integer subgroup,
+      @RequestParam(required = false) UUID providerUuid,
+      @RequestParam(required = false) String search,
+      @RequestParam(required = false) Boolean isActive) {
+    Page<RevenueShareSettingsResponse> data =
+        revenueShareSettingsService.getAll(page, size, subgroup, providerUuid, search, isActive);
     return ResponseEntity.ok(Response.ok(data, "Fetched"));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    revenueShareSettingsService.delete(id);
+    return ResponseEntity.noContent().build();
   }
 }
