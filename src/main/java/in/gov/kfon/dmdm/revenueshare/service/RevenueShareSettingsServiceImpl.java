@@ -108,7 +108,8 @@ public class RevenueShareSettingsServiceImpl implements RevenueShareSettingsServ
   @Override
   @Transactional(readOnly = true)
   public Page<RevenueShareSettingsResponse> getAll(
-      int page, int size, Integer subgroup, UUID providerUuid, String search, Boolean isActive) {
+      int page, int size, UUID serviceTypeId, UUID providerUuid, String search, Boolean isActive) {
+    Integer subgroup = serviceTypeId != null ? resolveServiceType(serviceTypeId).getTypeId() : null;
     PageRequest pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "shareName"));
     Specification<RevenueShare> spec =
         RevenueShareSpecification.filter(subgroup, providerUuid, search, isActive);
@@ -158,15 +159,11 @@ public class RevenueShareSettingsServiceImpl implements RevenueShareSettingsServ
   private ServiceType resolveServiceType(UUID serviceTypeId) {
     return serviceTypeRepository
         .findById(serviceTypeId)
-        .orElseThrow(
-            () -> new EntityNotFoundException("Service type not found: " + serviceTypeId));
+        .orElseThrow(() -> new EntityNotFoundException("Service type not found: " + serviceTypeId));
   }
 
   private UUID resolveServiceTypeUuid(Integer typeId) {
     if (typeId == null) return null;
-    return serviceTypeRepository
-        .findByTypeId(typeId)
-        .map(ServiceType::getId)
-        .orElse(null);
+    return serviceTypeRepository.findByTypeId(typeId).map(ServiceType::getId).orElse(null);
   }
 }

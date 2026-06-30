@@ -16,7 +16,7 @@ public interface RevenueShareSettingsService {
   RevenueShareSettingsResponse getById(UUID id);
 
   Page<RevenueShareSettingsResponse> getAll(
-      int page, int size, Integer subgroup, UUID providerUuid, String search, Boolean isActive);
+      int page, int size, UUID serviceTypeId, UUID providerUuid, String search, Boolean isActive);
 
   void delete(UUID id);
 }

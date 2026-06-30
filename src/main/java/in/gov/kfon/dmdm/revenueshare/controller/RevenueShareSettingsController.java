@@ -50,12 +50,13 @@ public class RevenueShareSettingsController {
   public ResponseEntity<Response<Page<RevenueShareSettingsResponse>>> getAll(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size,
-      @RequestParam(required = false) Integer subgroup,
+      @RequestParam(required = false) UUID serviceTypeId,
       @RequestParam(required = false) UUID providerUuid,
       @RequestParam(required = false) String search,
       @RequestParam(required = false) Boolean isActive) {
     Page<RevenueShareSettingsResponse> data =
-        revenueShareSettingsService.getAll(page, size, subgroup, providerUuid, search, isActive);
+        revenueShareSettingsService.getAll(
+            page, size, serviceTypeId, providerUuid, search, isActive);
     return ResponseEntity.ok(Response.ok(data, "Fetched"));
   }
 
