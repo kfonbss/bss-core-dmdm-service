@@ -27,7 +27,7 @@ public class RevenueShareRequest {
 
   private String state;
 
-  @NotNull private Integer subgroup;
+  @NotNull private UUID serviceTypeId;
 
   private UUID providerUuid;
 

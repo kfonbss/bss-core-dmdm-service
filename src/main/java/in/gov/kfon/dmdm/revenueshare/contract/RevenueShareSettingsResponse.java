@@ -20,6 +20,7 @@ public class RevenueShareSettingsResponse {
   private String name;
   private String nameInLocal;
   private String state;
+  private UUID serviceTypeId;
   private Integer subgroup;
   private UUID providerUuid;
   private BigDecimal ibnpShare;

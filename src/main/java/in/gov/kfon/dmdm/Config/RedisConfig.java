@@ -47,8 +47,7 @@ public class RedisConfig {
     perCacheConfig.put(CacheNames.PINCODE_BY_ID, defaults.entryTtl(Duration.ofHours(2)));
     perCacheConfig.put(CacheNames.ALL_PINCODE_DETAILS, defaults.entryTtl(Duration.ofHours(2)));
     perCacheConfig.put(CacheNames.PINCODE_DETAILS_BY_ID, defaults.entryTtl(Duration.ofHours(2)));
-    perCacheConfig.put(
-        CacheNames.POST_OFFICE_BY_PINCODE, defaults.entryTtl(Duration.ofHours(2)));
+    perCacheConfig.put(CacheNames.POST_OFFICE_BY_PINCODE, defaults.entryTtl(Duration.ofHours(2)));
     perCacheConfig.put(
         CacheNames.POST_OFFICE_DETAILS_BY_PINCODE, defaults.entryTtl(Duration.ofHours(2)));
     perCacheConfig.put(
@@ -61,27 +60,21 @@ public class RedisConfig {
         CacheNames.BLOCK_CORPORATION_BY_DISTRICT, defaults.entryTtl(Duration.ofHours(2)));
     perCacheConfig.put(
         CacheNames.BLOCK_PANCHAYAT_BY_DISTRICT, defaults.entryTtl(Duration.ofHours(2)));
-    perCacheConfig.put(
-        CacheNames.BLOCK_NAME_BY_DISTRICT, defaults.entryTtl(Duration.ofHours(2)));
+    perCacheConfig.put(CacheNames.BLOCK_NAME_BY_DISTRICT, defaults.entryTtl(Duration.ofHours(2)));
     perCacheConfig.put(CacheNames.BLOCK_BY_ID, defaults.entryTtl(Duration.ofHours(2)));
-    perCacheConfig.put(
-        CacheNames.VILLAGE_TYPE_BY_LOCATION, defaults.entryTtl(Duration.ofHours(2)));
+    perCacheConfig.put(CacheNames.VILLAGE_TYPE_BY_LOCATION, defaults.entryTtl(Duration.ofHours(2)));
 
     // ---- 1-hour TTL: master/reference data (POP, packages, service types, etc.) ----
     perCacheConfig.put(CacheNames.ALL_POP_MASTERS, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.POP_MASTER_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
-    perCacheConfig.put(
-        CacheNames.ALL_POP_MASTER_BACKUPS, defaults.entryTtl(Duration.ofHours(1)));
-    perCacheConfig.put(
-        CacheNames.POP_MASTER_BACKUP_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(CacheNames.ALL_POP_MASTER_BACKUPS, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(CacheNames.POP_MASTER_BACKUP_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.ALL_DF_POP_LISTS, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.DF_POP_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.ALL_PACKAGE_MAPS, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.PACKAGE_MAP_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
-    perCacheConfig.put(
-        CacheNames.ALL_PACKAGE_CATEGORIES, defaults.entryTtl(Duration.ofHours(1)));
-    perCacheConfig.put(
-        CacheNames.PACKAGE_CATEGORY_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(CacheNames.ALL_PACKAGE_CATEGORIES, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(CacheNames.PACKAGE_CATEGORY_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.ALL_PACKAGES, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.PACKAGES_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.ALL_PACKAGE, defaults.entryTtl(Duration.ofHours(1)));
@@ -127,52 +120,40 @@ public class RedisConfig {
     perCacheConfig.put(CacheNames.MODULE_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.ALL_BANK_DETAILS, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.BANK_DETAILS_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
-    perCacheConfig.put(
-        CacheNames.BANK_DETAILS_BY_IFSC, defaults.entryTtl(Duration.ofMinutes(30)));
+    perCacheConfig.put(CacheNames.BANK_DETAILS_BY_IFSC, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.ALL_SAMPLE_TAX, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.SAMPLE_TAX_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
-    perCacheConfig.put(
-        CacheNames.ALL_TAX_COLLECTIONS, defaults.entryTtl(Duration.ofMinutes(30)));
-    perCacheConfig.put(
-        CacheNames.TAX_COLLECTION_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
+    perCacheConfig.put(CacheNames.ALL_TAX_COLLECTIONS, defaults.entryTtl(Duration.ofMinutes(30)));
+    perCacheConfig.put(CacheNames.TAX_COLLECTION_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.ALL_TAX_TYPES, defaults.entryTtl(Duration.ofMinutes(30)));
-    perCacheConfig.put(
-        CacheNames.TAX_TYPES_BY_TYPE_ID, defaults.entryTtl(Duration.ofMinutes(30)));
+    perCacheConfig.put(CacheNames.TAX_TYPES_BY_TYPE_ID, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.TAX_TYPE_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.ALL_TAX_DETAILS, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.TAX_DETAIL_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.ACTIVE_TAX_DETAIL, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.ALL_TAX_PAYERS, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.TAX_PAYER_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
-    perCacheConfig.put(
-        CacheNames.ALL_TAX_DISBURSEMENTS, defaults.entryTtl(Duration.ofMinutes(30)));
+    perCacheConfig.put(CacheNames.ALL_TAX_DISBURSEMENTS, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(
         CacheNames.TAX_DISBURSEMENT_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
-    perCacheConfig.put(
-        CacheNames.ALL_TAX_DISTRIBUTIONS, defaults.entryTtl(Duration.ofMinutes(30)));
+    perCacheConfig.put(CacheNames.ALL_TAX_DISTRIBUTIONS, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(
         CacheNames.TAX_DISTRIBUTION_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.ALL_REVENUE, defaults.entryTtl(Duration.ofMinutes(30)));
     perCacheConfig.put(CacheNames.REVENUE_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
-    perCacheConfig.put(
-        CacheNames.REVENUE_SHARE_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
+    perCacheConfig.put(CacheNames.REVENUE_SHARE_BY_ID, defaults.entryTtl(Duration.ofMinutes(30)));
 
     // ---- 15-minute TTL: inventory transactional data (changes more frequently) ----
-    perCacheConfig.put(
-        CacheNames.ALL_CREDIT_NOTES, defaults.entryTtl(Duration.ofMinutes(15)));
+    perCacheConfig.put(CacheNames.ALL_CREDIT_NOTES, defaults.entryTtl(Duration.ofMinutes(15)));
     perCacheConfig.put(CacheNames.CREDIT_NOTE_BY_ID, defaults.entryTtl(Duration.ofMinutes(15)));
-    perCacheConfig.put(
-        CacheNames.ALL_DC_CREDIT_NOTES, defaults.entryTtl(Duration.ofMinutes(15)));
-    perCacheConfig.put(
-        CacheNames.DC_CREDIT_NOTES_BY_ID, defaults.entryTtl(Duration.ofMinutes(15)));
+    perCacheConfig.put(CacheNames.ALL_DC_CREDIT_NOTES, defaults.entryTtl(Duration.ofMinutes(15)));
+    perCacheConfig.put(CacheNames.DC_CREDIT_NOTES_BY_ID, defaults.entryTtl(Duration.ofMinutes(15)));
     perCacheConfig.put(
         CacheNames.ALL_DEVICE_ACKNOWLEDGEMENTS, defaults.entryTtl(Duration.ofMinutes(15)));
     perCacheConfig.put(
         CacheNames.DEVICE_ACKNOWLEDGEMENT_BY_ID, defaults.entryTtl(Duration.ofMinutes(15)));
-    perCacheConfig.put(
-        CacheNames.ALL_DEVICE_DETAILS, defaults.entryTtl(Duration.ofMinutes(15)));
-    perCacheConfig.put(
-        CacheNames.DEVICE_DETAILS_BY_ID, defaults.entryTtl(Duration.ofMinutes(15)));
+    perCacheConfig.put(CacheNames.ALL_DEVICE_DETAILS, defaults.entryTtl(Duration.ofMinutes(15)));
+    perCacheConfig.put(CacheNames.DEVICE_DETAILS_BY_ID, defaults.entryTtl(Duration.ofMinutes(15)));
     perCacheConfig.put(
         CacheNames.ALL_DEVICE_DETAILS_AUDITS, defaults.entryTtl(Duration.ofMinutes(15)));
     perCacheConfig.put(
@@ -198,8 +179,7 @@ public class RedisConfig {
     perCacheConfig.put(
         CacheNames.LNP_DEVICE_REQUEST_MOVEMENT_BY_ID, defaults.entryTtl(Duration.ofMinutes(15)));
     perCacheConfig.put(CacheNames.ALL_DC_CREDIT_NOTE, defaults.entryTtl(Duration.ofMinutes(15)));
-    perCacheConfig.put(
-        CacheNames.DC_CREDIT_NOTE_BY_ID, defaults.entryTtl(Duration.ofMinutes(15)));
+    perCacheConfig.put(CacheNames.DC_CREDIT_NOTE_BY_ID, defaults.entryTtl(Duration.ofMinutes(15)));
     perCacheConfig.put(
         CacheNames.ALL_KFON_DC_DEVICE_REQUESTS, defaults.entryTtl(Duration.ofMinutes(15)));
     perCacheConfig.put(
@@ -208,10 +188,8 @@ public class RedisConfig {
         CacheNames.ALL_DEVICE_DETAILS_MOVEMENTS, defaults.entryTtl(Duration.ofMinutes(15)));
     perCacheConfig.put(
         CacheNames.DEVICE_DETAILS_MOVEMENT_BY_ID, defaults.entryTtl(Duration.ofMinutes(15)));
-    perCacheConfig.put(
-        CacheNames.ALL_FAULTY_REQUESTS, defaults.entryTtl(Duration.ofMinutes(15)));
-    perCacheConfig.put(
-        CacheNames.FAULTY_REQUEST_BY_ID, defaults.entryTtl(Duration.ofMinutes(15)));
+    perCacheConfig.put(CacheNames.ALL_FAULTY_REQUESTS, defaults.entryTtl(Duration.ofMinutes(15)));
+    perCacheConfig.put(CacheNames.FAULTY_REQUEST_BY_ID, defaults.entryTtl(Duration.ofMinutes(15)));
 
     return RedisCacheManager.builder(connectionFactory)
         .cacheDefaults(defaults)
