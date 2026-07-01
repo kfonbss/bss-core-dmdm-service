@@ -138,7 +138,8 @@ public class RevenueShareSettingsServiceImpl implements RevenueShareSettingsServ
       RevenueShare entity, List<ServiceTypeLookUp> serviceTypes) {
     UUID serviceTypeId =
         serviceTypes.stream()
-            .filter(st -> entity.getSubgroup() != null && entity.getSubgroup().equals(st.getIntId()))
+            .filter(
+                st -> entity.getSubgroup() != null && entity.getSubgroup().equals(st.getIntId()))
             .findFirst()
             .map(ServiceTypeLookUp::getId)
             .orElse(null);
@@ -183,7 +184,6 @@ public class RevenueShareSettingsServiceImpl implements RevenueShareSettingsServ
     return serviceTypes.stream()
         .filter(st -> serviceTypeId.equals(st.getId()))
         .findFirst()
-        .orElseThrow(
-            () -> new EntityNotFoundException("Service type not found: " + serviceTypeId));
+        .orElseThrow(() -> new EntityNotFoundException("Service type not found: " + serviceTypeId));
   }
 }
