@@ -46,11 +46,6 @@ management:
       probes:
         enabled: true
 
-package:
-  management:
-    service:
-      url: ${PACKAGE_MANAGEMENT_SERVICE_URL}
-
 logging:
   level:
     root: INFO
