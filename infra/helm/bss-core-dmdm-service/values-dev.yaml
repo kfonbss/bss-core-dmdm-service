@@ -57,6 +57,10 @@ db:
   password: "Kfonbss2025#"
   sslmode: require
 
+packageManagement:
+  service:
+    url: http://bss-package-management-services/bss-package-management-services
+
 spring:
   profiles: dev
 

@@ -64,6 +64,10 @@ redis:
   port: 6379
   # password: ""   # uncomment and set if your Redis requires auth
 
+packageManagement:
+  service:
+    url: http://bss-package-management-services/bss-package-management-services
+
 spring:
   profiles: qa
 

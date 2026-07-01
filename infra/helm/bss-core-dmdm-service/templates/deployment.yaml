@@ -111,6 +111,10 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: {{ default "dev" $spring.profiles | quote }}
 
+            # ---- External service URLs ----
+            - name: PACKAGE_MANAGEMENT_SERVICE_URL
+              value: "{{ required "packageManagement.service.url is required" .Values.packageManagement.service.url }}"
+
             # Optional ergonomics
             - name: TZ
               value: {{ default "Asia/Kolkata" .Values.timezone | quote }}
