@@ -81,7 +81,7 @@ public class PincodeServiceImpl implements PincodeService {
         .isActive(pd.getIsActive())
         .district(pd.getDistrict())
         .districtCode(pd.getDistrictCode())
-        .districtId(pd.getDistrictMaster().getDistrictId())
+        .districtId(pd.getDistrictMaster() != null ? pd.getDistrictMaster().getDistrictId() : null)
         .build();
   }
 
