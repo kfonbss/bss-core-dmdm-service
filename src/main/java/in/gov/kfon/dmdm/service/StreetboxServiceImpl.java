@@ -18,9 +18,9 @@ public class StreetboxServiceImpl implements StreetboxService {
   private final StreetboxLocationRepository streetboxLocationRepository;
 
   @Override
-  @Cacheable(cacheNames = CacheNames.ALL_STREETBOXES)
-  public List<StreetboxDto> fetchAllStreetboxes() {
-    return streetboxLocationRepository.findAll().stream()
+  @Cacheable(cacheNames = CacheNames.ALL_STREETBOXES, key = "#stateCode")
+  public List<StreetboxDto> fetchAllStreetboxes(String stateCode) {
+    return streetboxLocationRepository.findByStateCode(stateCode).stream()
         .filter(s -> s.getLatitude() != null && s.getLongitude() != null)
         .map(this::mapToDto)
         .toList();

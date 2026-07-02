@@ -47,10 +47,10 @@ class PincodeControllerTest {
   @Test
   void testFetchAllPincodes() throws Exception {
     List<CommonLookUp> list = List.of(lookup);
-    when(service.fetchAllPincodes()).thenReturn(list);
+    when(service.fetchAllPincodes("KL")).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/pincode/fetch-all"))
+        .perform(get("/api/pincode/fetch-all").header("X-Tenant-ID", "KL"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all pincodes"))
         .andExpect(jsonPath("$.data").isArray())
@@ -76,10 +76,10 @@ class PincodeControllerTest {
   @Test
   void testFetchAllPincodeDetails() throws Exception {
     List<CommonLookUp> list = List.of(lookup);
-    when(service.fetchAllPincodeDetails()).thenReturn(list);
+    when(service.fetchAllPincodeDetails("KL")).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/pincode/details/fetch-all"))
+        .perform(get("/api/pincode/details/fetch-all").header("X-Tenant-ID", "KL"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all pincode details"))
         .andExpect(jsonPath("$.data").isArray())

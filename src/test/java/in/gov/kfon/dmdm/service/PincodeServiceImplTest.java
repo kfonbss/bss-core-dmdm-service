@@ -54,16 +54,16 @@ class PincodeServiceImplTest {
 
   @Test
   void testFetchAllPincodes() {
-    when(pincodesRepository.findAll()).thenReturn(List.of(pincodes));
+    when(pincodesRepository.findByStateCode("KL")).thenReturn(List.of(pincodes));
     when(modelMapper.map(pincodes, CommonLookUp.class)).thenReturn(commonLookUp);
 
-    List<CommonLookUp> result = service.fetchAllPincodes();
+    List<CommonLookUp> result = service.fetchAllPincodes("KL");
 
     assertNotNull(result);
     assertEquals(1, result.size());
     assertEquals(id, result.get(0).getId());
 
-    verify(pincodesRepository, times(1)).findAll();
+    verify(pincodesRepository, times(1)).findByStateCode("KL");
     verify(modelMapper, times(1)).map(pincodes, CommonLookUp.class);
   }
 

@@ -74,16 +74,16 @@ class PopServiceImplTest {
 
   @Test
   void testFetchAllPopMaster() {
-    when(popMasterRepository.findAll()).thenReturn(List.of(popMaster));
+    when(popMasterRepository.findByStateCode("KL")).thenReturn(List.of(popMaster));
     when(modelMapper.map(popMaster, CommonLookUp.class)).thenReturn(commonLookUp);
 
-    List<CommonLookUp> result = service.fetchAllPopMasters();
+    List<CommonLookUp> result = service.fetchAllPopMasters("KL");
 
     assertNotNull(result);
     assertEquals(1, result.size());
     assertEquals(id, result.get(0).getId());
 
-    verify(popMasterRepository, times(1)).findAll();
+    verify(popMasterRepository, times(1)).findByStateCode("KL");
     verify(modelMapper, times(1)).map(popMaster, CommonLookUp.class);
   }
 

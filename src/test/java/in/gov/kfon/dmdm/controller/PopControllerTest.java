@@ -56,10 +56,10 @@ class PopControllerTest {
   @Test
   void testFetchAllPopMaster() throws Exception {
     List<CommonLookUp> list = List.of(lookup);
-    when(service.fetchAllPopMasters()).thenReturn(list);
+    when(service.fetchAllPopMasters("KL")).thenReturn(list);
 
     mockMvc
-        .perform(get("/api/pop/masters/fetch-all"))
+        .perform(get("/api/pop/masters/fetch-all").header("X-Tenant-ID", "KL"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data.length()").value(1))
         .andExpect(jsonPath("$.data[0].id").value(id.toString()))
