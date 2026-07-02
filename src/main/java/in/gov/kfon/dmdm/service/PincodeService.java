@@ -7,11 +7,11 @@ import java.util.UUID;
 
 public interface PincodeService {
 
-  List<CommonLookUp> fetchAllPincodes();
+  List<CommonLookUp> fetchAllPincodes(String stateCode);
 
   CommonLookUp fetchPincodeById(UUID id);
 
-  List<CommonLookUp> fetchAllPincodeDetails();
+  List<CommonLookUp> fetchAllPincodeDetails(String stateCode);
 
   CommonLookUp fetchPincodeDetailsById(UUID id);
 

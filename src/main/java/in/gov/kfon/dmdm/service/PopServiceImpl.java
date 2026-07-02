@@ -29,9 +29,9 @@ public class PopServiceImpl implements PopService {
 
   @Override
   @Transactional(readOnly = true)
-  @Cacheable(cacheNames = CacheNames.ALL_POP_MASTERS)
-  public List<CommonLookUp> fetchAllPopMasters() {
-    return popMasterRepository.findAll().stream()
+  @Cacheable(cacheNames = CacheNames.ALL_POP_MASTERS, key = "#stateCode")
+  public List<CommonLookUp> fetchAllPopMasters(String stateCode) {
+    return popMasterRepository.findByStateCode(stateCode).stream()
         .map(pm -> modelMapper.map(pm, CommonLookUp.class))
         .toList();
   }

@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface StreetboxService {
 
-  List<StreetboxDto> fetchAllStreetboxes();
+  List<StreetboxDto> fetchAllStreetboxes(String stateCode);
 }

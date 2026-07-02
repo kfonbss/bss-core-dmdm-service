@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +22,9 @@ public class PopController {
   private final PopService service;
 
   @GetMapping("/masters/fetch-all")
-  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPopMasters() {
-    var data = service.fetchAllPopMasters();
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPopMasters(
+      @RequestHeader("X-Tenant-ID") String tenantId) {
+    var data = service.fetchAllPopMasters(tenantId);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all pop masters"));
   }
 

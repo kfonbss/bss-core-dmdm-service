@@ -52,10 +52,10 @@ class DistrictControllerTest {
 
     List<CommonLookUp> responseList = List.of(lookup1, lookup2);
 
-    when(service.fetchAll()).thenReturn(responseList);
+    when(service.fetchAll("KL")).thenReturn(responseList);
 
     mockMvc
-        .perform(get("/api/district/fetch-all"))
+        .perform(get("/api/district/fetch-all").header("X-Tenant-ID", "KL"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched"))
         .andExpect(jsonPath("$.data").isArray())
