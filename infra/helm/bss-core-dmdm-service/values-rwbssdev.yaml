@@ -67,7 +67,7 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   hosts:
-    - host: rwbssdevapi.kfon.co.in
+    - host: rwbssapi.sritindia.com
       paths:
         - path: /bss-core-dmdm-service
           pathType: Prefix
@@ -76,7 +76,7 @@ ingress:
   tls:
     - secretName: rwbss-all-services-tls
       hosts:
-        - rwbssdevapi.kfon.co.in
+        - rwbssapi.sritindia.com
 
 hpa:
   enabled: false
