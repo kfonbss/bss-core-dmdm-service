@@ -24,6 +24,9 @@ public final class CacheNames {
   public static final String PINCODE_DETAIL_BY_PINCODE = "pincode:detailByPincode";
   public static final String DISTRICT_DETAILS_BY_PINCODE = "pincode:districtDetailsByPincode";
 
+  // Region caches
+  public static final String ALL_REGIONS = "region:all";
+
   // State caches
   public static final String ALL_STATES = "state:all";
   public static final String STATE_BY_ID = "state:byId";
