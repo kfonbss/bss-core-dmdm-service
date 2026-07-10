@@ -18,7 +18,7 @@ public class RegionServiceImpl implements RegionService {
 
   @Override
   @Transactional(readOnly = true)
-  @Cacheable(cacheNames = CacheNames.ALL_REGIONS)
+  @Cacheable(cacheNames = CacheNames.ALL_REGIONS, unless = "#result == null || #result.isEmpty()")
   public List<CommonLookUp> fetchAll() {
     return repository.findByStatus(1).stream()
         .map(
