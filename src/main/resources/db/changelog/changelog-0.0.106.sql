@@ -1,0 +1,1 @@
+ALTER TABLE regions ADD COLUMN IF NOT EXISTS st_code INT;

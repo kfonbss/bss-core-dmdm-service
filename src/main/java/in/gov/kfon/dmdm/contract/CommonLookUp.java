@@ -22,4 +22,5 @@ public class CommonLookUp {
   private UUID districtId;
   private Integer villageTypeId;
   private Integer districtCode;
+  private Integer stCode;
 }
