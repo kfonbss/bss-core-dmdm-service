@@ -20,7 +20,7 @@ public class RegionServiceImpl implements RegionService {
   @Transactional(readOnly = true)
   @Cacheable(cacheNames = CacheNames.ALL_REGIONS, unless = "#result == null || #result.isEmpty()")
   public List<CommonLookUp> fetchAll() {
-    return repository.findByStatus(1).stream()
+    return repository.findByStatus(0).stream()
         .map(
             region ->
                 CommonLookUp.builder()
@@ -29,7 +29,7 @@ public class RegionServiceImpl implements RegionService {
                     .code(region.getStateCode())
                     .name(region.getName())
                     .nameInLocal(region.getRegion())
-                    .isActive(region.getStatus() == 1)
+                    .isActive(true)
                     .build())
         .toList();
   }
