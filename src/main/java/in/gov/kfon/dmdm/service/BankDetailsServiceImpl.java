@@ -39,7 +39,10 @@ public class BankDetailsServiceImpl implements BankDetailsService {
 
   @Override
   @Transactional(readOnly = true)
-  @Cacheable(cacheNames = CacheNames.BANK_DETAILS_BY_IFSC, key = "#ifsc", unless = "#result == null")
+  @Cacheable(
+      cacheNames = CacheNames.BANK_DETAILS_BY_IFSC,
+      key = "#ifsc",
+      unless = "#result == null")
   public BankDetailsResponse fetchByIfsc(String ifsc) {
     return repository
         .findByBankIfscCode(ifsc)
