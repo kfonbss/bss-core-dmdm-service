@@ -36,6 +36,9 @@ public final class CacheNames {
   public static final String ALL_DISTRICTS = "district:all";
   public static final String DISTRICT_BY_ID = "district:byId";
 
+  // Territory caches
+  public static final String ALL_TERRITORIES = "territory:all";
+
   // Block detail caches
   public static final String BLOCK_CORPORATION_BY_DISTRICT = "block:corporationByDistrict";
   public static final String BLOCK_PANCHAYAT_BY_DISTRICT = "block:panchayatByDistrict";
