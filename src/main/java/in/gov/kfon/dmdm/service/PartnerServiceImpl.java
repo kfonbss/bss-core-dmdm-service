@@ -1,7 +1,9 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.PartnerRequest;
 import in.gov.kfon.dmdm.contract.PartnerResponse;
+import in.gov.kfon.dmdm.model.Partner;
 import in.gov.kfon.dmdm.model.PartnerAccount;
 import in.gov.kfon.dmdm.model.PartnerAgreementDetail;
 import in.gov.kfon.dmdm.model.PartnerDemoUsers;
@@ -54,6 +56,27 @@ public class PartnerServiceImpl implements PartnerService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Partner not found: " + id));
     return modelMapper.map(entity, PartnerResponse.class);
+  }
+
+  @Override
+  public PartnerResponse create(PartnerRequest request) {
+    Partner partner = modelMapper.map(request, Partner.class);
+    partner.setId(null);
+    Partner saved = partnerRepository.save(partner);
+    return modelMapper.map(saved, PartnerResponse.class);
+  }
+
+  @Override
+  public PartnerResponse update(UUID id, PartnerRequest request) {
+    Partner partner =
+        partnerRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Partner not found: " + id));
+    partner.setName(request.getName());
+    partner.setDescription(request.getDescription());
+    partner.setIsActive(request.getIsActive());
+    Partner saved = partnerRepository.save(partner);
+    return modelMapper.map(saved, PartnerResponse.class);
   }
 
   @Override
