@@ -20,8 +20,7 @@ public class TerritoryServiceImpl implements TerritoryService {
   @Transactional(readOnly = true)
   @Cacheable(cacheNames = CacheNames.ALL_TERRITORIES, key = "#tenantId")
   public List<CommonLookUp> fetchAll(String tenantId) {
-    Integer stcode = Integer.valueOf(tenantId);
-    return repository.findByStcodeAndStatus(stcode, 1).stream()
+    return repository.findByCCodeAndStatus(tenantId, 1).stream()
         .map(
             territory ->
                 CommonLookUp.builder()
