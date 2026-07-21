@@ -49,7 +49,6 @@ public class PartnerCategoryController {
   public ResponseEntity<Response<PartnerCategoryResponse>> update(
       @PathVariable UUID id, @RequestBody PartnerCategoryRequest request) {
     var data = service.update(id, request);
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(Response.ok(data, "Partner category updated"));
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Partner category updated"));
   }
 }
