@@ -1,9 +1,3 @@
-<<<<<<< HEAD
--- Seed: add missing ANP partner type
-INSERT INTO partner (id, name, description, is_active)
-SELECT gen_random_uuid(), 'ANP', 'Access Network Provider', TRUE
-WHERE NOT EXISTS (SELECT 1 FROM partner WHERE name = 'ANP');
-=======
 --liquibase formatted sql
 
 --changeset dmdm:107-1
@@ -124,4 +118,3 @@ VALUES
     ('train_route',     'Train Route',        'DROPDOWN', 'TECHNICAL', '{"required": false}', FALSE, TRUE),
     ('zone_code',       'Zone Code',          'TEXT',     'TECHNICAL', '{"required": false}', FALSE, TRUE)
 ON CONFLICT (field_key) DO NOTHING;
->>>>>>> 7a84529 (DFG apis added)
