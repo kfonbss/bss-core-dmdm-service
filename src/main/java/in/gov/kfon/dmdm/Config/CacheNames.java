@@ -139,6 +139,13 @@ public final class CacheNames {
   public static final String ALL_DEVICE_CONDITION_STATUSES = "inv:allDeviceConditionStatuses";
   public static final String DEVICE_CONDITION_STATUS_BY_ID = "inv:deviceConditionStatusById";
 
+  // Onboarding Form caches
+  public static final String ALL_CLIENT_APPLICATIONS = "onboarding:allApplications";
+  public static final String CLIENT_APPLICATION_BY_ID = "onboarding:applicationById";
+  public static final String ALL_FORM_FIELD_MASTERS = "onboarding:allFieldMasters";
+  public static final String FORM_FIELD_MASTER_BY_ID = "onboarding:fieldMasterById";
+  public static final String FORM_SCHEMA = "onboarding:formSchema";
+
   // Inventory - transactional data caches (15 min)
   public static final String ALL_CREDIT_NOTES = "inv:allCreditNotes";
   public static final String CREDIT_NOTE_BY_ID = "inv:creditNoteById";
