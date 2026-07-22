@@ -118,6 +118,9 @@ public final class CacheNames {
   public static final String ALL_CAF_DETAILS = "caf:all";
   public static final String CAF_DETAIL_BY_ID = "caf:byId";
 
+  // Gateway caches
+  public static final String ALL_GATEWAYS = "gateway:all";
+
   // Inventory - master/reference data caches (1 hour)
   public static final String ALL_DEVICE_MAKES = "inv:allDeviceMakes";
   public static final String DEVICE_MAKE_BY_ID = "inv:deviceMakeById";
