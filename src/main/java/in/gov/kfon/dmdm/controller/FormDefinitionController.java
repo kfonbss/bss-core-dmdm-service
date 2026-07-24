@@ -43,7 +43,7 @@ public class FormDefinitionController {
 
   @GetMapping
   public ResponseEntity<Response<List<FormDefinitionResponse>>> fetchAll(
-      @RequestParam UUID applicationId,
+      @RequestParam(required = false) UUID applicationId,
       @RequestParam(required = false) String tenantId,
       @RequestParam(required = false) String formType) {
     var data = definitionService.fetchAll(applicationId, tenantId, formType);

@@ -64,6 +64,10 @@ public class FormDefinitionServiceImpl implements FormDefinitionService {
   @Transactional(readOnly = true)
   public List<FormDefinitionResponse> fetchAll(
       UUID applicationId, String tenantId, String formType) {
+    if (applicationId == null) {
+      return repository.findAll().stream().map(this::toResponse).toList();
+    }
+
     ClientApplication application =
         applicationRepository
             .findById(applicationId)
