@@ -70,6 +70,10 @@ public class FormDefinitionField extends Auditor {
   @Column(name = "custom_validations", columnDefinition = "jsonb")
   private String customValidations;
 
+  @JdbcTypeCode(SqlTypes.JSON)
+  @Column(name = "metadata", columnDefinition = "jsonb")
+  private String metadata;
+
   @Column(name = "lookup_type")
   private String lookupType;
 }

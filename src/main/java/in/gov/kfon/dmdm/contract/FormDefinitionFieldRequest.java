@@ -24,5 +24,6 @@ public class FormDefinitionFieldRequest {
   private Boolean isReadonly;
   private Integer displayOrder;
   private String customValidations;
+  private String metadata;
   private String lookupType;
 }

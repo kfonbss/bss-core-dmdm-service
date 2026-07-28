@@ -68,6 +68,7 @@ public class FormDefinitionFieldServiceImpl implements FormDefinitionFieldServic
     if (request.getIsReadonly() != null) existing.setIsReadonly(request.getIsReadonly());
     existing.setDisplayOrder(request.getDisplayOrder());
     existing.setCustomValidations(request.getCustomValidations());
+    existing.setMetadata(request.getMetadata());
     existing.setLookupType(request.getLookupType());
     if (existing.getField() == null && request.getFieldType() != null) {
       existing.setFieldType(FieldType.valueOf(request.getFieldType().toUpperCase()));
@@ -143,6 +144,7 @@ public class FormDefinitionFieldServiceImpl implements FormDefinitionFieldServic
         .isReadonly(request.getIsReadonly() != null ? request.getIsReadonly() : Boolean.FALSE)
         .displayOrder(request.getDisplayOrder())
         .customValidations(request.getCustomValidations())
+        .metadata(request.getMetadata())
         .lookupType(request.getLookupType())
         .build();
   }
@@ -165,6 +167,7 @@ public class FormDefinitionFieldServiceImpl implements FormDefinitionFieldServic
         .isReadonly(f.getIsReadonly())
         .displayOrder(f.getDisplayOrder())
         .customValidations(f.getCustomValidations())
+        .metadata(f.getMetadata())
         .lookupType(f.getLookupType())
         .build();
   }
