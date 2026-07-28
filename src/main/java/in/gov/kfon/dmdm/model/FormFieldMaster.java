@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "form_field_master")
@@ -38,9 +40,11 @@ public class FormFieldMaster extends Auditor {
   @Column(name = "field_category")
   private FieldCategory fieldCategory;
 
+  @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "default_validations", columnDefinition = "jsonb")
   private String defaultValidations;
 
+  @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "metadata", columnDefinition = "jsonb")
   private String metadata;
 

@@ -15,6 +15,7 @@ public class FormDefinitionFieldRequest {
   private UUID sectionId;
   private UUID fieldId;         // null for custom fields
   private String fieldKey;      // required when fieldId is null (custom field)
+  private String fieldType;     // required when fieldId is null (custom field)
   private String customLabel;
   private String placeholder;
   private String defaultValue;

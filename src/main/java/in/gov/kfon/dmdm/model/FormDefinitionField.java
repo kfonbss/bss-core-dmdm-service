@@ -1,5 +1,6 @@
 package in.gov.kfon.dmdm.model;
 
+import in.gov.kfon.dmdm.constant.FieldType;
 import jakarta.persistence.*;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "form_definition_field")
@@ -38,6 +41,10 @@ public class FormDefinitionField extends Auditor {
   @Column(name = "field_key")
   private String fieldKey;
 
+  @Enumerated(EnumType.STRING)
+  @Column(name = "field_type")
+  private FieldType fieldType;
+
   @Column(name = "custom_label")
   private String customLabel;
 
@@ -59,6 +66,7 @@ public class FormDefinitionField extends Auditor {
   @Column(name = "display_order")
   private Integer displayOrder;
 
+  @JdbcTypeCode(SqlTypes.JSON)
   @Column(name = "custom_validations", columnDefinition = "jsonb")
   private String customValidations;
 

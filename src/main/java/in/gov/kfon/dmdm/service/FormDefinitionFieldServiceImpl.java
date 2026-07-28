@@ -1,5 +1,6 @@
 package in.gov.kfon.dmdm.service;
 
+import in.gov.kfon.dmdm.constant.FieldType;
 import in.gov.kfon.dmdm.contract.FormDefinitionFieldRequest;
 import in.gov.kfon.dmdm.contract.FormDefinitionFieldResponse;
 import in.gov.kfon.dmdm.model.FormDefinitionField;
@@ -68,6 +69,9 @@ public class FormDefinitionFieldServiceImpl implements FormDefinitionFieldServic
     existing.setDisplayOrder(request.getDisplayOrder());
     existing.setCustomValidations(request.getCustomValidations());
     existing.setLookupType(request.getLookupType());
+    if (existing.getField() == null && request.getFieldType() != null) {
+      existing.setFieldType(FieldType.valueOf(request.getFieldType().toUpperCase()));
+    }
 
     return toResponse(repository.save(existing));
   }
@@ -120,11 +124,17 @@ public class FormDefinitionFieldServiceImpl implements FormDefinitionFieldServic
                   () -> new EntityNotFoundException("Field master not found: " + request.getFieldId()));
     }
 
+    FieldType customFieldType = null;
+    if (master == null && request.getFieldType() != null) {
+      customFieldType = FieldType.valueOf(request.getFieldType().toUpperCase());
+    }
+
     return FormDefinitionField.builder()
         .formDefinition(definition)
         .section(section)
         .field(master)
         .fieldKey(master == null ? request.getFieldKey() : null)
+        .fieldType(customFieldType)
         .customLabel(request.getCustomLabel())
         .placeholder(request.getPlaceholder())
         .defaultValue(request.getDefaultValue())
@@ -145,7 +155,8 @@ public class FormDefinitionFieldServiceImpl implements FormDefinitionFieldServic
         .fieldId(f.getField() != null ? f.getField().getId() : null)
         .fieldKey(f.getField() != null ? f.getField().getFieldKey() : f.getFieldKey())
         .fieldLabel(f.getField() != null ? f.getField().getFieldLabel() : null)
-        .fieldType(f.getField() != null ? f.getField().getFieldType().name() : null)
+        .fieldType(f.getField() != null ? f.getField().getFieldType().name()
+            : (f.getFieldType() != null ? f.getFieldType().name() : null))
         .customLabel(f.getCustomLabel())
         .placeholder(f.getPlaceholder())
         .defaultValue(f.getDefaultValue())
