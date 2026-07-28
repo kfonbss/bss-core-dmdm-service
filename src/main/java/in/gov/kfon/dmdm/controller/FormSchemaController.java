@@ -27,8 +27,9 @@ public class FormSchemaController {
   @GetMapping
   public ResponseEntity<Response<FormSchemaResponse>> resolveSchema(
       @RequestParam String appCode,
-      @RequestParam(required = false) String tenantId) {
-    var data = service.resolveFormSchema(appCode, tenantId);
+      @RequestParam(required = false) String tenantId,
+      @RequestParam(required = false) String formType) {
+    var data = service.resolveFormSchema(appCode, tenantId, formType);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Form schema resolved"));
   }
 }

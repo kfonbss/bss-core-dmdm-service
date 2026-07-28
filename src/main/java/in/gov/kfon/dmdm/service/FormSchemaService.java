@@ -4,5 +4,5 @@ import in.gov.kfon.dmdm.contract.FormSchemaResponse;
 
 public interface FormSchemaService {
 
-  FormSchemaResponse resolveFormSchema(String appCode, String tenantId);
+  FormSchemaResponse resolveFormSchema(String appCode, String tenantId, String formType);
 }
