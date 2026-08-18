@@ -13,6 +13,10 @@ spec:
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/bss-core-dmdm-service/actuator/prometheus"
       labels:
         app.kubernetes.io/name: {{ .Release.Name }}
         app.kubernetes.io/instance: {{ .Release.Name }}
@@ -33,7 +37,7 @@ spec:
           env:
             # Make sure health endpoint exists and is exposed
             - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
-              value: "health"
+              value: "health,info,prometheus"
             - name: MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED
               value: "true"
             # Put actuator under a fixed base path

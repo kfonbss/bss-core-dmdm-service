@@ -24,6 +24,9 @@ public final class CacheNames {
   public static final String PINCODE_DETAIL_BY_PINCODE = "pincode:detailByPincode";
   public static final String DISTRICT_DETAILS_BY_PINCODE = "pincode:districtDetailsByPincode";
 
+  // Region caches
+  public static final String ALL_REGIONS = "region:all";
+
   // State caches
   public static final String ALL_STATES = "state:all";
   public static final String STATE_BY_ID = "state:byId";
@@ -32,6 +35,9 @@ public final class CacheNames {
   // District caches
   public static final String ALL_DISTRICTS = "district:all";
   public static final String DISTRICT_BY_ID = "district:byId";
+
+  // Territory caches
+  public static final String ALL_TERRITORIES = "territory:all";
 
   // Block detail caches
   public static final String BLOCK_CORPORATION_BY_DISTRICT = "block:corporationByDistrict";
@@ -111,6 +117,9 @@ public final class CacheNames {
   // CAF Details caches
   public static final String ALL_CAF_DETAILS = "caf:all";
   public static final String CAF_DETAIL_BY_ID = "caf:byId";
+
+  // Gateway caches
+  public static final String ALL_GATEWAYS = "gateway:all";
 
   // Inventory - master/reference data caches (1 hour)
   public static final String ALL_DEVICE_MAKES = "inv:allDeviceMakes";

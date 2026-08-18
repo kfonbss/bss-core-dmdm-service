@@ -14,7 +14,7 @@ public class StreetboxController {
   private final StreetboxService streetboxService;
 
   @GetMapping("/fetch-all")
-  public List<StreetboxDto> fetchAllStreetboxes() {
-    return streetboxService.fetchAllStreetboxes();
+  public List<StreetboxDto> fetchAllStreetboxes(@RequestHeader("X-Tenant-ID") String tenantId) {
+    return streetboxService.fetchAllStreetboxes(tenantId);
   }
 }

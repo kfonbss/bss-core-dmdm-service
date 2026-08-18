@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface PopService {
 
-  List<CommonLookUp> fetchAllPopMasters();
+  List<CommonLookUp> fetchAllPopMasters(String stateCode);
 
   CommonLookUp fetchPopMasterById(UUID id);
 

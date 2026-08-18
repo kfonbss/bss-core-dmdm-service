@@ -19,8 +19,9 @@ public class PincodeController {
   private final PincodeService service;
 
   @GetMapping("/fetch-all")
-  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPincodes() {
-    var data = service.fetchAllPincodes();
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPincodes(
+      @RequestHeader("X-Tenant-ID") String tenantId) {
+    var data = service.fetchAllPincodes(tenantId);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all pincodes"));
   }
 
@@ -31,8 +32,9 @@ public class PincodeController {
   }
 
   @GetMapping("/details/fetch-all")
-  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDetails() {
-    var data = service.fetchAllPincodeDetails();
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDetails(
+      @RequestHeader("X-Tenant-ID") String tenantId) {
+    var data = service.fetchAllPincodeDetails(tenantId);
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched all pincode details"));
   }

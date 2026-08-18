@@ -23,9 +23,9 @@ public class DistrictServiceImpl implements DistrictService {
 
   @Override
   @Transactional(readOnly = true)
-  @Cacheable(cacheNames = CacheNames.ALL_DISTRICTS)
-  public List<CommonLookUp> fetchAll() {
-    return repository.findAll().stream()
+  @Cacheable(cacheNames = CacheNames.ALL_DISTRICTS, key = "#stateCode")
+  public List<CommonLookUp> fetchAll(String stateCode) {
+    return repository.findByStateCode(stateCode).stream()
         .map(district -> modelMapper.map(district, CommonLookUp.class))
         .toList();
   }

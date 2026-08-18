@@ -91,8 +91,8 @@ public class TaxServiceImpl implements TaxService {
   @Transactional(readOnly = true)
   public List<TaxTypeResponse> taxTypeFetchAll() {
     return taxTypeRepository.findAll().stream()
-            .map(taxCollection -> modelMapper.map(taxCollection, TaxTypeResponse.class))
-            .toList();
+        .map(taxCollection -> modelMapper.map(taxCollection, TaxTypeResponse.class))
+        .toList();
   }
 
   @Override

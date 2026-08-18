@@ -1,6 +1,5 @@
 package in.gov.kfon.dmdm.service;
 
-import in.gov.kfon.dmdm.Config.CacheKeyUtil;
 import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.contract.PinCodeDistrictResponse;
@@ -32,9 +31,9 @@ public class PincodeServiceImpl implements PincodeService {
 
   @Override
   @Transactional(readOnly = true)
-  @Cacheable(cacheNames = CacheNames.ALL_PINCODES)
-  public List<CommonLookUp> fetchAllPincodes() {
-    return pincodesRepository.findAll().stream()
+  @Cacheable(cacheNames = CacheNames.ALL_PINCODES, key = "#stateCode")
+  public List<CommonLookUp> fetchAllPincodes(String stateCode) {
+    return pincodesRepository.findByStateCode(stateCode).stream()
         .map(
             pincodes -> {
               CommonLookUp response = modelMapper.map(pincodes, CommonLookUp.class);
@@ -57,10 +56,10 @@ public class PincodeServiceImpl implements PincodeService {
 
   @Override
   @Transactional(readOnly = true)
-  @Cacheable(cacheNames = CacheNames.ALL_PINCODE_DETAILS)
-  public List<CommonLookUp> fetchAllPincodeDetails() {
+  @Cacheable(cacheNames = CacheNames.ALL_PINCODE_DETAILS, key = "#stateCode")
+  public List<CommonLookUp> fetchAllPincodeDetails(String stateCode) {
 
-    return pincodeDetailsRepository.findAll().stream()
+    return pincodeDetailsRepository.findByDistrictMasterStateCode(stateCode).stream()
         .filter(pd -> pd.getPincode() != null)
         .filter(distinctByKey(PincodeDetails::getPincode))
         .map(this::mapToCommonLookUp)

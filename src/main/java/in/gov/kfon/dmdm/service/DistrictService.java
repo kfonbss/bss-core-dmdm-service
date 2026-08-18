@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface DistrictService {
-  List<CommonLookUp> fetchAll();
+  List<CommonLookUp> fetchAll(String stateCode);
 
   CommonLookUp fetchById(UUID id);
 }

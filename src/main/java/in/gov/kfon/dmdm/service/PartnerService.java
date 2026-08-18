@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.PartnerRequest;
 import in.gov.kfon.dmdm.contract.PartnerResponse;
 import java.util.List;
 import java.util.UUID;
@@ -10,6 +11,10 @@ public interface PartnerService {
   List<PartnerResponse> fetchAll();
 
   PartnerResponse fetchById(UUID id);
+
+  PartnerResponse create(PartnerRequest request);
+
+  PartnerResponse update(UUID id, PartnerRequest request);
 
   List<CommonLookUp> fetchAllFinanceDetails();
 

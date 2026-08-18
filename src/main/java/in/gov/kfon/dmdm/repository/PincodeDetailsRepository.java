@@ -10,4 +10,6 @@ public interface PincodeDetailsRepository extends JpaRepository<PincodeDetails, 
   List<PincodeDetails> findAllByPincodeAndIsActiveTrue(Integer pincode);
 
   List<PincodeDetails> findAllByDistrictMasterDistrictIdIn(List<UUID> districtIds);
+
+  List<PincodeDetails> findByDistrictMasterStateCode(String stateCode);
 }

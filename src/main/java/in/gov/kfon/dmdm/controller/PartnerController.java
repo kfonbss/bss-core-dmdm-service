@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.controller;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.PartnerRequest;
 import in.gov.kfon.dmdm.contract.PartnerResponse;
 import in.gov.kfon.dmdm.contract.Response;
 import in.gov.kfon.dmdm.service.PartnerService;
@@ -11,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +36,20 @@ public class PartnerController {
   public ResponseEntity<Response<PartnerResponse>> fetchById(@PathVariable UUID id) {
     var data = service.fetchById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  @PostMapping("type")
+  public ResponseEntity<Response<PartnerResponse>> create(@RequestBody PartnerRequest request) {
+    var data = service.create(request);
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(Response.created(data, "Partner type created"));
+  }
+
+  @PutMapping("type/{id}")
+  public ResponseEntity<Response<PartnerResponse>> update(
+      @PathVariable UUID id, @RequestBody PartnerRequest request) {
+    var data = service.update(id, request);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Partner type updated"));
   }
 
   @GetMapping("/finances/fetch-all")
