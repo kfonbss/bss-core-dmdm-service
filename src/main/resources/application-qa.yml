@@ -51,3 +51,18 @@ logging:
     root: INFO
     org.springframework: INFO
     org.hibernate.SQL: WARN
+
+app:
+  tenants:
+    KL:
+      url: ${KL_POSTGRES_URL}
+      username: ${KL_POSTGRES_USER}
+      password: ${KL_POSTGRES_PASSWORD}
+    LD:                               # No dedicated LD QA database yet; reuses ld_bss_dmdm_dev.
+      url: ${LD_POSTGRES_URL}
+      username: ${LD_POSTGRES_USER}
+      password: ${LD_POSTGRES_PASSWORD}
+#    PY:                              # PY database does not exist in QA.
+#      url: ${PY_POSTGRES_URL}
+#      username: ${PY_POSTGRES_USER}
+#      password: ${PY_POSTGRES_PASSWORD}
