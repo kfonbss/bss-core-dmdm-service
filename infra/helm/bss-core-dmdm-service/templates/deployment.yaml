@@ -47,6 +47,7 @@ spec:
             # Keep your known context path
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: "/bss-core-dmdm-service"
+
             # ---- DB secrets (explicit form to avoid value/valueFrom conflicts) ----
             - name: DB_HOST
               valueFrom:
@@ -79,11 +80,9 @@ spec:
                   name: {{ .Release.Name }}-db
                   key: DB_SSLMODE
 
-            # ---- JDBC URL expected by your app ----
-            - name: POSTGRES_URL
-              value: "jdbc:postgresql://$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSLMODE)"
-
-            # ---- Spring-standard datasource envs ----
+            # ---- Spring-standard datasource envs (fallback used by rwbssdev/prod, which have
+            # no app.tenants configured — the app's default "KL" tenant reads this via
+            # SPRING_DATASOURCE_URL when app.tenants.KL isn't set for the active profile) ----
             - name: SPRING_DATASOURCE_URL
               value: "jdbc:postgresql://$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSLMODE)"
             - name: SPRING_DATASOURCE_USERNAME
@@ -96,6 +95,44 @@ spec:
                 secretKeyRef:
                   name: {{ .Release.Name }}-db
                   key: DB_PASSWORD
+
+            {{- if .Values.app }}
+            # ---- KL tenant DB credentials ----
+            - name: KL_POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db
+                  key: KL_POSTGRES_URL
+            - name: KL_POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db
+                  key: KL_POSTGRES_USER
+            - name: KL_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db
+                  key: KL_POSTGRES_PASSWORD
+
+            {{- if .Values.app.tenants.LD }}
+            # ---- LD tenant DB credentials ----
+            - name: LD_POSTGRES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db
+                  key: LD_POSTGRES_URL
+            - name: LD_POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db
+                  key: LD_POSTGRES_USER
+            - name: LD_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db
+                  key: LD_POSTGRES_PASSWORD
+            {{- end }}
+            {{- end }}
 
             # ---- Redis (shared bss-redis service in the same namespace) ----
             - name: REDIS_HOST

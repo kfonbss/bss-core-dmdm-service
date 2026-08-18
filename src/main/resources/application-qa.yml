@@ -53,6 +53,8 @@ logging:
     org.hibernate.SQL: WARN
 
 app:
+  tenant-routing:
+    enabled: true # QA only — every other profile keeps the normal single-datasource setup
   tenants:
     KL:
       url: ${KL_POSTGRES_URL}
