@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SysConfigRepository extends JpaRepository<SysConfig, UUID> {
-  Optional<SysConfig> findByTenantIdIgnoreCaseAndIsActiveTrue(String tenantId);
+  // state_code has no unique constraint in the legacy-migrated schema (changelog-0.0.8.sql) — using
+  // findFirst rather than findBy to avoid a runtime exception if a state_code has multiple rows.
+  Optional<SysConfig> findFirstByStateCodeIgnoreCase(String stateCode);
 }

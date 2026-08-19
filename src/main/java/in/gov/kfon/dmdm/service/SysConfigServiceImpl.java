@@ -20,13 +20,14 @@ public class SysConfigServiceImpl implements SysConfigService {
   @Cacheable(cacheNames = CacheNames.SYS_CONFIG_BY_TENANT, key = "#tenantId")
   public SysConfigResponse resolve(String tenantId) {
     return repository
-        .findByTenantIdIgnoreCaseAndIsActiveTrue(tenantId)
+        .findFirstByStateCodeIgnoreCase(tenantId)
         .map(
             sysConfig ->
                 SysConfigResponse.builder()
-                    .tenantId(sysConfig.getTenantId())
+                    .tenantId(sysConfig.getStateCode().trim())
                     .aaaIp(sysConfig.getAaaIp())
                     .build())
-        .orElseThrow(() -> new IllegalArgumentException("No sys_config found for tenant: " + tenantId));
+        .orElseThrow(
+            () -> new IllegalArgumentException("No sys_config found for tenant: " + tenantId));
   }
 }
