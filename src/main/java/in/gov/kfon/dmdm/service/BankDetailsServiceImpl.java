@@ -3,9 +3,7 @@ package in.gov.kfon.dmdm.service;
 import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.BankDetailsResponse;
 import in.gov.kfon.dmdm.model.BankDetails;
-import in.gov.kfon.dmdm.model.StateDistrict;
 import in.gov.kfon.dmdm.repository.BankDetailsRepository;
-import in.gov.kfon.dmdm.repository.StateDistrictRepository;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -19,21 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BankDetailsServiceImpl implements BankDetailsService {
   private final BankDetailsRepository repository;
-  private final StateDistrictRepository stateDistrictRepository;
   private final ModelMapper modelMapper;
 
   @Override
   @Transactional(readOnly = true)
-  @Cacheable(cacheNames = CacheNames.ALL_BANK_DETAILS, key = "#tenantId")
-  public List<BankDetailsResponse> fetchAll(String tenantId) {
-    String stateName =
-        stateDistrictRepository
-            .findFirstByStateCodeIgnoreCase(tenantId)
-            .map(StateDistrict::getStateName)
-            .map(String::trim)
-            .filter(name -> !name.isEmpty())
-            .orElseThrow(() -> new IllegalArgumentException("No state found for tenant: " + tenantId));
-    List<BankDetails> entities = repository.findByBankStateIgnoreCase(stateName);
+  @Cacheable(cacheNames = CacheNames.ALL_BANK_DETAILS)
+  public List<BankDetailsResponse> fetchAll() {
+    List<BankDetails> entities = repository.findAll();
     return entities.stream().map(bank -> modelMapper.map(bank, BankDetailsResponse.class)).toList();
   }
 
