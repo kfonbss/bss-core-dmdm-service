@@ -120,6 +120,7 @@ public final class CacheNames {
 
   // Gateway caches
   public static final String ALL_GATEWAYS = "gateway:all";
+  public static final String GATEWAYS_BY_TENANT = "gateway:byTenant";
 
   // Inventory - master/reference data caches (1 hour)
   public static final String ALL_DEVICE_MAKES = "inv:allDeviceMakes";
