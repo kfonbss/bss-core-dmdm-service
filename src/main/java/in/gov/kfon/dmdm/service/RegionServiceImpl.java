@@ -27,6 +27,7 @@ public class RegionServiceImpl implements RegionService {
                     .id(region.getId())
                     .masterId(region.getRegionId())
                     .code(region.getStateCode())
+                    .stCode(region.getStCode())
                     .name(region.getName())
                     .nameInLocal(region.getRegion())
                     .isActive(region.getStatus() == 1)
