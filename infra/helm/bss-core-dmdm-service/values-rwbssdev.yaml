@@ -101,3 +101,20 @@ redis:
   host: "bss-redis"   # ClusterIP service name of the shared Redis pod
   port: 6379
   password: ""        # empty for dev; set via secret for production
+
+app:
+  tenants:
+    KL:
+      host: 172.16.80.153
+      port: 5432
+      name: ld_bss_dmdm_dev
+      user: appuser
+      password: "Kfonbss2025#"
+      sslmode: require
+    LD:
+      host: 172.16.80.153
+      port: 5432
+      name: ld_bss_dmdm_dev
+      user: appuser
+      password: "Kfonbss2025#"
+      sslmode: require
