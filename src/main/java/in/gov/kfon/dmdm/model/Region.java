@@ -35,6 +35,9 @@ public class Region {
   @Column(name = "region")
   private String region;
 
+  @Column(name = "st_code")
+  private Integer stCode;
+
   @Column(name = "status")
   private Integer status;
 }
