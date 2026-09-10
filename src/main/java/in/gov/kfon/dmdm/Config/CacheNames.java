@@ -140,6 +140,10 @@ public final class CacheNames {
   public static final String ALL_DEVICE_CONDITION_STATUSES = "inv:allDeviceConditionStatuses";
   public static final String DEVICE_CONDITION_STATUS_BY_ID = "inv:deviceConditionStatusById";
 
+  // Supporting Document caches
+  public static final String SUPPORTING_DOCS_BY_CATEGORY = "supportingDoc:byCategory";
+  public static final String ALL_DOCUMENT_CATEGORIES = "supportingDoc:allCategories";
+
   // Onboarding Form caches
   public static final String ALL_CLIENT_APPLICATIONS = "onboarding:allApplications";
   public static final String CLIENT_APPLICATION_BY_ID = "onboarding:applicationById";
