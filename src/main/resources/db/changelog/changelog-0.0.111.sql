@@ -32,3 +32,4 @@ CREATE TABLE state_district (
 
 CREATE INDEX idx_state_district_stcode ON state_district (stcode);
 CREATE INDEX idx_state_district_statecode ON state_district (statecode);
+ALTER TABLE regions ADD COLUMN IF NOT EXISTS st_code INT;
