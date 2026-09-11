@@ -27,6 +27,9 @@ public final class CacheNames {
   // Region caches
   public static final String ALL_REGIONS = "region:all";
 
+  // Sys config (RADIUS region routing) caches
+  public static final String SYS_CONFIG_BY_TENANT = "sysConfig:byTenant";
+
   // State caches
   public static final String ALL_STATES = "state:all";
   public static final String STATE_BY_ID = "state:byId";
@@ -120,6 +123,7 @@ public final class CacheNames {
 
   // Gateway caches
   public static final String ALL_GATEWAYS = "gateway:all";
+  public static final String GATEWAYS_BY_TENANT = "gateway:byTenant";
 
   // Inventory - master/reference data caches (1 hour)
   public static final String ALL_DEVICE_MAKES = "inv:allDeviceMakes";
