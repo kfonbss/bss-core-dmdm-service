@@ -12,6 +12,9 @@ spring:
       password: ${REDIS_PASSWORD:}
   datasource:
     driver-class-name: org.postgresql.Driver
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
@@ -51,14 +54,3 @@ logging:
     root: INFO
     org.springframework: INFO
     org.hibernate.SQL: WARN
-
-app:
-  tenants:
-    KL:
-      url: ${KL_POSTGRES_URL}
-      username: ${KL_POSTGRES_USER}
-      password: ${KL_POSTGRES_PASSWORD}
-    LD:
-      url: ${LD_POSTGRES_URL}
-      username: ${LD_POSTGRES_USER}
-      password: ${LD_POSTGRES_PASSWORD}
