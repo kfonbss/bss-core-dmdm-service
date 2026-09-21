@@ -147,6 +147,10 @@ public final class CacheNames {
   public static final String SUPPORTING_DOCS_BY_CATEGORY = "supportingDoc:byCategory";
   public static final String ALL_DOCUMENT_CATEGORIES = "supportingDoc:allCategories";
 
+  // Payout master caches
+  public static final String ALL_PAYOUT_PAYMENT_MODES = "payout:allPaymentModes";
+  public static final String PAYOUT_CHARGES_BY_MODE = "payout:chargesByMode";
+
   // Onboarding Form caches
   public static final String ALL_CLIENT_APPLICATIONS = "onboarding:allApplications";
   public static final String CLIENT_APPLICATION_BY_ID = "onboarding:applicationById";
