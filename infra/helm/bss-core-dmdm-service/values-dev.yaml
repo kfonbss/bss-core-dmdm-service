@@ -52,7 +52,7 @@ env:
 db:
   host: 172.16.80.153
   port: 5432
-  name: bss_dmdm_dev
+  name: ld_bss_dmdm_dev
   user: appuser
   password: "Kfonbss2025#"
   sslmode: require
