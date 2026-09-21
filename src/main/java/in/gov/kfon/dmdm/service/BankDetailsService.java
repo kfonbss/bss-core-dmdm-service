@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BankDetailsService {
-  List<BankDetailsResponse> fetchAll();
+  List<BankDetailsResponse> fetchAll(String tenantId);
 
   BankDetailsResponse fetchById(UUID id);
 

@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class PartnerCategoryRequest {
-  private String name;
-  private String description;
-  private Boolean isActive;
+@NoArgsConstructor
+public class SysConfigResponse {
+  private String tenantId;
+  private String aaaIp;
 }

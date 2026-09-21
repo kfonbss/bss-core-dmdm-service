@@ -1,27 +1,25 @@
 package in.gov.kfon.dmdm.controller;
 
-import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.contract.Response;
-import in.gov.kfon.dmdm.service.TerritoryService;
-import java.util.List;
+import in.gov.kfon.dmdm.contract.SysConfigResponse;
+import in.gov.kfon.dmdm.service.SysConfigService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/territory")
+@RequestMapping("/api/sys-config")
 @RequiredArgsConstructor
-public class TerritoryController {
-  private final TerritoryService service;
+public class SysConfigController {
+  private final SysConfigService service;
 
-  @GetMapping("/fetch-all")
-  public ResponseEntity<Response<List<CommonLookUp>>> fetchAll(
-      @RequestHeader("X-Tenant-ID") String tenantId) {
-    var data = service.fetchAll(tenantId);
+  @GetMapping("/{tenantId}")
+  public ResponseEntity<Response<SysConfigResponse>> resolve(@PathVariable String tenantId) {
+    var data = service.resolve(tenantId);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 }

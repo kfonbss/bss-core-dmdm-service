@@ -59,6 +59,26 @@ db:
   password: "Kfonbss2025#"
   sslmode: require
 
+app:
+  tenants:
+    KL:
+      host: 172.16.80.153
+      port: 5433
+      name: bss_dmdm_qa
+      user: appuser
+      password: "Kfonbss2025#"
+      sslmode: require
+    # No dedicated LD QA database exists yet for bss-core-dmdm-service, so LD
+    # reuses the ld_bss_dmdm_dev database (same reuse pattern as LD's QA tenant
+    # in bss-user-role-mapping-services).
+    LD:
+      host: 172.16.80.153
+      port: 5432
+      name: ld_bss_dmdm_dev
+      user: appuser
+      password: "Kfonbss2025#"
+      sslmode: require
+
 redis:
   host: bss-redis
   port: 6379
