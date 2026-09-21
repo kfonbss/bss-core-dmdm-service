@@ -80,18 +80,16 @@ spec:
                   key: DB_SSLMODE
 
             # ---- JDBC URL expected by your app ----
-            - name: POSTGRES_URL
-              value: "jdbc:postgresql://$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSLMODE)"
 
             # ---- Spring-standard datasource envs ----
-            - name: SPRING_DATASOURCE_URL
+            - name: POSTGRES_URL
               value: "jdbc:postgresql://$(DB_HOST):$(DB_PORT)/$(DB_NAME)?sslmode=$(DB_SSLMODE)"
-            - name: SPRING_DATASOURCE_USERNAME
+            - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}-db
                   key: DB_USER
-            - name: SPRING_DATASOURCE_PASSWORD
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Release.Name }}-db
