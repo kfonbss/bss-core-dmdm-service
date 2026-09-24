@@ -121,4 +121,5 @@
             <include file="/db/changelog/changelog-0.0.116.sql"/>
             <include file="/db/changelog/changelog-0.0.117.sql"/>
             <include file="/db/changelog/changelog-0.0.118.sql"/>
+            <include file="/db/changelog/changelog-0.0.119.sql"/>
 </databaseChangeLog>
