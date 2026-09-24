@@ -1,4 +1,4 @@
-name: Deploy bss-core-dmdm-services
+name: Deploy bss-core-dmdm-service
 
 on:
   push:
@@ -12,15 +12,15 @@ on:
 
 # Avoid overlapping deploys to the same env
 concurrency:
-  group: bss-core-dmdm-services-${{ github.ref }}
+  group: bss-core-dmdm-service-${{ github.ref }}
   cancel-in-progress: true
 
 env:
   AWS_REGION: ap-south-1
-  ECR_REPO: bss-core-dmdm-services
+  ECR_REPO: bss-core-dmdm-service
   IMAGE_TAG: ${{ github.sha }}
-  CHART_PATH: infra/helm/bss-core-dmdm-services
-  HELM_RELEASE: bss-core-dmdm-services
+  CHART_PATH: infra/helm/bss-core-dmdm-service
+  HELM_RELEASE: bss-core-dmdm-service
   K8S_NAMESPACE: dev
   VALUES_FILE: values-dev.yaml
 

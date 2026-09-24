@@ -21,7 +21,7 @@ env:
 
   # Datasource
   - name: SPRING_DATASOURCE_URL
-    value: jdbc:postgresql://172.16.80.153:5432/bss_dmdm_dev?sslmode=require
+    value: jdbc:postgresql://172.16.80.153:5432/ld_bss_dmdm_dev?sslmode=require
   - name: SPRING_DATASOURCE_USERNAME
     value: appuser
   - name: SPRING_DATASOURCE_PASSWORD
@@ -52,7 +52,7 @@ env:
 db:
   host: 172.16.80.153
   port: 5432
-  name: bss_dmdm_dev
+  name: ld_bss_dmdm_dev
   user: appuser
   password: "Kfonbss2025#"
   sslmode: require

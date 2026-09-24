@@ -65,6 +65,10 @@ public class RedisConfig {
     perCacheConfig.put(CacheNames.VILLAGE_TYPE_BY_LOCATION, defaults.entryTtl(Duration.ofHours(2)));
 
     // ---- 1-hour TTL: master/reference data (POP, packages, service types, etc.) ----
+    perCacheConfig.put(
+        CacheNames.SUPPORTING_DOCS_BY_CATEGORY, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(
+        CacheNames.ALL_DOCUMENT_CATEGORIES, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.ALL_POP_MASTERS, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.POP_MASTER_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.ALL_POP_MASTER_BACKUPS, defaults.entryTtl(Duration.ofHours(1)));
