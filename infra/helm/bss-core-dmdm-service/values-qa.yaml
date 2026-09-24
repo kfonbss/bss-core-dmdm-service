@@ -23,7 +23,7 @@ env:
 
   # Datasource
   - name: SPRING_DATASOURCE_URL
-    value: jdbc:postgresql://172.16.80.153:5433/bss_dmdm_qa?sslmode=require
+    value: jdbc:postgresql://172.16.80.153:5432/ld_bss_dmdm_dev?sslmode=require
   - name: SPRING_DATASOURCE_USERNAME
     value: appuser
   - name: SPRING_DATASOURCE_PASSWORD
@@ -53,8 +53,8 @@ env:
 # (kept for reference if your chart templates read these)
 db:
   host: 172.16.80.153
-  port: 5433
-  name: bss_dmdm_qa
+  port: 5432
+  name: ld_bss_dmdm_dev
   user: appuser
   password: "Kfonbss2025#"
   sslmode: require
@@ -63,14 +63,11 @@ app:
   tenants:
     KL:
       host: 172.16.80.153
-      port: 5433
-      name: bss_dmdm_qa
+      port: 5432
+      name: ld_bss_dmdm_dev
       user: appuser
       password: "Kfonbss2025#"
       sslmode: require
-    # No dedicated LD QA database exists yet for bss-core-dmdm-service, so LD
-    # reuses the ld_bss_dmdm_dev database (same reuse pattern as LD's QA tenant
-    # in bss-user-role-mapping-services).
     LD:
       host: 172.16.80.153
       port: 5432
@@ -82,7 +79,7 @@ app:
 redis:
   host: bss-redis
   port: 6379
-  # password: ""   # uncomment and set if your Redis requires auth
+  password: ""
 
 spring:
   profiles: qa
