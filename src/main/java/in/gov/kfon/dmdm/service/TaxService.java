@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.InvoiceStateCodeResponse;
 import in.gov.kfon.dmdm.contract.TaxDetailResponse;
 import in.gov.kfon.dmdm.contract.TaxTypeResponse;
 import java.util.List;
@@ -40,4 +41,6 @@ public interface TaxService {
   List<TaxTypeResponse> taxTypeFetchAll();
 
   TaxDetailResponse detailsFetchAllActive();
+
+  List<InvoiceStateCodeResponse> invoiceStateCodeFetchAll();
 }
