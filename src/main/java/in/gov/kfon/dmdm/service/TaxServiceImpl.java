@@ -200,8 +200,15 @@ public class TaxServiceImpl implements TaxService {
   @Transactional(readOnly = true)
   @Cacheable(cacheNames = CacheNames.ALL_INVOICE_STATE_CODES)
   public List<InvoiceStateCodeResponse> invoiceStateCodeFetchAll() {
+    // stcode is a fixed-length CHAR(3) column (legacy-shaped migration), space-padded on read —
+    // trim before handing it to callers, who print/store it verbatim on invoices.
     return invoiceStateCodeRepository.findAll().stream()
-        .map(m -> modelMapper.map(m, InvoiceStateCodeResponse.class))
+        .map(
+            m ->
+                InvoiceStateCodeResponse.builder()
+                    .stCode(m.getStCode() != null ? m.getStCode().trim() : null)
+                    .stateCode(m.getStateCode() != null ? m.getStateCode().trim() : null)
+                    .build())
         .toList();
   }
 }
