@@ -17,4 +17,13 @@ public class StreetboxController {
   public List<StreetboxDto> fetchAllStreetboxes(@RequestHeader("X-Tenant-ID") String tenantId) {
     return streetboxService.fetchAllStreetboxes(tenantId);
   }
+
+  /** Nearest streetbox to a point, as a list of zero or one item. */
+  @GetMapping("/nearest")
+  public List<StreetboxDto> fetchNearestStreetbox(
+      @RequestHeader("X-Tenant-ID") String tenantId,
+      @RequestParam double latitude,
+      @RequestParam double longitude) {
+    return streetboxService.fetchNearestStreetbox(tenantId, latitude, longitude);
+  }
 }
