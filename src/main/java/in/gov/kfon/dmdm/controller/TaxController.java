@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.controller;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.InvoiceStateCodeResponse;
 import in.gov.kfon.dmdm.contract.Response;
 import in.gov.kfon.dmdm.contract.TaxDetailResponse;
 import in.gov.kfon.dmdm.contract.TaxTypeResponse;
@@ -121,6 +122,12 @@ public class TaxController {
   @GetMapping("/details/fetch-all-active")
   public ResponseEntity<Response<TaxDetailResponse>> detailsFetchAllActive() {
     var data = service.detailsFetchAllActive();
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
+  }
+
+  @GetMapping("/invoice-statecode/fetch-all")
+  public ResponseEntity<Response<List<InvoiceStateCodeResponse>>> invoiceStateCodeFetchAll() {
+    var data = service.invoiceStateCodeFetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 }

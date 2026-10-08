@@ -123,4 +123,6 @@
             <include file="/db/changelog/changelog-0.0.118.sql"/>
             <include file="/db/changelog/changelog-0.0.119.sql"/>
             <include file="/db/changelog/changelog-0.0.120.sql"/>
+            <include file="/db/changelog/changelog-0.0.121.sql"/>
+            <include file="/db/changelog/changelog-0.0.122.sql"/>
 </databaseChangeLog>

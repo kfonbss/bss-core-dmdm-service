@@ -26,6 +26,17 @@ public class StreetboxServiceImpl implements StreetboxService {
         .toList();
   }
 
+  /** Empty list when the state has no streetbox with coordinates, otherwise exactly one. */
+  @Override
+  public List<StreetboxDto> fetchNearestStreetbox(
+      String stateCode, double latitude, double longitude) {
+    return streetboxLocationRepository
+        .findNearestByStateCode(stateCode, latitude, longitude)
+        .map(this::mapToDto)
+        .stream()
+        .toList();
+  }
+
   private StreetboxDto mapToDto(StreetboxLocation s) {
     return StreetboxDto.builder()
         .equipmentName(s.getEquipmentName())

@@ -101,6 +101,7 @@ public final class CacheNames {
   public static final String TAX_DISBURSEMENT_BY_ID = "tax:disbursementById";
   public static final String ALL_TAX_DISTRIBUTIONS = "tax:allDistributions";
   public static final String TAX_DISTRIBUTION_BY_ID = "tax:distributionById";
+  public static final String ALL_INVOICE_STATE_CODES = "tax:allInvoiceStateCodes";
 
   // Revenue caches
   public static final String ALL_REVENUE = "revenue:all";
