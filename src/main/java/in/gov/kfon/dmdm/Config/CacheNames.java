@@ -26,6 +26,7 @@ public final class CacheNames {
 
   // Region caches
   public static final String ALL_REGIONS = "region:all";
+  public static final String REGION_BY_STATE_CODE = "region:byStateCode";
 
   // Sys config (RADIUS region routing) caches
   public static final String SYS_CONFIG_BY_TENANT = "sysConfig:byTenant";

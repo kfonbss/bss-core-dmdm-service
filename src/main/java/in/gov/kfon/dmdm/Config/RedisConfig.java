@@ -37,6 +37,7 @@ public class RedisConfig {
 
     // ---- 4-hour TTL: geographic constants that almost never change ----
     perCacheConfig.put(CacheNames.ALL_STATES, defaults.entryTtl(Duration.ofHours(4)));
+    perCacheConfig.put(CacheNames.REGION_BY_STATE_CODE, defaults.entryTtl(Duration.ofHours(4)));
     perCacheConfig.put(CacheNames.STATE_BY_ID, defaults.entryTtl(Duration.ofHours(4)));
     perCacheConfig.put(CacheNames.STATES_BY_CODES, defaults.entryTtl(Duration.ofHours(4)));
     perCacheConfig.put(CacheNames.ALL_DISTRICTS, defaults.entryTtl(Duration.ofHours(4)));
@@ -67,8 +68,7 @@ public class RedisConfig {
     // ---- 1-hour TTL: master/reference data (POP, packages, service types, etc.) ----
     perCacheConfig.put(
         CacheNames.SUPPORTING_DOCS_BY_CATEGORY, defaults.entryTtl(Duration.ofHours(1)));
-    perCacheConfig.put(
-        CacheNames.ALL_DOCUMENT_CATEGORIES, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(CacheNames.ALL_DOCUMENT_CATEGORIES, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.ALL_POP_MASTERS, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.POP_MASTER_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.ALL_POP_MASTER_BACKUPS, defaults.entryTtl(Duration.ofHours(1)));
