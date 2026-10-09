@@ -5,8 +5,10 @@ import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.contract.PinCodeDistrictResponse;
 import in.gov.kfon.dmdm.model.PincodeDetails;
 import in.gov.kfon.dmdm.model.Pincodes;
+import in.gov.kfon.dmdm.model.State;
 import in.gov.kfon.dmdm.repository.PincodeDetailsRepository;
 import in.gov.kfon.dmdm.repository.PincodesRepository;
+import in.gov.kfon.dmdm.repository.StateRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +29,7 @@ public class PincodeServiceImpl implements PincodeService {
 
   private final PincodesRepository pincodesRepository;
   private final PincodeDetailsRepository pincodeDetailsRepository;
+  private final StateRepository stateRepository;
   private final ModelMapper modelMapper;
 
   @Override
@@ -134,6 +137,39 @@ public class PincodeServiceImpl implements PincodeService {
       throw new EntityNotFoundException("No post offices found for pincode: " + pincode);
     }
 
+    return toPostOfficeDetails(entities);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  @Cacheable(
+      cacheNames = CacheNames.POST_OFFICE_DETAILS_BY_PINCODE,
+      key = "#pincode + ':' + #stateCode")
+  public List<CommonLookUp> fetchPostOfficeDetailsByPincode(Integer pincode, String stateCode) {
+    List<PincodeDetails> entities =
+        pincodeDetailsRepository.findActiveByPincodeInCircle(pincode, stateCode);
+
+    if (entities.isEmpty()) {
+      throw new EntityNotFoundException(
+          "Pincode "
+              + pincode
+              + " is not a serviceable area for the "
+              + circleName(stateCode)
+              + " circle. Please enter a pincode within the circle.");
+    }
+
+    return toPostOfficeDetails(entities);
+  }
+
+  private String circleName(String stateCode) {
+    return stateRepository.findByCodeAndIsActive(stateCode, true).stream()
+        .map(State::getName)
+        .filter(name -> name != null && !name.isBlank())
+        .findFirst()
+        .orElse(stateCode);
+  }
+
+  private List<CommonLookUp> toPostOfficeDetails(List<PincodeDetails> entities) {
     return entities.stream()
         .map(
             entity -> {
