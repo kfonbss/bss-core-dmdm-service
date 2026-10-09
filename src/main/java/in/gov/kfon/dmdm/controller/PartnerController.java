@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,8 +28,9 @@ public class PartnerController {
   private static final String FETCHED = "Fetched";
 
   @GetMapping("type/fetch-all")
-  public ResponseEntity<Response<List<PartnerResponse>>> fetchAll() {
-    var data = service.fetchAll();
+  public ResponseEntity<Response<List<PartnerResponse>>> fetchAll(
+      @RequestHeader(value = "X-Tenant-ID", required = false) String tenantId) {
+    var data = service.fetchAll(tenantId);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
 

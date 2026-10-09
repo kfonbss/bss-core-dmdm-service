@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PartnerServiceImpl implements PartnerService {
 
+  private static final String KFON_TENANT_CODE = "KFON";
+
   private final PartnerRepository partnerRepository;
   private final PartnerFinance2Repository partnerFinance2Repository;
   private final PartnerTaxpayerLogsRepository taxpayerLogsRepository;
@@ -43,8 +45,13 @@ public class PartnerServiceImpl implements PartnerService {
   private final ModelMapper modelMapper;
 
   @Override
-  public List<PartnerResponse> fetchAll() {
+  public List<PartnerResponse> fetchAll(String tenantId) {
+    // KFON tenant uses LNP, other tenants use ANP; never return both
+    boolean isKfon =
+        tenantId == null || tenantId.isBlank() || KFON_TENANT_CODE.equalsIgnoreCase(tenantId);
+    String hiddenType = isKfon ? "ANP" : "LNP";
     return partnerRepository.findAll().stream()
+        .filter(partner -> !hiddenType.equalsIgnoreCase(partner.getName()))
         .map(partner -> modelMapper.map(partner, PartnerResponse.class))
         .toList();
   }

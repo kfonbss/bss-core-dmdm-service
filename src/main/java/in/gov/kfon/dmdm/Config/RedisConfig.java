@@ -37,6 +37,7 @@ public class RedisConfig {
 
     // ---- 4-hour TTL: geographic constants that almost never change ----
     perCacheConfig.put(CacheNames.ALL_STATES, defaults.entryTtl(Duration.ofHours(4)));
+    perCacheConfig.put(CacheNames.REGION_BY_STATE_CODE, defaults.entryTtl(Duration.ofHours(4)));
     perCacheConfig.put(CacheNames.STATE_BY_ID, defaults.entryTtl(Duration.ofHours(4)));
     perCacheConfig.put(CacheNames.STATES_BY_CODES, defaults.entryTtl(Duration.ofHours(4)));
     perCacheConfig.put(CacheNames.ALL_DISTRICTS, defaults.entryTtl(Duration.ofHours(4)));
