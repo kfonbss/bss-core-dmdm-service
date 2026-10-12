@@ -20,16 +20,16 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
-    return error(HttpStatus.BAD_REQUEST, "Bad Request", ex.getMessage());
+    return error(HttpStatus.BAD_REQUEST, "Invalid Request", ex.getMessage());
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
     String message =
         ex.getBindingResult().getFieldErrors().stream()
-            .map(fe -> fe.getField() + " " + fe.getDefaultMessage())
+            .map(fe -> fe.getField() + ": " + fe.getDefaultMessage())
             .collect(Collectors.joining(", "));
-    return error(HttpStatus.BAD_REQUEST, "Bad Request", message);
+    return error(HttpStatus.BAD_REQUEST, "Validation failed", message);
   }
 
   private static ResponseEntity<Map<String, Object>> error(

@@ -22,7 +22,10 @@ public class WebConfig {
                 "https://qa.kfon.co.in",
                 "https://*.sritindia.com",
                 "https://bssdemo.sritindia.com",
-                "https://rwbssdev.sritindia.com")
+                "https://rwbssdev.sritindia.com",
+                "https://bssbnu.com",
+                "https://www.bssbnu.com",
+                "https://bssbnu.sritindia.com")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
             .allowedHeaders("*")
             .allowCredentials(true);
