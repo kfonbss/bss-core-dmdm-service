@@ -66,16 +66,17 @@ public final class CacheNames {
   public static final String SERVICE_BY_ID = "service:byId";
 
   // Package master caches (masters moved here from bss-package-management-services)
-  public static final String PACKAGE_MASTERS_BUNDLE = "packageMasters:bundle";
-  public static final String PACKAGE_MASTER_SERVICE_TYPES = "packageMasters:serviceTypes";
-  public static final String PACKAGE_MASTER_SUB_PACKAGE_TYPES = "packageMasters:subPackageTypes";
-  public static final String PACKAGE_MASTER_PACKAGE_TYPES = "packageMasters:packageTypes";
-  public static final String PACKAGE_MASTER_PLAN_TYPES = "packageMasters:planTypes";
-  public static final String PACKAGE_MASTER_CATEGORY_TYPES = "packageMasters:categoryTypes";
-  public static final String PACKAGE_MASTER_PACKAGE_PLAN_TYPES = "packageMasters:packagePlanTypes";
-  public static final String PACKAGE_MASTER_SPEED_PROFILES = "packageMasters:speedProfiles";
-  public static final String PACKAGE_MASTER_FALLBACK_SPEEDS = "packageMasters:fallbackSpeeds";
-  public static final String SERVICE_CATEGORY_LOOKUPS = "packageMasters:serviceCategoryLookups";
+  public static final String PACKAGE_MASTERS_BUNDLE = "packageMasters:v2:bundle";
+  public static final String PACKAGE_MASTER_SERVICE_TYPES = "packageMasters:v2:serviceTypes";
+  public static final String PACKAGE_MASTER_SUB_PACKAGE_TYPES = "packageMasters:v2:subPackageTypes";
+  public static final String PACKAGE_MASTER_PACKAGE_TYPES = "packageMasters:v2:packageTypes";
+  public static final String PACKAGE_MASTER_PLAN_TYPES = "packageMasters:v2:planTypes";
+  public static final String PACKAGE_MASTER_CATEGORY_TYPES = "packageMasters:v2:categoryTypes";
+  public static final String PACKAGE_MASTER_PACKAGE_PLAN_TYPES =
+      "packageMasters:v2:packagePlanTypes";
+  public static final String PACKAGE_MASTER_SPEED_PROFILES = "packageMasters:v2:speedProfiles";
+  public static final String PACKAGE_MASTER_FALLBACK_SPEEDS = "packageMasters:v2:fallbackSpeeds";
+  public static final String SERVICE_CATEGORY_LOOKUPS = "packageMasters:v2:serviceCategoryLookups";
 
   // ANP Users caches
   public static final String ALL_ANP_USERS = "anpUsers:all";
