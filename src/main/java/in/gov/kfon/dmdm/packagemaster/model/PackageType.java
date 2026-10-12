@@ -1,34 +1,39 @@
-package in.gov.kfon.dmdm.model;
+package in.gov.kfon.dmdm.packagemaster.model;
 
+import in.gov.kfon.dmdm.model.Auditor;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity
-@Table(name = "service_type")
-@Data
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class ServiceType extends Auditor {
-
+@Entity
+@Table(name = "package_type")
+public class PackageType extends Auditor {
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "id", nullable = false)
   private UUID id;
 
-  @Column(name = "type_id")
-  private Integer typeId;
+  @Column(name = "package_type_id", nullable = false, unique = true)
+  private Integer packageTypeId;
 
   @Column(name = "code", length = 50)
   private String code;
 
-  @Column(name = "name", length = 100, nullable = false)
+  @Column(name = "name", length = 45)
   private String name;
 
   @Column(name = "name_in_local", length = 150)

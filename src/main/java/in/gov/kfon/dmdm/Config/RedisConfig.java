@@ -87,6 +87,24 @@ public class RedisConfig {
     perCacheConfig.put(CacheNames.SERVICE_TYPE_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.ALL_SERVICES, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.SERVICE_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(CacheNames.PACKAGE_MASTERS_BUNDLE, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(
+        CacheNames.PACKAGE_MASTER_SERVICE_TYPES, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(
+        CacheNames.PACKAGE_MASTER_SUB_PACKAGE_TYPES, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(
+        CacheNames.PACKAGE_MASTER_PACKAGE_TYPES, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(
+        CacheNames.PACKAGE_MASTER_PLAN_TYPES, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(
+        CacheNames.PACKAGE_MASTER_CATEGORY_TYPES, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(
+        CacheNames.PACKAGE_MASTER_PACKAGE_PLAN_TYPES, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(
+        CacheNames.PACKAGE_MASTER_SPEED_PROFILES, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(
+        CacheNames.PACKAGE_MASTER_FALLBACK_SPEEDS, defaults.entryTtl(Duration.ofHours(1)));
+    perCacheConfig.put(CacheNames.SERVICE_CATEGORY_LOOKUPS, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.ALL_STREETBOXES, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.ALL_COMPANY_DETAILS, defaults.entryTtl(Duration.ofHours(1)));
     perCacheConfig.put(CacheNames.COMPANY_DETAIL_BY_ID, defaults.entryTtl(Duration.ofHours(1)));
