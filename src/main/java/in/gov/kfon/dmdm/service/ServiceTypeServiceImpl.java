@@ -2,9 +2,9 @@ package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
-import in.gov.kfon.dmdm.model.ServiceType;
+import in.gov.kfon.dmdm.packagemaster.model.ServiceType;
+import in.gov.kfon.dmdm.packagemaster.repository.ServiceTypeRepository;
 import in.gov.kfon.dmdm.repository.ServiceRepository;
-import in.gov.kfon.dmdm.repository.ServiceTypeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
