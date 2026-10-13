@@ -9,6 +9,7 @@ import in.gov.kfon.dmdm.model.State;
 import in.gov.kfon.dmdm.repository.PincodeDetailsRepository;
 import in.gov.kfon.dmdm.repository.PincodesRepository;
 import in.gov.kfon.dmdm.repository.StateRepository;
+import in.gov.kfon.dmdm.util.TenantStateCodeResolver;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +37,7 @@ public class PincodeServiceImpl implements PincodeService {
   @Transactional(readOnly = true)
   @Cacheable(cacheNames = CacheNames.ALL_PINCODES, key = "#stateCode")
   public List<CommonLookUp> fetchAllPincodes(String stateCode) {
+    stateCode = TenantStateCodeResolver.resolve(stateCode);
     return pincodesRepository.findByStateCode(stateCode).stream()
         .map(
             pincodes -> {
@@ -61,7 +63,7 @@ public class PincodeServiceImpl implements PincodeService {
   @Transactional(readOnly = true)
   @Cacheable(cacheNames = CacheNames.ALL_PINCODE_DETAILS, key = "#stateCode")
   public List<CommonLookUp> fetchAllPincodeDetails(String stateCode) {
-
+    stateCode = TenantStateCodeResolver.resolve(stateCode);
     return pincodeDetailsRepository.findByDistrictMasterStateCode(stateCode).stream()
         .filter(pd -> pd.getPincode() != null)
         .filter(distinctByKey(PincodeDetails::getPincode))
@@ -146,6 +148,7 @@ public class PincodeServiceImpl implements PincodeService {
       cacheNames = CacheNames.POST_OFFICE_DETAILS_BY_PINCODE,
       key = "#pincode + ':' + #stateCode")
   public List<CommonLookUp> fetchPostOfficeDetailsByPincode(Integer pincode, String stateCode) {
+    stateCode = TenantStateCodeResolver.resolve(stateCode);
     List<PincodeDetails> entities =
         pincodeDetailsRepository.findActiveByPincodeInCircle(pincode, stateCode);
 
