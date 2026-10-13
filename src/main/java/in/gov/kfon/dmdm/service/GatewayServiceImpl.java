@@ -8,6 +8,7 @@ import in.gov.kfon.dmdm.model.StateDistrict;
 import in.gov.kfon.dmdm.repository.GatewayLocationRepository;
 import in.gov.kfon.dmdm.repository.GatewayRepository;
 import in.gov.kfon.dmdm.repository.StateDistrictRepository;
+import in.gov.kfon.dmdm.util.TenantStateCodeResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,6 +37,7 @@ public class GatewayServiceImpl implements GatewayService {
   @Transactional(readOnly = true)
   @Cacheable(cacheNames = CacheNames.GATEWAYS_BY_TENANT, key = "#tenantId")
   public GatewayAvailabilityResponse fetchAvailableGateways(String tenantId) {
+    tenantId = TenantStateCodeResolver.resolve(tenantId);
     String numericStateCode =
         stateDistrictRepository
             .findFirstByStateCodeIgnoreCase(tenantId)
