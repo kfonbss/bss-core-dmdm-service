@@ -4,6 +4,7 @@ import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.District;
 import in.gov.kfon.dmdm.repository.DistrictRepository;
+import in.gov.kfon.dmdm.util.TenantStateCodeResolver;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +26,7 @@ public class DistrictServiceImpl implements DistrictService {
   @Transactional(readOnly = true)
   @Cacheable(cacheNames = CacheNames.ALL_DISTRICTS, key = "#stateCode")
   public List<CommonLookUp> fetchAll(String stateCode) {
+    stateCode = TenantStateCodeResolver.resolve(stateCode);
     return repository.findByStateCode(stateCode).stream()
         .map(district -> modelMapper.map(district, CommonLookUp.class))
         .toList();

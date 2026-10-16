@@ -6,4 +6,6 @@ import java.util.List;
 public interface StreetboxService {
 
   List<StreetboxDto> fetchAllStreetboxes(String stateCode);
+
+  List<StreetboxDto> fetchNearestStreetbox(String stateCode, double latitude, double longitude);
 }

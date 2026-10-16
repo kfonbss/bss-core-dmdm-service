@@ -2,6 +2,7 @@ package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.InvoiceStateCodeResponse;
 import in.gov.kfon.dmdm.contract.TaxDetailResponse;
 import in.gov.kfon.dmdm.contract.TaxTypeResponse;
 import in.gov.kfon.dmdm.model.*;
@@ -28,6 +29,7 @@ public class TaxServiceImpl implements TaxService {
   private final TaxPayerRepository payerRepository;
   private final TaxDisbursementRepository disbursementRepository;
   private final TaxDistributionRepository distributionRepository;
+  private final InvoiceStateCodeRepository invoiceStateCodeRepository;
 
   @Override
   @Transactional(readOnly = true)
@@ -192,5 +194,21 @@ public class TaxServiceImpl implements TaxService {
   public TaxDetailResponse detailsFetchAllActive() {
     TaxDetail taxDetail = detailRepository.findFirstByIsActive(true).getFirst();
     return modelMapper.map(taxDetail, TaxDetailResponse.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.ALL_INVOICE_STATE_CODES)
+  public List<InvoiceStateCodeResponse> invoiceStateCodeFetchAll() {
+    // stcode is a fixed-length CHAR(3) column (legacy-shaped migration), space-padded on read —
+    // trim before handing it to callers, who print/store it verbatim on invoices.
+    return invoiceStateCodeRepository.findAll().stream()
+        .map(
+            m ->
+                InvoiceStateCodeResponse.builder()
+                    .stCode(m.getStCode() != null ? m.getStCode().trim() : null)
+                    .stateCode(m.getStateCode() != null ? m.getStateCode().trim() : null)
+                    .build())
+        .toList();
   }
 }

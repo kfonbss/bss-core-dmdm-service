@@ -19,6 +19,12 @@ public interface PincodeService {
 
   List<CommonLookUp> fetchPostOfficeDetailsByPincode(Integer pincode);
 
+  /**
+   * Post offices of the pincode, only if it lies in the given circle; otherwise the pincode is
+   * reported as not serviceable in that circle.
+   */
+  List<CommonLookUp> fetchPostOfficeDetailsByPincode(Integer pincode, String stateCode);
+
   PinCodeDistrictResponse getDistrictDetails(Integer pinCode);
 
   List<CommonLookUp> fetchPincodeDetailsByDistrictIds(List<UUID> districtIds);

@@ -6,6 +6,7 @@ import in.gov.kfon.dmdm.model.BankDetails;
 import in.gov.kfon.dmdm.model.StateDistrict;
 import in.gov.kfon.dmdm.repository.BankDetailsRepository;
 import in.gov.kfon.dmdm.repository.StateDistrictRepository;
+import in.gov.kfon.dmdm.util.TenantStateCodeResolver;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +27,14 @@ public class BankDetailsServiceImpl implements BankDetailsService {
   @Transactional(readOnly = true)
   @Cacheable(cacheNames = CacheNames.ALL_BANK_DETAILS, key = "#tenantId")
   public List<BankDetailsResponse> fetchAll(String tenantId) {
+    String stateCode = TenantStateCodeResolver.resolve(tenantId);
     String stateName =
         stateDistrictRepository
-            .findFirstByStateCodeIgnoreCase(tenantId)
+            .findFirstByStateCodeIgnoreCase(stateCode)
             .map(StateDistrict::getStateName)
             .map(String::trim)
             .filter(name -> !name.isEmpty())
-            .orElseThrow(() -> new IllegalArgumentException("No state found for tenant: " + tenantId));
+            .orElseThrow(() -> new IllegalArgumentException("No state found for tenant: " + stateCode));
     List<BankDetails> entities = repository.findByBankStateIgnoreCase(stateName);
     return entities.stream().map(bank -> modelMapper.map(bank, BankDetailsResponse.class)).toList();
   }

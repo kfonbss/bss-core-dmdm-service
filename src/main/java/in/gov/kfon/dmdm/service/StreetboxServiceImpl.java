@@ -4,6 +4,7 @@ import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.StreetboxDto;
 import in.gov.kfon.dmdm.model.StreetboxLocation;
 import in.gov.kfon.dmdm.repository.StreetboxLocationRepository;
+import in.gov.kfon.dmdm.util.TenantStateCodeResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,9 +21,22 @@ public class StreetboxServiceImpl implements StreetboxService {
   @Override
   @Cacheable(cacheNames = CacheNames.ALL_STREETBOXES, key = "#stateCode")
   public List<StreetboxDto> fetchAllStreetboxes(String stateCode) {
+    stateCode = TenantStateCodeResolver.resolve(stateCode);
     return streetboxLocationRepository.findByStateCode(stateCode).stream()
         .filter(s -> s.getLatitude() != null && s.getLongitude() != null)
         .map(this::mapToDto)
+        .toList();
+  }
+
+  /** Empty list when the state has no streetbox with coordinates, otherwise exactly one. */
+  @Override
+  public List<StreetboxDto> fetchNearestStreetbox(
+      String stateCode, double latitude, double longitude) {
+    stateCode = TenantStateCodeResolver.resolve(stateCode);
+    return streetboxLocationRepository
+        .findNearestByStateCode(stateCode, latitude, longitude)
+        .map(this::mapToDto)
+        .stream()
         .toList();
   }
 

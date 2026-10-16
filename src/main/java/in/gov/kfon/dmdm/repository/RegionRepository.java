@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RegionRepository extends JpaRepository<Region, UUID> {
   List<Region> findByStatus(Integer status);
+
+  List<Region> findByStateCodeIgnoreCase(String stateCode);
 }

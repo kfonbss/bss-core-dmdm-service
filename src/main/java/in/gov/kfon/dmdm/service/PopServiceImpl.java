@@ -8,6 +8,7 @@ import in.gov.kfon.dmdm.model.PopMasterBackup;
 import in.gov.kfon.dmdm.repository.DfPopListRepository;
 import in.gov.kfon.dmdm.repository.PopMasterBackupRepository;
 import in.gov.kfon.dmdm.repository.PopMasterRepository;
+import in.gov.kfon.dmdm.util.TenantStateCodeResolver;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +32,7 @@ public class PopServiceImpl implements PopService {
   @Transactional(readOnly = true)
   @Cacheable(cacheNames = CacheNames.ALL_POP_MASTERS, key = "#stateCode")
   public List<CommonLookUp> fetchAllPopMasters(String stateCode) {
+    stateCode = TenantStateCodeResolver.resolve(stateCode);
     return popMasterRepository.findByStateCode(stateCode).stream()
         .map(pm -> modelMapper.map(pm, CommonLookUp.class))
         .toList();

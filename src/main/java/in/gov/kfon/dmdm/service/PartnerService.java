@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface PartnerService {
 
-  List<PartnerResponse> fetchAll();
+  List<PartnerResponse> fetchAll(String tenantId);
 
   PartnerResponse fetchById(UUID id);
 
