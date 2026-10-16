@@ -10,6 +10,8 @@ import in.gov.kfon.dmdm.repository.GatewayRepository;
 import in.gov.kfon.dmdm.repository.StateDistrictRepository;
 import in.gov.kfon.dmdm.util.TenantStateCodeResolver;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -22,15 +24,38 @@ public class GatewayServiceImpl implements GatewayService {
 
   private static final int ACTIVE_STATUS = 1;
 
+  private static final Map<String, Set<String>> GATEWAY_CODES_BY_USER_TYPE =
+      Map.of(
+          "LNP", Set.of("BILLDESK", "PAYTM"),
+          "SUBSCRIBER", Set.of("ATOM", "RAZORPAY"));
+
   private final GatewayRepository repository;
   private final GatewayLocationRepository gatewayLocationRepository;
   private final StateDistrictRepository stateDistrictRepository;
 
   @Override
   @Transactional(readOnly = true)
-  @Cacheable(cacheNames = CacheNames.ALL_GATEWAYS)
-  public List<CommonLookUp> fetchAll() {
-    return repository.findAll().stream().map(this::toCommonLookUp).toList();
+  @Cacheable(
+      cacheNames = CacheNames.ALL_GATEWAYS,
+      key = "#userType == null || #userType.isBlank() ? 'ALL' : #userType.trim().toUpperCase()")
+  public List<CommonLookUp> fetchAll(String userType) {
+    var gateways = repository.findAll().stream();
+    if (userType != null && !userType.isBlank()) {
+      var allowedCodes = GATEWAY_CODES_BY_USER_TYPE.get(userType.trim().toUpperCase());
+      if (allowedCodes == null) {
+        throw new IllegalArgumentException(
+            "Invalid userType: "
+                + userType
+                + ". Allowed values: "
+                + GATEWAY_CODES_BY_USER_TYPE.keySet());
+      }
+      gateways =
+          gateways.filter(
+              gateway ->
+                  gateway.getCode() != null
+                      && allowedCodes.contains(gateway.getCode().trim().toUpperCase()));
+    }
+    return gateways.map(this::toCommonLookUp).toList();
   }
 
   @Override
