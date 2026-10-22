@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +23,15 @@ public class BankAccountTypeController {
   private static final String FETCHED = "Fetched";
 
   @GetMapping("/fetch-all")
-  public ResponseEntity<Response<List<CommonLookUp>>> fetchAll() {
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAll(
+      @RequestHeader(value = "X-Tenant-ID", required = false) String tenantId) {
+    var data = service.fetchAll(tenantId);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+  }
+
+  /** Every active type regardless of tenant, for services that resolve stored type ids. */
+  @GetMapping("/fetch-all-internal")
+  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllInternal() {
     var data = service.fetchAll();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
   }
