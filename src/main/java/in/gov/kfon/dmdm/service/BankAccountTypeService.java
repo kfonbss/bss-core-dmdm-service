@@ -8,5 +8,7 @@ public interface BankAccountTypeService {
 
   List<CommonLookUp> fetchAll();
 
+  List<CommonLookUp> fetchAll(String tenantId);
+
   CommonLookUp fetchById(UUID id);
 }
