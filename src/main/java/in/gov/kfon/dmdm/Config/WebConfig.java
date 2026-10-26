@@ -15,7 +15,7 @@ public class WebConfig {
       public void addCorsMappings(CorsRegistry registry) {
         registry
             .addMapping("/**")
-            .allowedOrigins(
+            .allowedOriginPatterns(
                 "http://localhost:5173",
                 "https://dev.kfonbss.co.in",
                 "https://dev.kfon.co.in",
