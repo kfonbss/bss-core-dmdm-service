@@ -7,7 +7,8 @@ import java.util.UUID;
 
 public interface OltProviderService {
 
-  List<OltProviderResponse> fetchAll();
+  /** OLT providers offered to the tenant; BNU-KA does not get KFON's LNP and KFON. */
+  List<OltProviderResponse> fetchAll(String tenantId);
 
   OltProviderResponse fetchById(UUID id);
 
