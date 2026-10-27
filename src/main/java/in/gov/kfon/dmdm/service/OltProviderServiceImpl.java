@@ -6,6 +6,7 @@ import in.gov.kfon.dmdm.model.OltProvider;
 import in.gov.kfon.dmdm.repository.OltProviderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,9 +19,17 @@ public class OltProviderServiceImpl implements OltProviderService {
   private final OltProviderRepository oltProviderRepository;
   private final ModelMapper modelMapper;
 
+  private static final Set<String> NOT_IN_BNU_KA = Set.of("LNP", "KFON");
+
   @Override
-  public List<OltProviderResponse> fetchAll() {
+  public List<OltProviderResponse> fetchAll(String tenantId) {
+    boolean bnuKa = tenantId != null && "BNU-KA".equalsIgnoreCase(tenantId.trim());
     return oltProviderRepository.findAll().stream()
+        .filter(
+            oltProvider ->
+                !bnuKa
+                    || oltProvider.getName() == null
+                    || !NOT_IN_BNU_KA.contains(oltProvider.getName().trim().toUpperCase()))
         .map(oltProvider -> modelMapper.map(oltProvider, OltProviderResponse.class))
         .toList();
   }
