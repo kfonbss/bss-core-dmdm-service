@@ -1,0 +1,125 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# CI/CD — bss-core-dmdm-service
+#
+# Push to dev  →  build linux/amd64 image → ECR :dev  → deploy on Dev server
+# Push to qa   →  build linux/amd64 image → ECR :qa   → deploy on QA  server
+# ─────────────────────────────────────────────────────────────────────────────
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - dev
+      - qa
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target environment"
+        required: true
+        default: dev
+        type: choice
+        options: [dev, qa]
+
+concurrency:
+  group: bss-core-dmdm-service-${{ github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  ECR_REGISTRY: 018810731179.dkr.ecr.ap-south-1.amazonaws.com
+  AWS_REGION: ap-south-1
+  SERVICE: bss-core-dmdm-service
+
+jobs:
+  build:
+    name: Build & Push image (${{ github.ref_name }})
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'dev' || github.ref_name == 'qa'
+
+    steps:
+      - name: Checkout service code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          provenance: false
+          sbom: false
+          build-args: |
+            GH_PACKAGES_USER=kfonbss
+            GH_PACKAGES_TOKEN=${{ secrets.GH_PACKAGES_TOKEN }}
+          tags: ${{ env.ECR_REGISTRY }}/${{ env.SERVICE }}:${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to ${{ github.ref_name }}
+    needs: build
+    runs-on: [self-hosted, "${{ github.ref_name }}"]
+
+    steps:
+      - name: Checkout infra repo
+        uses: actions/checkout@v4
+        with:
+          repository: kfonbss/bss-devops-infra
+          token: ${{ secrets.INFRA_REPO_TOKEN }}
+          path: bss-devops-infra
+
+      - name: Set environment variables
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          if [ "$BRANCH" = "dev" ]; then
+            echo "ENV=dev" >> $GITHUB_ENV
+            echo "NS=dev"  >> $GITHUB_ENV
+          else
+            echo "ENV=qa"  >> $GITHUB_ENV
+            echo "NS=qa"   >> $GITHUB_ENV
+          fi
+
+      - name: Refresh ECR pull secret
+        run: |
+          TOKEN=$(aws ecr get-login-password --region ${{ env.AWS_REGION }})
+          sudo k3s kubectl create secret docker-registry regcred \
+            --docker-server=${{ env.ECR_REGISTRY }} \
+            --docker-username=AWS --docker-password=$TOKEN \
+            -n $NS --dry-run=client -o yaml | sudo k3s kubectl apply -f -
+
+      - name: Helm upgrade
+        run: |
+          sudo helm upgrade --install ${{ env.SERVICE }} \
+            $GITHUB_WORKSPACE/bss-devops-infra/infra/helm/${{ env.SERVICE }} \
+            --kubeconfig /etc/rancher/k3s/k3s.yaml \
+            -n $NS \
+            -f $GITHUB_WORKSPACE/bss-devops-infra/environments/$ENV/values/${{ env.SERVICE }}.yaml \
+            --timeout 5m
+
+      - name: Rollout restart & wait
+        run: |
+          sudo k3s kubectl rollout restart deployment/${{ env.SERVICE }} -n $NS
+          sudo k3s kubectl rollout status deployment/${{ env.SERVICE }} -n $NS --timeout=3m
+
+      - name: Summary
+        run: |
+          echo "### Deployment complete" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Service** | \`${{ env.SERVICE }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Image** | \`${{ env.ECR_REGISTRY }}/${{ env.SERVICE }}:$ENV\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Environment** | \`$ENV\` (namespace: \`$NS\`) |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          sudo k3s kubectl get pods -n $NS | grep ${{ env.SERVICE }}
