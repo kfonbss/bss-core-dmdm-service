@@ -326,6 +326,13 @@ public class DarkFiberController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched OTC charge by ID"));
   }
 
+  @GetMapping("/charge/current")
+  public ResponseEntity<Response<CommonLookUp>> fetchCurrentOtcCharge() {
+    var data = darkFiberService.fetchCurrentOtcCharge();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched current OTC charge"));
+  }
+
   @GetMapping("/invoices/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllOtcInvoices() {
     var data = darkFiberService.fetchAllOtcInvoices();

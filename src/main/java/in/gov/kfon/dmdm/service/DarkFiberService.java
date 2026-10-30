@@ -98,6 +98,8 @@ public interface DarkFiberService {
 
   CommonLookUp fetchOtcChargeById(UUID id);
 
+  CommonLookUp fetchCurrentOtcCharge();
+
   List<CommonLookUp> fetchAllOtcInvoices();
 
   CommonLookUp fetchOtcInvoiceById(UUID id);
