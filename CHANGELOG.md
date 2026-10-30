@@ -467,3 +467,5 @@ _ Get inventory device transfer request and movement details
 # [0.89.9] - 2026-10-30
 ### Added
 - Dark fiber current OTC charge API (GET /api/darkfiber/charge/current) - returns OTC charge whose fyear_s_date and fyear_e_date range covers current date
+- Added DfOtcChargeResponse (all charge amounts, year, fyear dates) as response for current OTC charge API
+- Dark fiber OTC charge fetch-all and fetch-by-id APIs now return DfOtcChargeResponse instead of CommonLookUp

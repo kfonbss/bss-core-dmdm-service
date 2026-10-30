@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
 import java.util.List;
 import java.util.UUID;
 
@@ -94,11 +95,11 @@ public interface DarkFiberService {
 
   CommonLookUp fetchMasterDataById(UUID id);
 
-  List<CommonLookUp> fetchAllOtcCharges();
+  List<DfOtcChargeResponse> fetchAllOtcCharges();
 
-  CommonLookUp fetchOtcChargeById(UUID id);
+  DfOtcChargeResponse fetchOtcChargeById(UUID id);
 
-  CommonLookUp fetchCurrentOtcCharge();
+  DfOtcChargeResponse fetchCurrentOtcCharge();
 
   List<CommonLookUp> fetchAllOtcInvoices();
 

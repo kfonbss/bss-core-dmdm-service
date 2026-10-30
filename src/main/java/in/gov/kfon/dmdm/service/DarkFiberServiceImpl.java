@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
 import in.gov.kfon.dmdm.model.*;
 import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -430,25 +431,25 @@ public class DarkFiberServiceImpl implements DarkFiberService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<CommonLookUp> fetchAllOtcCharges() {
+  public List<DfOtcChargeResponse> fetchAllOtcCharges() {
     return dfOtcChargesRepository.findAll().stream()
-        .map(otcCharges -> modelMapper.map(otcCharges, CommonLookUp.class))
+        .map(otcCharges -> modelMapper.map(otcCharges, DfOtcChargeResponse.class))
         .toList();
   }
 
   @Override
   @Transactional(readOnly = true)
-  public CommonLookUp fetchOtcChargeById(UUID id) {
+  public DfOtcChargeResponse fetchOtcChargeById(UUID id) {
     DfOtcCharges charges =
         dfOtcChargesRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("OTC Charges not found with id: " + id));
-    return modelMapper.map(charges, CommonLookUp.class);
+    return modelMapper.map(charges, DfOtcChargeResponse.class);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public CommonLookUp fetchCurrentOtcCharge() {
+  public DfOtcChargeResponse fetchCurrentOtcCharge() {
     Date today = Date.valueOf(LocalDate.now());
     DfOtcCharges charges =
         dfOtcChargesRepository
@@ -456,7 +457,7 @@ public class DarkFiberServiceImpl implements DarkFiberService {
                 today, today)
             .orElseThrow(
                 () -> new EntityNotFoundException("OTC Charges not found for date: " + today));
-    return modelMapper.map(charges, CommonLookUp.class);
+    return modelMapper.map(charges, DfOtcChargeResponse.class);
   }
 
   @Override

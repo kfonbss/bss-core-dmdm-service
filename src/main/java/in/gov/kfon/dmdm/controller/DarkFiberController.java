@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.controller;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
 import in.gov.kfon.dmdm.contract.Response;
 import in.gov.kfon.dmdm.service.DarkFiberService;
 import java.util.List;
@@ -315,19 +316,20 @@ public class DarkFiberController {
   }
 
   @GetMapping("/charges/fetch-all")
-  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllOtcCharges() {
+  public ResponseEntity<Response<List<DfOtcChargeResponse>>> fetchAllOtcCharges() {
     var data = darkFiberService.fetchAllOtcCharges();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all OTC charges"));
   }
 
   @GetMapping("/charge/{id}")
-  public ResponseEntity<Response<CommonLookUp>> fetchOtcChargeById(@PathVariable UUID id) {
+  public ResponseEntity<Response<DfOtcChargeResponse>> fetchOtcChargeById(
+      @PathVariable UUID id) {
     var data = darkFiberService.fetchOtcChargeById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched OTC charge by ID"));
   }
 
   @GetMapping("/charge/current")
-  public ResponseEntity<Response<CommonLookUp>> fetchCurrentOtcCharge() {
+  public ResponseEntity<Response<DfOtcChargeResponse>> fetchCurrentOtcCharge() {
     var data = darkFiberService.fetchCurrentOtcCharge();
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched current OTC charge"));
