@@ -1189,6 +1189,37 @@ public class DarkFiberServiceImplTest {
   }
 
   @Test
+  void testFetchCurrentOtcCharge() {
+    java.sql.Date today = java.sql.Date.valueOf(java.time.LocalDate.now());
+    when(dfOtcChargesRepository
+            .findFirstByFyearSDateLessThanEqualAndFyearEDateGreaterThanEqualOrderByFyearSDateDesc(
+                today, today))
+        .thenReturn(Optional.of(otcCharges));
+    when(modelMapper.map(otcCharges, CommonLookUp.class)).thenReturn(commonLookUp);
+
+    CommonLookUp result = service.fetchCurrentOtcCharge();
+
+    assertNotNull(result);
+    assertEquals(id, result.getId());
+    verify(modelMapper, times(1)).map(otcCharges, CommonLookUp.class);
+  }
+
+  @Test
+  void testFetchCurrentOtcCharge_NotFound() {
+    java.sql.Date today = java.sql.Date.valueOf(java.time.LocalDate.now());
+    when(dfOtcChargesRepository
+            .findFirstByFyearSDateLessThanEqualAndFyearEDateGreaterThanEqualOrderByFyearSDateDesc(
+                today, today))
+        .thenReturn(Optional.empty());
+
+    EntityNotFoundException exception =
+        assertThrows(EntityNotFoundException.class, () -> service.fetchCurrentOtcCharge());
+
+    assertEquals("OTC Charges not found for date: " + today, exception.getMessage());
+    verifyNoInteractions(modelMapper);
+  }
+
+  @Test
   void testFetchAllOtcInvoices() {
     when(dfOtcInvoiceRepository.findAll()).thenReturn(List.of(otcInvoice));
     when(modelMapper.map(otcInvoice, CommonLookUp.class)).thenReturn(commonLookUp);

@@ -4,6 +4,8 @@ import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.*;
 import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -441,6 +443,19 @@ public class DarkFiberServiceImpl implements DarkFiberService {
         dfOtcChargesRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("OTC Charges not found with id: " + id));
+    return modelMapper.map(charges, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public CommonLookUp fetchCurrentOtcCharge() {
+    Date today = Date.valueOf(LocalDate.now());
+    DfOtcCharges charges =
+        dfOtcChargesRepository
+            .findFirstByFyearSDateLessThanEqualAndFyearEDateGreaterThanEqualOrderByFyearSDateDesc(
+                today, today)
+            .orElseThrow(
+                () -> new EntityNotFoundException("OTC Charges not found for date: " + today));
     return modelMapper.map(charges, CommonLookUp.class);
   }
 
