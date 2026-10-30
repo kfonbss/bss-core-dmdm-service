@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
 import in.gov.kfon.dmdm.model.*;
 import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -1150,30 +1151,32 @@ public class DarkFiberServiceImplTest {
   @Test
   void testFetchAllOtcCharges() {
     when(dfOtcChargesRepository.findAll()).thenReturn(List.of(otcCharges));
-    when(modelMapper.map(otcCharges, CommonLookUp.class)).thenReturn(commonLookUp);
+    DfOtcChargeResponse response = DfOtcChargeResponse.builder().chargesId(id).build();
+    when(modelMapper.map(otcCharges, DfOtcChargeResponse.class)).thenReturn(response);
 
-    List<CommonLookUp> result = service.fetchAllOtcCharges();
+    List<DfOtcChargeResponse> result = service.fetchAllOtcCharges();
 
     assertNotNull(result);
     assertEquals(1, result.size());
-    assertEquals(id, result.get(0).getId());
+    assertEquals(id, result.get(0).getChargesId());
 
     verify(dfOtcChargesRepository, times(1)).findAll();
-    verify(modelMapper, times(1)).map(otcCharges, CommonLookUp.class);
+    verify(modelMapper, times(1)).map(otcCharges, DfOtcChargeResponse.class);
   }
 
   @Test
   void testFetchOtcChargesById_Success() {
     when(dfOtcChargesRepository.findById(id)).thenReturn(Optional.of(otcCharges));
-    when(modelMapper.map(otcCharges, CommonLookUp.class)).thenReturn(commonLookUp);
+    DfOtcChargeResponse response = DfOtcChargeResponse.builder().chargesId(id).build();
+    when(modelMapper.map(otcCharges, DfOtcChargeResponse.class)).thenReturn(response);
 
-    CommonLookUp result = service.fetchOtcChargeById(id);
+    DfOtcChargeResponse result = service.fetchOtcChargeById(id);
 
     assertNotNull(result);
-    assertEquals(id, result.getId());
+    assertEquals(id, result.getChargesId());
 
     verify(dfOtcChargesRepository, times(1)).findById(id);
-    verify(modelMapper, times(1)).map(otcCharges, CommonLookUp.class);
+    verify(modelMapper, times(1)).map(otcCharges, DfOtcChargeResponse.class);
   }
 
   @Test
@@ -1195,13 +1198,14 @@ public class DarkFiberServiceImplTest {
             .findFirstByFyearSDateLessThanEqualAndFyearEDateGreaterThanEqualOrderByFyearSDateDesc(
                 today, today))
         .thenReturn(Optional.of(otcCharges));
-    when(modelMapper.map(otcCharges, CommonLookUp.class)).thenReturn(commonLookUp);
+    DfOtcChargeResponse response = DfOtcChargeResponse.builder().chargesId(id).build();
+    when(modelMapper.map(otcCharges, DfOtcChargeResponse.class)).thenReturn(response);
 
-    CommonLookUp result = service.fetchCurrentOtcCharge();
+    DfOtcChargeResponse result = service.fetchCurrentOtcCharge();
 
     assertNotNull(result);
-    assertEquals(id, result.getId());
-    verify(modelMapper, times(1)).map(otcCharges, CommonLookUp.class);
+    assertEquals(id, result.getChargesId());
+    verify(modelMapper, times(1)).map(otcCharges, DfOtcChargeResponse.class);
   }
 
   @Test
