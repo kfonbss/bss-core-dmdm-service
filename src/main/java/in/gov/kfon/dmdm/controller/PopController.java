@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.controller;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfPopListResponse;
 import in.gov.kfon.dmdm.contract.Response;
 import in.gov.kfon.dmdm.service.PopService;
 import java.util.List;
@@ -49,7 +50,7 @@ public class PopController {
   }
 
   @GetMapping("/df-pop-lists/fetch-all")
-  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllDfPopLists() {
+  public ResponseEntity<Response<List<DfPopListResponse>>> fetchAllDfPopLists() {
     var data = service.fetchAllDfPopLists();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all DF POP lists"));
   }

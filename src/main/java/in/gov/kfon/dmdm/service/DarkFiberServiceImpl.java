@@ -1,7 +1,9 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
 import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
+import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
 import in.gov.kfon.dmdm.model.*;
 import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -158,9 +160,9 @@ public class DarkFiberServiceImpl implements DarkFiberService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<CommonLookUp> fetchAllPowerRatings() {
+  public List<DfPowerRatingResponse> fetchAllPowerRatings() {
     return dfPowerRatingRepository.findAll().stream()
-        .map(dfPowerRating -> modelMapper.map(dfPowerRating, CommonLookUp.class))
+        .map(dfPowerRating -> modelMapper.map(dfPowerRating, DfPowerRatingResponse.class))
         .toList();
   }
 
@@ -414,9 +416,10 @@ public class DarkFiberServiceImpl implements DarkFiberService {
   }
 
   @Override
-  public List<CommonLookUp> fetchAllMasterData() {
+  @Transactional(readOnly = true)
+  public List<DfMasterDataResponse> fetchAllMasterData() {
     return dfMasterDataRepository.findAll().stream()
-        .map(entity -> modelMapper.map(entity, CommonLookUp.class))
+        .map(entity -> modelMapper.map(entity, DfMasterDataResponse.class))
         .toList();
   }
 

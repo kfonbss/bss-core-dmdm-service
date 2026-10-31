@@ -1,7 +1,9 @@
 package in.gov.kfon.dmdm.controller;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
 import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
+import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
 import in.gov.kfon.dmdm.contract.Response;
 import in.gov.kfon.dmdm.service.DarkFiberService;
 import java.util.List;
@@ -102,7 +104,7 @@ public class DarkFiberController {
   }
 
   @GetMapping("/power-ratings/fetch-all")
-  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPowerRatings() {
+  public ResponseEntity<Response<List<DfPowerRatingResponse>>> fetchAllPowerRatings() {
     var data = darkFiberService.fetchAllPowerRatings();
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched all power ratings"));
@@ -303,7 +305,7 @@ public class DarkFiberController {
   }
 
   @GetMapping("/master-datas/fetch-all")
-  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllMasterData() {
+  public ResponseEntity<Response<List<DfMasterDataResponse>>> fetchAllMasterData() {
     var data = darkFiberService.fetchAllMasterData();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all master data"));
   }

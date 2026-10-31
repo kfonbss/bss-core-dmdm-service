@@ -2,6 +2,7 @@ package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.Config.CacheNames;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfPopListResponse;
 import in.gov.kfon.dmdm.model.DfPopList;
 import in.gov.kfon.dmdm.model.PopMaster;
 import in.gov.kfon.dmdm.model.PopMasterBackup;
@@ -73,9 +74,9 @@ public class PopServiceImpl implements PopService {
   @Override
   @Transactional(readOnly = true)
   @Cacheable(cacheNames = CacheNames.ALL_DF_POP_LISTS)
-  public List<CommonLookUp> fetchAllDfPopLists() {
+  public List<DfPopListResponse> fetchAllDfPopLists() {
     return dfPopListRepository.findAll().stream()
-        .map(df -> modelMapper.map(df, CommonLookUp.class))
+        .map(df -> modelMapper.map(df, DfPopListResponse.class))
         .toList();
   }
 
