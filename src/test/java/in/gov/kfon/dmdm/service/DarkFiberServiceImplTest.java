@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
 import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
+import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
 import in.gov.kfon.dmdm.model.*;
 import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -487,16 +489,18 @@ public class DarkFiberServiceImplTest {
   @Test
   void testFetchAllPowerRatings() {
     when(dfPowerRatingRepository.findAll()).thenReturn(List.of(powerRating));
-    when(modelMapper.map(powerRating, CommonLookUp.class)).thenReturn(commonLookUp);
+    DfPowerRatingResponse ratingResponse =
+        DfPowerRatingResponse.builder().dfPowerRatingId(id).build();
+    when(modelMapper.map(powerRating, DfPowerRatingResponse.class)).thenReturn(ratingResponse);
 
-    List<CommonLookUp> result = service.fetchAllPowerRatings();
+    List<DfPowerRatingResponse> result = service.fetchAllPowerRatings();
 
     assertNotNull(result);
     assertEquals(1, result.size());
-    assertEquals(id, result.get(0).getId());
+    assertEquals(id, result.get(0).getDfPowerRatingId());
 
     verify(dfPowerRatingRepository, times(1)).findAll();
-    verify(modelMapper, times(1)).map(powerRating, CommonLookUp.class);
+    verify(modelMapper, times(1)).map(powerRating, DfPowerRatingResponse.class);
   }
 
   @Test
@@ -1110,16 +1114,17 @@ public class DarkFiberServiceImplTest {
   @Test
   void testFetchAllMasterData() {
     when(dfMasterDataRepository.findAll()).thenReturn(List.of(masterData));
-    when(modelMapper.map(masterData, CommonLookUp.class)).thenReturn(commonLookUp);
+    DfMasterDataResponse masterDataResponse = DfMasterDataResponse.builder().dataId(id).build();
+    when(modelMapper.map(masterData, DfMasterDataResponse.class)).thenReturn(masterDataResponse);
 
-    List<CommonLookUp> result = service.fetchAllMasterData();
+    List<DfMasterDataResponse> result = service.fetchAllMasterData();
 
     assertNotNull(result);
     assertEquals(1, result.size());
-    assertEquals(id, result.get(0).getId());
+    assertEquals(id, result.get(0).getDataId());
 
     verify(dfMasterDataRepository, times(1)).findAll();
-    verify(modelMapper, times(1)).map(masterData, CommonLookUp.class);
+    verify(modelMapper, times(1)).map(masterData, DfMasterDataResponse.class);
   }
 
   @Test
