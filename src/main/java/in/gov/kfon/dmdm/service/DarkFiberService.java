@@ -1,7 +1,9 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
 import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
+import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +33,7 @@ public interface DarkFiberService {
 
   CommonLookUp fetchLinkRenewalHistoryById(UUID id);
 
-  List<CommonLookUp> fetchAllPowerRatings();
+  List<DfPowerRatingResponse> fetchAllPowerRatings();
 
   CommonLookUp fetchPowerRatingById(UUID id);
 
@@ -91,7 +93,7 @@ public interface DarkFiberService {
 
   CommonLookUp fetchFeederById(UUID id);
 
-  List<CommonLookUp> fetchAllMasterData();
+  List<DfMasterDataResponse> fetchAllMasterData();
 
   CommonLookUp fetchMasterDataById(UUID id);
 

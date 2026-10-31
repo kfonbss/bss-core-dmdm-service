@@ -32,4 +32,8 @@ public class DfOtcChargeResponse {
   private String name;
   private String nameInLocal;
   private Boolean isActive;
+  private java.util.Date createdDate;
+  private java.util.Date modifiedDate;
+  private UUID createdBy;
+  private UUID modifiedBy;
 }
