@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfFeederListResponse;
 import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
 import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
 import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
@@ -424,6 +425,62 @@ public class DarkFiberServiceImpl implements DarkFiberService {
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Feeder list not found with id: " + id));
     return modelMapper.map(feeder, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<DfFeederListResponse> fetchFeedersByPop(Integer popId) {
+    if (popId == null) {
+      throw new IllegalArgumentException("POP id is required");
+    }
+    return dfFeederListRepository.findByPopIdAndIsActiveTrueOrderByFeederNameAsc(popId).stream()
+        .map(DarkFiberServiceImpl::toFeederResponse)
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<DfFeederListResponse> fetchFeedersByIds(List<Integer> ids) {
+    if (ids == null || ids.isEmpty()) {
+      return List.of();
+    }
+    return dfFeederListRepository.findByIdIn(ids).stream()
+        .map(DarkFiberServiceImpl::toFeederResponse)
+        .toList();
+  }
+
+  /**
+   * Called by subscriber-management when an intra-city group link gives its feeder strands back
+   * (-) or takes them (+).
+   */
+  @Override
+  @Transactional
+  public DfFeederListResponse adjustFeederStrandsConsumed(Integer id, Integer delta) {
+    if (id == null) {
+      throw new IllegalArgumentException("Feeder id is required");
+    }
+    if (delta == null || delta == 0) {
+      throw new IllegalArgumentException("delta must be a non-zero number of strands");
+    }
+    if (dfFeederListRepository.adjustStrandsConsumed(id, delta) == 0) {
+      throw new EntityNotFoundException("Feeder list not found with legacy id: " + id);
+    }
+    return dfFeederListRepository.findByIdIn(List.of(id)).stream()
+        .findFirst()
+        .map(DarkFiberServiceImpl::toFeederResponse)
+        .orElseThrow(
+            () -> new EntityNotFoundException("Feeder list not found with legacy id: " + id));
+  }
+
+  private static DfFeederListResponse toFeederResponse(DfFeederList feeder) {
+    return DfFeederListResponse.builder()
+        .listId(feeder.getListId())
+        .id(feeder.getId())
+        .popId(feeder.getPopId())
+        .feederName(feeder.getFeederName())
+        .noOfStrandsConsumed(feeder.getNoOfStrandsConsumed())
+        .isActive(feeder.getIsActive())
+        .build();
   }
 
   @Override

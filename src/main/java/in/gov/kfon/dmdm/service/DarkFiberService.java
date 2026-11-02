@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfFeederListResponse;
 import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
 import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
 import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
@@ -95,6 +96,15 @@ public interface DarkFiberService {
   List<CommonLookUp> fetchAllFeeders();
 
   CommonLookUp fetchFeederById(UUID id);
+
+  /** The POP's active feeders, by the POP's legacy id (df_pop_list.id). */
+  List<DfFeederListResponse> fetchFeedersByPop(Integer popId);
+
+  /** Feeders by their legacy ids (df_feeder_list.id), inactive ones too. */
+  List<DfFeederListResponse> fetchFeedersByIds(List<Integer> ids);
+
+  /** Moves the feeder's consumed strand count by delta (never below 0), by its legacy id. */
+  DfFeederListResponse adjustFeederStrandsConsumed(Integer id, Integer delta);
 
   List<DfMasterDataResponse> fetchAllMasterData();
 

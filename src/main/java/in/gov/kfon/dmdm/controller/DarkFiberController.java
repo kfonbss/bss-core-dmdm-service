@@ -1,6 +1,7 @@
 package in.gov.kfon.dmdm.controller;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfFeederListResponse;
 import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
 import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
 import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
@@ -310,6 +311,38 @@ public class DarkFiberController {
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAllFeeders() {
     var data = darkFiberService.fetchAllFeeders();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all feeder lists"));
+  }
+
+  /** The POP's active feeders; popId is the POP's legacy id (df_pop_list.id). */
+  @GetMapping("/feeder-lists/by-pop/{popId}")
+  public ResponseEntity<Response<List<DfFeederListResponse>>> fetchFeedersByPop(
+      @PathVariable Integer popId) {
+    var data = darkFiberService.fetchFeedersByPop(popId);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched feeder lists by POP"));
+  }
+
+  /** Feeders by their legacy ids (df_feeder_list.id), e.g. ?ids=3,7; inactive ones too. */
+  @GetMapping("/feeder-lists/by-ids")
+  public ResponseEntity<Response<List<DfFeederListResponse>>> fetchFeedersByIds(
+      @RequestParam("ids") List<Integer> ids) {
+    var data = darkFiberService.fetchFeedersByIds(ids);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched feeder lists by IDs"));
+  }
+
+  /**
+   * Adds delta to the feeder's noof_strands_consumed (never below 0); id is the feeder's legacy id
+   * (df_feeder_list.id). POST, not PATCH: the callers' default Feign client cannot send PATCH.
+   */
+  @PostMapping("/feeder-list/legacy/{id}/strands-consumed")
+  public ResponseEntity<Response<DfFeederListResponse>> adjustFeederStrandsConsumed(
+      @PathVariable Integer id, @RequestBody DfStrandsConsumedRequest request) {
+    var data =
+        darkFiberService.adjustFeederStrandsConsumed(
+            id, request != null ? request.getDelta() : null);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Feeder strands consumed updated"));
   }
 
   @GetMapping("/feeder-list/{id}")
