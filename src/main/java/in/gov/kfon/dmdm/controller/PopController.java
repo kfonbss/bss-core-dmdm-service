@@ -60,4 +60,11 @@ public class PopController {
     var data = service.fetchDfPopById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched DF POP"));
   }
+
+  /** Full df_pop_list row by id (with the legacy df_pop_list_id), for other services. */
+  @GetMapping("/df-pop-list/{id}/detail")
+  public ResponseEntity<Response<DfPopListResponse>> fetchDfPopDetailById(@PathVariable UUID id) {
+    var data = service.fetchDfPopDetailById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched DF POP detail"));
+  }
 }

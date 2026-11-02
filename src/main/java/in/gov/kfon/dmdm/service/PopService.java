@@ -18,4 +18,6 @@ public interface PopService {
   List<DfPopListResponse> fetchAllDfPopLists();
 
   CommonLookUp fetchDfPopById(UUID id);
+
+  DfPopListResponse fetchDfPopDetailById(UUID id);
 }

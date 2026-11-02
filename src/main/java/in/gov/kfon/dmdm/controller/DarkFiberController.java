@@ -4,16 +4,22 @@ import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
 import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
 import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
+import in.gov.kfon.dmdm.contract.DfStrandsConsumedRequest;
 import in.gov.kfon.dmdm.contract.Response;
 import in.gov.kfon.dmdm.service.DarkFiberService;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -115,6 +121,15 @@ public class DarkFiberController {
     var data = darkFiberService.fetchPowerRatingById(id);
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched power rating by ID"));
+  }
+
+  /** Full df_power_rating row by id (amount, legacy id), for other services. */
+  @GetMapping("/power-rating/{id}/detail")
+  public ResponseEntity<Response<DfPowerRatingResponse>> fetchPowerRatingDetailById(
+      @PathVariable UUID id) {
+    var data = darkFiberService.fetchPowerRatingDetailById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched power rating detail by ID"));
   }
 
   @GetMapping("/purchase-orders/fetch-all")
@@ -317,6 +332,27 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched master data by ID"));
   }
 
+  /**
+   * Adds body.delta to the route's noof_strands_consumed (never below 0); returns the route. POST,
+   * not PATCH: the callers' default Feign client cannot send PATCH.
+   */
+  @PostMapping("/master-data/{id}/strands-consumed")
+  public ResponseEntity<Response<DfMasterDataResponse>> adjustStrandsConsumed(
+      @PathVariable UUID id, @RequestBody DfStrandsConsumedRequest request) {
+    var data =
+        darkFiberService.adjustStrandsConsumed(id, request != null ? request.getDelta() : null);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Strands consumed updated"));
+  }
+
+  /** Full df_masterdata row (route) by id: fibre type, strands, unit price, legacy id. */
+  @GetMapping("/master-data/{id}/detail")
+  public ResponseEntity<Response<DfMasterDataResponse>> fetchMasterDataDetailById(
+      @PathVariable UUID id) {
+    var data = darkFiberService.fetchMasterDataDetailById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched master data detail by ID"));
+  }
+
   @GetMapping("/charges/fetch-all")
   public ResponseEntity<Response<List<DfOtcChargeResponse>>> fetchAllOtcCharges() {
     var data = darkFiberService.fetchAllOtcCharges();
@@ -324,10 +360,18 @@ public class DarkFiberController {
   }
 
   @GetMapping("/charge/{id}")
-  public ResponseEntity<Response<DfOtcChargeResponse>> fetchOtcChargeById(
-      @PathVariable UUID id) {
+  public ResponseEntity<Response<DfOtcChargeResponse>> fetchOtcChargeById(@PathVariable UUID id) {
     var data = darkFiberService.fetchOtcChargeById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched OTC charge by ID"));
+  }
+
+  /** The active rate card whose financial year holds the date (yyyy-MM-dd). */
+  @GetMapping("/charge/by-date")
+  public ResponseEntity<Response<DfOtcChargeResponse>> fetchOtcChargeForDate(
+      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    var data = darkFiberService.fetchOtcChargeForDate(date);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched OTC charge for date"));
   }
 
   @GetMapping("/charge/current")

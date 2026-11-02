@@ -4,6 +4,7 @@ import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
 import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
 import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +37,8 @@ public interface DarkFiberService {
   List<DfPowerRatingResponse> fetchAllPowerRatings();
 
   CommonLookUp fetchPowerRatingById(UUID id);
+
+  DfPowerRatingResponse fetchPowerRatingDetailById(UUID id);
 
   List<CommonLookUp> fetchAllPurchaseOrders();
 
@@ -97,11 +100,17 @@ public interface DarkFiberService {
 
   CommonLookUp fetchMasterDataById(UUID id);
 
+  DfMasterDataResponse fetchMasterDataDetailById(UUID id);
+
+  DfMasterDataResponse adjustStrandsConsumed(UUID id, Integer delta);
+
   List<DfOtcChargeResponse> fetchAllOtcCharges();
 
   DfOtcChargeResponse fetchOtcChargeById(UUID id);
 
   DfOtcChargeResponse fetchCurrentOtcCharge();
+
+  DfOtcChargeResponse fetchOtcChargeForDate(LocalDate date);
 
   List<CommonLookUp> fetchAllOtcInvoices();
 
