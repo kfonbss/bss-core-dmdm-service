@@ -90,4 +90,15 @@ public class PopServiceImpl implements PopService {
             .orElseThrow(() -> new EntityNotFoundException("DfPopList not found with id: " + id));
     return modelMapper.map(dfPop, CommonLookUp.class);
   }
+
+  @Override
+  @Transactional(readOnly = true)
+  @Cacheable(cacheNames = CacheNames.DF_POP_DETAIL_BY_ID, key = "#id")
+  public DfPopListResponse fetchDfPopDetailById(UUID id) {
+    DfPopList dfPop =
+        dfPopListRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("DfPopList not found with id: " + id));
+    return modelMapper.map(dfPop, DfPopListResponse.class);
+  }
 }

@@ -11,4 +11,9 @@ public interface DfOtcChargesRepository extends JpaRepository<DfOtcCharges, UUID
   Optional<DfOtcCharges>
       findFirstByFyearSDateLessThanEqualAndFyearEDateGreaterThanEqualOrderByFyearSDateDesc(
           Date startDate, Date endDate);
+
+  /** The active rate card whose financial year holds the date, the latest-starting first. */
+  Optional<DfOtcCharges>
+      findFirstByIsActiveTrueAndFyearSDateLessThanEqualAndFyearEDateGreaterThanEqualOrderByFyearSDateDesc(
+          Date startDate, Date endDate);
 }

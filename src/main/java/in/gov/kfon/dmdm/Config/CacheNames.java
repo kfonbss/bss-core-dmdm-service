@@ -12,6 +12,7 @@ public final class CacheNames {
   public static final String POP_MASTER_BACKUP_BY_ID = "pop:backupById";
   public static final String ALL_DF_POP_LISTS = "pop:allDfPops:v2";
   public static final String DF_POP_BY_ID = "pop:dfPopById";
+  public static final String DF_POP_DETAIL_BY_ID = "pop:dfPopDetailById";
 
   // Pincode and Post Office caches
   public static final String ALL_PINCODES = "pincode:allPincodes";

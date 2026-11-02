@@ -179,6 +179,17 @@ public class DarkFiberServiceImpl implements DarkFiberService {
 
   @Override
   @Transactional(readOnly = true)
+  public DfPowerRatingResponse fetchPowerRatingDetailById(UUID id) {
+    DfPowerRating rating =
+        dfPowerRatingRepository
+            .findByDfPowerRatingId(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Power Rating not found with id: " + id));
+    return modelMapper.map(rating, DfPowerRatingResponse.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
   public List<CommonLookUp> fetchAllPurchaseOrders() {
     return dfPurchaseOrderRepository.findAll().stream()
         .map(dfPurchaseOrder -> modelMapper.map(dfPurchaseOrder, CommonLookUp.class))
@@ -432,6 +443,32 @@ public class DarkFiberServiceImpl implements DarkFiberService {
     return modelMapper.map(masterData, CommonLookUp.class);
   }
 
+  /**
+   * Moves the route's consumed strand count by delta (never below 0) and returns the route. Called
+   * by subscriber-management when a group link takes strands (+) or gives them back (-).
+   */
+  @Override
+  @Transactional
+  public DfMasterDataResponse adjustStrandsConsumed(UUID id, Integer delta) {
+    if (delta == null || delta == 0) {
+      throw new IllegalArgumentException("delta must be a non-zero number of strands");
+    }
+    if (dfMasterDataRepository.adjustStrandsConsumed(id, delta) == 0) {
+      throw new EntityNotFoundException("Master Data not found with id: " + id);
+    }
+    return fetchMasterDataDetailById(id);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public DfMasterDataResponse fetchMasterDataDetailById(UUID id) {
+    DfMasterData masterData =
+        dfMasterDataRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Master Data not found with id: " + id));
+    return modelMapper.map(masterData, DfMasterDataResponse.class);
+  }
+
   @Override
   @Transactional(readOnly = true)
   public List<DfOtcChargeResponse> fetchAllOtcCharges() {
@@ -460,6 +497,19 @@ public class DarkFiberServiceImpl implements DarkFiberService {
                 today, today)
             .orElseThrow(
                 () -> new EntityNotFoundException("OTC Charges not found for date: " + today));
+    return modelMapper.map(charges, DfOtcChargeResponse.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public DfOtcChargeResponse fetchOtcChargeForDate(LocalDate date) {
+    Date on = Date.valueOf(date);
+    DfOtcCharges charges =
+        dfOtcChargesRepository
+            .findFirstByIsActiveTrueAndFyearSDateLessThanEqualAndFyearEDateGreaterThanEqualOrderByFyearSDateDesc(
+                on, on)
+            .orElseThrow(
+                () -> new EntityNotFoundException("OTC Charges not found for date: " + date));
     return modelMapper.map(charges, DfOtcChargeResponse.class);
   }
 
