@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfPopListResponse;
 import in.gov.kfon.dmdm.service.PopService;
 import java.util.List;
 import java.util.UUID;
@@ -115,7 +116,16 @@ class PopControllerTest {
 
   @Test
   void testFetchAllDfPopList() throws Exception {
-    List<CommonLookUp> list = List.of(dfPopLookup);
+    List<DfPopListResponse> list =
+        List.of(
+            DfPopListResponse.builder()
+                .id(dfPopListId)
+                .dfPopListId(1)
+                .name("Thiruvananthapuram POP")
+                .nameInLocal("തിരുവനന്തപുരം POP")
+                .code("POP01")
+                .isActive(true)
+                .build());
     when(service.fetchAllDfPopLists()).thenReturn(list);
 
     mockMvc

@@ -1,6 +1,11 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfFeederListResponse;
+import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
+import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
+import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,9 +35,11 @@ public interface DarkFiberService {
 
   CommonLookUp fetchLinkRenewalHistoryById(UUID id);
 
-  List<CommonLookUp> fetchAllPowerRatings();
+  List<DfPowerRatingResponse> fetchAllPowerRatings();
 
   CommonLookUp fetchPowerRatingById(UUID id);
+
+  DfPowerRatingResponse fetchPowerRatingDetailById(UUID id);
 
   List<CommonLookUp> fetchAllPurchaseOrders();
 
@@ -90,13 +97,30 @@ public interface DarkFiberService {
 
   CommonLookUp fetchFeederById(UUID id);
 
-  List<CommonLookUp> fetchAllMasterData();
+  /** The POP's active feeders, by the POP's legacy id (df_pop_list.id). */
+  List<DfFeederListResponse> fetchFeedersByPop(Integer popId);
+
+  /** Feeders by their legacy ids (df_feeder_list.id), inactive ones too. */
+  List<DfFeederListResponse> fetchFeedersByIds(List<Integer> ids);
+
+  /** Moves the feeder's consumed strand count by delta (never below 0), by its legacy id. */
+  DfFeederListResponse adjustFeederStrandsConsumed(Integer id, Integer delta);
+
+  List<DfMasterDataResponse> fetchAllMasterData();
 
   CommonLookUp fetchMasterDataById(UUID id);
 
-  List<CommonLookUp> fetchAllOtcCharges();
+  DfMasterDataResponse fetchMasterDataDetailById(UUID id);
 
-  CommonLookUp fetchOtcChargeById(UUID id);
+  DfMasterDataResponse adjustStrandsConsumed(UUID id, Integer delta);
+
+  List<DfOtcChargeResponse> fetchAllOtcCharges();
+
+  DfOtcChargeResponse fetchOtcChargeById(UUID id);
+
+  DfOtcChargeResponse fetchCurrentOtcCharge();
+
+  DfOtcChargeResponse fetchOtcChargeForDate(LocalDate date);
 
   List<CommonLookUp> fetchAllOtcInvoices();
 

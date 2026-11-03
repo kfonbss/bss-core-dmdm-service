@@ -10,8 +10,9 @@ public final class CacheNames {
   public static final String POP_MASTER_BY_ID = "pop:byId";
   public static final String ALL_POP_MASTER_BACKUPS = "pop:allBackups";
   public static final String POP_MASTER_BACKUP_BY_ID = "pop:backupById";
-  public static final String ALL_DF_POP_LISTS = "pop:allDfPops";
+  public static final String ALL_DF_POP_LISTS = "pop:allDfPops:v2";
   public static final String DF_POP_BY_ID = "pop:dfPopById";
+  public static final String DF_POP_DETAIL_BY_ID = "pop:dfPopDetailById";
 
   // Pincode and Post Office caches
   public static final String ALL_PINCODES = "pincode:allPincodes";
@@ -25,7 +26,7 @@ public final class CacheNames {
   public static final String DISTRICT_DETAILS_BY_PINCODE = "pincode:districtDetailsByPincode";
 
   // Region caches
-  public static final String ALL_REGIONS = "region:all";
+  public static final String ALL_REGIONS = "region:all:v2";
   public static final String REGION_BY_STATE_CODE = "region:byStateCode";
 
   // Sys config (RADIUS region routing) caches

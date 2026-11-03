@@ -1,9 +1,15 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfFeederListResponse;
+import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
+import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
+import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
 import in.gov.kfon.dmdm.model.*;
 import in.gov.kfon.dmdm.repository.*;
 import jakarta.persistence.EntityNotFoundException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -155,9 +161,9 @@ public class DarkFiberServiceImpl implements DarkFiberService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<CommonLookUp> fetchAllPowerRatings() {
+  public List<DfPowerRatingResponse> fetchAllPowerRatings() {
     return dfPowerRatingRepository.findAll().stream()
-        .map(dfPowerRating -> modelMapper.map(dfPowerRating, CommonLookUp.class))
+        .map(dfPowerRating -> modelMapper.map(dfPowerRating, DfPowerRatingResponse.class))
         .toList();
   }
 
@@ -170,6 +176,17 @@ public class DarkFiberServiceImpl implements DarkFiberService {
             .orElseThrow(
                 () -> new EntityNotFoundException("Power Rating not found with id: " + id));
     return modelMapper.map(rating, CommonLookUp.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public DfPowerRatingResponse fetchPowerRatingDetailById(UUID id) {
+    DfPowerRating rating =
+        dfPowerRatingRepository
+            .findByDfPowerRatingId(id)
+            .orElseThrow(
+                () -> new EntityNotFoundException("Power Rating not found with id: " + id));
+    return modelMapper.map(rating, DfPowerRatingResponse.class);
   }
 
   @Override
@@ -411,9 +428,66 @@ public class DarkFiberServiceImpl implements DarkFiberService {
   }
 
   @Override
-  public List<CommonLookUp> fetchAllMasterData() {
+  @Transactional(readOnly = true)
+  public List<DfFeederListResponse> fetchFeedersByPop(Integer popId) {
+    if (popId == null) {
+      throw new IllegalArgumentException("POP id is required");
+    }
+    return dfFeederListRepository.findByPopIdAndIsActiveTrueOrderByFeederNameAsc(popId).stream()
+        .map(DarkFiberServiceImpl::toFeederResponse)
+        .toList();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<DfFeederListResponse> fetchFeedersByIds(List<Integer> ids) {
+    if (ids == null || ids.isEmpty()) {
+      return List.of();
+    }
+    return dfFeederListRepository.findByIdIn(ids).stream()
+        .map(DarkFiberServiceImpl::toFeederResponse)
+        .toList();
+  }
+
+  /**
+   * Called by subscriber-management when an intra-city group link gives its feeder strands back
+   * (-) or takes them (+).
+   */
+  @Override
+  @Transactional
+  public DfFeederListResponse adjustFeederStrandsConsumed(Integer id, Integer delta) {
+    if (id == null) {
+      throw new IllegalArgumentException("Feeder id is required");
+    }
+    if (delta == null || delta == 0) {
+      throw new IllegalArgumentException("delta must be a non-zero number of strands");
+    }
+    if (dfFeederListRepository.adjustStrandsConsumed(id, delta) == 0) {
+      throw new EntityNotFoundException("Feeder list not found with legacy id: " + id);
+    }
+    return dfFeederListRepository.findByIdIn(List.of(id)).stream()
+        .findFirst()
+        .map(DarkFiberServiceImpl::toFeederResponse)
+        .orElseThrow(
+            () -> new EntityNotFoundException("Feeder list not found with legacy id: " + id));
+  }
+
+  private static DfFeederListResponse toFeederResponse(DfFeederList feeder) {
+    return DfFeederListResponse.builder()
+        .listId(feeder.getListId())
+        .id(feeder.getId())
+        .popId(feeder.getPopId())
+        .feederName(feeder.getFeederName())
+        .noOfStrandsConsumed(feeder.getNoOfStrandsConsumed())
+        .isActive(feeder.getIsActive())
+        .build();
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<DfMasterDataResponse> fetchAllMasterData() {
     return dfMasterDataRepository.findAll().stream()
-        .map(entity -> modelMapper.map(entity, CommonLookUp.class))
+        .map(entity -> modelMapper.map(entity, DfMasterDataResponse.class))
         .toList();
   }
 
@@ -426,22 +500,74 @@ public class DarkFiberServiceImpl implements DarkFiberService {
     return modelMapper.map(masterData, CommonLookUp.class);
   }
 
+  /**
+   * Moves the route's consumed strand count by delta (never below 0) and returns the route. Called
+   * by subscriber-management when a group link takes strands (+) or gives them back (-).
+   */
+  @Override
+  @Transactional
+  public DfMasterDataResponse adjustStrandsConsumed(UUID id, Integer delta) {
+    if (delta == null || delta == 0) {
+      throw new IllegalArgumentException("delta must be a non-zero number of strands");
+    }
+    if (dfMasterDataRepository.adjustStrandsConsumed(id, delta) == 0) {
+      throw new EntityNotFoundException("Master Data not found with id: " + id);
+    }
+    return fetchMasterDataDetailById(id);
+  }
+
   @Override
   @Transactional(readOnly = true)
-  public List<CommonLookUp> fetchAllOtcCharges() {
+  public DfMasterDataResponse fetchMasterDataDetailById(UUID id) {
+    DfMasterData masterData =
+        dfMasterDataRepository
+            .findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Master Data not found with id: " + id));
+    return modelMapper.map(masterData, DfMasterDataResponse.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public List<DfOtcChargeResponse> fetchAllOtcCharges() {
     return dfOtcChargesRepository.findAll().stream()
-        .map(otcCharges -> modelMapper.map(otcCharges, CommonLookUp.class))
+        .map(otcCharges -> modelMapper.map(otcCharges, DfOtcChargeResponse.class))
         .toList();
   }
 
   @Override
   @Transactional(readOnly = true)
-  public CommonLookUp fetchOtcChargeById(UUID id) {
+  public DfOtcChargeResponse fetchOtcChargeById(UUID id) {
     DfOtcCharges charges =
         dfOtcChargesRepository
             .findById(id)
             .orElseThrow(() -> new EntityNotFoundException("OTC Charges not found with id: " + id));
-    return modelMapper.map(charges, CommonLookUp.class);
+    return modelMapper.map(charges, DfOtcChargeResponse.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public DfOtcChargeResponse fetchCurrentOtcCharge() {
+    Date today = Date.valueOf(LocalDate.now());
+    DfOtcCharges charges =
+        dfOtcChargesRepository
+            .findFirstByFyearSDateLessThanEqualAndFyearEDateGreaterThanEqualOrderByFyearSDateDesc(
+                today, today)
+            .orElseThrow(
+                () -> new EntityNotFoundException("OTC Charges not found for date: " + today));
+    return modelMapper.map(charges, DfOtcChargeResponse.class);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public DfOtcChargeResponse fetchOtcChargeForDate(LocalDate date) {
+    Date on = Date.valueOf(date);
+    DfOtcCharges charges =
+        dfOtcChargesRepository
+            .findFirstByIsActiveTrueAndFyearSDateLessThanEqualAndFyearEDateGreaterThanEqualOrderByFyearSDateDesc(
+                on, on)
+            .orElseThrow(
+                () -> new EntityNotFoundException("OTC Charges not found for date: " + date));
+    return modelMapper.map(charges, DfOtcChargeResponse.class);
   }
 
   @Override
