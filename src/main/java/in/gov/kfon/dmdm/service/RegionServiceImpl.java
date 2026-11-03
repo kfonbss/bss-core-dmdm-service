@@ -5,6 +5,7 @@ import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.model.Region;
 import in.gov.kfon.dmdm.repository.RegionRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -22,7 +23,13 @@ public class RegionServiceImpl implements RegionService {
   @Transactional(readOnly = true)
   @Cacheable(cacheNames = CacheNames.ALL_REGIONS, unless = "#result == null || #result.isEmpty()")
   public List<CommonLookUp> fetchAll() {
-    return repository.findByStatus(0).stream().map(this::toLookUp).toList();
+    // Circles A-Z by name; sorted in Java too so DB collation / case cannot reorder them.
+    return repository.findByStatusOrderByNameAsc(0).stream()
+        .sorted(
+            Comparator.comparing(
+                Region::getName, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)))
+        .map(this::toLookUp)
+        .toList();
   }
 
   @Override
