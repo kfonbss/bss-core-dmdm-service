@@ -26,7 +26,7 @@ public final class CacheNames {
   public static final String DISTRICT_DETAILS_BY_PINCODE = "pincode:districtDetailsByPincode";
 
   // Region caches
-  public static final String ALL_REGIONS = "region:all";
+  public static final String ALL_REGIONS = "region:all:v2";
   public static final String REGION_BY_STATE_CODE = "region:byStateCode";
 
   // Sys config (RADIUS region routing) caches
