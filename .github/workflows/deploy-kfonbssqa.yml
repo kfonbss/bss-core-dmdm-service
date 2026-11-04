@@ -1,0 +1,122 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# CI/CD — bss-core-dmdm-service  (KFON QA)
+#
+# Push to kfonbssqa → build linux/amd64 → ECR :kfonbssqa → deploy kfonqa ns
+# ─────────────────────────────────────────────────────────────────────────────
+name: CI/CD (kfonbssqa)
+
+on:
+  push:
+    branches:
+      - kfonbssqa
+  workflow_dispatch:
+
+concurrency:
+  group: bss-core-dmdm-service-kfonbssqa
+  cancel-in-progress: true
+
+env:
+  ECR_REGISTRY: 018810731179.dkr.ecr.ap-south-1.amazonaws.com
+  AWS_REGION: ap-south-1
+  SERVICE: bss-core-dmdm-service
+
+jobs:
+  build:
+    name: Build & Push image (kfonbssqa)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout service code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          provenance: false
+          sbom: false
+          build-args: |
+            GH_PACKAGES_USER=kfonbss
+            GH_PACKAGES_TOKEN=${{ secrets.GH_PACKAGES_TOKEN }}
+          tags: ${{ env.ECR_REGISTRY }}/${{ env.SERVICE }}:kfonbssqa
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to kfonqa namespace
+    needs: build
+    runs-on: [self-hosted, "qa"]
+
+    steps:
+      - name: Checkout infra repo
+        uses: actions/checkout@v4
+        with:
+          repository: kfonbss/bss-devops-infra
+          token: ${{ secrets.INFRA_REPO_TOKEN }}
+          path: bss-devops-infra
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Refresh ECR pull secret (kfonqa)
+        run: |
+          TOKEN=$(aws ecr get-login-password --region ${{ env.AWS_REGION }})
+          sudo k3s kubectl create secret docker-registry regcred \
+            --docker-server=${{ env.ECR_REGISTRY }} \
+            --docker-username=AWS --docker-password=$TOKEN \
+            -n kfonqa --dry-run=client -o yaml | sudo k3s kubectl apply -f -
+
+      - name: Apply app-config ConfigMap (if present)
+        run: |
+          CONFIG="$GITHUB_WORKSPACE/bss-devops-infra/environments/kfonqa/${{ env.SERVICE }}-app-config.yaml"
+          if [ -f "$CONFIG" ]; then
+            echo "Applying $CONFIG"
+            sudo k3s kubectl apply -f "$CONFIG"
+          else
+            echo "No app-config found for ${{ env.SERVICE }}, skipping"
+          fi
+
+      - name: Helm upgrade
+        run: |
+          sudo helm upgrade --install ${{ env.SERVICE }} \
+            $GITHUB_WORKSPACE/bss-devops-infra/infra/helm/${{ env.SERVICE }} \
+            --kubeconfig /etc/rancher/k3s/k3s.yaml \
+            -n kfonqa \
+            -f $GITHUB_WORKSPACE/bss-devops-infra/environments/kfonqa/values/${{ env.SERVICE }}.yaml \
+            --timeout 5m
+
+      - name: Rollout restart & wait
+        run: |
+          sudo k3s kubectl rollout restart deployment/${{ env.SERVICE }} -n kfonqa
+          sudo k3s kubectl rollout status deployment/${{ env.SERVICE }} -n kfonqa --timeout=3m
+
+      - name: Summary
+        run: |
+          echo "### kfonbssqa deployment complete" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Service** | \`${{ env.SERVICE }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Image** | \`${{ env.ECR_REGISTRY }}/${{ env.SERVICE }}:kfonbssqa\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Namespace** | \`kfonqa\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **URL** | https://kfonbssqa.sritindia.com |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          sudo k3s kubectl get pods -n kfonqa | grep ${{ env.SERVICE }}
