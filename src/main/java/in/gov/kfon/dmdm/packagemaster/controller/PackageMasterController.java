@@ -148,8 +148,9 @@ public class PackageMasterController {
 
   @GetMapping("/package/service-category/by-service-types")
   public ResponseEntity<Response<List<ServiceCategoryResponse>>> getServiceCategoryByServiceTypes(
-      @RequestParam List<UUID> serviceTypeIds) {
-    return fetched(serviceCategoryService.fetchByServiceTypes(serviceTypeIds));
+      @RequestParam List<UUID> serviceTypeIds,
+      @RequestParam(required = false) ServiceCategoryType type) {
+    return fetched(serviceCategoryService.fetchByServiceTypes(serviceTypeIds, type));
   }
 
   @PostMapping("/package/service-category/mapping/save")
