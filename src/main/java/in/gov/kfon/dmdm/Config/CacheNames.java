@@ -41,6 +41,14 @@ public final class CacheNames {
   public static final String ALL_DISTRICTS = "district:all";
   public static final String DISTRICT_BY_ID = "district:byId";
 
+  // Sub-district caches
+  public static final String SUB_DISTRICTS_BY_DISTRICT = "subDistrict:byDistrict";
+  public static final String SUB_DISTRICT_BY_ID = "subDistrict:byId";
+
+  // Village caches
+  public static final String VILLAGES_BY_SUB_DISTRICT = "village:bySubDistrict";
+  public static final String VILLAGE_BY_ID = "village:byId";
+
   // Territory caches
   public static final String ALL_TERRITORIES = "territory:all";
 

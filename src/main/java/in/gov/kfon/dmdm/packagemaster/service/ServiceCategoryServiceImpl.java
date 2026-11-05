@@ -146,7 +146,8 @@ public class ServiceCategoryServiceImpl implements ServiceCategoryService {
   }
 
   @Override
-  public List<ServiceCategoryResponse> fetchByServiceTypes(List<UUID> serviceTypeIds) {
+  public List<ServiceCategoryResponse> fetchByServiceTypes(
+      List<UUID> serviceTypeIds, ServiceCategoryType type) {
     if (serviceTypeIds == null || serviceTypeIds.isEmpty()) {
       throw new IllegalArgumentException("serviceTypeIds must not be empty");
     }
@@ -164,6 +165,7 @@ public class ServiceCategoryServiceImpl implements ServiceCategoryService {
     Map<UUID, List<ServiceCategoryMapping>> mappings = activeMappingsByCategory(candidateIds);
     List<ServiceCategoryResponse> matches =
         serviceCategoryRepository.findAllById(candidateIds).stream()
+            .filter(sc -> type == null || type == sc.getServiceCategoryType())
             .filter(
                 sc ->
                     serviceTypeIdsOf(mappings.getOrDefault(sc.getId(), List.of()))
@@ -175,7 +177,9 @@ public class ServiceCategoryServiceImpl implements ServiceCategoryService {
             .toList();
     if (matches.isEmpty()) {
       throw new EntityNotFoundException(
-          "No service category is mapped to exactly this set of service types");
+          "No service category"
+              + (type != null ? " of type " + type : "")
+              + " is mapped to exactly this set of service types");
     }
     return matches;
   }

@@ -41,4 +41,12 @@ public class District extends Auditor {
 
   @Column(name = "shortname")
   private String shortName;
+
+  /** District code used in the legacy billing_master location tables (Census DTCode). */
+  @Column(name = "census_code")
+  private String censusCode;
+
+  /** Local Government Directory (LGD) district code. */
+  @Column(name = "lgd_code")
+  private String lgdCode;
 }

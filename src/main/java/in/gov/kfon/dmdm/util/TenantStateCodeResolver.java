@@ -9,8 +9,8 @@ import java.util.Map;
  * the request's {@code X-Tenant-ID}, which for the state circles equals the state code itself
  * ({@code KL}, {@code LD}, {@code PY}, ...). The KFON operator tenant, however, shares the Kerala
  * ({@code KL}) data, so its tenant id must resolve to {@code KL} before any {@code state_code}
- * lookup. An unmapped tenant is returned unchanged (trimmed), so the existing circle tenants keep
- * working exactly as before.
+ * lookup; the circle queries then map {@code KL} to Kerala's numeric code ({@code 32}) through
+ * {@code invoice_statecode}. An unmapped tenant is returned unchanged (trimmed).
  */
 public final class TenantStateCodeResolver {
 

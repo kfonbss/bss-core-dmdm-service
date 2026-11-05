@@ -20,6 +20,7 @@ public class CommonLookUp {
   private Boolean isActive;
   private String district;
   private UUID districtId;
+  private UUID subDistrictId;
   private Integer villageTypeId;
   private Integer districtCode;
   private Integer stCode;
