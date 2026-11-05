@@ -7,14 +7,14 @@ import java.util.Map;
  *
  * <p>Most dmdm masters (district, pincode, pop, streetbox, bank details, gateway) are filtered by
  * the request's {@code X-Tenant-ID}, which for the state circles equals the state code itself
- * ({@code KL}, {@code LD}, {@code PY}, ...). The KFON operator tenant, however, shares the Kerala
- * ({@code KL}) data, so its tenant id must resolve to {@code KL} before any {@code state_code}
- * lookup. An unmapped tenant is returned unchanged (trimmed), so the existing circle tenants keep
- * working exactly as before.
+ * ({@code KFON}, {@code LD}, {@code PY}, ...). The KFON operator tenant's master data is stored
+ * under {@code state_code = 'KFON'}, so it needs no mapping. Add an entry here only when a tenant id
+ * differs from the state code its data is stored under. An unmapped tenant is returned unchanged
+ * (trimmed).
  */
 public final class TenantStateCodeResolver {
 
-  private static final Map<String, String> TENANT_STATE_CODE_MAP = Map.of("KFON", "KL");
+  private static final Map<String, String> TENANT_STATE_CODE_MAP = Map.of();
 
   private TenantStateCodeResolver() {}
 
