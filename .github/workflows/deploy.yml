@@ -111,7 +111,7 @@ jobs:
       - name: Rollout restart & wait
         run: |
           sudo k3s kubectl rollout restart deployment/${{ env.SERVICE }} -n $NS
-          sudo k3s kubectl rollout status deployment/${{ env.SERVICE }} -n $NS --timeout=3m
+          sudo k3s kubectl rollout status deployment/${{ env.SERVICE }} -n $NS --timeout=6m
 
       - name: Summary
         run: |
