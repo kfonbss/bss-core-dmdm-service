@@ -194,7 +194,7 @@ public class ServiceCategoryServiceImpl implements ServiceCategoryService {
   public ServiceCategoryResponse create(ServiceCategoryRequest request) {
     if (serviceCategoryRepository.existsByNameIgnoreCaseAndServiceCategoryType(
         request.getName(), request.getServiceCategoryType())) {
-      throw new IllegalArgumentException("Service category already exists");
+      throw new IllegalArgumentException("Service Name already exists");
     }
     validateAddonBod(request);
 
