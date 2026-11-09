@@ -15,10 +15,10 @@ pipeline {
     }
 
     environment {
-        HARBOR_REGISTRY = '10.40.2.107'
+        HARBOR_REGISTRY = '10.40.2.107:80'
         HARBOR_PROJECT = 'library'
         IMAGE_NAME = 'bss-core-dmdm-service'
-        HARBOR_DEV_IMAGE = '10.40.2.107/library/bss-core-dmdm-service:dev'
+        HARBOR_DEV_IMAGE = '10.40.2.107:80/library/bss-core-dmdm-service:dev'
         K8S_NAMESPACE = 'bss-core-dmdm-dev'
         K8S_DEPLOYMENT = 'bss-core-dmdm-service'
         K8S_CONTAINER = 'app'
@@ -52,7 +52,7 @@ pipeline {
                             sh '''
                                 set -eu
                                 printf '%s' "$HARBOR_PASSWORD" |
-                                    docker login "http://$HARBOR_REGISTRY" \
+                                    docker login "$HARBOR_REGISTRY" \
                                         --username "$HARBOR_USERNAME" \
                                         --password-stdin
                                 docker build --pull \
