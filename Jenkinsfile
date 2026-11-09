@@ -52,7 +52,7 @@ pipeline {
                             sh '''
                                 set -eu
                                 printf '%s' "$HARBOR_PASSWORD" |
-                                    docker login --tls-verify=false "$HARBOR_REGISTRY" \
+                                    docker login "http://$HARBOR_REGISTRY" \
                                         --username "$HARBOR_USERNAME" \
                                         --password-stdin
                                 docker build --pull \
