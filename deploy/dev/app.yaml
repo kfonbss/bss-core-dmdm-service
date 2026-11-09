@@ -21,14 +21,12 @@ spec:
         prometheus.io/port: "8080"
         prometheus.io/path: /bss-core-dmdm-service/actuator/prometheus
     spec:
-      imagePullSecrets:
-        - name: ecr-pull-secret
       nodeSelector:
         workload: app
       containers:
         - name: app
-          image: 018810731179.dkr.ecr.ap-south-1.amazonaws.com/bss-core-dmdm-service:dev-deployment-a2242224fd6e
-          imagePullPolicy: IfNotPresent
+          image: 10.40.2.107/library/bss-core-dmdm-service:dev
+          imagePullPolicy: Always
           ports:
             - name: http
               containerPort: 8080
