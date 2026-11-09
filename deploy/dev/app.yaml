@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bss-core-dmdm-service
+  namespace: bss-core-dmdm-dev
+  labels:
+    app.kubernetes.io/name: bss-core-dmdm-service
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: bss-core-dmdm-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: bss-core-dmdm-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: /bss-core-dmdm-service/actuator/prometheus
+    spec:
+      imagePullSecrets:
+        - name: ecr-pull-secret
+      nodeSelector:
+        workload: app
+      containers:
+        - name: app
+          image: 018810731179.dkr.ecr.ap-south-1.amazonaws.com/bss-core-dmdm-service:dev-deployment-a2242224fd6e
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: rwbssdev
+            - name: SERVER_PORT
+              value: "8080"
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: /bss-core-dmdm-service
+            - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
+              value: health,info,prometheus
+            - name: MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED
+              value: "true"
+            - name: POSTGRES_URL
+              value: jdbc:postgresql://10.40.1.71:5432/bss_core_dmdm_dev?sslmode=disable
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: bss-core-dmdm-db
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bss-core-dmdm-db
+                  key: password
+            - name: REDIS_HOST
+              value: 10.40.1.225
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bss-core-dmdm-redis
+                  key: password
+            - name: TZ
+              value: Asia/Kolkata
+            - name: JAVA_TOOL_OPTIONS
+              value: -XX:+UseContainerSupport -XX:MaxRAMPercentage=65
+          startupProbe:
+            httpGet:
+              path: /bss-core-dmdm-service/actuator/health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /bss-core-dmdm-service/actuator/health/readiness
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /bss-core-dmdm-service/actuator/health/liveness
+              port: http
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 250m
+              memory: 768Mi
+            limits:
+              cpu: "1"
+              memory: 1536Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bss-core-dmdm-service
+  namespace: bss-core-dmdm-dev
+spec:
+  type: NodePort
+  externalTrafficPolicy: Cluster
+  selector:
+    app.kubernetes.io/name: bss-core-dmdm-service
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+      nodePort: 30180
+      protocol: TCP
