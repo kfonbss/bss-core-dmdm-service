@@ -8,14 +8,14 @@ through a private NodePort:
 - URL: `http://10.40.1.225:30180/bss-core-dmdm-service`
 - Connect the laptop to the Client VPN before accessing it.
 
-The database Secret (`bss-core-dmdm-db`) and shared Redis Secret
-(`bss-core-dmdm-redis`) are created directly in Kubernetes and must not be
-committed. The Redis password is stored in AWS Systems Manager Parameter Store
-as a `SecureString`; the Terraform output gives the parameter ARN. Use an
-authorized AWS identity to retrieve it with `aws ssm get-parameter
---with-decryption`, then populate the Kubernetes Secret. Other services can
-use the same host, port, and password. Harbor's `library` project is public,
-so the workload does not need a registry pull secret.
+The shared environment namespace is `bss-dev` (UAT uses `bss-uat`). The database
+Secret (`bss-core-dmdm-db`) and Redis Secret (`bss-core-dmdm-redis`) remain
+namespace-scoped and must be provisioned in each environment namespace. They
+must not be committed. The Redis password is stored in AWS Systems Manager
+Parameter Store as a `SecureString`; use an authorized AWS identity and SSM to
+populate the Kubernetes Secret. Other services can use the same Redis host,
+port, and password. Harbor's `library` project is public, so the workload does
+not need a registry pull secret.
 
 The pipeline deploys immutable commit-tagged images. The manifest's `dev` tag
 is a bootstrap/default tag updated by each successful pipeline run.
@@ -44,12 +44,12 @@ Create a Pipeline job in Jenkins at `http://10.40.2.102:8080` with:
 
 The Jenkins global username/password credential `harbor-credentials` is used
 for Harbor pushes. The Pipeline also requires a Jenkins **Secret file**
-credential named `dev-kubeconfig`. It must contain a kubeconfig for the
-`jenkins-deployer` ServiceAccount, not the cluster-admin kubeconfig. The
-included Role grants only `get`, `patch`, and `watch` on Deployments in this
-namespace. Apply `deploy/dev/jenkins-deployer.yaml` (or `kubectl apply -k
-deploy/dev`) before creating that credential. Store the kubeconfig securely
-and rotate its ServiceAccount token periodically; never commit it.
+credential named `dev-kubeconfig`. It uses the existing `jenkins-deployer`
+ServiceAccount from `bss-core-dmdm-dev`; the RoleBinding in `bss-dev` grants
+access only to this service's Deployment. Apply `deploy/dev/jenkins-deployer.yaml`
+(or `kubectl apply -k deploy/dev`) before running the pipeline. Store kubeconfigs
+securely and rotate their ServiceAccount tokens periodically; never commit
+them.
 
 Harbor currently serves HTTP on the private VPC. The Jenkins build agent and
 dev application worker are configured to use this endpoint as an insecure

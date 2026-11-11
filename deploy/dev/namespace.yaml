@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: bss-core-dmdm-dev
+  name: bss-dev
