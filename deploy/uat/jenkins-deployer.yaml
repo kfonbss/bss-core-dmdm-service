@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jenkins-deployer
+  namespace: bss-core-dmdm-uat
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: jenkins-deployer
+  namespace: bss-core-dmdm-uat
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "patch", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: jenkins-deployer
+  namespace: bss-core-dmdm-uat
+subjects:
+  - kind: ServiceAccount
+    name: jenkins-deployer
+    namespace: bss-core-dmdm-uat
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: jenkins-deployer
