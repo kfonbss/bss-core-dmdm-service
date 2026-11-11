@@ -14,6 +14,14 @@ pipeline {
         timestamps()
     }
 
+    parameters {
+        booleanParam(
+            name: 'DEPLOY_UAT',
+            defaultValue: false,
+            description: 'Deploy the built immutable image to the UAT Kubernetes cluster.'
+        )
+    }
+
     environment {
         HARBOR_REGISTRY = '10.40.2.107'
         HARBOR_PROJECT = 'library'
@@ -23,6 +31,10 @@ pipeline {
         K8S_DEPLOYMENT = 'bss-core-dmdm-service'
         K8S_CONTAINER = 'app'
         K8S_NODEPORT_URL = 'http://10.40.1.225:30180/bss-core-dmdm-service/actuator/health'
+        UAT_K8S_NAMESPACE = 'bss-core-dmdm-uat'
+        UAT_K8S_DEPLOYMENT = 'bss-core-dmdm-service'
+        UAT_K8S_CONTAINER = 'app'
+        UAT_K8S_NODEPORT_URL = 'http://10.40.3.203:30180/bss-core-dmdm-service/actuator/health'
         DOCKER_BUILDKIT = '1'
     }
 
@@ -88,6 +100,33 @@ pipeline {
                         curl --fail --silent --show-error \
                             --retry 12 --retry-delay 5 --retry-connrefused \
                             "$K8S_NODEPORT_URL"
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy to UAT') {
+            when {
+                expression { return params.DEPLOY_UAT }
+            }
+            steps {
+                withCredentials([file(
+                    credentialsId: 'uat-kubeconfig',
+                    variable: 'UAT_KUBECONFIG'
+                )]) {
+                    sh '''
+                        set -eu
+                        kubectl --kubeconfig="$UAT_KUBECONFIG" \
+                            -n "$UAT_K8S_NAMESPACE" \
+                            set image "deployment/$UAT_K8S_DEPLOYMENT" \
+                            "$UAT_K8S_CONTAINER=$IMAGE"
+                        kubectl --kubeconfig="$UAT_KUBECONFIG" \
+                            -n "$UAT_K8S_NAMESPACE" \
+                            rollout status "deployment/$UAT_K8S_DEPLOYMENT" \
+                            --timeout=5m
+                        curl --fail --silent --show-error \
+                            --retry 12 --retry-delay 5 --retry-connrefused \
+                            "$UAT_K8S_NODEPORT_URL"
                     '''
                 }
             }
