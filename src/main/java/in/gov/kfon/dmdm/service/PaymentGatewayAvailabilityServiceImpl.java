@@ -8,7 +8,6 @@ import in.gov.kfon.dmdm.model.Gateway;
 import in.gov.kfon.dmdm.model.PaymentGatewayAvailability;
 import in.gov.kfon.dmdm.repository.GatewayRepository;
 import in.gov.kfon.dmdm.repository.PaymentGatewayAvailabilityRepository;
-import in.gov.kfon.dmdm.util.TenantStateCodeResolver;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -138,12 +137,15 @@ public class PaymentGatewayAvailabilityServiceImpl implements PaymentGatewayAvai
     }
   }
 
-  private static String requireStateCode(String tenantOrStateCode) {
-    String stateCode = TenantStateCodeResolver.resolve(tenantOrStateCode);
-    if (!StringUtils.hasText(stateCode)) {
-      throw new IllegalArgumentException("State code (X-Tenant-ID) is required");
+  /**
+   * The tenant code exactly as sent (KFON, KL, LD, ...). Payment gateways are kept per tenant, so
+   * KFON is not folded into KL here the way the shared Kerala masters are.
+   */
+  private static String requireStateCode(String tenantCode) {
+    if (!StringUtils.hasText(tenantCode)) {
+      throw new IllegalArgumentException("Tenant code (X-Tenant-ID) is required");
     }
-    return stateCode.trim().toUpperCase();
+    return tenantCode.trim().toUpperCase();
   }
 
   private static PaymentGatewayAvailabilityResponse toResponse(
