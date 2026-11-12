@@ -22,8 +22,9 @@ public class GatewayController {
 
   @GetMapping("/fetch-all")
   public ResponseEntity<Response<List<CommonLookUp>>> fetchAll(
-      @RequestParam(required = false) String userType) {
-    var data = service.fetchAll(userType);
+      @RequestParam(required = false) String userType,
+      @RequestHeader(value = "X-Tenant-ID", required = false) String tenantId) {
+    var data = service.fetchAll(userType, tenantId);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 

@@ -5,7 +5,7 @@ import in.gov.kfon.dmdm.contract.GatewayAvailabilityResponse;
 import java.util.List;
 
 public interface GatewayService {
-  List<CommonLookUp> fetchAll(String userType);
+  List<CommonLookUp> fetchAll(String userType, String tenantId);
 
   GatewayAvailabilityResponse fetchAvailableGateways(String tenantId);
 }
