@@ -1,17 +1,22 @@
 package in.gov.kfon.dmdm.service;
 
 import in.gov.kfon.dmdm.Config.CacheNames;
+import in.gov.kfon.dmdm.constant.PaymentGatewayUserType;
 import in.gov.kfon.dmdm.contract.CommonLookUp;
 import in.gov.kfon.dmdm.contract.GatewayAvailabilityResponse;
 import in.gov.kfon.dmdm.model.Gateway;
+import in.gov.kfon.dmdm.model.PaymentGatewayAvailability;
 import in.gov.kfon.dmdm.model.StateDistrict;
 import in.gov.kfon.dmdm.repository.GatewayLocationRepository;
 import in.gov.kfon.dmdm.repository.GatewayRepository;
+import in.gov.kfon.dmdm.repository.PaymentGatewayAvailabilityRepository;
 import in.gov.kfon.dmdm.repository.StateDistrictRepository;
 import in.gov.kfon.dmdm.util.TenantStateCodeResolver;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -24,38 +29,41 @@ public class GatewayServiceImpl implements GatewayService {
 
   private static final int ACTIVE_STATUS = 1;
 
-  private static final Map<String, Set<String>> GATEWAY_CODES_BY_USER_TYPE =
-      Map.of(
-          "LNP", Set.of("BILLDESK", "PAYTM"),
-          "SUBSCRIBER", Set.of("ATOM", "RAZORPAY"));
-
   private final GatewayRepository repository;
   private final GatewayLocationRepository gatewayLocationRepository;
   private final StateDistrictRepository stateDistrictRepository;
+  private final PaymentGatewayAvailabilityRepository paymentGatewayAvailabilityRepository;
 
+  /**
+   * Every gateway in the master when {@code userType} is blank. Otherwise the gateways the tenant's
+   * state offers to that user type (SUBSCRIBER, or PARTNER / LNP), from
+   * payment_gateway_availability; without a tenant, the ones any state offers to it.
+   */
   @Override
   @Transactional(readOnly = true)
   @Cacheable(
       cacheNames = CacheNames.ALL_GATEWAYS,
-      key = "#userType == null || #userType.isBlank() ? 'ALL' : #userType.trim().toUpperCase()")
-  public List<CommonLookUp> fetchAll(String userType) {
-    var gateways = repository.findAll().stream();
-    if (userType != null && !userType.isBlank()) {
-      var allowedCodes = GATEWAY_CODES_BY_USER_TYPE.get(userType.trim().toUpperCase());
-      if (allowedCodes == null) {
-        throw new IllegalArgumentException(
-            "Invalid userType: "
-                + userType
-                + ". Allowed values: "
-                + GATEWAY_CODES_BY_USER_TYPE.keySet());
-      }
-      gateways =
-          gateways.filter(
-              gateway ->
-                  gateway.getCode() != null
-                      && allowedCodes.contains(gateway.getCode().trim().toUpperCase()));
+      key =
+          "(#userType == null || #userType.isBlank() ? 'ALL' : #userType.trim().toUpperCase())"
+              + " + ':' + (#tenantId == null ? '' : #tenantId.trim().toUpperCase())")
+  public List<CommonLookUp> fetchAll(String userType, String tenantId) {
+    if (userType == null || userType.isBlank()) {
+      return repository.findAll().stream().map(this::toCommonLookUp).toList();
     }
-    return gateways.map(this::toCommonLookUp).toList();
+    PaymentGatewayUserType type = PaymentGatewayUserType.from(userType);
+    String stateCode = TenantStateCodeResolver.resolve(tenantId);
+    List<PaymentGatewayAvailability> rows =
+        stateCode == null || stateCode.isBlank()
+            ? paymentGatewayAvailabilityRepository.findAll().stream()
+                .filter(row -> row.getUserType() == type && Boolean.TRUE.equals(row.getIsActive()))
+                .sorted(Comparator.comparing(PaymentGatewayAvailability::getDisplayOrder))
+                .toList()
+            : paymentGatewayAvailabilityRepository
+                .findByStateCodeIgnoreCaseAndUserTypeAndIsActiveTrueOrderByDisplayOrderAsc(
+                    stateCode, type);
+    Map<UUID, Gateway> gateways = new LinkedHashMap<>();
+    rows.forEach(row -> gateways.putIfAbsent(row.getGateway().getGatewayId(), row.getGateway()));
+    return gateways.values().stream().map(this::toCommonLookUp).toList();
   }
 
   @Override
