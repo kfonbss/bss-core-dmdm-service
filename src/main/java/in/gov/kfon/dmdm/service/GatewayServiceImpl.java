@@ -51,7 +51,8 @@ public class GatewayServiceImpl implements GatewayService {
       return repository.findAll().stream().map(this::toCommonLookUp).toList();
     }
     PaymentGatewayUserType type = PaymentGatewayUserType.from(userType);
-    String stateCode = TenantStateCodeResolver.resolve(tenantId);
+    // Per tenant as sent: KFON and KL keep separate gateway lists.
+    String stateCode = tenantId == null ? null : tenantId.trim().toUpperCase();
     List<PaymentGatewayAvailability> rows =
         stateCode == null || stateCode.isBlank()
             ? paymentGatewayAvailabilityRepository.findAll().stream()

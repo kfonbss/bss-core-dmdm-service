@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface PaymentGatewayAvailabilityService {
 
-  /** Active gateways the tenant's state offers to {@code userType}, in display order. */
+  /** Active gateways the tenant offers to {@code userType}, in display order. */
   List<PaymentGatewayAvailabilityResponse> fetchActive(String tenantId, String userType);
 
   /** Every row (active or not) of a state, for the admin screen. */

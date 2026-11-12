@@ -27,7 +27,7 @@ public class PaymentGatewayAvailabilityController {
 
   private final PaymentGatewayAvailabilityService service;
 
-  /** Active gateways the caller's tenant state offers to {@code userType} (SUBSCRIBER/PARTNER). */
+  /** Active gateways the caller's tenant offers to {@code userType} (SUBSCRIBER/PARTNER). */
   @GetMapping
   public ResponseEntity<Response<List<PaymentGatewayAvailabilityResponse>>> fetchActive(
       @RequestHeader("X-Tenant-ID") String tenantId, @RequestParam String userType) {
@@ -35,7 +35,7 @@ public class PaymentGatewayAvailabilityController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched"));
   }
 
-  /** Every row of a state for the admin screen; the caller's tenant state when none is given. */
+  /** Every row of a tenant for the admin screen; the caller's tenant when none is given. */
   @GetMapping("/availability")
   public ResponseEntity<Response<List<PaymentGatewayAvailabilityResponse>>> fetchForState(
       @RequestHeader(value = "X-Tenant-ID", required = false) String tenantId,
