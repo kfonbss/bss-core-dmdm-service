@@ -32,7 +32,7 @@ env:
 jobs:
   build:
     name: Build & Push image (${{ github.ref_name }})
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, dev]
     if: github.ref_name == 'dev' || github.ref_name == 'qa'
 
     steps:
