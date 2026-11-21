@@ -60,9 +60,11 @@ pipeline {
                     passwordVariable: 'HARBOR_PASSWORD'
                 )]) {
                     script {
-                        try {
-                            sh '''
+                        sh '''
                                 set -eu
+                                DOCKER_CONFIG="$(mktemp -d)"
+                                export DOCKER_CONFIG
+                                trap 'rm -rf "$DOCKER_CONFIG"' EXIT
                                 printf '%s' "$HARBOR_PASSWORD" |
                                     docker login "$HARBOR_REGISTRY" \
                                         --username "$HARBOR_USERNAME" \
@@ -73,9 +75,6 @@ pipeline {
                                 docker push "$IMAGE"
                                 docker push "$HARBOR_DEV_IMAGE"
                             '''
-                        } finally {
-                            sh 'docker logout "$HARBOR_REGISTRY" || true'
-                        }
                     }
                 }
             }
