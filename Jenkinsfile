@@ -16,6 +16,11 @@ pipeline {
 
     parameters {
         booleanParam(
+            name: 'DEPLOY_DEV',
+            defaultValue: false,
+            description: 'Apply the Dev app manifest and deploy the image.'
+        )
+        booleanParam(
             name: 'DEPLOY_UAT',
             defaultValue: false,
             description: 'Deploy the built immutable image to the UAT Kubernetes cluster.'
@@ -81,6 +86,9 @@ pipeline {
         }
 
         stage('Deploy to dev') {
+            when {
+                expression { return params.DEPLOY_DEV }
+            }
             steps {
                 withCredentials([file(
                     credentialsId: 'dev-kubeconfig',
@@ -106,7 +114,7 @@ pipeline {
 
         stage('Deploy to UAT') {
             when {
-                expression { return params.DEPLOY_UAT }
+                expression { return params.DEPLOY_DEV && params.DEPLOY_UAT }
             }
             steps {
                 withCredentials([file(
