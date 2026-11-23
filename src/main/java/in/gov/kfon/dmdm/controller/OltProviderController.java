@@ -30,7 +30,8 @@ public class OltProviderController {
   public ResponseEntity<Response<List<OltProviderResponse>>> fetchAll(
       @RequestHeader(value = "X-Tenant-ID", required = false) String tenantId) {
     var data = service.fetchAll(tenantId);
-    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, FETCHED));
+    String message = data.isEmpty() ? "No master data available" : FETCHED;
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, message));
   }
 
   @GetMapping("/{id}")
