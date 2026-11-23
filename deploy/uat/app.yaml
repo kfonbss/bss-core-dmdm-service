@@ -24,7 +24,7 @@ spec:
               containerPort: 8080
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: rwbssdev
+              value: rwbssuat
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: /bss-core-dmdm-service
             - name: MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE

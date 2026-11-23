@@ -1,0 +1,71 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /bss-core-dmdm-service
+
+
+spring:
+  data:
+    redis:
+      host: ${REDIS_HOST:10.40.3.203}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      connection-timeout: 30000
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        show_sql: false
+
+  liquibase:
+    enabled: true
+    drop-first: false
+    change-log: classpath:/db/changelog/changelog-master.xml
+
+management:
+  server:
+    port: 8080
+    servlet:
+      context-path: /bss-core-dmdm-service
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate.SQL: WARN
+
+app:
+  tenants:
+    KL:
+      url: ${KL_POSTGRES_URL}
+      username: ${KL_POSTGRES_USER}
+      password: ${KL_POSTGRES_PASSWORD}
+    LD:                               # No dedicated LD QA database yet; reuses ld_bss_dmdm_dev.
+      url: ${LD_POSTGRES_URL}
+      username: ${LD_POSTGRES_USER}
+      password: ${LD_POSTGRES_PASSWORD}
+#    PY:                              # PY database does not exist in QA.
+#      url: ${PY_POSTGRES_URL}
+#      username: ${PY_POSTGRES_USER}
+#      password: ${PY_POSTGRES_PASSWORD}
