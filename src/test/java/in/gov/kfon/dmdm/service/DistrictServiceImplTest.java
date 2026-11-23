@@ -55,7 +55,7 @@ class DistrictServiceImplTest {
   void testFetchAll() {
     List<District> districts = List.of(district);
 
-    when(repository.findByStateCode("KL")).thenReturn(districts);
+    when(repository.findByStateOrCircleCode("KL")).thenReturn(districts);
     when(modelMapper.map(district, CommonLookUp.class)).thenReturn(commonLookUp);
 
     List<CommonLookUp> result = service.fetchAll("KL");
@@ -64,7 +64,7 @@ class DistrictServiceImplTest {
     assertEquals(1, result.size());
     assertEquals(districtId, result.get(0).getId());
 
-    verify(repository, times(1)).findByStateCode("KL");
+    verify(repository, times(1)).findByStateOrCircleCode("KL");
     verify(modelMapper, times(1)).map(district, CommonLookUp.class);
   }
 

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfPopListResponse;
 import in.gov.kfon.dmdm.model.DfPopList;
 import in.gov.kfon.dmdm.model.PopMaster;
 import in.gov.kfon.dmdm.model.PopMasterBackup;
@@ -159,16 +160,18 @@ class PopServiceImplTest {
   @Test
   void testFetchAllDfPopList() {
     when(dfPopListRepository.findAll()).thenReturn(List.of(dfPopList));
-    when(modelMapper.map(dfPopList, CommonLookUp.class)).thenReturn(dfPopLookup);
+    DfPopListResponse dfPopResponse =
+        DfPopListResponse.builder().id(dfPopListId).name("Thiruvananthapuram POP").build();
+    when(modelMapper.map(dfPopList, DfPopListResponse.class)).thenReturn(dfPopResponse);
 
-    List<CommonLookUp> result = service.fetchAllDfPopLists();
+    List<DfPopListResponse> result = service.fetchAllDfPopLists();
 
     assertNotNull(result);
     assertEquals(1, result.size());
     assertEquals(dfPopListId, result.get(0).getId());
 
     verify(dfPopListRepository, times(1)).findAll();
-    verify(modelMapper, times(1)).map(dfPopList, CommonLookUp.class);
+    verify(modelMapper, times(1)).map(dfPopList, DfPopListResponse.class);
   }
 
   @Test

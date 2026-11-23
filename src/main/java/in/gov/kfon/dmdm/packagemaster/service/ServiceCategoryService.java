@@ -34,8 +34,12 @@ public interface ServiceCategoryService {
 
   ServiceCategoryResponse fetchById(UUID id);
 
-  /** Service categories mapped to exactly this set of service types. */
-  List<ServiceCategoryResponse> fetchByServiceTypes(List<UUID> serviceTypeIds);
+  /**
+   * Categories whose full active set of service types is exactly {@code serviceTypeIds}; {@code
+   * type}, when given, keeps only categories of that type (RETAIL/CORPORATE).
+   */
+  List<ServiceCategoryResponse> fetchByServiceTypes(
+      List<UUID> serviceTypeIds, ServiceCategoryType type);
 
   ServiceCategoryResponse create(ServiceCategoryRequest request);
 

@@ -5,6 +5,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
+import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
+import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
 import in.gov.kfon.dmdm.service.DarkFiberService;
 import java.util.List;
 import java.util.UUID;
@@ -176,13 +179,14 @@ public class DarkFiberControllerTest {
 
   @Test
   void testFetchAllPowerRatings() throws Exception {
-    when(service.fetchAllPowerRatings()).thenReturn(List.of(lookup));
+    when(service.fetchAllPowerRatings())
+        .thenReturn(List.of(DfPowerRatingResponse.builder().dfPowerRatingId(id).build()));
 
     mockMvc
         .perform(get("/api/darkfiber/power-ratings/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all power ratings"))
-        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+        .andExpect(jsonPath("$.data[0].dfPowerRatingId").value(id.toString()));
   }
 
   @Test
@@ -506,13 +510,14 @@ public class DarkFiberControllerTest {
 
   @Test
   void testFetchAllMasterData() throws Exception {
-    when(service.fetchAllMasterData()).thenReturn(List.of(lookup));
+    when(service.fetchAllMasterData())
+        .thenReturn(List.of(DfMasterDataResponse.builder().dataId(id).build()));
 
     mockMvc
         .perform(get("/api/darkfiber/master-datas/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all master data"))
-        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+        .andExpect(jsonPath("$.data[0].dataId").value(id.toString()));
   }
 
   @Test
@@ -528,24 +533,26 @@ public class DarkFiberControllerTest {
 
   @Test
   void testFetchAllOtcCharges() throws Exception {
-    when(service.fetchAllOtcCharges()).thenReturn(List.of(lookup));
+    DfOtcChargeResponse charge = DfOtcChargeResponse.builder().chargesId(id).build();
+    when(service.fetchAllOtcCharges()).thenReturn(List.of(charge));
 
     mockMvc
         .perform(get("/api/darkfiber/charges/fetch-all"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched all OTC charges"))
-        .andExpect(jsonPath("$.data[0].id").value(id.toString()));
+        .andExpect(jsonPath("$.data[0].chargesId").value(id.toString()));
   }
 
   @Test
   void testFetchOtcChargeById() throws Exception {
-    when(service.fetchOtcChargeById(id)).thenReturn(lookup);
+    DfOtcChargeResponse charge = DfOtcChargeResponse.builder().chargesId(id).build();
+    when(service.fetchOtcChargeById(id)).thenReturn(charge);
 
     mockMvc
         .perform(get("/api/darkfiber/charge/{id}", id))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message").value("Fetched OTC charge by ID"))
-        .andExpect(jsonPath("$.data.id").value(id.toString()));
+        .andExpect(jsonPath("$.data.chargesId").value(id.toString()));
   }
 
   @Test

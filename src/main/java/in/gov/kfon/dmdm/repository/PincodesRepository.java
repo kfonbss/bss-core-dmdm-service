@@ -11,8 +11,13 @@ public interface PincodesRepository extends JpaRepository<Pincodes, UUID> {
 
   List<Pincodes> findAllByPincodeAndIsActiveTrue(String pincode);
 
+  /**
+   * Matches the circle code (KL) as well as the district's numeric state code (32), mapped through
+   * invoice_statecode, since districts store the numeric code that state.code uses.
+   */
   @Query(
       "SELECT p FROM Pincodes p WHERE p.districtId IN "
-          + "(SELECT d.districtId FROM District d WHERE d.state.code = :stateCode)")
+          + "(SELECT d.districtId FROM District d WHERE (d.state.code = :stateCode OR d.state.code IN "
+          + "(SELECT i.stateCode FROM InvoiceStateCode i WHERE UPPER(TRIM(i.stCode)) = UPPER(:stateCode))))")
   List<Pincodes> findByStateCode(@Param("stateCode") String stateCode);
 }

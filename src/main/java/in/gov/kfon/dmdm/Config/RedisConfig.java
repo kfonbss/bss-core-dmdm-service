@@ -42,6 +42,12 @@ public class RedisConfig {
     perCacheConfig.put(CacheNames.STATES_BY_CODES, defaults.entryTtl(Duration.ofHours(4)));
     perCacheConfig.put(CacheNames.ALL_DISTRICTS, defaults.entryTtl(Duration.ofHours(4)));
     perCacheConfig.put(CacheNames.DISTRICT_BY_ID, defaults.entryTtl(Duration.ofHours(4)));
+    perCacheConfig.put(
+        CacheNames.SUB_DISTRICTS_BY_DISTRICT, defaults.entryTtl(Duration.ofHours(4)));
+    perCacheConfig.put(CacheNames.SUB_DISTRICT_BY_ID, defaults.entryTtl(Duration.ofHours(4)));
+    perCacheConfig.put(
+        CacheNames.VILLAGES_BY_SUB_DISTRICT, defaults.entryTtl(Duration.ofHours(4)));
+    perCacheConfig.put(CacheNames.VILLAGE_BY_ID, defaults.entryTtl(Duration.ofHours(4)));
 
     // ---- 2-hour TTL: pincode/post office and block data (rarely changes) ----
     perCacheConfig.put(CacheNames.ALL_PINCODES, defaults.entryTtl(Duration.ofHours(2)));

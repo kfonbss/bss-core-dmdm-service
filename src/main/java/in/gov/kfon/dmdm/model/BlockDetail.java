@@ -47,6 +47,13 @@ public class BlockDetail extends Auditor {
   @Enumerated(EnumType.ORDINAL)
   private LocationType locType;
 
+  /** Census block code (legacy billing_master NBLKCode); NULL for local bodies with no census block. */
+  @Column(name = "code", length = 20)
+  private String code;
+
+  @Column(name = "sub_district_id")
+  private UUID subDistrictId;
+
   @Column(name = "is_active")
   private boolean isActive = true;
 

@@ -27,7 +27,7 @@ public class DistrictServiceImpl implements DistrictService {
   @Cacheable(cacheNames = CacheNames.ALL_DISTRICTS, key = "#stateCode")
   public List<CommonLookUp> fetchAll(String stateCode) {
     stateCode = TenantStateCodeResolver.resolve(stateCode);
-    return repository.findByStateCode(stateCode).stream()
+    return repository.findByStateOrCircleCode(stateCode).stream()
         .map(district -> modelMapper.map(district, CommonLookUp.class))
         .toList();
   }

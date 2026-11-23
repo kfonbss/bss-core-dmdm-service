@@ -1,16 +1,26 @@
 package in.gov.kfon.dmdm.controller;
 
 import in.gov.kfon.dmdm.contract.CommonLookUp;
+import in.gov.kfon.dmdm.contract.DfFeederListResponse;
+import in.gov.kfon.dmdm.contract.DfMasterDataResponse;
+import in.gov.kfon.dmdm.contract.DfOtcChargeResponse;
+import in.gov.kfon.dmdm.contract.DfPowerRatingResponse;
+import in.gov.kfon.dmdm.contract.DfStrandsConsumedRequest;
 import in.gov.kfon.dmdm.contract.Response;
 import in.gov.kfon.dmdm.service.DarkFiberService;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -101,7 +111,7 @@ public class DarkFiberController {
   }
 
   @GetMapping("/power-ratings/fetch-all")
-  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllPowerRatings() {
+  public ResponseEntity<Response<List<DfPowerRatingResponse>>> fetchAllPowerRatings() {
     var data = darkFiberService.fetchAllPowerRatings();
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched all power ratings"));
@@ -112,6 +122,15 @@ public class DarkFiberController {
     var data = darkFiberService.fetchPowerRatingById(id);
     return ResponseEntity.status(HttpStatus.OK)
         .body(Response.ok(data, "Fetched power rating by ID"));
+  }
+
+  /** Full df_power_rating row by id (amount, legacy id), for other services. */
+  @GetMapping("/power-rating/{id}/detail")
+  public ResponseEntity<Response<DfPowerRatingResponse>> fetchPowerRatingDetailById(
+      @PathVariable UUID id) {
+    var data = darkFiberService.fetchPowerRatingDetailById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched power rating detail by ID"));
   }
 
   @GetMapping("/purchase-orders/fetch-all")
@@ -294,6 +313,38 @@ public class DarkFiberController {
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all feeder lists"));
   }
 
+  /** The POP's active feeders; popId is the POP's legacy id (df_pop_list.id). */
+  @GetMapping("/feeder-lists/by-pop/{popId}")
+  public ResponseEntity<Response<List<DfFeederListResponse>>> fetchFeedersByPop(
+      @PathVariable Integer popId) {
+    var data = darkFiberService.fetchFeedersByPop(popId);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched feeder lists by POP"));
+  }
+
+  /** Feeders by their legacy ids (df_feeder_list.id), e.g. ?ids=3,7; inactive ones too. */
+  @GetMapping("/feeder-lists/by-ids")
+  public ResponseEntity<Response<List<DfFeederListResponse>>> fetchFeedersByIds(
+      @RequestParam("ids") List<Integer> ids) {
+    var data = darkFiberService.fetchFeedersByIds(ids);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched feeder lists by IDs"));
+  }
+
+  /**
+   * Adds delta to the feeder's noof_strands_consumed (never below 0); id is the feeder's legacy id
+   * (df_feeder_list.id). POST, not PATCH: the callers' default Feign client cannot send PATCH.
+   */
+  @PostMapping("/feeder-list/legacy/{id}/strands-consumed")
+  public ResponseEntity<Response<DfFeederListResponse>> adjustFeederStrandsConsumed(
+      @PathVariable Integer id, @RequestBody DfStrandsConsumedRequest request) {
+    var data =
+        darkFiberService.adjustFeederStrandsConsumed(
+            id, request != null ? request.getDelta() : null);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Feeder strands consumed updated"));
+  }
+
   @GetMapping("/feeder-list/{id}")
   public ResponseEntity<Response<CommonLookUp>> fetchFeederById(@PathVariable UUID id) {
     var data = darkFiberService.fetchFeederById(id);
@@ -302,7 +353,7 @@ public class DarkFiberController {
   }
 
   @GetMapping("/master-datas/fetch-all")
-  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllMasterData() {
+  public ResponseEntity<Response<List<DfMasterDataResponse>>> fetchAllMasterData() {
     var data = darkFiberService.fetchAllMasterData();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all master data"));
   }
@@ -314,16 +365,53 @@ public class DarkFiberController {
         .body(Response.ok(data, "Fetched master data by ID"));
   }
 
+  /**
+   * Adds body.delta to the route's noof_strands_consumed (never below 0); returns the route. POST,
+   * not PATCH: the callers' default Feign client cannot send PATCH.
+   */
+  @PostMapping("/master-data/{id}/strands-consumed")
+  public ResponseEntity<Response<DfMasterDataResponse>> adjustStrandsConsumed(
+      @PathVariable UUID id, @RequestBody DfStrandsConsumedRequest request) {
+    var data =
+        darkFiberService.adjustStrandsConsumed(id, request != null ? request.getDelta() : null);
+    return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Strands consumed updated"));
+  }
+
+  /** Full df_masterdata row (route) by id: fibre type, strands, unit price, legacy id. */
+  @GetMapping("/master-data/{id}/detail")
+  public ResponseEntity<Response<DfMasterDataResponse>> fetchMasterDataDetailById(
+      @PathVariable UUID id) {
+    var data = darkFiberService.fetchMasterDataDetailById(id);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched master data detail by ID"));
+  }
+
   @GetMapping("/charges/fetch-all")
-  public ResponseEntity<Response<List<CommonLookUp>>> fetchAllOtcCharges() {
+  public ResponseEntity<Response<List<DfOtcChargeResponse>>> fetchAllOtcCharges() {
     var data = darkFiberService.fetchAllOtcCharges();
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched all OTC charges"));
   }
 
   @GetMapping("/charge/{id}")
-  public ResponseEntity<Response<CommonLookUp>> fetchOtcChargeById(@PathVariable UUID id) {
+  public ResponseEntity<Response<DfOtcChargeResponse>> fetchOtcChargeById(@PathVariable UUID id) {
     var data = darkFiberService.fetchOtcChargeById(id);
     return ResponseEntity.status(HttpStatus.OK).body(Response.ok(data, "Fetched OTC charge by ID"));
+  }
+
+  /** The active rate card whose financial year holds the date (yyyy-MM-dd). */
+  @GetMapping("/charge/by-date")
+  public ResponseEntity<Response<DfOtcChargeResponse>> fetchOtcChargeForDate(
+      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    var data = darkFiberService.fetchOtcChargeForDate(date);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched OTC charge for date"));
+  }
+
+  @GetMapping("/charge/current")
+  public ResponseEntity<Response<DfOtcChargeResponse>> fetchCurrentOtcCharge() {
+    var data = darkFiberService.fetchCurrentOtcCharge();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(Response.ok(data, "Fetched current OTC charge"));
   }
 
   @GetMapping("/invoices/fetch-all")
