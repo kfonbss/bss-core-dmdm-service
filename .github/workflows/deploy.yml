@@ -97,7 +97,7 @@ jobs:
           sudo k3s kubectl create secret docker-registry regcred \
             --docker-server=${{ env.ECR_REGISTRY }} \
             --docker-username=AWS --docker-password=$TOKEN \
-            -n $NS --dry-run=client -o yaml | sudo k3s kubectl apply -f -
+            -n $NS --dry-run=client -o yaml | sudo k3s kubectl apply --validate=false -f -
 
       - name: Helm upgrade
         run: |

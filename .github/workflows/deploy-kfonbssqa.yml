@@ -83,7 +83,7 @@ jobs:
           sudo k3s kubectl create secret docker-registry regcred \
             --docker-server=${{ env.ECR_REGISTRY }} \
             --docker-username=AWS --docker-password=$TOKEN \
-            -n kfonqa --dry-run=client -o yaml | sudo k3s kubectl apply -f -
+            -n kfonqa --dry-run=client -o yaml | sudo k3s kubectl apply --validate=false -f -
 
       - name: Apply app-config ConfigMap (if present)
         run: |
