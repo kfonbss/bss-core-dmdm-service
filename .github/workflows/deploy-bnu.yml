@@ -1,0 +1,52 @@
+name: Deploy to BNU
+
+on:
+  push:
+    branches: [bnu]
+
+jobs:
+  build-and-deploy:
+    name: Build, Push & Deploy to BNU
+    runs-on: [self-hosted, dev]
+    env:
+      ECR_REGISTRY: 018810731179.dkr.ecr.ap-south-1.amazonaws.com
+      ECR_REPOSITORY: bss-core-dmdm-service
+      IMAGE_TAG: bnu
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag and push image to ECR
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "Pushed $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+      - name: Deploy to BNU server
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.BNU_SERVER_HOST }}
+          username: ubuntu
+          key: ${{ secrets.BNU_SSH_KEY }}
+          script: |
+            set -e
+            cd /opt/bnu
+            aws ecr get-login-password --region ap-south-1 | \
+              docker login --username AWS --password-stdin \
+              018810731179.dkr.ecr.ap-south-1.amazonaws.com
+            docker compose pull dmdm
+            docker compose up -d --no-deps dmdm
+            echo "=== Deployed dmdm to BNU ==="
+            docker ps --filter "name=bnu-dmdm" \
+              --format "table {{.Names}}\t{{.Status}}\t{{.Image}}"

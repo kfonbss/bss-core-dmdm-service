@@ -19,19 +19,29 @@ public class OltProviderServiceImpl implements OltProviderService {
   private final OltProviderRepository oltProviderRepository;
   private final ModelMapper modelMapper;
 
-  private static final Set<String> NOT_IN_BNU_KA = Set.of("LNP", "KFON");
+  private static final Set<String> KFON_PROVIDERS = Set.of("LNP", "KFON");
+  private static final Set<String> BNU_PROVIDERS = Set.of("BNU", "ANP");
 
+  /** KFON tenant sees LNP/KFON, BNU tenants (BNU, BNU-KA) see BNU/ANP, any other tenant none. */
   @Override
   public List<OltProviderResponse> fetchAll(String tenantId) {
-    boolean bnuKa = tenantId != null && "BNU-KA".equalsIgnoreCase(tenantId.trim());
+    Set<String> allowed = allowedProviders(tenantId);
+    if (allowed.isEmpty()) return List.of();
     return oltProviderRepository.findAll().stream()
         .filter(
             oltProvider ->
-                !bnuKa
-                    || oltProvider.getName() == null
-                    || !NOT_IN_BNU_KA.contains(oltProvider.getName().trim().toUpperCase()))
+                oltProvider.getName() != null
+                    && allowed.contains(oltProvider.getName().trim().toUpperCase()))
         .map(oltProvider -> modelMapper.map(oltProvider, OltProviderResponse.class))
         .toList();
+  }
+
+  private static Set<String> allowedProviders(String tenantId) {
+    if (tenantId == null || tenantId.isBlank()) return Set.of();
+    String tenant = tenantId.trim().toUpperCase();
+    if ("KFON".equals(tenant)) return KFON_PROVIDERS;
+    if (tenant.startsWith("BNU")) return BNU_PROVIDERS;
+    return Set.of();
   }
 
   @Override

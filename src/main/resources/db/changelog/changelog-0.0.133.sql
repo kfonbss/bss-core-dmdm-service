@@ -1,0 +1,1 @@
+UPDATE partner SET name = 'EPARTNER' WHERE name = 'Veremax';
