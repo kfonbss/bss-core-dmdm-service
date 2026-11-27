@@ -469,3 +469,8 @@ _ Get inventory device transfer request and movement details
 - Dark fiber current OTC charge API (GET /api/darkfiber/charge/current) - returns OTC charge whose fyear_s_date and fyear_e_date range covers current date
 - Added DfOtcChargeResponse (all charge amounts, year, fyear dates) as response for current OTC charge API
 - Dark fiber OTC charge fetch-all and fetch-by-id APIs now return DfOtcChargeResponse instead of CommonLookUp
+
+# [0.90.0] - 2026-11-27
+### Added
+- Material purchase report APIs (GET /api/report/material-purchases, GET /api/report/material-purchases/summary) - paged register and totals filtered by activeFlag, date range, month, districtId and search
+- Corporate partner invoice report APIs (GET /api/report/corporate-partner-invoices/{kind}, GET /api/report/corporate-partner-invoices/{kind}/summary) - paged register and totals for AGNP and LNP invoices, filtered by date range, districtId, accountType, status and search (page size capped at 500)
