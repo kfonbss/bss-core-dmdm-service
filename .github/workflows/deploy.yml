@@ -65,7 +65,7 @@ jobs:
             GH_PACKAGES_TOKEN=${{ secrets.GH_PACKAGES_TOKEN }}
           tags: ${{ env.ECR_REGISTRY }}/${{ env.SERVICE }}:${{ github.ref_name }}
           cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-to: type=gha,mode=min
 
   deploy:
     name: Deploy to ${{ github.ref_name }}
@@ -111,7 +111,7 @@ jobs:
       - name: Rollout restart & wait
         run: |
           sudo k3s kubectl rollout restart deployment/${{ env.SERVICE }} -n $NS
-          sudo k3s kubectl rollout status deployment/${{ env.SERVICE }} -n $NS --timeout=6m
+          sudo k3s kubectl rollout status deployment/${{ env.SERVICE }} -n $NS --timeout=10m
 
       - name: Summary
         run: |
